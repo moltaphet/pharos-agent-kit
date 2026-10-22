@@ -30,7 +30,7 @@ export const content = {
   ],
   evidence: [
     'Every question, its exact wording and the docs’ answer appear in the log below, and in the downloadable report.',
-    'Gaps come from checks against the live network or the real URL, each listed with the exact query that exposed it. The recorded run found 5.',
+    'Gaps come from checks against the live network or the real URL, each listed with the exact query that exposed it. The recorded report (reports/docs-mcp-onboarding.md) lists 6; the count can change because Docs MCP answers are generated.',
     'Each gap carries a written suggestion of what the docs should have said.',
     'The report ends with what the onboarding actually ran (MCP connection, both RPCs, live reads) and what it could not do, and why.',
   ],

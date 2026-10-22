@@ -1,25 +1,56 @@
 # pharos-agent-kit
 
-Three small command-line agents for [Pharos](https://ai.pharos.xyz), built for the
-[Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks) **Season of AI**:
+Ten working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
+**Season of AI** tasks, plus a site where each one can be tested and inspected:
+**https://pharos-agent-kit.vercel.app**
 
-| Command | Arena task | Talks to |
-|---|---|---|
-| [`pharos-read`](#1-pharos-read--read-contract-state) | Read Contract State | Chain MCP |
-| [`pharos-watch`](#2-pharos-watch--eventlog-monitor) | Event/Log Monitor | Chain MCP |
-| [`pharos-docs`](#3-pharos-docs--doc-search-cli) | Doc-Search CLI | Developer Docs MCP |
+| # | Task | Run it | Real data? | Execution |
+|---|---|---|---|---|
+| 1 | Read Contract State | `node bin/pharos-read.js` | Pharos mainnet | read-only |
+| 2 | Event/Log Monitor | `node bin/pharos-watch.js` | Pharos mainnet | read-only |
+| 3 | Docs MCP Onboarding | `node bin/pharos-onboard.js` | Docs MCP + mainnet + Atlantic checks | read-only |
+| 4 | Doc-Search CLI | `node bin/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
+| 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | read-only |
+| 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts, local fork | **fork only** |
+| 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | simulated fill |
+| 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulation (+ fork) |
+| 9 | Trend Watcher (Skill) | `skills/pharos-trend-watcher/` | Pharos mainnet history | read-only (+ state file) |
+| 10 | Batch Executor (Skill) | `skills/pharos-batch-executor/` | Pharos mainnet | prepared, unsigned (+ fork) |
+
+**Safety.** Nothing here signs or sends a transaction on the real Pharos network, and no private
+key is ever read or asked for. Tasks 6, 8 and 10 can also *execute* transactions, but only on a
+throwaway local **anvil fork** of mainnet (needs Foundry): the contracts and balances are real,
+the transactions exist only on your machine. The site shows recorded fork runs and, where
+there is no anvil, an in-memory simulator that says it is a simulation.
 
 No dependencies, no API keys, no build step. Needs **Node.js 20+**.
-Everything is read-only: nothing here signs or sends a transaction.
 
 ```bash
 git clone https://github.com/moltaphet/pharos-agent-kit && cd pharos-agent-kit
-node bin/pharos-read.js          # or: npm link, then `pharos-read`
+node bin/pharos-read.js
 node bin/pharos-watch.js
 node bin/pharos-docs.js "how do I deploy a contract?"
-npm test                         # offline unit tests
-npm run web                      # the web hub at http://localhost:3000
+npm test                          # offline unit tests (no network)
+npm run web                       # the site at http://localhost:3000
+node scripts/audit-static.mjs     # requirements vs evidence, skill template lint
+node scripts/audit-live.mjs https://pharos-agent-kit.vercel.app   # live checks of every task
 ```
+
+The six **Skills** follow the Pharos Skill Engine format: `SKILL.md` with a Capability Index,
+`references/<skill>.md` (command, parameters, output parsing, errors, agent guidelines for every
+section), `scripts/`, `assets/` and `examples/`. `scripts/audit-static.mjs` checks that.
+
+## Things we found about the platform
+
+- **The Pharos node sometimes answers a historical `eth_call` with another block's value.**
+  About 10% of parallel historical reads on the public RPC (4 of 40), and occasionally even a single
+  call; the same wrong value appeared through Chain MCP, so it is the node. Anything that reads a
+  series of past blocks reads one at a time and accepts a value only when two reads agree
+  (`lib/stable.js`).
+- The Chain MCP server exposes **14** tools (including `send_raw_transaction`), is stateful (it needs
+  an `initialize` handshake) and sends no CORS headers, so a browser cannot call it directly.
+- `docs.pharos.xyz` and the faucet, `llms.txt`, Skill Engine install and x402 mainnet pages have gaps
+  documented in `reports/docs-mcp-onboarding.md`.
 
 ## Web hub
 

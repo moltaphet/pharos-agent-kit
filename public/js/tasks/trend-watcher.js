@@ -47,9 +47,9 @@ export const content = {
   tools: ['chain'],
   skill: true,
   story: [
-    'One reading proves nothing. A lending pool’s liquidity can dip for a block and bounce back; a supply figure can spike once. A bot that reacts to a single reading cries wolf. The Trend Watcher is a Pharos Skill that remembers: it stores every observation, and fires only when the last N of them all move the same way (at least three, and you set how many and how big each step must be).',
+    'One reading proves nothing. A lending pool’s liquidity can drop and come back; a supply figure can spike once. A bot that reacts to a single reading cries wolf. The Trend Watcher is a Pharos Skill that remembers: it stores every observation, and fires only when the last N of them all move the same way (at least three, and you set how many and how big each step must be).',
     'The memory is the point. State lives in a file (the CLI) or in your browser’s storage (this page), so the watcher can be stopped and restarted without losing history, and observing the same block twice never adds it twice. The page shows the stored history, marks the exact observation where the trend condition was first met, and records when it stopped holding.',
-    'It runs on real Pharos data. Because past blocks are readable, you can back-fill a history in one click instead of waiting hours. In the data we recorded, USDC’s total supply fell from 54.64M to 52.80M to 50.16M over three consecutive samples (a real trend, met at block 20,860,000), while the lending liquidity held by Morpho Blue dipped once and bounced back (a single dip that correctly did not trigger).',
+    'It runs on real Pharos data. Because past blocks are readable, you can back-fill a history in one click instead of waiting hours. In the data we recorded, USDC’s total supply fell from 54.64M to 52.80M to 50.16M over three consecutive samples (a real trend, met at block 20,860,000), while the lending liquidity held by Morpho Blue stepped down once (1.39M to 1.32M), stayed there for two samples and then recovered: one step down is not a trend, and it correctly did not fire.',
   ],
   how: [
     { server: 'chain', tool: 'get_block_number', text: 'Find the latest block and the fixed grid of past sample points (multiples of the step).' },
@@ -72,7 +72,7 @@ export const content = {
     'The trend rule is configurable (direction, number of consecutive observations, minimum step) and refuses fewer than 3 observations.',
     'A restart never loses or duplicates history: observations are keyed by block, the back-fill grid is fixed, and a second back-fill adds nothing. This is unit-tested and was run live.',
     'The stored history is shown with the exact observation where the trend condition was met, and the cleared moments.',
-    'A single spike or dip does not trigger it: shown by the synthetic scenarios and by a real single dip in Morpho’s liquidity.',
+    'A single spike or dip does not trigger it: shown by the synthetic scenarios, and on real data by Morpho’s liquidity stepping down once (1.39M to 1.32M) and then holding flat, which did not fire either.',
   ],
   files: ['skills/pharos-trend-watcher/SKILL.md', 'skills/pharos-trend-watcher/references/trend-watcher.md', 'skills/pharos-trend-watcher/scripts/watch.mjs', 'lib/trend.js', 'lib/stable.js', 'lib/tasks/trend-watcher.js'],
   run: {

@@ -95,7 +95,12 @@ The config itself has no output. Validate it by running *Evaluate a guardian*; t
 
 ### Error Handling
 
-See *Evaluate a guardian*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `config is not valid JSON` / `Unexpected token` | The file has a JSON syntax error | Fix quotes and trailing commas, then re-run. |
+| `unknown type "…"` | `type` is not one of the four supported | Use `gas-price`, `native-balance`, `token-balance` or `share-price-change`. |
+| `config.require must be "all", "any", or { "atLeast": n }` | Bad rule, or `n` outside 1 to the number of conditions | Use one of the three forms. |
+| `duplicate id "…"` | Two conditions share an `id` | Give each condition a unique `id`. |
 
 > **Agent Guidelines**:
 > 1. Translate the user's words into conditions, and repeat them back with units ("gas at most 20 gwei").
@@ -133,7 +138,11 @@ node skills/pharos-threshold-guardian/scripts/guardian.mjs <config.json> --json
 
 ### Error Handling
 
-See *Evaluate a guardian*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `Usage: guardian.mjs <config.json> [--json]` | No config path was given | Pass the config file as the first argument. |
+| `error: ENOENT: no such file or directory` | The config path is wrong | Check the path; run from the repository root. |
+| Exit code `10` | Not an error: the decision is HOLD | Read the trace to see which condition was not met. |
 
 > **Agent Guidelines**:
 > 1. Explain a HOLD in plain words: "gas is 10 gwei, you wanted at most 1".

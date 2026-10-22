@@ -81,7 +81,11 @@ node skills/pharos-saga-executor/scripts/saga.mjs --scenario failure --out run.j
 
 ### Error Handling
 
-See *Run a saga on a fork*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `saga:stuck` in the log | An undo failed, so some steps were not reversed | Read `stuck[]`, list the stranded steps first, and ask the user. Never report "rolled back". |
+| `compensation:failed` on a step | The undo reverted or its state check failed | Read the error on that line; investigate before retrying. |
+| `EACCES` / `ENOENT` for `--out` | The output path is not writable | Choose another path. |
 
 > **Agent Guidelines**:
 > 1. Summarise as a timeline: which step, what happened, what was undone.

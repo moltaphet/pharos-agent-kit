@@ -66,7 +66,10 @@ node skills/pharos-batch-executor/scripts/batch.mjs --from <sender> --actions sk
 
 ### Parameters
 
-See *Plan a batch*.
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `--from` | address | Yes | The account that would send the batch. |
+| `--actions` | path | Yes | JSON list of actions; try `examples/native-transfers.json` and `examples/sync-pairs.json`. |
 
 ### Output Parsing
 
@@ -74,7 +77,10 @@ See *Plan a batch*.
 
 ### Error Handling
 
-See *Plan a batch*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| Summary says `costs … gas` | The batch is more expensive than sending singly | Batch only for convenience (one signature), not to save gas. |
+| `amountPros must be a decimal number of PROS` | Bad amount | Use a plain decimal with at most 18 places. |
 
 > **Agent Guidelines**:
 > 1. Recommend batching for gas only when the comparison shows a saving; otherwise offer it for convenience (one signature, one approval of the total).
@@ -105,7 +111,11 @@ node skills/pharos-batch-executor/scripts/batch.mjs --from <sender> --actions <f
 
 ### Error Handling
 
-See *Plan a batch*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `Aborted: aN would fail, so nothing was prepared` | Policy is `abort` and an action fails | Fix or drop the action, or use `--on-failure exclude`. |
+| `the batch would fail: Multicall3: call failed` | Every action passes alone but the batch fails | Reduce the batch and re-plan. |
+| `onFailure must be "exclude" or "abort"` | Unknown policy | Use one of the two. |
 
 > **Agent Guidelines**:
 > 1. Always say which action failed and what happens to the others.

@@ -79,7 +79,11 @@ Same as above. The history is stored oldest to newest.
 
 ### Error Handling
 
-See *Observe and test the rule*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `count must be a whole number from 1 to 20` | `--backfill` out of range | Use 1 to 20. |
+| `step must be a whole number of at least 100 blocks` | `--step` too small | Use 100 or more (default 20000). |
+| `… gave 3 different answers in a row … inconsistent historical state` | The node returned inconsistent history for a block | Retry later; nothing wrong is stored. |
 
 > **Agent Guidelines**:
 > 1. Say how far back the history reaches in time (the table shows each block's timestamp).
@@ -111,7 +115,10 @@ node skills/pharos-trend-watcher/scripts/watch.mjs --state trend.json --show
 
 ### Error Handling
 
-See *Observe and test the rule*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `not a trend-watcher state file` | The path holds a different JSON file | Use the right `--state` path. |
+| `Unexpected token` while loading | The state file is corrupt | Restore it from a copy, or `--reset` only if the user agrees. |
 
 > **Agent Guidelines**:
 > 1. Quote the trigger block and the values, not a paraphrase.
@@ -132,7 +139,11 @@ node skills/pharos-trend-watcher/scripts/watch.mjs --state trend.json --show --d
 
 ### Parameters
 
-See *Observe and test the rule*.
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `--direction` | `down` \| `up` | No | Which trend to watch for. |
+| `--observations` | integer ≥ 3 | No | Consecutive observations that must all move the same way. |
+| `--min-step` | number ≥ 0 | No | Each step must move at least this many percent. |
 
 ### Output Parsing
 
@@ -140,7 +151,11 @@ Re-evaluated against the stored history.
 
 ### Error Handling
 
-See *Observe and test the rule*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `observations must be a whole number of at least 3` | Rule too weak | Use 3 or more. |
+| `direction must be "down" or "up"` | Unknown direction | Use `down` or `up`. |
+| `minStepPct must be 0 or more` | Negative step | Use 0 or a positive number. |
 
 > **Agent Guidelines**:
 > 1. Confirm with the user before loosening a rule.
@@ -171,7 +186,10 @@ An empty state.
 
 ### Error Handling
 
-See *Observe and test the rule*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `EACCES` on the state path | The file or folder is not writable | Choose another `--state` path. |
+| The user did not ask to reset | Resetting discards history | Do not run it; ask first. |
 
 > **Agent Guidelines**:
 > 1. Never reset without being asked.

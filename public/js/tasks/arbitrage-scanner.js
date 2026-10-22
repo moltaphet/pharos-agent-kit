@@ -25,7 +25,7 @@ export const content = {
   story: [
     'An arbitrage scanner is easy to fool. Two venues disagree on a price, the gap looks huge, and the bot trades into a pool that holds a few cents. This Pharos Skill reads the same token pair from two independent places at the same block (FaroSwap V2 reserves and FaroSwap V3 pool state), simulates buying on the cheaper venue and selling on the dearer one, and subtracts swap fees, price impact and gas before it will call anything profitable.',
     'It searches trade sizes rather than assuming one, because bigger is not better once price impact bites, and it checks that a V3 trade stays inside the pool’s active price range, where the maths is exact. If it cannot trust the estimate it skips and says why. It never sends a transaction: “acting” is a simulated fill.',
-    'The honest headline from the live market is a skip. The WPROS/DLP pair shows a gap of almost six million percent, but one pool holds about 0.00007 WPROS and the other’s active range can absorb a few thousandths of a token, so the best achievable net profit is negative after gas. To show the “act” path too, there are two clearly labelled synthetic scenarios that run the same maths.',
+    'The honest headline from the live market is a skip. When we recorded this, the WPROS/DLP pair showed a gap of almost six million percent, but one pool held about 0.00007 WPROS and the other’s active price range could absorb only a tiny fraction of a token, so the best achievable net profit was negative after gas. Pool balances move, so run a scan to see today’s numbers. To show the “act” path too, there are two clearly labelled synthetic scenarios that run the same maths.',
   ],
   how: [
     { server: 'chain', tool: 'get_block_number', text: 'Pin both venues to one block so the two prices describe the same moment.' },
@@ -36,7 +36,7 @@ export const content = {
     { server: 'local', tool: 'cost + decide', text: 'Gas = 270k units × live gas price, in the quote token. Act (simulated fill) only if net ≥ the threshold; otherwise list every reason with numbers.' },
   ],
   decisions: [
-    { title: 'A huge spread is not an opportunity', text: 'On live data the spread is ~5.8 million percent and the best net profit is still negative. The scan reports depth next to the spread so the number cannot mislead.' },
+    { title: 'A huge spread is not an opportunity', text: 'When recorded, the live spread was about 5.8 million percent and the best net profit was still negative. The scan reports depth next to the spread so the number cannot mislead.' },
     { title: 'Search the size, do not assume it', text: 'The first version tried one size and called the result “net −0.6 WPROS”, which was meaningless because that trade left the V3 range. Searching sizes found the real answer: nothing is tradable.' },
     { title: 'Refuse to estimate outside the range', text: 'V3 liquidity changes at tick boundaries we do not read. When a trade would cross one, the scan skips instead of guessing.' },
     { title: 'Threshold in tokens, not percent', text: 'The best size changes with the market, so a percentage threshold is ambiguous. The minimum is an absolute net profit in the quote token.' },

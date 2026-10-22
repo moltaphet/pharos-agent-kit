@@ -79,7 +79,11 @@ Each line of the log is a full scan. Filter with `jq 'select(.decision=="execute
 
 ### Error Handling
 
-See *Scan a pair*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `EACCES` / `ENOENT` for `--log` | The log path is not writable | Choose another path. |
+| `HTTP 429` notes | Chain MCP rate limit (120 requests a minute) | Use `--interval 3` or more. |
+| `a venue did not answer` | A pool was drained mid-run | Pick another pair; the scan reports it and the loop stops. |
 
 > **Agent Guidelines**:
 > 1. Keep the interval at 3 seconds or more: the Chain MCP rate limit is 120 requests a minute.
@@ -115,7 +119,11 @@ node skills/pharos-arbitrage-scanner/scripts/scan.mjs --json
 
 ### Error Handling
 
-See *Scan a pair*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `reasons[]` mentions the V3 tick range | No trade size stays inside the active range | Explain depth: the pool can absorb only a tiny amount. |
+| `net` is `null`, reason mentions gas | The quote token cannot be converted to PROS | Use a WPROS-quoted pair. |
+| Exit code `10` | Not an error: the scan skipped | Read `reasons[]`. |
 
 > **Agent Guidelines**:
 > 1. State what would have to be true for a trade: a smaller price gap is useless; deeper pools are what is missing.
@@ -137,7 +145,11 @@ node skills/pharos-arbitrage-scanner/scripts/scan.mjs --source marginal   --size
 
 ### Parameters
 
-See *Scan a pair* (`--source`).
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `--source` | string | Yes | `profitable` or `marginal` (or `live` for the real market). |
+| `--size` | number | No | Largest trade considered, in the quote token. Use about 50 for the synthetic pools. |
+| `--min-net` | number | No | Minimum net profit in the quote token (default 0.001). |
 
 ### Output Parsing
 

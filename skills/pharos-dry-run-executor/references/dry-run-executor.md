@@ -82,7 +82,11 @@ node skills/pharos-dry-run-executor/scripts/dryrun.mjs --from <sender> --to <tok
 
 ### Error Handling
 
-See *Dry-run a transaction*.
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `outcome.kind` is `unknown` | The call is not a plain transfer, approval or native value | Say a state diff cannot be predicted from the call data; offer a fork run. |
+| `gas` is `null` | The call would revert, so there is nothing to estimate | Read the decoded `revert` instead. |
+| `revert.kind` is `empty` | The call reverted without a reason | Check the selector, that the target is payable if you sent value, and the arguments. |
 
 > **Agent Guidelines**:
 > 1. For `unknown` outcomes, say plainly that the state change cannot be predicted from the call data, and offer a fork run.

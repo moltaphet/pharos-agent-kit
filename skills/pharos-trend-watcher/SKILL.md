@@ -5,7 +5,7 @@ description: A watcher with memory. It records on-chain readings between runs in
 
 # Pharos Trend Watcher
 
-A skill for "tell me when it's really moving". One reading proves nothing: a lending pool's liquidity can dip for a block and come back. This skill **stores every observation on disk**, and fires only when the last N observations all move the same way. It remembers across runs, so it can be started, stopped and restarted without gaps or duplicates.
+A skill for "tell me when it's really moving". One reading proves nothing: a lending pool's liquidity can drop and come back. This skill **stores every observation on disk**, and fires only when the last N observations all move the same way. It remembers across runs, so it can be started, stopped and restarted without gaps or duplicates.
 
 ## Prerequisites
 
