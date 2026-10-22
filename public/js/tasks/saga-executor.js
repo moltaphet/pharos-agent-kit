@@ -1,6 +1,6 @@
 // Saga Executor: content and a factory panel (simulator + recorded real-EVM fork runs).
 import { esc, short } from '../util.js';
-import { makePanel, pill } from '../panels/factory.js';
+import { kv, makePanel, pill } from '../panels/factory.js';
 import { EXPLORER, REPO } from '../consts.js';
 
 const VAULT = '0x047cD0a91E9B92ED979189a6C8A120bf280f02E5';
@@ -28,6 +28,7 @@ export const content = {
     { title: 'Verify state, not just the receipt', text: 'A transaction can succeed and still not do what the next step needs. Every step has a state check, and a failed check is a permanent failure.' },
     { title: 'Reverts are never retried', text: 'Only network and mempool trouble is transient. The classification is tested, so a revert cannot loop.' },
     { title: 'Honest about a failed undo', text: 'If a compensation fails, the saga reports “compensation-failed” and lists what is stranded, instead of claiming a rollback. The “stuck” scenario shows it.' },
+    { title: 'A second bug: re-recording the runs failed, and it was gas', text: 'When we re-recorded the runs for this page, the forced-failure run ended stuck: the undo of the deposit reverted, four times out of four. A plain call of the same redeem succeeded, which ruled out the vault’s liquidity. A trace showed the transaction had used exactly its gas limit (263,262 of 263,262): the harness let anvil pick the limit, the estimate was exact, and this vault’s withdrawal needs more than the estimate because it calls into a lending market. The first recording had been clean only by luck (the redeem cost 144k gas then, 273k now). The harness now adds 30% headroom like a wallet does and reports “out of gas” instead of a bare revert, with tests for both.' },
     { title: 'A bug we caught in our own harness', text: 'The first recorded run called a completed saga “NOT CLEAN” because the check only knew about rollbacks, and a hand-written reset between runs corrupted the second run’s starting balance. The check now depends on the outcome, and every scenario starts from a fresh fork.' },
     { title: 'The injected fault is labelled', text: 'To show retries on demand the success run injects one transient error. It says so in the log (“injected fault”); it is not presented as a network failure.' },
   ],
@@ -95,6 +96,30 @@ export const mount = makePanel({
   summary: (d) => (d.recorded ? `${d.recorded.runs.length} recorded runs` : `${d.simulated.status} · ${d.simulated.steps.map((s) => s.state).join(' / ')}`),
   render: (d) =>
     d.recorded
-      ? `<p class="muted">Recorded ${esc(d.recorded.recordedAt)} on a <b>${esc(d.recorded.network)}</b>. Transaction hashes exist only on that fork.</p>${d.recorded.runs.map((r) => `<div class="card" style="margin-bottom:14px">${runHtml(r, 'real EVM on a local fork')}</div>`).join('')}`
+      ? `${provenanceHtml(d.recorded)}${fidelityHtml(d.recorded.fidelity)}${d.recorded.runs.map((r) => `<div class="card" style="margin-bottom:14px">${runHtml(r, 'real EVM on a local fork')}</div>`).join('')}`
       : `<div class="card">${runHtml(d.simulated, 'simulation (in-memory model, same engine)')}</div>`,
 });
+
+function provenanceHtml(rec) {
+  const p = rec.provenance;
+  return `<p class="muted">Recorded ${esc(rec.recordedAt)} on a <b>${esc(rec.network)}</b>. Transaction hashes exist only on that fork.</p>${
+    p
+      ? `<details class="prov"><summary>Where these numbers came from</summary>${kv([
+          ['Command', `<code>${esc(p.command)}</code>`],
+          ['Forked from', `${esc(p.forkRpc)} at block ${Object.entries(p.forkBlocks).map(([k, b]) => `${b.toLocaleString('en-US')} (${esc(k)} run)`).join(', ')}`],
+          ['Tool', esc(p.anvil)],
+          ['Vault', `<code>${esc(p.contracts.vault)}</code> (RockawayX USDC, Morpho Vault V2)`],
+          ['USDC', `<code>${esc(p.contracts.usdc)}</code>, funded from ${esc(p.contracts.usdcSource)}`],
+          ['Accounts', esc(p.accounts)],
+        ])}</details>`
+      : ''
+  }`;
+}
+
+function fidelityHtml(f) {
+  if (!f) return '';
+  const all = f.rows.every((r) => r.identical);
+  return `<div class="check ${all ? 'ok' : 'bad'}"><b>${all ? '✓ The interactive demo behaves exactly like the real EVM.' : '✗ The interactive demo differs from the real EVM.'}</b> The same scenarios were replayed through the in-memory simulator and compared with the recorded logs, entry by entry (${esc(f.compared)}).<br>${f.rows
+    .map((r) => (r.identical ? `${esc(r.run)}: ${r.realEntries} of ${r.realEntries} entries identical` : `${esc(r.run)}: first difference at entry ${r.firstDifference.index + 1}: real EVM <code>${esc(r.firstDifference.real)}</code>, simulator <code>${esc(r.firstDifference.simulated)}</code>`))
+    .join('<br>')}</div>`;
+}

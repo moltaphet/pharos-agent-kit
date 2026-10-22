@@ -136,6 +136,9 @@ await guard(async () => {
 await guard(async () => {
   sec('6 Saga Executor');
   const s = (o) => run('saga-executor', o).then((r) => r.body?.data?.simulated);
+  const recd = (await run('saga-executor', { scenario: 'recorded' })).body?.data?.recorded;
+  check('recorded real-EVM runs: both finished as expected and carry provenance', recd?.runs?.length === 2 && recd.runs.every((r) => r.finalCheck.clean) && recd.provenance?.forkBlocks?.success > 0 && /anvil/i.test(recd.provenance.anvil ?? ''));
+  check('the web simulator reproduces both recorded runs entry for entry', recd?.fidelity?.rows?.length === 2 && recd.fidelity.rows.every((r) => r.identical), JSON.stringify(recd?.fidelity?.rows?.map((r) => r.firstDifference)));
   const ok = await s({ scenario: 'success' });
   check('success: 3 steps confirmed, completed, final state as expected', ok?.status === 'completed' && ok.steps.every((x) => x.state === 'confirmed') && ok.finalCheck.clean);
   const rt = await s({ scenario: 'retry', maxAttempts: 3 });

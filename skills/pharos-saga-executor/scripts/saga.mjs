@@ -3,6 +3,7 @@
 //   node skills/pharos-saga-executor/scripts/saga.mjs [--scenario success|failure|both] [--out file.json]
 // Needs Foundry (anvil) installed. Run it from the repository root.
 import { writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { runSaga, withInjectedFault } from '../../../lib/saga.js';
 import { VAULT, ZERO, vaultSaga } from '../../../lib/saga-scenario.js';
 import { forkIO, startFork } from '../../../lib/saga-fork.js';
@@ -16,6 +17,7 @@ const AMOUNT = 100_000_000n; // 100 USDC (6 decimals)
 const MORPHO = '0x18573fA18fd17dDfD790B4a5B5b2977aad3b4Efb'; // holds USDC; impersonated on the fork only
 
 const runs = [];
+const forkBlocks = {};
 let port = 8590;
 try {
   for (const scenario of scenarioArg === 'both' ? ['success', 'failure'] : [scenarioArg]) {
@@ -23,6 +25,7 @@ try {
     const fork = await startFork({ port: port++ });
     try {
       const io = forkIO(fork.url);
+      forkBlocks[scenario] = Number(BigInt(await io.rpc('eth_blockNumber')));
       const [account, treasury] = await io.accounts();
       await io.setBalance(MORPHO, 10n ** 18n);
       await io.impersonate(MORPHO);
@@ -45,7 +48,22 @@ try {
       fork.stop();
     }
   }
-  const record = { recordedAt: new Date().toISOString(), network: 'local anvil fork of Pharos mainnet (chain 1672)', vault: VAULT, runs: JSON.parse(JSON.stringify(runs, (k, v) => (typeof v === 'bigint' ? v.toString() : v))) };
+  const record = {
+    recordedAt: new Date().toISOString(),
+    network: 'local anvil fork of Pharos mainnet (chain 1672)',
+    vault: VAULT,
+    // Where the numbers came from, so a reviewer can reproduce or challenge them.
+    provenance: {
+      command: `node skills/pharos-saga-executor/scripts/saga.mjs --scenario ${scenarioArg} --out reports/saga-runs.json`,
+      forkRpc: 'https://rpc.pharos.xyz',
+      forkBlocks,
+      anvil: execFileSync('anvil', ['--version'], { encoding: 'utf8' }).split('\n')[0].trim(),
+      contracts: { vault: VAULT, usdc: USDC, usdcSource: `${MORPHO} (impersonated on the fork only, to give the test account 1,000 USDC)` },
+      accounts: 'anvil dev accounts 0 (sender) and 1 (treasury); no private key is read or stored',
+      note: 'Transaction hashes exist only on that local fork and will not appear on the explorer.',
+    },
+    runs: JSON.parse(JSON.stringify(runs, (k, v) => (typeof v === 'bigint' ? v.toString() : v))),
+  };
   if (out) await writeFile(out, JSON.stringify(record, null, 2) + '\n');
   process.exitCode = runs.every((r) => r.finalCheck.clean) ? 0 : 1;
 } catch (err) {

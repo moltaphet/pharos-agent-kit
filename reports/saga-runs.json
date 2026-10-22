@@ -1,7 +1,23 @@
 {
-  "recordedAt": "2026-10-22T09:46:28.240Z",
+  "recordedAt": "2026-10-22T18:08:03.968Z",
   "network": "local anvil fork of Pharos mainnet (chain 1672)",
   "vault": "0x047cD0a91E9B92ED979189a6C8A120bf280f02E5",
+  "provenance": {
+    "command": "node skills/pharos-saga-executor/scripts/saga.mjs --scenario both --out reports/saga-runs.json",
+    "forkRpc": "https://rpc.pharos.xyz",
+    "forkBlocks": {
+      "success": 20951949,
+      "failure": 20952002
+    },
+    "anvil": "anvil Version: 1.4.0-Homebrew",
+    "contracts": {
+      "vault": "0x047cD0a91E9B92ED979189a6C8A120bf280f02E5",
+      "usdc": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "usdcSource": "0x18573fA18fd17dDfD790B4a5B5b2977aad3b4Efb (impersonated on the fork only, to give the test account 1,000 USDC)"
+    },
+    "accounts": "anvil dev accounts 0 (sender) and 1 (treasury); no private key is read or stored",
+    "note": "Transaction hashes exist only on that local fork and will not appear on the explorer."
+  },
   "runs": [
     {
       "name": "vault-saga:success",
@@ -17,7 +33,7 @@
           "title": "Approve the vault to take 100 USDC",
           "state": "confirmed",
           "attempts": 1,
-          "txHash": "0x94744cca0d02e74f8be074b44fe6988d79a0de1aa57ac2053cff4413028458f9",
+          "txHash": "0x3ec5bb8d745c5f3bd4f3ff38a8c0f7f746680005f6b42b78c730f3574481f355",
           "gasUsed": 55437
         },
         {
@@ -25,15 +41,15 @@
           "title": "Deposit 100 USDC into the vault for shares",
           "state": "confirmed",
           "attempts": 2,
-          "txHash": "0xd3416f997a6971253431a64d0ecfb4b1492f4b19cf7a2d12bdb537947b8d873f",
-          "gasUsed": 301187
+          "txHash": "0x8a00264eed9447e3b5b849e6154ba423c2438f38cfdc8714d9507b42cbbc3e79",
+          "gasUsed": 301151
         },
         {
           "id": "transfer",
           "title": "Send the shares to the treasury",
           "state": "confirmed",
           "attempts": 1,
-          "txHash": "0x60b19755920b750ae379002e7ed43b0783eb31fd241713c8dcbb1689024896c8",
+          "txHash": "0xfda8f62d2e676278b634a3ee7efef7569765f4da6f082f9be7be4ab25f490c29",
           "gasUsed": 51970
         }
       ],
@@ -60,34 +76,34 @@
           "attempt": 1
         },
         {
-          "t": 335,
+          "t": 705,
           "event": "step:sent",
           "step": "approve",
           "attempt": 1,
-          "txHash": "0x94744cca0d02e74f8be074b44fe6988d79a0de1aa57ac2053cff4413028458f9"
+          "txHash": "0x3ec5bb8d745c5f3bd4f3ff38a8c0f7f746680005f6b42b78c730f3574481f355"
         },
         {
-          "t": 341,
+          "t": 712,
           "event": "step:confirmed",
           "step": "approve",
-          "txHash": "0x94744cca0d02e74f8be074b44fe6988d79a0de1aa57ac2053cff4413028458f9",
-          "blockNumber": 20917954,
+          "txHash": "0x3ec5bb8d745c5f3bd4f3ff38a8c0f7f746680005f6b42b78c730f3574481f355",
+          "blockNumber": 20951951,
           "gasUsed": 55437
         },
         {
-          "t": 341,
+          "t": 712,
           "event": "step:start",
           "step": "deposit",
           "title": "Deposit 100 USDC into the vault for shares"
         },
         {
-          "t": 341,
+          "t": 712,
           "event": "step:attempt",
           "step": "deposit",
           "attempt": 1
         },
         {
-          "t": 341,
+          "t": 712,
           "event": "step:retry",
           "step": "deposit",
           "attempt": 1,
@@ -96,55 +112,55 @@
           "why": "transient failure, retrying with backoff"
         },
         {
-          "t": 643,
+          "t": 1014,
           "event": "step:attempt",
           "step": "deposit",
           "attempt": 2
         },
         {
-          "t": 17226,
+          "t": 31372,
           "event": "step:sent",
           "step": "deposit",
           "attempt": 2,
-          "txHash": "0xd3416f997a6971253431a64d0ecfb4b1492f4b19cf7a2d12bdb537947b8d873f"
+          "txHash": "0x8a00264eed9447e3b5b849e6154ba423c2438f38cfdc8714d9507b42cbbc3e79"
         },
         {
-          "t": 17229,
+          "t": 32152,
           "event": "step:confirmed",
           "step": "deposit",
-          "txHash": "0xd3416f997a6971253431a64d0ecfb4b1492f4b19cf7a2d12bdb537947b8d873f",
-          "blockNumber": 20917955,
-          "gasUsed": 301187
+          "txHash": "0x8a00264eed9447e3b5b849e6154ba423c2438f38cfdc8714d9507b42cbbc3e79",
+          "blockNumber": 20951952,
+          "gasUsed": 301151
         },
         {
-          "t": 17229,
+          "t": 32152,
           "event": "step:start",
           "step": "transfer",
           "title": "Send the shares to the treasury"
         },
         {
-          "t": 17229,
+          "t": 32152,
           "event": "step:attempt",
           "step": "transfer",
           "attempt": 1
         },
         {
-          "t": 17883,
+          "t": 33270,
           "event": "step:sent",
           "step": "transfer",
           "attempt": 1,
-          "txHash": "0x60b19755920b750ae379002e7ed43b0783eb31fd241713c8dcbb1689024896c8"
+          "txHash": "0xfda8f62d2e676278b634a3ee7efef7569765f4da6f082f9be7be4ab25f490c29"
         },
         {
-          "t": 17888,
+          "t": 33274,
           "event": "step:confirmed",
           "step": "transfer",
-          "txHash": "0x60b19755920b750ae379002e7ed43b0783eb31fd241713c8dcbb1689024896c8",
-          "blockNumber": 20917956,
+          "txHash": "0xfda8f62d2e676278b634a3ee7efef7569765f4da6f082f9be7be4ab25f490c29",
+          "blockNumber": 20951953,
           "gasUsed": 51970
         },
         {
-          "t": 17888,
+          "t": 33274,
           "event": "saga:completed"
         }
       ],
@@ -156,7 +172,7 @@
         "spent": "100000000",
         "accountShares": "0",
         "allowance": "0",
-        "treasuryShares": "99306979485539177818",
+        "treasuryShares": "99303095769274490778",
         "clean": true
       },
       "injectedFault": "the first deposit send fails with \"replacement transaction underpriced (injected fault)\"",
@@ -176,20 +192,20 @@
           "title": "Approve the vault to take 100 USDC",
           "state": "compensated",
           "attempts": 1,
-          "txHash": "0x2e30e2a7fdb0ce5620294f6d8f81304bf59878e3ad74ccdb856665d38b84b8db",
+          "txHash": "0x41cc1b1cd0af033e0ec2fb008890548ac61ff01cbf9a04d363ba156cb03916ed",
           "gasUsed": 55437,
           "compensationAttempts": 1,
-          "compensationTx": "0xcd2c50f78f540757e192c880f55a6dd4ace0f9258432c7acb6eca414607cd7e6"
+          "compensationTx": "0xf14f7e0c163c16c10704694eed3e33ccfd0a4fd2f09de989a0bcc73b544a1a2a"
         },
         {
           "id": "deposit",
           "title": "Deposit 100 USDC into the vault for shares",
           "state": "compensated",
           "attempts": 1,
-          "txHash": "0x9c0f15a98d80b7622f0afa24e91e32d1b800dc0459782f9c4dd56151e3f1b42c",
-          "gasUsed": 301187,
+          "txHash": "0x8af97a738bb98101a94debb99182494179a82839d63d7492456af3a34b6f0c13",
+          "gasUsed": 301151,
           "compensationAttempts": 1,
-          "compensationTx": "0x4ca703e757efe4834c8c7ac6bdce1ec44c361a57a667becc497c7dbeecb7676e"
+          "compensationTx": "0x48f0fde146a716e14644a8a8a1c40d874393ea88733b261e03458e22b411b0e3"
         },
         {
           "id": "transfer",
@@ -222,75 +238,75 @@
           "attempt": 1
         },
         {
-          "t": 333,
+          "t": 481,
           "event": "step:sent",
           "step": "approve",
           "attempt": 1,
-          "txHash": "0x2e30e2a7fdb0ce5620294f6d8f81304bf59878e3ad74ccdb856665d38b84b8db"
+          "txHash": "0x41cc1b1cd0af033e0ec2fb008890548ac61ff01cbf9a04d363ba156cb03916ed"
         },
         {
-          "t": 339,
+          "t": 487,
           "event": "step:confirmed",
           "step": "approve",
-          "txHash": "0x2e30e2a7fdb0ce5620294f6d8f81304bf59878e3ad74ccdb856665d38b84b8db",
-          "blockNumber": 20917984,
+          "txHash": "0x41cc1b1cd0af033e0ec2fb008890548ac61ff01cbf9a04d363ba156cb03916ed",
+          "blockNumber": 20952004,
           "gasUsed": 55437
         },
         {
-          "t": 339,
+          "t": 487,
           "event": "step:start",
           "step": "deposit",
           "title": "Deposit 100 USDC into the vault for shares"
         },
         {
-          "t": 339,
+          "t": 487,
           "event": "step:attempt",
           "step": "deposit",
           "attempt": 1
         },
         {
-          "t": 16583,
+          "t": 28133,
           "event": "step:sent",
           "step": "deposit",
           "attempt": 1,
-          "txHash": "0x9c0f15a98d80b7622f0afa24e91e32d1b800dc0459782f9c4dd56151e3f1b42c"
+          "txHash": "0x8af97a738bb98101a94debb99182494179a82839d63d7492456af3a34b6f0c13"
         },
         {
-          "t": 16586,
+          "t": 28782,
           "event": "step:confirmed",
           "step": "deposit",
-          "txHash": "0x9c0f15a98d80b7622f0afa24e91e32d1b800dc0459782f9c4dd56151e3f1b42c",
-          "blockNumber": 20917985,
-          "gasUsed": 301187
+          "txHash": "0x8af97a738bb98101a94debb99182494179a82839d63d7492456af3a34b6f0c13",
+          "blockNumber": 20952005,
+          "gasUsed": 301151
         },
         {
-          "t": 16586,
+          "t": 28782,
           "event": "step:start",
           "step": "transfer",
           "title": "Send the shares to the zero address (will fail on purpose)"
         },
         {
-          "t": 16586,
+          "t": 28782,
           "event": "step:attempt",
           "step": "transfer",
           "attempt": 1
         },
         {
-          "t": 16587,
+          "t": 28785,
           "event": "step:sent",
           "step": "transfer",
           "attempt": 1,
-          "txHash": "0x9b0a051a256f70a341abb8776899b08fa254f93dafa445b6153ec6c802d49650"
+          "txHash": "0xca2441e5428afe55967db07d23c1318736c0b9aec6450892ef7cb5fa0e4c9e5d"
         },
         {
-          "t": 16591,
+          "t": 28789,
           "event": "step:failed",
           "step": "transfer",
           "kind": "permanent",
           "error": "transaction reverted: ZeroAddress"
         },
         {
-          "t": 16591,
+          "t": 28789,
           "event": "compensation:start",
           "undo": [
             "deposit",
@@ -298,59 +314,59 @@
           ]
         },
         {
-          "t": 16591,
+          "t": 28789,
           "event": "compensation:start-step",
           "step": "deposit",
           "title": "Redeem the shares back into USDC"
         },
         {
-          "t": 16591,
+          "t": 28789,
           "event": "compensation:attempt",
           "step": "deposit",
           "attempt": 1
         },
         {
-          "t": 17223,
+          "t": 30580,
           "event": "compensation:sent",
           "step": "deposit",
           "attempt": 1,
-          "txHash": "0x4ca703e757efe4834c8c7ac6bdce1ec44c361a57a667becc497c7dbeecb7676e"
+          "txHash": "0x48f0fde146a716e14644a8a8a1c40d874393ea88733b261e03458e22b411b0e3"
         },
         {
-          "t": 17228,
+          "t": 30582,
           "event": "compensation:confirmed",
           "step": "deposit",
-          "txHash": "0x4ca703e757efe4834c8c7ac6bdce1ec44c361a57a667becc497c7dbeecb7676e",
-          "gasUsed": 144113
+          "txHash": "0x48f0fde146a716e14644a8a8a1c40d874393ea88733b261e03458e22b411b0e3",
+          "gasUsed": 273226
         },
         {
-          "t": 17228,
+          "t": 30582,
           "event": "compensation:start-step",
           "step": "approve",
           "title": "Revoke the approval (set it to 0)"
         },
         {
-          "t": 17228,
+          "t": 30582,
           "event": "compensation:attempt",
           "step": "approve",
           "attempt": 1
         },
         {
-          "t": 17231,
+          "t": 30585,
           "event": "compensation:sent",
           "step": "approve",
           "attempt": 1,
-          "txHash": "0xcd2c50f78f540757e192c880f55a6dd4ace0f9258432c7acb6eca414607cd7e6"
+          "txHash": "0xf14f7e0c163c16c10704694eed3e33ccfd0a4fd2f09de989a0bcc73b544a1a2a"
         },
         {
-          "t": 17233,
+          "t": 30586,
           "event": "compensation:confirmed",
           "step": "approve",
-          "txHash": "0xcd2c50f78f540757e192c880f55a6dd4ace0f9258432c7acb6eca414607cd7e6",
+          "txHash": "0xf14f7e0c163c16c10704694eed3e33ccfd0a4fd2f09de989a0bcc73b544a1a2a",
           "gasUsed": 35501
         },
         {
-          "t": 17233,
+          "t": 30586,
           "event": "saga:compensated"
         }
       ],
@@ -361,9 +377,9 @@
       },
       "finalCheck": {
         "expected": "everything undone, nothing left behind",
-        "usdc": "999999999",
+        "usdc": "1000000000",
         "usdcBefore": "1000000000",
-        "spent": "1",
+        "spent": "0",
         "accountShares": "0",
         "allowance": "0",
         "treasuryShares": "0",

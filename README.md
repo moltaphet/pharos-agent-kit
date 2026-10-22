@@ -56,6 +56,7 @@ section), `scripts/`, `assets/` and `examples/`. `scripts/audit-static.mjs` chec
   - Read Contract State also replays every call against the public RPC; if the RPC's first answer
     differs, it is re-read twice before anything is called a mismatch (`lib/crosscheck.js`).
   - Every disagreement is recorded in the run log as a decision, so it is visible, not hidden.
+- **`eth_estimateGas` can undershoot on nested calls.** A redeem from the RockawayX vault (which withdraws from a lending market) ran out of gas on a limit that was estimated exactly (263,262 used of 263,262) and reverted with no reason, while the same call succeeded as `eth_call`. Its gas use had also nearly doubled (144k to 273k) between two recordings a few hours apart. Always add headroom (our fork harness adds 30%).
 - The Chain MCP server exposes **14** tools (including `send_raw_transaction`), is stateful (it needs
   an `initialize` handshake) and sends no CORS headers, so a browser cannot call it directly.
 - `docs.pharos.xyz` and the faucet, `llms.txt`, Skill Engine install and x402 mainnet pages have gaps

@@ -34,7 +34,7 @@ export const content = {
     { title: 'Either tool failing blocks it', text: 'eth_call and estimate_gas are both checked. If the call passes but gas estimation reverts, the transaction is still blocked.' },
     { title: 'Predict what we can prove', text: 'Transfers, approvals and native value have an exact after-state. For any other call the page says a state diff cannot be predicted from the call data, and points to the fork run.' },
     { title: 'The gate is tested', text: 'Unit tests assert that after a failed simulation the executor’s send is never called, and that a passing simulation reaches it exactly once.' },
-    { title: 'The estimate is an upper bound', text: 'The recorded run estimated 58,353 gas and used 44,843. Treat the estimate as a safe limit, not a prediction of the exact bill.' },
+    { title: 'The estimate is not a guarantee', text: 'For the simple token transfer the recorded run estimated 58,353 gas and used 44,843, so the estimate was generous. For a nested call it can be too tight: in the Saga Executor’s real-EVM run a vault withdrawal ran out of gas on a limit that had been estimated exactly. That is why this report also gives a suggested limit 20% above the estimate. Send with at least that.' },
     { title: 'No key, ever', text: 'A simulation needs only the sender’s address. The skill ships no signer; on a fork the sender is impersonated, which only exists locally.' },
   ],
   evidence: [

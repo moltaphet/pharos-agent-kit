@@ -41,12 +41,15 @@ node skills/pharos-saga-executor/scripts/saga.mjs [--scenario success|failure|bo
 | `command not found: anvil` | Foundry missing | Run `foundryup`. |
 | `execution reverted: ZeroAddress` | The forced failure in scenario `failure` (expected) | Nothing to fix; this is the demo. |
 | `HTTP 429` from the RPC | Fork source is rate limiting | Wait and re-run. |
+| `transaction reverted: out of gas (used N of a N limit)` | The gas limit was too tight. A vault withdrawal calls into a lending market and needs more gas than `eth_estimateGas` reports | The harness already adds 30% headroom to every estimate; for your own transactions do the same. |
 
 > **Agent Guidelines**:
 > 1. Confirm the user understands this runs on a local fork and moves no real funds.
 > 2. Run both scenarios and show the state log of each.
 > 3. Read the final check: say whether the account ended where the outcome requires.
 > 4. Explain any rounding (the vault can differ by 1 unit, 0.000001 USDC).
+> 5. Add headroom (about 30%) to any gas estimate before sending. An exactly-estimated limit made this vault's redeem run out of gas with no revert reason, although the same call succeeds with `eth_call`.
+> 6. A revert with no reason that used its whole gas limit is an out-of-gas, not a logic error: raise the limit, do not retry the same limit.
 
 ---
 
