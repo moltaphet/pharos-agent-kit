@@ -1,0 +1,495 @@
+{
+  "source": "https://pharos-agent-arena.vercel.app",
+  "scrapedAt": "2026-10-22",
+  "tasks": [
+    {
+      "slug": "read-contract-state",
+      "title": "Read Contract State",
+      "category": "Chain MCP",
+      "tier": "Easy",
+      "points": 50,
+      "summary": "Read a smart contract's state via Chain MCP.",
+      "build": "A small agent or script that reads live state from a deployed Pharos contract through Chain MCP and presents it in plain language. Pick any public contract (a token, vault, or registry) and turn its raw storage and view calls into something a non-developer can read.",
+      "requirements": [
+        "Reads at least 3 different values from one contract via Chain MCP (e.g. name, totalSupply, owner, a balance).",
+        "Shows the contract address and the block number the data was read at.",
+        "Formats raw values for humans: token decimals applied, addresses labelled.",
+        "Includes a short README: which contract you chose, how to run it, sample output."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/read-contract-state"
+    },
+    {
+      "slug": "event-log-monitor",
+      "title": "Event/Log Monitor",
+      "category": "Chain MCP",
+      "tier": "Easy",
+      "points": 50,
+      "summary": "Build a small monitor that watches for a specific on-chain event/log via Chain MCP.",
+      "build": "A monitor that watches a Pharos contract for a specific event (e.g. `Transfer`, `Deposit`) and reports each new occurrence as it happens. It should keep running, not take a one-off snapshot.",
+      "requirements": [
+        "Uses Chain MCP log queries filtered by contract address and event signature.",
+        "Runs continuously (polling or block-by-block) and reports only new events, with no duplicates.",
+        "Decodes each event into readable fields (from, to, amount, tx hash, block).",
+        "Demonstrated catching at least one live or test event."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/event-log-monitor"
+    },
+    {
+      "slug": "docs-mcp-onboarding",
+      "title": "Docs MCP Onboarding",
+      "category": "Developer Docs MCP",
+      "tier": "Easy",
+      "points": 50,
+      "summary": "Self-onboard into ai.pharos.xyz using only Developer Docs MCP — no external docs — and log where it broke down.",
+      "build": "Onboard yourself onto ai.pharos.xyz using only Developer Docs MCP, with no external docs, search engines or community help, and write an honest log of the experience. This task is feedback: where did the docs get you unstuck, and where did they fail?",
+      "requirements": [
+        "A step-by-step log of what you tried to do, the questions you asked Docs MCP, and the answers you got.",
+        "At least 3 concrete gaps or breakdowns (wrong, missing, or confusing answers), each with the exact query.",
+        "A suggested fix for each gap: what the docs should have said.",
+        "Ends with what you managed to build or run by the end."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/docs-mcp-onboarding"
+    },
+    {
+      "slug": "doc-search-cli",
+      "title": "Doc-Search CLI",
+      "category": "Developer Docs MCP",
+      "tier": "Easy",
+      "points": 50,
+      "summary": "Build a small wrapper/tool on top of Developer Docs MCP (e.g., a doc-search CLI).",
+      "build": "A small command-line tool (or similar lightweight wrapper) on top of Developer Docs MCP that lets a developer search Pharos docs from their terminal and get a concise, sourced answer.",
+      "requirements": [
+        "Accepts a natural-language question as input, e.g. `pharos-docs \"how do I deploy a contract?\"`.",
+        "Returns a concise answer plus links or references to the source doc sections.",
+        "Handles \"no good answer found\" gracefully instead of inventing one.",
+        "README with install and usage instructions and 3 example queries with outputs."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/doc-search-cli"
+    },
+    {
+      "slug": "threshold-guardian",
+      "title": "Threshold Guardian",
+      "category": "SkillEngine",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Evaluates multiple on-chain conditions before deciding whether to fire an action at all.",
+      "build": "A Skill that checks several on-chain conditions together before deciding whether to fire an action. Example: \"only rebalance if price moved more than 3%, gas is below X, and the vault has more than Y liquidity\". The point is decision logic, not just a single trigger.",
+      "requirements": [
+        "Evaluates at least 3 independent conditions read from chain.",
+        "Conditions and thresholds are configurable, not hard-coded.",
+        "Logs a clear decision trace each run: each condition's value, pass/fail, and the final decision.",
+        "Demonstrates both outcomes: one run where it fires and one where it holds."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/threshold-guardian"
+    },
+    {
+      "slug": "saga-executor",
+      "title": "Saga Executor",
+      "category": "SkillEngine",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "A multi-step dependent workflow (approve → swap → deposit) with rollback/retry on failure.",
+      "build": "A Skill that runs a multi-step, dependent on-chain workflow, such as approve → swap → deposit, where each step depends on the previous one succeeding. If a step fails, it retries or rolls back cleanly instead of leaving funds stranded halfway.",
+      "requirements": [
+        "At least 3 dependent steps, each verified (receipt checked) before the next starts.",
+        "A defined retry policy for transient failures, e.g. a gas spike or dropped transaction.",
+        "A defined compensation/rollback path when a step permanently fails, and a demo of it.",
+        "A state log showing exactly which step the saga is in at any time.",
+        "Shows one fully successful run and one forced-failure run with recovery."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/saga-executor"
+    },
+    {
+      "slug": "arbitrage-scanner",
+      "title": "Arbitrage Scanner",
+      "category": "SkillEngine",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "Checks price/rate across two sources, nets fees, executes only if profitable.",
+      "build": "A Skill that compares a price or rate across two sources (two pools, a pool versus an oracle, etc.), nets out fees and gas, and only acts when the opportunity is still profitable after costs.",
+      "requirements": [
+        "Reads prices from at least 2 sources in the same scan.",
+        "Calculates net profit after swap fees, slippage estimate, and gas.",
+        "Acts (or prepares the transaction) only above a configurable profit threshold; otherwise logs why it skipped.",
+        "Logs every scan with gross spread, costs, net result and decision.",
+        "Works safely on testnet or with simulated execution; no requirement to risk real funds."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/arbitrage-scanner"
+    },
+    {
+      "slug": "dry-run-executor",
+      "title": "Dry-Run Executor",
+      "category": "SkillEngine",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Simulates a transaction's outcome/cost before submitting for real.",
+      "build": "A Skill that simulates a transaction before sending it, predicting whether it will succeed, what it will cost, and what it will change, so users and agents can make an informed go or no-go decision.",
+      "requirements": [
+        "Uses a call or gas estimation to simulate the transaction without broadcasting it.",
+        "Reports predicted success or revert, including the revert reason when available, and estimated gas cost.",
+        "Shows the expected outcome, e.g. balances or state before and after where possible.",
+        "Blocks execution automatically if the simulation fails."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/dry-run-executor"
+    },
+    {
+      "slug": "trend-watcher",
+      "title": "Trend Watcher",
+      "category": "SkillEngine",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "Persists state across runs, acting only once a multi-observation trend condition is met.",
+      "build": "A Skill with memory. It persists observations across runs and acts only once a trend is confirmed over multiple observations (e.g. \"price down 3 checks in a row\" or \"TVL falling for 2 hours\"), not on a single noisy reading.",
+      "requirements": [
+        "Stores state between runs: persistent storage, not just in-memory.",
+        "Trend rule needs at least 3 observations to trigger and is configurable.",
+        "Handles restarts without losing or duplicating history.",
+        "Shows the stored history and the exact moment the trend condition was met.",
+        "Demonstrates that a single spike does not trigger it."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/trend-watcher"
+    },
+    {
+      "slug": "batch-executor",
+      "title": "Batch Executor",
+      "category": "SkillEngine",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Bundles several independent actions into one optimized execution.",
+      "build": "A Skill that takes several independent actions, such as multiple transfers or claims, and bundles them into one optimized execution instead of firing them one by one.",
+      "requirements": [
+        "Accepts a list of at least 3 independent actions.",
+        "Executes them as a batch: multicall, a single prepared transaction, or an equivalent.",
+        "Reports the gas saving or step reduction compared with running them individually.",
+        "Handles partial failure clearly: which action failed and what happened to the rest."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/batch-executor"
+    },
+    {
+      "slug": "policy-gatekeeper",
+      "title": "Policy Gatekeeper",
+      "category": "SkillEngine",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Checks a requested action against spend limits/allowlists/time windows before executing.",
+      "build": "A Skill that sits in front of an agent's actions and checks each requested action against a policy, such as spend limits, allowlisted addresses or contracts, and allowed time windows, before letting it through.",
+      "requirements": [
+        "A policy file or config with at least 3 rule types: spend limit, allowlist, time window.",
+        "Every request returns allow or deny with the specific rule that decided it.",
+        "Denied actions are never executed. Shows at least one deny per rule type.",
+        "Keeps an audit log of all decisions."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/policy-gatekeeper"
+    },
+    {
+      "slug": "skill-chain-mcp-flow",
+      "title": "Skill + Chain MCP Flow",
+      "category": "Composition",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Compose a SkillEngine skill with a Chain MCP call into one working agent flow.",
+      "build": "One working agent flow where a SkillEngine Skill and Chain MCP work together: the Skill makes the decision and Chain MCP supplies live chain data (or the reverse). It shows the two tools composed, not used side by side.",
+      "requirements": [
+        "The Skill's output depends on live data fetched via Chain MCP in the same flow.",
+        "The flow runs end to end from a single user request.",
+        "A diagram or short write-up of the flow: what calls what, and in what order.",
+        "A demo run showing real data moving through both tools."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/skill-chain-mcp-flow"
+    },
+    {
+      "slug": "docs-chain-mcp-agent",
+      "title": "Docs MCP + Chain MCP Agent",
+      "category": "Composition",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Build an agent that uses Developer Docs MCP + Chain MCP together — explains a contract function, then calls it.",
+      "build": "An agent that explains and then acts. Given a contract function, it uses Developer Docs MCP to explain what the function does and its parameters, then calls it via Chain MCP and interprets the result.",
+      "requirements": [
+        "The explanation comes from Docs MCP, with sources referenced.",
+        "The agent then calls the same function on chain via Chain MCP.",
+        "Interprets the result in the context of the explanation.",
+        "Works for at least 2 different functions or contracts."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/docs-chain-mcp-agent"
+    },
+    {
+      "slug": "portfolio-assistant",
+      "title": "Portfolio Assistant",
+      "category": "DeFi / Portfolio",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "Answers natural-language questions about a wallet's positions, balances, and yields across protocols (Harbor's query pattern, generalized).",
+      "build": "A natural-language assistant that answers questions about a wallet's positions, balances and yields across multiple protocols, such as \"what am I earning?\", \"where is my USDC?\" or \"what's my biggest position?\". This generalizes Harbor's query pattern.",
+      "requirements": [
+        "Reads positions from at least 2 protocols or vaults, plus wallet token balances.",
+        "Answers at least 5 different natural-language question types correctly.",
+        "Shows numbers with sources: which contract and block each figure came from.",
+        "Says clearly when it doesn't know or can't read a protocol, rather than guessing.",
+        "Read-only: never initiates transactions."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/portfolio-assistant"
+    },
+    {
+      "slug": "yield-optimizer",
+      "title": "Yield Optimizer",
+      "category": "DeFi / Portfolio",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "Compares yields across vaults and recommends or executes a rebalance.",
+      "build": "An agent that compares yields across vaults or pools, factors in costs, and recommends (or prepares) a rebalance when moving funds is actually worth it.",
+      "requirements": [
+        "Compares at least 3 yield sources using live on-chain data.",
+        "Accounts for gas, entry/exit fees, and a minimum holding period before recommending a move.",
+        "Outputs a clear recommendation with expected net gain, or \"stay put\" with the reason.",
+        "If executing: prepares transactions for user signature only. The agent never holds keys."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/yield-optimizer"
+    },
+    {
+      "slug": "liquidation-watchdog",
+      "title": "Liquidation Watchdog",
+      "category": "DeFi / Portfolio",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Monitors a lending position and alerts before liquidation risk.",
+      "build": "A monitor for a lending position that tracks its health factor and alerts the user before it gets close to liquidation, while there's still time to act.",
+      "requirements": [
+        "Reads the position's collateral, debt and health factor (or equivalent) from chain.",
+        "Configurable warning thresholds, e.g. warn at 1.3 and critical at 1.1.",
+        "Sends alerts through at least one channel: Telegram, Discord, email, or a console with timestamps.",
+        "Suggests a concrete action in each alert, e.g. \"repay X or add Y collateral\"."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/liquidation-watchdog"
+    },
+    {
+      "slug": "natural-language-payment-agent",
+      "title": "Natural-Language Payment Agent",
+      "category": "Payments",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Turns \"send 100 USDC to X\" into a prepared transaction for signature (Harbor's action pattern, generalized).",
+      "build": "An agent that turns a plain-language instruction like \"send 100 USDC to alice.eth\" into a fully prepared transaction for the user to review and sign. This generalizes Harbor's action pattern.",
+      "requirements": [
+        "Parses amount, token and recipient from free text, and asks a follow-up when anything is ambiguous.",
+        "Validates the request: recipient format, token contract, sufficient balance.",
+        "Shows a human-readable summary before producing the unsigned transaction.",
+        "Never signs or sends on its own. Output is an unsigned transaction or a wallet signing request."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/natural-language-payment-agent"
+    },
+    {
+      "slug": "recurring-payment-agent",
+      "title": "Recurring Payment Agent",
+      "category": "Payments",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Handles a repeating on-chain payment (rent, subscription, payroll-style).",
+      "build": "An agent that manages a repeating on-chain payment, such as rent, a subscription or payroll-style transfers, on a schedule.",
+      "requirements": [
+        "Supports a schedule (weekly or monthly) with amount, token and recipient.",
+        "Prepares each payment on time and tracks paid, pending and failed status.",
+        "Handles insufficient balance or a failed transaction without double-paying.",
+        "Shows a payment history and the next scheduled payment."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/recurring-payment-agent"
+    },
+    {
+      "slug": "invoice-to-payment-agent",
+      "title": "Invoice-to-Payment Agent",
+      "category": "Payments",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Reads an invoice/request and prepares the matching payment.",
+      "build": "An agent that reads an invoice or payment request (text, PDF or structured data) and prepares the matching on-chain payment.",
+      "requirements": [
+        "Extracts payee, amount, token or currency, and reference from at least 2 invoice formats.",
+        "Flags mismatches or missing fields instead of guessing.",
+        "Produces a payment summary and an unsigned transaction that includes the invoice reference.",
+        "Includes a demo with sample invoices."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/invoice-to-payment-agent"
+    },
+    {
+      "slug": "x402-paywalled-api",
+      "title": "x402 Paywalled API",
+      "category": "Payments",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Build an API that charges per request with x402 on Pharos: a paid endpoint, a facilitator, and a client that pays and gets the data.",
+      "build": "An API that charges per request with x402 on Pharos Atlantic Testnet. It includes a paid endpoint that answers 402 Payment Required, a facilitator that verifies and settles payments, and a client that pays and gets the data. The Pharos x402 Skill can generate most of this for you.",
+      "requirements": [
+        "Runs on Atlantic Testnet (eip155:688689), priced in test USDC.",
+        "Has at least 2 paid routes at different prices and 1 free route, such as /health.",
+        "Runs its own facilitator with /verify, /settle and /supported.",
+        "Shows the full flow in the demo: a 402, then a signed payment, then a 200 with a PAYMENT-RESPONSE header and its tx hash, linked on the explorer.",
+        "Rejects a bad or underpaid payment with another 402.",
+        "Keeps private keys in env vars or a file, never in code or prompts."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/x402-paywalled-api"
+    },
+    {
+      "slug": "x402-agent-buyer",
+      "title": "x402 Agent Buyer",
+      "category": "Payments",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "An agent that pays for what it uses: it calls x402-paywalled APIs on Pharos, pays within a budget, and finishes the job.",
+      "build": "An agent that pays for what it uses. Given a task, it calls x402-paywalled APIs on Pharos, reads each price, decides whether the data is worth buying, pays within a budget, and finishes the job. This is the agent-to-API payment loop that the Agent Payment Plane is built for.",
+      "requirements": [
+        "Calls at least 2 different x402 endpoints. They can be your own or another dev's.",
+        "Enforces a spend budget and a per-call price cap, and refuses calls over either one.",
+        "Logs every payment with the price, what it bought and the tx hash, plus a running total.",
+        "Handles payment failures with retries that are safe: the same payment never counts twice.",
+        "Includes a demo task where the agent completes the job, and one where it stops because it hit the budget."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/x402-agent-buyer"
+    },
+    {
+      "slug": "on-chain-alert-bot",
+      "title": "On-Chain Alert Bot",
+      "category": "Trading / Monitoring",
+      "tier": "Easy",
+      "points": 50,
+      "summary": "Watches for a price threshold, large transfer, or contract call and notifies.",
+      "build": "A bot that watches Pharos for a condition you choose, such as a price crossing a threshold, a large transfer, or a specific contract call, and notifies you when it happens.",
+      "requirements": [
+        "At least one configurable alert condition.",
+        "Delivers alerts to a real channel: Telegram, Discord or similar.",
+        "Each alert includes what happened, the value, and a tx or explorer link.",
+        "No repeat spam for the same event."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/on-chain-alert-bot"
+    },
+    {
+      "slug": "whale-watching-agent",
+      "title": "Whale-Watching Agent",
+      "category": "Trading / Monitoring",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Tracks a set of addresses and reports significant moves.",
+      "build": "An agent that tracks a list of addresses and reports significant moves, such as large transfers, new positions or exits, with context on why each one matters.",
+      "requirements": [
+        "Tracks at least 5 configurable addresses.",
+        "A configurable \"significant\" threshold per token or in value terms.",
+        "Each report explains the move: what moved, how much, and where to (labelled where known).",
+        "Produces a summary view of recent activity across all watched addresses."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/whale-watching-agent"
+    },
+    {
+      "slug": "gas-fee-optimizer",
+      "title": "Gas Fee Optimizer",
+      "category": "Trading / Monitoring",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Monitors network gas price and times transaction submission for lowest cost.",
+      "build": "An agent that monitors network gas prices and times non-urgent transaction submissions for the lowest cost within a deadline you set.",
+      "requirements": [
+        "Tracks gas price over time and shows recent history.",
+        "Accepts a transaction with a deadline and holds it until gas is favorable or the deadline is reached.",
+        "Reports the actual gas paid compared with the price at request time.",
+        "Never misses the deadline. It submits at the deadline even if gas is high."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/gas-fee-optimizer"
+    },
+    {
+      "slug": "wallet-risk-checker",
+      "title": "Wallet Risk Checker",
+      "category": "Compliance / Security",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Flags a wallet/contract's suspicious history before you transact with it.",
+      "build": "A pre-transaction check that looks at a wallet's or contract's on-chain history and flags red flags before you interact with it.",
+      "requirements": [
+        "Checks at least 4 signals, e.g. contract age, verified code, interaction with flagged addresses, unusual approval patterns, freshly funded wallet.",
+        "Outputs a risk level (low, medium or high) with the specific reasons.",
+        "Explains each flag in plain language.",
+        "Demonstrated on at least 1 clean and 1 risky example."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/wallet-risk-checker"
+    },
+    {
+      "slug": "audit-log-agent",
+      "title": "Audit-Log Agent",
+      "category": "Compliance / Security",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Generates a plain-language activity report for a wallet over a period.",
+      "build": "An agent that generates a plain-language activity report for a wallet over a chosen period, the kind of summary a compliance officer or accountant could read.",
+      "requirements": [
+        "Accepts a wallet address and a date range.",
+        "Groups activity into categories: transfers in and out, swaps, approvals, contract interactions.",
+        "Includes totals per category and notable transactions with links.",
+        "Exports the report as Markdown, PDF or CSV."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/audit-log-agent"
+    },
+    {
+      "slug": "dapp-support-agent",
+      "title": "dApp Support Agent",
+      "category": "Support / Reporting",
+      "tier": "Easy",
+      "points": 50,
+      "summary": "Explains why a transaction failed, on request.",
+      "build": "A support agent that takes a failed transaction hash and explains, in plain language, why it failed and what the user can do about it.",
+      "requirements": [
+        "Accepts a tx hash and fetches the transaction and receipt via Chain MCP.",
+        "Identifies the failure cause: revert reason, out of gas, insufficient balance or allowance, etc.",
+        "Explains it without jargon and suggests a fix.",
+        "Demonstrated on at least 3 different failure types."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/dapp-support-agent"
+    },
+    {
+      "slug": "weekly-digest-agent",
+      "title": "Weekly Digest Agent",
+      "category": "Support / Reporting",
+      "tier": "Medium",
+      "points": 100,
+      "summary": "Periodic summary of a wallet or protocol's activity.",
+      "build": "An agent that produces a periodic summary of a wallet's or protocol's activity, covering what changed, key numbers and notable events, and delivers it on a schedule.",
+      "requirements": [
+        "Runs on a schedule (weekly by default, configurable).",
+        "Covers key metrics with a comparison to the previous period.",
+        "Highlights the top 3 notable events of the period.",
+        "Delivers to a real channel (email, Telegram, Discord) or as a published page."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/weekly-digest-agent"
+    },
+    {
+      "slug": "doc-grounded-builder-agent",
+      "title": "Doc-Grounded Builder Agent",
+      "category": "Cross-tool / Advanced",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "Answers \"how do I do X on Pharos\" via Docs MCP, then does X via Chain MCP/SkillEngine.",
+      "build": "An agent that handles \"how do I do X on Pharos?\" end to end: it finds the answer in Developer Docs MCP, explains the steps, then actually does X using Chain MCP and/or SkillEngine, and verifies the result.",
+      "requirements": [
+        "Uses Docs MCP to plan, with sources cited, before acting.",
+        "Executes the plan with Chain MCP and/or SkillEngine; anything that moves funds is prepared for signature.",
+        "Verifies the outcome on chain and reports success or failure against the plan.",
+        "Works for at least 3 different \"how do I…\" requests.",
+        "Handles a request the docs don't cover by saying so instead of improvising."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/doc-grounded-builder-agent"
+    },
+    {
+      "slug": "multi-protocol-aggregator",
+      "title": "Multi-Protocol Aggregator",
+      "category": "Cross-tool / Advanced",
+      "tier": "Hard",
+      "points": 200,
+      "summary": "Harbor-style agent extended across more than one protocol/vault.",
+      "build": "A Harbor-style agent extended across more than one protocol or vault. It gives users one interface to query and act across several protocols, picking the best venue for each request.",
+      "requirements": [
+        "Integrates at least 2 protocols or vaults behind one interface.",
+        "Supports both queries (positions, rates) and actions (deposit or withdraw prepared for signature).",
+        "Routes each request to the best venue and explains why it chose it.",
+        "Handles one protocol being unavailable without breaking the others.",
+        "Includes an architecture write-up and a demo video, strongly encouraged for this tier."
+      ],
+      "url": "https://pharos-agent-arena.vercel.app/tasks/multi-protocol-aggregator"
+    }
+  ]
+}
