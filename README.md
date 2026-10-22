@@ -293,21 +293,23 @@ $ pharos-docs --sources 3 "How do I become a validator?"
 
 Q: How do I become a validator?
 
-To become a Pharos validator, deploy and sync a node, then register it on-chain using the same network and a hardware wallet or Safe.
+To become a Pharos validator:
 
-1. **Choose your network and deploy a node.** Follow [Validator Node Deployment](https://docs.pharos.xyz/node-and-validator-guide/validator-node-deployment). Recommended specs are 32 CPU cores, 256 GB RAM, 5 TB SSD, 0.5 Gbps bandwidth, and `ulimit -n ≥ 10000000`; see [Validator Requirements](https://docs.pharos.xyz/node-and-validator-guide/validator-requirements).
-2. **Register using the node’s existing public keys.** The endpoint must be publicly reachable, such as `tcp://YOUR_PUBLIC_IP:19000`. Generate an unsigned registration with `./ops add-validator ... --unsigned`, then submit it from the intended owner wallet. That wallet becomes the permanent validator owner.
-3. **Meet the activation stake threshold.** Atlantic testnet requires **100,000 PROS** total stake; Pacific mainnet requires **1,000,000 PROS**. Registration requires at least 100 PROS, but that alone won’t activate the validator.
+1. Deploy and sync a validator node. Recommended hardware: **32 CPU cores, 256 GB RAM, 5 TB SSD**, and **0.5 Gbps** network bandwidth.
+2. Register on-chain with the latest `ops` tool, using your node’s public keys and a reachable endpoint such as `tcp://YOUR_PUBLIC_IP:19000`.
+3. Reach the activation stake: **100,000 PROS on Atlantic testnet** or **1,000,000 PROS on Pacific mainnet**. Registration requires at least **100 PROS**, but that alone won’t activate the validator.
 
-The [Node Management](https://docs.pharos.xyz/node-and-validator-guide/node-management) has network-specific commands, transaction submission steps, and post-registration health checks.
+A **hardware wallet or Safe multisig is mandatory**. The registration sender becomes the permanent validator owner.
+
+Follow [Node Management](https://docs.pharos.xyz/node-and-validator-guide/node-management) for network-specific setup and registration steps, and [Validator Requirements](https://docs.pharos.xyz/node-and-validator-guide/validator-requirements) for hardware details.
 
 Sources
-  1. Validator Node Deployment
-     https://docs.pharos.xyz/node-and-validator-guide/validator-node-deployment
+  1. Node Management
+     https://docs.pharos.xyz/node-and-validator-guide/node-management
   2. Validator Requirements
      https://docs.pharos.xyz/node-and-validator-guide/validator-requirements
-  3. Node Management
-     https://docs.pharos.xyz/node-and-validator-guide/node-management
+  3. x402 Atlantic Testnet
+     https://docs.pharos.xyz/developer-guide/x402/x402-atlantic-testnet
 ```
 
 ### Example 3 — no good answer

@@ -4,7 +4,7 @@
 // came from, straight from the terminal. Says so when the docs don't know.
 
 import { McpClient, PHAROS_DOCS_MCP } from '../lib/mcp.js';
-import { buildResult } from '../lib/docs.js';
+import { DOCS_GOAL, buildResult } from '../lib/docs.js';
 import { fail, parseCli } from '../lib/cli.js';
 
 const usage = `Usage: pharos-docs "<question>" [options]
@@ -37,7 +37,7 @@ try {
   // askQuestion synthesises the answer; searchDocumentation tells us whether the
   // docs contain anything relevant at all, which guards against invented answers.
   const [askText, searchText] = await Promise.all([
-    client.callTool('askQuestion', { question, goal: 'Build on Pharos as a developer' }),
+    client.callTool('askQuestion', { question, goal: DOCS_GOAL }),
     client.callTool('searchDocumentation', { query: question }),
   ]);
   const result = buildResult({ question, askText, searchText, maxSources });

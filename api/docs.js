@@ -1,6 +1,6 @@
 // GET /api/docs?q=how do I deploy a contract?
 import { docsClient, handle, need, one } from '../lib/server.js';
-import { buildResult } from '../lib/docs.js';
+import { DOCS_GOAL, buildResult } from '../lib/docs.js';
 
 export default handle(async (q) => {
   const question = (one(q.q) || '').trim();
@@ -11,7 +11,7 @@ export default handle(async (q) => {
   // Two calls in parallel: one synthesises an answer, the other tells us whether the
   // docs contain anything relevant at all.
   const [askText, searchText] = await Promise.all([
-    client.callTool('askQuestion', { question, goal: 'Build on Pharos as a developer' }, { why: 'Ask the docs to synthesise a direct answer' }),
+    client.callTool('askQuestion', { question, goal: DOCS_GOAL }, { why: 'Ask the docs to synthesise a direct answer' }),
     client.callTool('searchDocumentation', { query: question }, { why: 'Keyword search: do the docs mention this at all?' }),
   ]);
   return buildResult({ question, askText, searchText, maxSources: 5 });

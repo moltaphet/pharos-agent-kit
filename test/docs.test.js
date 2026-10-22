@@ -163,3 +163,9 @@ test('an off-topic refusal never carries a partial text', () => {
   const r = buildResult({ question: SWALLOW, askText: BAD_ASK, searchText: GOOD_SEARCH });
   assert.equal(r.partial, null);
 });
+
+import { DOCS_GOAL } from '../lib/docs.js';
+test('the goal sent to askQuestion asks for a concise answer', () => {
+  assert.match(DOCS_GOAL, /concisely/i);
+  assert.match(DOCS_GOAL, /Pharos/);
+});
