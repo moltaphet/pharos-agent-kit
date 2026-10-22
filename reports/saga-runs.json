@@ -1,0 +1,376 @@
+{
+  "recordedAt": "2026-10-22T09:46:28.240Z",
+  "network": "local anvil fork of Pharos mainnet (chain 1672)",
+  "vault": "0x047cD0a91E9B92ED979189a6C8A120bf280f02E5",
+  "runs": [
+    {
+      "name": "vault-saga:success",
+      "status": "completed",
+      "policy": {
+        "maxAttempts": 3,
+        "baseDelayMs": 300,
+        "maxDelayMs": 4000
+      },
+      "steps": [
+        {
+          "id": "approve",
+          "title": "Approve the vault to take 100 USDC",
+          "state": "confirmed",
+          "attempts": 1,
+          "txHash": "0x94744cca0d02e74f8be074b44fe6988d79a0de1aa57ac2053cff4413028458f9",
+          "gasUsed": 55437
+        },
+        {
+          "id": "deposit",
+          "title": "Deposit 100 USDC into the vault for shares",
+          "state": "confirmed",
+          "attempts": 2,
+          "txHash": "0xd3416f997a6971253431a64d0ecfb4b1492f4b19cf7a2d12bdb537947b8d873f",
+          "gasUsed": 301187
+        },
+        {
+          "id": "transfer",
+          "title": "Send the shares to the treasury",
+          "state": "confirmed",
+          "attempts": 1,
+          "txHash": "0x60b19755920b750ae379002e7ed43b0783eb31fd241713c8dcbb1689024896c8",
+          "gasUsed": 51970
+        }
+      ],
+      "log": [
+        {
+          "t": 0,
+          "event": "saga:start",
+          "steps": [
+            "approve",
+            "deposit",
+            "transfer"
+          ]
+        },
+        {
+          "t": 0,
+          "event": "step:start",
+          "step": "approve",
+          "title": "Approve the vault to take 100 USDC"
+        },
+        {
+          "t": 0,
+          "event": "step:attempt",
+          "step": "approve",
+          "attempt": 1
+        },
+        {
+          "t": 335,
+          "event": "step:sent",
+          "step": "approve",
+          "attempt": 1,
+          "txHash": "0x94744cca0d02e74f8be074b44fe6988d79a0de1aa57ac2053cff4413028458f9"
+        },
+        {
+          "t": 341,
+          "event": "step:confirmed",
+          "step": "approve",
+          "txHash": "0x94744cca0d02e74f8be074b44fe6988d79a0de1aa57ac2053cff4413028458f9",
+          "blockNumber": 20917954,
+          "gasUsed": 55437
+        },
+        {
+          "t": 341,
+          "event": "step:start",
+          "step": "deposit",
+          "title": "Deposit 100 USDC into the vault for shares"
+        },
+        {
+          "t": 341,
+          "event": "step:attempt",
+          "step": "deposit",
+          "attempt": 1
+        },
+        {
+          "t": 341,
+          "event": "step:retry",
+          "step": "deposit",
+          "attempt": 1,
+          "error": "replacement transaction underpriced (injected fault)",
+          "waitMs": 300,
+          "why": "transient failure, retrying with backoff"
+        },
+        {
+          "t": 643,
+          "event": "step:attempt",
+          "step": "deposit",
+          "attempt": 2
+        },
+        {
+          "t": 17226,
+          "event": "step:sent",
+          "step": "deposit",
+          "attempt": 2,
+          "txHash": "0xd3416f997a6971253431a64d0ecfb4b1492f4b19cf7a2d12bdb537947b8d873f"
+        },
+        {
+          "t": 17229,
+          "event": "step:confirmed",
+          "step": "deposit",
+          "txHash": "0xd3416f997a6971253431a64d0ecfb4b1492f4b19cf7a2d12bdb537947b8d873f",
+          "blockNumber": 20917955,
+          "gasUsed": 301187
+        },
+        {
+          "t": 17229,
+          "event": "step:start",
+          "step": "transfer",
+          "title": "Send the shares to the treasury"
+        },
+        {
+          "t": 17229,
+          "event": "step:attempt",
+          "step": "transfer",
+          "attempt": 1
+        },
+        {
+          "t": 17883,
+          "event": "step:sent",
+          "step": "transfer",
+          "attempt": 1,
+          "txHash": "0x60b19755920b750ae379002e7ed43b0783eb31fd241713c8dcbb1689024896c8"
+        },
+        {
+          "t": 17888,
+          "event": "step:confirmed",
+          "step": "transfer",
+          "txHash": "0x60b19755920b750ae379002e7ed43b0783eb31fd241713c8dcbb1689024896c8",
+          "blockNumber": 20917956,
+          "gasUsed": 51970
+        },
+        {
+          "t": 17888,
+          "event": "saga:completed"
+        }
+      ],
+      "failure": null,
+      "finalCheck": {
+        "expected": "USDC moved into vault shares held by the treasury",
+        "usdc": "900000000",
+        "usdcBefore": "1000000000",
+        "spent": "100000000",
+        "accountShares": "0",
+        "allowance": "0",
+        "treasuryShares": "99306979485539177818",
+        "clean": true
+      },
+      "injectedFault": "the first deposit send fails with \"replacement transaction underpriced (injected fault)\"",
+      "forced": null
+    },
+    {
+      "name": "vault-saga:failure",
+      "status": "compensated",
+      "policy": {
+        "maxAttempts": 3,
+        "baseDelayMs": 300,
+        "maxDelayMs": 4000
+      },
+      "steps": [
+        {
+          "id": "approve",
+          "title": "Approve the vault to take 100 USDC",
+          "state": "compensated",
+          "attempts": 1,
+          "txHash": "0x2e30e2a7fdb0ce5620294f6d8f81304bf59878e3ad74ccdb856665d38b84b8db",
+          "gasUsed": 55437,
+          "compensationAttempts": 1,
+          "compensationTx": "0xcd2c50f78f540757e192c880f55a6dd4ace0f9258432c7acb6eca414607cd7e6"
+        },
+        {
+          "id": "deposit",
+          "title": "Deposit 100 USDC into the vault for shares",
+          "state": "compensated",
+          "attempts": 1,
+          "txHash": "0x9c0f15a98d80b7622f0afa24e91e32d1b800dc0459782f9c4dd56151e3f1b42c",
+          "gasUsed": 301187,
+          "compensationAttempts": 1,
+          "compensationTx": "0x4ca703e757efe4834c8c7ac6bdce1ec44c361a57a667becc497c7dbeecb7676e"
+        },
+        {
+          "id": "transfer",
+          "title": "Send the shares to the zero address (will fail on purpose)",
+          "state": "failed",
+          "attempts": 1,
+          "error": "transaction reverted: ZeroAddress"
+        }
+      ],
+      "log": [
+        {
+          "t": 0,
+          "event": "saga:start",
+          "steps": [
+            "approve",
+            "deposit",
+            "transfer"
+          ]
+        },
+        {
+          "t": 0,
+          "event": "step:start",
+          "step": "approve",
+          "title": "Approve the vault to take 100 USDC"
+        },
+        {
+          "t": 0,
+          "event": "step:attempt",
+          "step": "approve",
+          "attempt": 1
+        },
+        {
+          "t": 333,
+          "event": "step:sent",
+          "step": "approve",
+          "attempt": 1,
+          "txHash": "0x2e30e2a7fdb0ce5620294f6d8f81304bf59878e3ad74ccdb856665d38b84b8db"
+        },
+        {
+          "t": 339,
+          "event": "step:confirmed",
+          "step": "approve",
+          "txHash": "0x2e30e2a7fdb0ce5620294f6d8f81304bf59878e3ad74ccdb856665d38b84b8db",
+          "blockNumber": 20917984,
+          "gasUsed": 55437
+        },
+        {
+          "t": 339,
+          "event": "step:start",
+          "step": "deposit",
+          "title": "Deposit 100 USDC into the vault for shares"
+        },
+        {
+          "t": 339,
+          "event": "step:attempt",
+          "step": "deposit",
+          "attempt": 1
+        },
+        {
+          "t": 16583,
+          "event": "step:sent",
+          "step": "deposit",
+          "attempt": 1,
+          "txHash": "0x9c0f15a98d80b7622f0afa24e91e32d1b800dc0459782f9c4dd56151e3f1b42c"
+        },
+        {
+          "t": 16586,
+          "event": "step:confirmed",
+          "step": "deposit",
+          "txHash": "0x9c0f15a98d80b7622f0afa24e91e32d1b800dc0459782f9c4dd56151e3f1b42c",
+          "blockNumber": 20917985,
+          "gasUsed": 301187
+        },
+        {
+          "t": 16586,
+          "event": "step:start",
+          "step": "transfer",
+          "title": "Send the shares to the zero address (will fail on purpose)"
+        },
+        {
+          "t": 16586,
+          "event": "step:attempt",
+          "step": "transfer",
+          "attempt": 1
+        },
+        {
+          "t": 16587,
+          "event": "step:sent",
+          "step": "transfer",
+          "attempt": 1,
+          "txHash": "0x9b0a051a256f70a341abb8776899b08fa254f93dafa445b6153ec6c802d49650"
+        },
+        {
+          "t": 16591,
+          "event": "step:failed",
+          "step": "transfer",
+          "kind": "permanent",
+          "error": "transaction reverted: ZeroAddress"
+        },
+        {
+          "t": 16591,
+          "event": "compensation:start",
+          "undo": [
+            "deposit",
+            "approve"
+          ]
+        },
+        {
+          "t": 16591,
+          "event": "compensation:start-step",
+          "step": "deposit",
+          "title": "Redeem the shares back into USDC"
+        },
+        {
+          "t": 16591,
+          "event": "compensation:attempt",
+          "step": "deposit",
+          "attempt": 1
+        },
+        {
+          "t": 17223,
+          "event": "compensation:sent",
+          "step": "deposit",
+          "attempt": 1,
+          "txHash": "0x4ca703e757efe4834c8c7ac6bdce1ec44c361a57a667becc497c7dbeecb7676e"
+        },
+        {
+          "t": 17228,
+          "event": "compensation:confirmed",
+          "step": "deposit",
+          "txHash": "0x4ca703e757efe4834c8c7ac6bdce1ec44c361a57a667becc497c7dbeecb7676e",
+          "gasUsed": 144113
+        },
+        {
+          "t": 17228,
+          "event": "compensation:start-step",
+          "step": "approve",
+          "title": "Revoke the approval (set it to 0)"
+        },
+        {
+          "t": 17228,
+          "event": "compensation:attempt",
+          "step": "approve",
+          "attempt": 1
+        },
+        {
+          "t": 17231,
+          "event": "compensation:sent",
+          "step": "approve",
+          "attempt": 1,
+          "txHash": "0xcd2c50f78f540757e192c880f55a6dd4ace0f9258432c7acb6eca414607cd7e6"
+        },
+        {
+          "t": 17233,
+          "event": "compensation:confirmed",
+          "step": "approve",
+          "txHash": "0xcd2c50f78f540757e192c880f55a6dd4ace0f9258432c7acb6eca414607cd7e6",
+          "gasUsed": 35501
+        },
+        {
+          "t": 17233,
+          "event": "saga:compensated"
+        }
+      ],
+      "failure": {
+        "step": "transfer",
+        "kind": "permanent",
+        "error": "transaction reverted: ZeroAddress"
+      },
+      "finalCheck": {
+        "expected": "everything undone, nothing left behind",
+        "usdc": "999999999",
+        "usdcBefore": "1000000000",
+        "spent": "1",
+        "accountShares": "0",
+        "allowance": "0",
+        "treasuryShares": "0",
+        "clean": true
+      },
+      "injectedFault": null,
+      "forced": "step 3 sends the shares to 0x0000000000000000000000000000000000000000"
+    }
+  ]
+}

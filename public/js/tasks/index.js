@@ -5,8 +5,10 @@
 
 import * as docsMcpOnboarding from './docs-mcp-onboarding.js';
 import * as thresholdGuardian from './threshold-guardian.js';
+import * as sagaExecutor from './saga-executor.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
   'threshold-guardian': thresholdGuardian,
+  'saga-executor': sagaExecutor,
 };
