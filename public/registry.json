@@ -7,7 +7,6 @@
       "title": "Read Contract State",
       "category": "Chain MCP",
       "tier": "Easy",
-      "points": 50,
       "summary": "Read a smart contract's state via Chain MCP.",
       "build": "A small agent or script that reads live state from a deployed Pharos contract through Chain MCP and presents it in plain language. Pick any public contract (a token, vault, or registry) and turn its raw storage and view calls into something a non-developer can read.",
       "requirements": [
@@ -23,7 +22,6 @@
       "title": "Event/Log Monitor",
       "category": "Chain MCP",
       "tier": "Easy",
-      "points": 50,
       "summary": "Build a small monitor that watches for a specific on-chain event/log via Chain MCP.",
       "build": "A monitor that watches a Pharos contract for a specific event (e.g. `Transfer`, `Deposit`) and reports each new occurrence as it happens. It should keep running, not take a one-off snapshot.",
       "requirements": [
@@ -39,7 +37,6 @@
       "title": "Docs MCP Onboarding",
       "category": "Developer Docs MCP",
       "tier": "Easy",
-      "points": 50,
       "summary": "Self-onboard into ai.pharos.xyz using only Developer Docs MCP — no external docs — and log where it broke down.",
       "build": "Onboard yourself onto ai.pharos.xyz using only Developer Docs MCP, with no external docs, search engines or community help, and write an honest log of the experience. This task is feedback: where did the docs get you unstuck, and where did they fail?",
       "requirements": [
@@ -55,7 +52,6 @@
       "title": "Doc-Search CLI",
       "category": "Developer Docs MCP",
       "tier": "Easy",
-      "points": 50,
       "summary": "Build a small wrapper/tool on top of Developer Docs MCP (e.g., a doc-search CLI).",
       "build": "A small command-line tool (or similar lightweight wrapper) on top of Developer Docs MCP that lets a developer search Pharos docs from their terminal and get a concise, sourced answer.",
       "requirements": [
@@ -71,7 +67,6 @@
       "title": "Threshold Guardian",
       "category": "SkillEngine",
       "tier": "Medium",
-      "points": 100,
       "summary": "Evaluates multiple on-chain conditions before deciding whether to fire an action at all.",
       "build": "A Skill that checks several on-chain conditions together before deciding whether to fire an action. Example: \"only rebalance if price moved more than 3%, gas is below X, and the vault has more than Y liquidity\". The point is decision logic, not just a single trigger.",
       "requirements": [
@@ -87,7 +82,6 @@
       "title": "Saga Executor",
       "category": "SkillEngine",
       "tier": "Hard",
-      "points": 200,
       "summary": "A multi-step dependent workflow (approve → swap → deposit) with rollback/retry on failure.",
       "build": "A Skill that runs a multi-step, dependent on-chain workflow, such as approve → swap → deposit, where each step depends on the previous one succeeding. If a step fails, it retries or rolls back cleanly instead of leaving funds stranded halfway.",
       "requirements": [
@@ -104,7 +98,6 @@
       "title": "Arbitrage Scanner",
       "category": "SkillEngine",
       "tier": "Hard",
-      "points": 200,
       "summary": "Checks price/rate across two sources, nets fees, executes only if profitable.",
       "build": "A Skill that compares a price or rate across two sources (two pools, a pool versus an oracle, etc.), nets out fees and gas, and only acts when the opportunity is still profitable after costs.",
       "requirements": [
@@ -121,7 +114,6 @@
       "title": "Dry-Run Executor",
       "category": "SkillEngine",
       "tier": "Medium",
-      "points": 100,
       "summary": "Simulates a transaction's outcome/cost before submitting for real.",
       "build": "A Skill that simulates a transaction before sending it, predicting whether it will succeed, what it will cost, and what it will change, so users and agents can make an informed go or no-go decision.",
       "requirements": [
@@ -137,7 +129,6 @@
       "title": "Trend Watcher",
       "category": "SkillEngine",
       "tier": "Hard",
-      "points": 200,
       "summary": "Persists state across runs, acting only once a multi-observation trend condition is met.",
       "build": "A Skill with memory. It persists observations across runs and acts only once a trend is confirmed over multiple observations (e.g. \"price down 3 checks in a row\" or \"TVL falling for 2 hours\"), not on a single noisy reading.",
       "requirements": [
@@ -154,7 +145,6 @@
       "title": "Batch Executor",
       "category": "SkillEngine",
       "tier": "Medium",
-      "points": 100,
       "summary": "Bundles several independent actions into one optimized execution.",
       "build": "A Skill that takes several independent actions, such as multiple transfers or claims, and bundles them into one optimized execution instead of firing them one by one.",
       "requirements": [
@@ -170,7 +160,6 @@
       "title": "Policy Gatekeeper",
       "category": "SkillEngine",
       "tier": "Medium",
-      "points": 100,
       "summary": "Checks a requested action against spend limits/allowlists/time windows before executing.",
       "build": "A Skill that sits in front of an agent's actions and checks each requested action against a policy, such as spend limits, allowlisted addresses or contracts, and allowed time windows, before letting it through.",
       "requirements": [
@@ -186,7 +175,6 @@
       "title": "Skill + Chain MCP Flow",
       "category": "Composition",
       "tier": "Medium",
-      "points": 100,
       "summary": "Compose a SkillEngine skill with a Chain MCP call into one working agent flow.",
       "build": "One working agent flow where a SkillEngine Skill and Chain MCP work together: the Skill makes the decision and Chain MCP supplies live chain data (or the reverse). It shows the two tools composed, not used side by side.",
       "requirements": [
@@ -202,7 +190,6 @@
       "title": "Docs MCP + Chain MCP Agent",
       "category": "Composition",
       "tier": "Medium",
-      "points": 100,
       "summary": "Build an agent that uses Developer Docs MCP + Chain MCP together — explains a contract function, then calls it.",
       "build": "An agent that explains and then acts. Given a contract function, it uses Developer Docs MCP to explain what the function does and its parameters, then calls it via Chain MCP and interprets the result.",
       "requirements": [
@@ -218,7 +205,6 @@
       "title": "Portfolio Assistant",
       "category": "DeFi / Portfolio",
       "tier": "Hard",
-      "points": 200,
       "summary": "Answers natural-language questions about a wallet's positions, balances, and yields across protocols (Harbor's query pattern, generalized).",
       "build": "A natural-language assistant that answers questions about a wallet's positions, balances and yields across multiple protocols, such as \"what am I earning?\", \"where is my USDC?\" or \"what's my biggest position?\". This generalizes Harbor's query pattern.",
       "requirements": [
@@ -235,7 +221,6 @@
       "title": "Yield Optimizer",
       "category": "DeFi / Portfolio",
       "tier": "Hard",
-      "points": 200,
       "summary": "Compares yields across vaults and recommends or executes a rebalance.",
       "build": "An agent that compares yields across vaults or pools, factors in costs, and recommends (or prepares) a rebalance when moving funds is actually worth it.",
       "requirements": [
@@ -251,7 +236,6 @@
       "title": "Liquidation Watchdog",
       "category": "DeFi / Portfolio",
       "tier": "Medium",
-      "points": 100,
       "summary": "Monitors a lending position and alerts before liquidation risk.",
       "build": "A monitor for a lending position that tracks its health factor and alerts the user before it gets close to liquidation, while there's still time to act.",
       "requirements": [
@@ -267,7 +251,6 @@
       "title": "Natural-Language Payment Agent",
       "category": "Payments",
       "tier": "Medium",
-      "points": 100,
       "summary": "Turns \"send 100 USDC to X\" into a prepared transaction for signature (Harbor's action pattern, generalized).",
       "build": "An agent that turns a plain-language instruction like \"send 100 USDC to alice.eth\" into a fully prepared transaction for the user to review and sign. This generalizes Harbor's action pattern.",
       "requirements": [
@@ -283,7 +266,6 @@
       "title": "Recurring Payment Agent",
       "category": "Payments",
       "tier": "Medium",
-      "points": 100,
       "summary": "Handles a repeating on-chain payment (rent, subscription, payroll-style).",
       "build": "An agent that manages a repeating on-chain payment, such as rent, a subscription or payroll-style transfers, on a schedule.",
       "requirements": [
@@ -299,7 +281,6 @@
       "title": "Invoice-to-Payment Agent",
       "category": "Payments",
       "tier": "Medium",
-      "points": 100,
       "summary": "Reads an invoice/request and prepares the matching payment.",
       "build": "An agent that reads an invoice or payment request (text, PDF or structured data) and prepares the matching on-chain payment.",
       "requirements": [
@@ -315,7 +296,6 @@
       "title": "x402 Paywalled API",
       "category": "Payments",
       "tier": "Medium",
-      "points": 100,
       "summary": "Build an API that charges per request with x402 on Pharos: a paid endpoint, a facilitator, and a client that pays and gets the data.",
       "build": "An API that charges per request with x402 on Pharos Atlantic Testnet. It includes a paid endpoint that answers 402 Payment Required, a facilitator that verifies and settles payments, and a client that pays and gets the data. The Pharos x402 Skill can generate most of this for you.",
       "requirements": [
@@ -333,7 +313,6 @@
       "title": "x402 Agent Buyer",
       "category": "Payments",
       "tier": "Hard",
-      "points": 200,
       "summary": "An agent that pays for what it uses: it calls x402-paywalled APIs on Pharos, pays within a budget, and finishes the job.",
       "build": "An agent that pays for what it uses. Given a task, it calls x402-paywalled APIs on Pharos, reads each price, decides whether the data is worth buying, pays within a budget, and finishes the job. This is the agent-to-API payment loop that the Agent Payment Plane is built for.",
       "requirements": [
@@ -350,7 +329,6 @@
       "title": "On-Chain Alert Bot",
       "category": "Trading / Monitoring",
       "tier": "Easy",
-      "points": 50,
       "summary": "Watches for a price threshold, large transfer, or contract call and notifies.",
       "build": "A bot that watches Pharos for a condition you choose, such as a price crossing a threshold, a large transfer, or a specific contract call, and notifies you when it happens.",
       "requirements": [
@@ -366,7 +344,6 @@
       "title": "Whale-Watching Agent",
       "category": "Trading / Monitoring",
       "tier": "Medium",
-      "points": 100,
       "summary": "Tracks a set of addresses and reports significant moves.",
       "build": "An agent that tracks a list of addresses and reports significant moves, such as large transfers, new positions or exits, with context on why each one matters.",
       "requirements": [
@@ -382,7 +359,6 @@
       "title": "Gas Fee Optimizer",
       "category": "Trading / Monitoring",
       "tier": "Medium",
-      "points": 100,
       "summary": "Monitors network gas price and times transaction submission for lowest cost.",
       "build": "An agent that monitors network gas prices and times non-urgent transaction submissions for the lowest cost within a deadline you set.",
       "requirements": [
@@ -398,7 +374,6 @@
       "title": "Wallet Risk Checker",
       "category": "Compliance / Security",
       "tier": "Medium",
-      "points": 100,
       "summary": "Flags a wallet/contract's suspicious history before you transact with it.",
       "build": "A pre-transaction check that looks at a wallet's or contract's on-chain history and flags red flags before you interact with it.",
       "requirements": [
@@ -414,7 +389,6 @@
       "title": "Audit-Log Agent",
       "category": "Compliance / Security",
       "tier": "Medium",
-      "points": 100,
       "summary": "Generates a plain-language activity report for a wallet over a period.",
       "build": "An agent that generates a plain-language activity report for a wallet over a chosen period, the kind of summary a compliance officer or accountant could read.",
       "requirements": [
@@ -430,7 +404,6 @@
       "title": "dApp Support Agent",
       "category": "Support / Reporting",
       "tier": "Easy",
-      "points": 50,
       "summary": "Explains why a transaction failed, on request.",
       "build": "A support agent that takes a failed transaction hash and explains, in plain language, why it failed and what the user can do about it.",
       "requirements": [
@@ -446,7 +419,6 @@
       "title": "Weekly Digest Agent",
       "category": "Support / Reporting",
       "tier": "Medium",
-      "points": 100,
       "summary": "Periodic summary of a wallet or protocol's activity.",
       "build": "An agent that produces a periodic summary of a wallet's or protocol's activity, covering what changed, key numbers and notable events, and delivers it on a schedule.",
       "requirements": [
@@ -462,7 +434,6 @@
       "title": "Doc-Grounded Builder Agent",
       "category": "Cross-tool / Advanced",
       "tier": "Hard",
-      "points": 200,
       "summary": "Answers \"how do I do X on Pharos\" via Docs MCP, then does X via Chain MCP/SkillEngine.",
       "build": "An agent that handles \"how do I do X on Pharos?\" end to end: it finds the answer in Developer Docs MCP, explains the steps, then actually does X using Chain MCP and/or SkillEngine, and verifies the result.",
       "requirements": [
@@ -479,7 +450,6 @@
       "title": "Multi-Protocol Aggregator",
       "category": "Cross-tool / Advanced",
       "tier": "Hard",
-      "points": 200,
       "summary": "Harbor-style agent extended across more than one protocol/vault.",
       "build": "A Harbor-style agent extended across more than one protocol or vault. It gives users one interface to query and act across several protocols, picking the best venue for each request.",
       "requirements": [

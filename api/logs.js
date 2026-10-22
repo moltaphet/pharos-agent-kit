@@ -19,18 +19,19 @@ export default handle(async (q) => {
   need(!from || /^\d{1,12}$/.test(from), 'from must be a block number');
 
   const client = chainClient();
-  const head = await blockNumber(client);
-  if (!tokens.has(address)) {
+  const head = await blockNumber(client, 'Ask which block is the latest');
+  const cached = tokens.has(address);
+  if (!cached) {
     const { symbol, decimals } = await readToken(client, address);
     tokens.set(address, { symbol, decimals });
   }
   const token = tokens.get(address);
-  if (!from) return { head, nextFrom: head + 1, token, events: [], labels: {} };
+  if (!from) return { head, nextFrom: head + 1, token, tokenCached: cached, events: [], labels: {} };
 
   const start = Math.max(Number(from), head - MAX_BEHIND);
   const { logs, nextFrom } = await scanLogs(client, { address, topic0: EVENTS[event], from: start, head });
   const events = logs.map((l) => decodeLog(l, token));
   const labels = {};
   for (const e of events) for (const a of [e.from, e.to, e.owner, e.spender]) if (a && KNOWN[a.toLowerCase()]) labels[a] = KNOWN[a.toLowerCase()];
-  return { head, nextFrom, token, events, labels };
+  return { head, nextFrom, scanned: { from: start, to: nextFrom - 1 }, clamped: start !== Number(from), token, tokenCached: cached, events, labels };
 });

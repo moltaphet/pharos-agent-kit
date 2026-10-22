@@ -7,7 +7,7 @@ import { McpClient, PHAROS_CHAIN_MCP } from '../lib/mcp.js';
 import { blockNumber, readToken } from '../lib/chain.js';
 import { EVENTS, formatInt, isAddress, isHash32 } from '../lib/abi.js';
 import { makeLabeler, parseLabelFlags, shortAddress } from '../lib/labels.js';
-import { Dedupe, decodeLog, pageRange } from '../lib/watch.js';
+import { Dedupe, OVERLAP, decodeLog, pageRange } from '../lib/watch.js';
 import { fail, parseCli, utc } from '../lib/cli.js';
 
 const DEFAULT_CONTRACT = '0xc879c018db60520f4355c26ed1a6d572cdac1815'; // USDC on Pharos mainnet
@@ -84,6 +84,7 @@ try {
   let head = await blockNumber(client);
   let cursor = values['from-block'] ? Number(values['from-block']) : head + 1;
   if (!Number.isInteger(cursor) || cursor < 0) fail('--from-block must be a block number', usage);
+  const floor = cursor; // never report anything before where we were asked to start
 
   if (!values.json) {
     console.error(`Watching ${values.topic0 ? 'topic ' + topic0.slice(0, 10) + '…' : values.event} on ${token.symbol ?? 'contract'} ${address}`);
@@ -94,7 +95,9 @@ try {
   while (!stopping && Date.now() < deadline && !(maxEvents && printed >= maxEvents)) {
     try {
       head = await blockNumber(client);
-      for (const [from, to] of pageRange(cursor, head)) {
+      // Re-read the last OVERLAP blocks each poll so a late-appearing log is still caught;
+      // de-duplication keeps anything already printed from printing twice.
+      for (const [from, to] of pageRange(Math.max(floor, cursor - OVERLAP), head)) {
         const logs = await client.callTool('get_logs', { address, topics: [topic0], fromBlock: from, toBlock: to });
         logs.sort((a, b) => Number(BigInt(a.blockNumber) - BigInt(b.blockNumber)) || Number(BigInt(a.logIndex) - BigInt(b.logIndex)));
         for (const log of logs) {

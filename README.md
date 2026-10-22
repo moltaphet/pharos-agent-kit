@@ -17,33 +17,50 @@ git clone https://github.com/moltaphet/pharos-agent-kit && cd pharos-agent-kit
 node bin/pharos-read.js          # or: npm link, then `pharos-read`
 node bin/pharos-watch.js
 node bin/pharos-docs.js "how do I deploy a contract?"
-npm test                         # 25 offline unit tests
+npm test                         # offline unit tests
 npm run web                      # the web hub at http://localhost:3000
 ```
 
 ## Web hub
 
-`public/` + `api/` is a small site that lists **all 30 Agent Arena tasks** in a menu
-(grouped by category, with tier, points and status) and gives every task its own page
-and URL, e.g. `/#/read-contract-state`. For each task it shows the official requirements,
-how this build meets each one, and, for the tasks that are built, a live demo against
-Pharos mainnet plus a ready-to-copy proof link and repo link for the Arena submission.
+`public/` + `api/` is a small site for testing the agents. A menu lists all 30 tasks,
+grouped by category, and every task has its own page and URL (`/#/read-contract-state`).
+Each section of a page has its own link too, e.g. `/#/read-contract-state/try`,
+`/#/event-log-monitor/verify`, so you can point someone at exactly the part you mean.
 
-- The task list comes from the public Arena pages (`npm run registry` re-scrapes it into
-  `public/registry.json`).
-- `public/meta.js` records what has actually been built. Status is `planned`, `built`,
-  `submitted` or `approved`; points are only counted as approved once a reviewer approves.
-- Browsers can't call the MCP servers directly (no CORS headers), so `api/*.js` are thin
-  server routes that call them and return JSON. They run as Vercel functions, or locally
-  through `dev-server.js`.
+For a task that is built, the page has:
+
+- **The story**: what was built and why, in plain language.
+- **Try it live**: a real run against Pharos mainnet, and a **run log** under it. The log
+  records every step: each Chain MCP / Docs MCP / RPC call with its tool, arguments, raw
+  response and timing (as a waterfall), plus how values were decoded and what was decided.
+  It can be filtered, copied or downloaded as JSON.
+- **Requirements**: the official list, with how this build meets each one.
+- **How it works**, **Decisions** (including bugs found and fixed), **Run it yourself**
+  and **Verify independently** (block explorer, public RPC, reproducible commands).
+
+The header shows live status of the three upstream services. Run links such as
+`/#/doc-search-cli/try?q=how+do+I+deploy+a+contract&run=1` re-run a demo when opened.
+
+How it is put together:
+
+- `api/*.js` are thin server routes. Browsers can't call the MCP servers directly (they
+  send no CORS headers), so a route calls them and returns `{ ok, data, trace }`. The
+  trace is recorded per request with `AsyncLocalStorage` (`lib/trace.js`). They run as
+  Vercel functions, or locally through `dev-server.js`.
+- `api/read.js` also replays every `eth_call` against the public RPC at the same block and
+  compares the raw bytes (`lib/crosscheck.js`), so the MCP layer is checked independently.
+- The task list comes from the public task pages (`npm run registry` re-scrapes it into
+  `public/registry.json`). What has been built, and the story for each task, lives in
+  `public/js/content.js`.
 
 ### Adding the next task
 
 1. Put the logic in `lib/` (pure, testable) and, if it makes sense, a CLI in `bin/`.
-2. Add an API route in `api/` if the page needs server access to an MCP server.
-3. Add a panel in `public/panels.js` and register it in `PANELS`.
-4. In `public/meta.js`, add the task to `META` with its status and one line of evidence
-   per requirement.
+2. Add an API route in `api/` if the page needs server access to an upstream service.
+   Give each call a `{ why }` so it reads well in the log.
+3. Add a panel in `public/js/panels/` and register it in `PANELS` in `public/js/views.js`.
+4. Add its story, flow, decisions and checks to `LIVE` in `public/js/content.js`.
 
 Endpoints used (both public, no auth):
 
@@ -136,9 +153,10 @@ How it maps to the task requirements:
    `get_logs` with `address` and `topics: [topic0]`. Built-in events use their
    canonical `topic0` hashes; `--topic0` accepts any other event (printed raw).
 2. **Continuous, new events only, no duplicates** — polls `get_block_number`, then scans
-   `[last_scanned + 1, head]` in windows of ≤ 1000 blocks (the server's cap). A log is
-   identified by `txHash:logIndex` and de-duplicated; a failed poll retries the same
-   window instead of skipping it. By default it starts from *now*; `--from-block N`
+   `[last_scanned + 1, head]` in windows of ≤ 1000 blocks (the server's cap), re-reading
+   the last 2 blocks each time so a late log is still caught. A log is identified by
+   `txHash:logIndex` and de-duplicated, so the overlap never prints anything twice; a
+   failed poll retries the same window instead of skipping it. By default it starts from *now*; `--from-block N`
    backfills first.
 3. **Decoded fields** — from, to, amount (decimals + symbol applied), tx hash, block,
    and block time. ERC-721 transfers (4 topics) show `tokenId` instead of an amount.
@@ -265,13 +283,16 @@ $ echo $?
 
 ```text
 bin/pharos-read.js    pharos-watch.js    pharos-docs.js   the three CLIs
-api/read.js  logs.js  docs.js                           web API routes (Vercel functions)
-public/               the web hub: index.html, app.js, panels.js, meta.js, registry.json
+api/read.js  logs.js  docs.js  health.js                web API routes (Vercel functions)
+public/               the web hub: index.html, css/, js/ (views, panels, run log, content), registry.json
 lib/mcp.js            MCP Streamable-HTTP client (retries, sessions, timeouts)
 lib/chain.js          Chain MCP helpers: pinned eth_call, token reads
 lib/snapshot.js       one pinned-block contract snapshot (CLI and web share it)
 lib/abi.js            selectors, event topics, decoding, unit formatting
 lib/watch.js          log decoding, dedupe, block-range paging, bounded scans
+lib/trace.js          per-request record of every MCP/RPC call (the run log's data)
+lib/rpc.js            direct JSON-RPC to the public RPC, used for cross-checks
+lib/crosscheck.js     replays eth_calls against the RPC and compares the raw bytes
 lib/docs.js           docs answer parsing and the "no good answer" decision
 lib/labels.js         address labels from the Pharos registries
 lib/server.js         shared MCP clients and error mapping for the API routes

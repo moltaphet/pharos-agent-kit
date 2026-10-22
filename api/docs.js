@@ -8,9 +8,11 @@ export default handle(async (q) => {
   need(question.length <= 300, 'keep the question under 300 characters');
 
   const client = docsClient();
+  // Two calls in parallel: one synthesises an answer, the other tells us whether the
+  // docs contain anything relevant at all.
   const [askText, searchText] = await Promise.all([
-    client.callTool('askQuestion', { question, goal: 'Build on Pharos as a developer' }),
-    client.callTool('searchDocumentation', { query: question }),
+    client.callTool('askQuestion', { question, goal: 'Build on Pharos as a developer' }, { why: 'Ask the docs to synthesise a direct answer' }),
+    client.callTool('searchDocumentation', { query: question }, { why: 'Keyword search: do the docs mention this at all?' }),
   ]);
   return buildResult({ question, askText, searchText, maxSources: 5 });
 });

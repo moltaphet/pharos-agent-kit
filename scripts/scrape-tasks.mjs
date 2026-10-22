@@ -20,11 +20,10 @@ for (const slug of slugs) {
   const at = (s) => lines.indexOf(s);
   const start = at('← All tasks');
   const [tier, category, title, summary] = lines.slice(start + 1, start + 5);
-  const points = Number(lines[at('Points') + 1]);
   const what = lines[at("What you'll build") + 1];
   const reqs = [];
   for (let i = at('Requirements') + 1; i < lines.length && !/^Reviewers score/.test(lines[i]); i += 2) reqs.push(lines[i + 1]);
-  tasks.push({ slug, title, category, tier, points, summary, build: what, requirements: reqs.filter(Boolean), url: `${BASE}/tasks/${slug}` });
-  console.log(slug, tier, points, reqs.length, 'reqs');
+  tasks.push({ slug, title, category, tier, summary, build: what, requirements: reqs.filter(Boolean), url: `${BASE}/tasks/${slug}` });
+  console.log(slug, tier, reqs.length, 'reqs');
 }
 await writeFile(new URL('../public/registry.json', import.meta.url), JSON.stringify({ source: BASE, scrapedAt: new Date().toISOString().slice(0, 10), tasks }, null, 2) + '\n');

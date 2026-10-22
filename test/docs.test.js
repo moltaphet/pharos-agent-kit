@@ -80,6 +80,23 @@ test('empty responses do not throw', () => {
   assert.equal(buildResult({ question: 'q' }).found, false);
 });
 
+test('the decision is explained with the checks it was based on', () => {
+  const good = buildResult({ question: 'deploy?', askText: GOOD_ASK, searchText: GOOD_SEARCH });
+  assert.deepEqual(good.checks, { hasAnswer: true, refusalPhrase: false, searchHits: 2, linkedPages: 1 });
+  assert.match(good.reason, /matched 2 page\(s\)/);
+
+  const refused = buildResult({ question: 'swallow?', askText: BAD_ASK, searchText: GOOD_SEARCH });
+  assert.equal(refused.checks.refusalPhrase, true);
+  assert.match(refused.reason, /cannot answer/);
+
+  const empty = buildResult({ question: 'q', askText: '', searchText: '' });
+  assert.equal(empty.checks.hasAnswer, false);
+  assert.match(empty.reason, /no answer text/);
+
+  const untrusted = buildResult({ question: 'q', askText: 'Probably yes.', searchText: '' });
+  assert.match(untrusted.reason, /not trusted/);
+});
+
 test('maxSources caps the list', () => {
   const r = buildResult({ question: 'q', askText: GOOD_ASK, searchText: GOOD_SEARCH, maxSources: 1 });
   assert.equal(r.sources.length, 1);

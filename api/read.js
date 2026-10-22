@@ -1,7 +1,8 @@
-// GET /api/read?address=0x…&holder=0x…,0x…&block=123
+// GET /api/read?address=0x…&holder=0x…,0x…&block=123[&verify=0]
 import { chainClient, handle, need, one } from '../lib/server.js';
 import { isAddress } from '../lib/abi.js';
 import { readSnapshot } from '../lib/snapshot.js';
+import { crossCheck } from '../lib/crosscheck.js';
 
 export default handle(async (q) => {
   const address = (one(q.address) || '').toLowerCase();
@@ -12,5 +13,8 @@ export default handle(async (q) => {
   const block = one(q.block);
   need(!block || /^\d{1,12}$/.test(block), 'block must be a block number');
 
-  return readSnapshot(chainClient(), { address, holders, block: block ? Number(block) : undefined });
+  const snapshot = await readSnapshot(chainClient(), { address, holders, block: block ? Number(block) : undefined });
+  // Replay the same calls against the public RPC; a failure here never hides the snapshot.
+  const crosscheck = one(q.verify) === '0' ? null : await crossCheck(snapshot.contract, snapshot.evidence, snapshot.block.number).catch((err) => ({ error: err.message }));
+  return { ...snapshot, crosscheck };
 });
