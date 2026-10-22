@@ -83,7 +83,7 @@ test('empty responses do not throw', () => {
 
 test('the decision is explained with the checks it was based on', () => {
   const good = buildResult({ question: 'deploy?', askText: GOOD_ASK, searchText: GOOD_SEARCH });
-  assert.deepEqual(good.checks, { hasAnswer: true, refusalPhrase: false, searchHits: 2, linkedPages: 1, questionSupport: 1 });
+  assert.deepEqual(good.checks, { hasAnswer: true, refusalPhrase: false, refusalMatch: null, searchHits: 2, linkedPages: 1, questionSupport: 1 });
   assert.match(good.reason, /matched 2 page\(s\)/);
 
   const refused = buildResult({ question: 'swallow?', askText: BAD_ASK, searchText: GOOD_SEARCH });
