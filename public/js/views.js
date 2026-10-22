@@ -2,16 +2,18 @@
 
 import { $, $$, copyText, esc } from './util.js';
 import { ICONS, categoryOf, constellation } from './art.js';
-import { ABOUT, EXPLORER, LIVE, PLAN, REPO, SECTIONS } from './content.js';
+import { ABOUT, EXPLORER, PLAN, REPO, SECTIONS, liveOf } from './content.js';
+import { TASK_MODULES } from './tasks/index.js';
 import readPanel from './panels/read.js';
 import watchPanel from './panels/watch.js';
 import docsPanel from './panels/docs.js';
 
 const PANELS = { 'read-contract-state': readPanel, 'event-log-monitor': watchPanel, 'doc-search-cli': docsPanel };
+const panelOf = (slug) => PANELS[slug] ?? TASK_MODULES[slug]?.mount;
 const TOOL = { chain: ['Chain MCP', 218], docs: ['Docs MCP', 268], rpc: ['Public RPC', 36] };
 const SERVER_CHIP = { chain: 'Chain MCP', docs: 'Docs MCP', rpc: 'Public RPC', local: 'This repo' };
 
-export const isLive = (t) => Boolean(LIVE[t.slug]);
+export const isLive = (t) => Boolean(liveOf(t.slug));
 
 const toolBadges = (tools = []) => tools.map((k) => `<span class="tool" style="--h:${TOOL[k][1]}"><i></i>${TOOL[k][0]}</span>`).join('');
 
@@ -22,7 +24,7 @@ const heading = (slug, id, text, extra = '') => `<h2 id="h-${id}"><span>${text}<
 // ------------------------------------------------------------------ task page
 function hero(t) {
   const cat = categoryOf(t.category);
-  const live = LIVE[t.slug];
+  const live = liveOf(t.slug);
   return `<header class="hero" style="--h:${cat.hue}">
     ${constellation(t.slug)}
     <div class="hero-in">
@@ -101,7 +103,7 @@ function plannedSections(t) {
 
 // Renders a task page into `main`. Returns { cleanup }.
 export function renderTask(main, t, params, tasks) {
-  const live = LIVE[t.slug];
+  const live = liveOf(t.slug);
   const cat = categoryOf(t.category);
   const i = tasks.indexOf(t);
   const prev = tasks[i - 1];
@@ -119,7 +121,7 @@ export function renderTask(main, t, params, tasks) {
   </article>`;
 
   let cleanup = () => {};
-  if (live && PANELS[t.slug]) cleanup = PANELS[t.slug]($('#panel', main), { slug: t.slug, params }) ?? cleanup;
+  if (live && panelOf(t.slug)) cleanup = panelOf(t.slug)($('#panel', main), { slug: t.slug, params }) ?? cleanup;
 
   // Highlight the section being read in the section nav.
   const links = new Map($$('[data-toc]', main).map((a) => [a.dataset.toc, a]));
@@ -139,7 +141,7 @@ export function renderHome(main, tasks) {
   const planned = tasks.filter((t) => !isLive(t));
   const card = (t) => {
     const cat = categoryOf(t.category);
-    const c = LIVE[t.slug];
+    const c = liveOf(t.slug);
     return `<a class="tcard" href="#/${t.slug}" style="--h:${cat.hue}">
       <div class="tcard-art">${constellation(t.slug, 480, 150, 20)}<span class="tcard-icon" aria-hidden="true">${ICONS[cat.icon]}</span></div>
       <div class="tcard-body"><span class="eyebrow">${esc(t.category)}</span><h3>${esc(t.title)}</h3><p>${esc(c.tagline)}</p>

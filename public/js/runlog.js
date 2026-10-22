@@ -6,7 +6,7 @@
 import { $, $$, clock, copyText, dur, esc, toast } from './util.js';
 import { ICONS } from './art.js';
 
-const BADGE = { mcp: 'MCP', rpc: 'RPC', session: 'Session', retry: 'Retry', ui: 'You', http: 'HTTP', decode: 'Decode', decision: 'Decision', result: 'Result', error: 'Error' };
+const BADGE = { mcp: 'MCP', rpc: 'RPC', session: 'Session', retry: 'Retry', ui: 'You', http: 'HTTP', web: 'Web', decode: 'Decode', decision: 'Decision', result: 'Result', error: 'Error' };
 const SERVER = { chain: 'Chain MCP', docs: 'Docs MCP' };
 
 const pretty = (v) => (typeof v === 'string' ? v : JSON.stringify(v, null, 2));
@@ -17,6 +17,7 @@ export function reproduce(e) {
     const body = JSON.stringify({ jsonrpc: '2.0', id: 1, method: e.tool, params: e.args });
     return `curl -s https://${e.server} -H 'content-type: application/json' \\\n  -d '${body.replace(/'/g, `'\\''`)}'`;
   }
+  if (e.kind === 'web') return `curl -sL -o /dev/null -w '%{http_code}\\n' -X ${e.tool} '${e.args.url}'`;
   if (e.kind === 'mcp') {
     const url = e.server === 'docs' ? 'PHAROS_DOCS_MCP' : 'PHAROS_CHAIN_MCP';
     return `node --input-type=module <<'EOF'\nimport { McpClient, ${url} } from './lib/mcp.js';\nconst client = new McpClient(${url});\nconsole.log(JSON.stringify(await client.callTool('${e.tool}', ${JSON.stringify(e.args)}), null, 2));\nawait client.close();\nEOF`;
@@ -32,7 +33,7 @@ const block = (label, text, { note, id } = {}) => `
 
 function titleOf(e) {
   if (e.kind === 'mcp') return `${SERVER[e.server] ?? e.server} · ${e.tool}`;
-  if (e.kind === 'rpc') return `${e.server} · ${e.tool}`;
+  if (e.kind === 'rpc' || e.kind === 'web') return `${e.server} · ${e.tool}`;
   if (e.kind === 'session') return `${SERVER[e.server] ?? e.server} session: ${e.action}`;
   return e.title ?? e.kind;
 }
@@ -42,8 +43,8 @@ function bodyOf(e) {
   if (e.why) parts.push(`<p class="why">${esc(e.why)}</p>`);
   if (e.detail) parts.push(`<p>${esc(e.detail)}</p>`);
   if (e.lines?.length) parts.push(`<dl class="lines">${e.lines.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`);
-  if (e.kind === 'mcp' || e.kind === 'rpc') {
-    parts.push(block('Request', pretty(e.kind === 'mcp' ? { server: SERVER[e.server] ?? e.server, tool: e.tool, arguments: e.args } : { method: e.tool, params: e.args })));
+  if (e.kind === 'mcp' || e.kind === 'rpc' || e.kind === 'web') {
+    parts.push(block('Request', pretty(e.kind === 'mcp' ? { server: SERVER[e.server] ?? e.server, tool: e.tool, arguments: e.args } : e.kind === 'web' ? { method: e.tool, ...e.args } : { method: e.tool, params: e.args })));
     if (e.error) parts.push(block('Error', e.error));
     else if (e.result) parts.push(block('Response', e.result.text, { note: e.result.truncated ? `Shown truncated: ${e.result.size.toLocaleString('en-US')} characters in total.` : undefined }));
     const repro = reproduce(e);
@@ -83,7 +84,7 @@ export function createRunLog(root, { task }) {
     let errors = 0;
     for (const r of runs) {
       for (const e of r.entries) {
-        if (e.kind === 'mcp' || e.kind === 'rpc') calls++;
+        if (e.kind === 'mcp' || e.kind === 'rpc' || e.kind === 'web') calls++;
         if (e.ok === false || e.kind === 'error') errors++;
       }
     }

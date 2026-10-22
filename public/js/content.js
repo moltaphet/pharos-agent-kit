@@ -1,9 +1,10 @@
 // What we built and why, per task, written for someone reviewing it. Everything
 // stated here was observed while building and testing against Pharos mainnet.
 
-export const REPO = 'https://github.com/moltaphet/pharos-agent-kit';
-export const EXPLORER = 'https://www.pharosscan.xyz';
-export const USDC = '0xc879c018db60520f4355c26ed1a6d572cdac1815';
+import { TASK_MODULES } from './tasks/index.js';
+import { EXPLORER, REPO, USDC } from './consts.js';
+export { EXPLORER, REPO, USDC };
+
 
 // Section ids, in page order, for a task that is live.
 export const SECTIONS = [
@@ -169,6 +170,9 @@ Sources
     ],
   },
 };
+
+// A live task's content: hand-written entries above, or a module in tasks/ for newer ones.
+export const liveOf = (slug) => LIVE[slug] ?? TASK_MODULES[slug]?.content;
 
 // Our assessment of what each remaining task needs. Not part of the task briefs.
 export const PLAN = {

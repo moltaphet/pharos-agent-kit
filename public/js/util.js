@@ -38,13 +38,13 @@ export class ApiError extends Error {
 // Calls our own /api/* routes. Resolves { data, trace, url, status, ms } where `trace`
 // is the server's record of every MCP/RPC call that request made. Errors carry the
 // trace too, so a failed run still shows what happened.
-export async function api(path, params = {}) {
+export async function api(path, params = {}, { body: payload } = {}) {
   const query = new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== ''));
   const url = `/api/${path}?${query}`;
   const t0 = performance.now();
   let res;
   try {
-    res = await fetch(url);
+    res = await fetch(url, payload === undefined ? undefined : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
   } catch (err) {
     throw new ApiError(`Could not reach the server: ${err.message}`, { url, ms: Math.round(performance.now() - t0) });
   }

@@ -16,6 +16,15 @@ createServer(async (req, res) => {
       const name = url.pathname.slice(5).replace(/[^a-z0-9-]/gi, '');
       const { default: handler } = await import(pathToFileURL(join(root, 'api', `${name}.js`)));
       req.query = Object.fromEntries(url.searchParams);
+      if (req.method === 'POST') {
+        const chunks = [];
+        for await (const chunk of req) chunks.push(chunk);
+        try {
+          req.body = JSON.parse(Buffer.concat(chunks).toString() || 'null'); // Vercel does this for us
+        } catch {
+          req.body = null;
+        }
+      }
       res.status = (code) => ((res.statusCode = code), res);
       res.json = (body) => (res.setHeader('Content-Type', 'application/json'), res.end(JSON.stringify(body)));
       return await handler(req, res);
