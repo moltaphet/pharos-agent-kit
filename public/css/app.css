@@ -382,3 +382,5 @@ pre.plain { background: var(--surface-2); border: 1px solid var(--border); borde
 .md hr { border: 0; border-top: 1px solid var(--border); margin: 18px 0; }
 .md .tbl { font-size: 13px; } .md .tbl td, .md .tbl th { padding: 7px 10px 7px 0; }
 .md pre.plain { margin: 0; }
+
+.trend-chart { width: 100%; height: auto; color: var(--text); margin: 6px 0 10px; }

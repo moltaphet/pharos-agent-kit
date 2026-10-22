@@ -8,6 +8,7 @@ import * as thresholdGuardian from './threshold-guardian.js';
 import * as sagaExecutor from './saga-executor.js';
 import * as arbitrageScanner from './arbitrage-scanner.js';
 import * as dryRunExecutor from './dry-run-executor.js';
+import * as trendWatcher from './trend-watcher.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -15,4 +16,5 @@ export const TASK_MODULES = {
   'saga-executor': sagaExecutor,
   'arbitrage-scanner': arbitrageScanner,
   'dry-run-executor': dryRunExecutor,
+  'trend-watcher': trendWatcher,
 };
