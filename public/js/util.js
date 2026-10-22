@@ -120,3 +120,63 @@ export function shareUrl(slug, params) {
   const query = new URLSearchParams({ ...params, run: '1' });
   return `${location.origin}/#/${slug}/try?${query}`;
 }
+
+// Fuller markdown for skill files: front matter, headings, tables, quotes, lists, code.
+export function mdFull(src) {
+  const inline = (s) =>
+    esc(s)
+      .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>')
+      .replace(/\[([^\]\n]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const cells = (l) => l.trim().replace(/^\||\|$/g, '').split(/(?<!\\)\|/).map((c) => c.replace(/\\\|/g, '|').trim());
+  const isRule = (l) => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l ?? '');
+  const listItem = /^\s*([-*]|\d+\.)\s+/;
+  const lines = src.split('\n');
+  const out = [];
+  let i = 0;
+  if (lines[0] === '---') {
+    const end = lines.indexOf('---', 1);
+    if (end > 0) {
+      out.push(`<pre class="plain">${esc(lines.slice(1, end).join('\n'))}</pre>`);
+      i = end + 1;
+    }
+  }
+  while (i < lines.length) {
+    const line = lines[i];
+    if (/^```/.test(line)) {
+      const code = [];
+      i++;
+      while (i < lines.length && !/^```/.test(lines[i])) code.push(lines[i++]);
+      i++;
+      out.push(`<pre class="plain"><code>${esc(code.join('\n'))}</code></pre>`);
+    } else if (/^#{1,6}\s/.test(line)) {
+      const level = Math.min(line.match(/^#+/)[0].length + 2, 6);
+      out.push(`<h${level} class="md-h">${inline(line.replace(/^#+\s*/, ''))}</h${level}>`);
+      i++;
+    } else if (/^---+$/.test(line.trim())) {
+      out.push('<hr>');
+      i++;
+    } else if (line.includes('|') && isRule(lines[i + 1])) {
+      const head = cells(line);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && lines[i].includes('|')) rows.push(cells(lines[i++]));
+      out.push(`<div class="scroll"><table class="tbl"><thead><tr>${head.map((h) => `<th>${inline(h)}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`);
+    } else if (/^>/.test(line)) {
+      const q = [];
+      while (i < lines.length && /^>/.test(lines[i])) q.push(lines[i++].replace(/^>\s?/, ''));
+      out.push(`<blockquote>${q.map(inline).join('<br>')}</blockquote>`);
+    } else if (listItem.test(line)) {
+      const items = [];
+      while (i < lines.length && listItem.test(lines[i])) items.push(lines[i++].replace(listItem, ''));
+      out.push(`<ul>${items.map((x) => `<li>${inline(x)}</li>`).join('')}</ul>`);
+    } else if (!line.trim()) {
+      i++;
+    } else {
+      const para = [];
+      while (i < lines.length && lines[i].trim() && !/^(```|#{1,6}\s|>)/.test(lines[i]) && !listItem.test(lines[i]) && !(lines[i].includes('|') && isRule(lines[i + 1]))) para.push(lines[i++]);
+      out.push(`<p>${inline(para.join(' '))}</p>`);
+    }
+  }
+  return out.join('');
+}

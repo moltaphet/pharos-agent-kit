@@ -4,7 +4,9 @@
 // Add a line here when you add public/js/tasks/<slug>.js.
 
 import * as docsMcpOnboarding from './docs-mcp-onboarding.js';
+import * as thresholdGuardian from './threshold-guardian.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
+  'threshold-guardian': thresholdGuardian,
 };

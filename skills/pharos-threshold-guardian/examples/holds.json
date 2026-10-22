@@ -1,0 +1,10 @@
+{
+  "name": "rebalance-gate (strict: should HOLD)",
+  "action": "prepare the vault rebalance",
+  "require": "all",
+  "conditions": [
+    { "id": "gas-is-cheap", "type": "gas-price", "op": "<=", "threshold": 1 },
+    { "id": "morpho-has-usdc-liquidity", "type": "token-balance", "token": "0xc879c018db60520f4355c26ed1a6d572cdac1815", "holder": "0x18573fA18fd17dDfD790B4a5B5b2977aad3b4Efb", "op": ">=", "threshold": 1000 },
+    { "id": "vault-share-price-moved-a-lot", "type": "share-price-change", "vault": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268", "blockWindow": 1500000, "op": ">=", "threshold": 5 }
+  ]
+}

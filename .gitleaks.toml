@@ -1,0 +1,14 @@
+# Repo-local gitleaks config.
+# Starts from the default rules and adds ONE narrow exception: a bare 20-byte EVM address
+# (0x + exactly 40 hex characters). Those are public contract addresses (tokens, vaults,
+# the protocols this repo reads), and the generic-api-key rule mistakes them for secrets
+# when they sit next to a key called "token" or "key". A private key is 32 bytes (64 hex
+# characters) and is NOT covered by this exception.
+title = "pharos-agent-kit gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "public EVM addresses (40 hex characters)"
+regexes = ['''^0x[0-9a-fA-F]{40}$''']

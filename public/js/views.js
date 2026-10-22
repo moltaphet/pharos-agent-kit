@@ -1,6 +1,6 @@
 // Page views: home, about, and a task page (hero, section nav, sections).
 
-import { $, $$, copyText, esc } from './util.js';
+import { $, $$, api, copyText, esc, mdFull } from './util.js';
 import { ICONS, categoryOf, constellation } from './art.js';
 import { ABOUT, EXPLORER, PLAN, REPO, SECTIONS, liveOf } from './content.js';
 import { TASK_MODULES } from './tasks/index.js';
@@ -73,6 +73,7 @@ function liveSections(t, live) {
     S('try', 'Try it live', '<div class="panel" id="panel"></div>'),
     S('requirements', 'Requirements', requirements(t, live)),
     S('how', 'How it works', flow(live.how)),
+    live.skill ? S('skill', 'The Skill', `<p class="muted">A Pharos Skill is a folder an AI agent reads: <code>SKILL.md</code> says what it can do and when, the references give exact commands, and the scripts do the work. This one is shipped in the repository.</p><div class="skill" id="skill-box" data-task="${slug}"><p class="muted">Loading the skill files…</p></div>`) : '',
     S('decisions', 'Decisions', `<div class="cards">${live.decisions.map((d) => `<article class="note-card"><h3>${esc(d.title)}</h3><p>${esc(d.text)}</p></article>`).join('')}</div>`),
     S(
       'run',
@@ -108,7 +109,7 @@ export function renderTask(main, t, params, tasks) {
   const i = tasks.indexOf(t);
   const prev = tasks[i - 1];
   const next = tasks[i + 1];
-  const sections = live ? SECTIONS : [['requirements', 'Requirements'], ['plan', 'Status and plan']];
+  const sections = live ? (live.skill ? [...SECTIONS.slice(0, 4), ['skill', 'The Skill'], ...SECTIONS.slice(4)] : SECTIONS) : [['requirements', 'Requirements'], ['plan', 'Status and plan']];
 
   main.innerHTML = `<article class="task" style="--h:${cat.hue}">
     ${hero(t)}
@@ -122,6 +123,8 @@ export function renderTask(main, t, params, tasks) {
 
   let cleanup = () => {};
   if (live && panelOf(t.slug)) cleanup = panelOf(t.slug)($('#panel', main), { slug: t.slug, params }) ?? cleanup;
+
+  if (live?.skill) hydrateSkill(main, t.slug, live.skill);
 
   // Highlight the section being read in the section nav.
   const links = new Map($$('[data-toc]', main).map((a) => [a.dataset.toc, a]));
@@ -200,4 +203,29 @@ export function wireCopy(root) {
     const copy = e.target.closest('[data-copy]');
     if (copy && !copy.closest('.log') && !copy.closest('.panel')) copyText(copy.dataset.copy);
   });
+}
+
+// Loads a skill package from the API and shows its files in tabs.
+async function hydrateSkill(main, slug, skill) {
+  const box = $('#skill-box', main);
+  if (!box) return;
+  try {
+    const { data } = await api('run', { slug: '_skill', task: slug });
+    const dirUrl = `${REPO}/tree/main/skills/${data.name}`;
+    box.innerHTML = `<div class="skill-head"><b>${esc(data.name)}</b><a href="${dirUrl}" target="_blank" rel="noopener">Open on GitHub ↗</a></div>
+      <div class="skill-tabs" role="tablist">${data.files.map((f, i) => `<button type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">${esc(f.path)}</button>`).join('')}</div>
+      <div class="skill-view" id="skill-view"></div>`;
+    const show = (i) => {
+      const f = data.files[i];
+      $$('.skill-tabs button', box).forEach((b) => b.setAttribute('aria-selected', String(Number(b.dataset.i) === i)));
+      $('#skill-view', box).innerHTML = `${f.path.endsWith('.md') ? `<div class="md">${mdFull(f.text)}</div>` : `<div class="code"><button type="button" class="mini" data-copy="${esc(f.text)}">Copy</button><pre><code>${esc(f.text)}</code></pre></div>`}<p class="muted"><a href="${REPO}/blob/main/skills/${data.name}/${f.path}" target="_blank" rel="noopener">${esc(f.path)} on GitHub ↗</a></p>`;
+    };
+    box.addEventListener('click', (e) => {
+      const b = e.target.closest('.skill-tabs button');
+      if (b) show(Number(b.dataset.i));
+    });
+    show(0);
+  } catch (err) {
+    box.innerHTML = `<p class="error">Could not load the skill files: ${esc(err.message)}</p>`;
+  }
 }
