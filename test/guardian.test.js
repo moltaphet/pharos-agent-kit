@@ -45,7 +45,7 @@ test('fires when every condition is met, and the trace says why', async () => {
   const r = await evaluate({ chain: chain() }, base());
   assert.equal(r.decision, 'fire');
   assert.equal(r.passed, 3);
-  assert.equal(r.block, 100);
+  assert.equal(r.block, 98); // pinned two blocks behind the head (100): every backend node has it
   assert.match(r.trace[0], /^PASS {2}gas: 10 gwei <= 20/);
   assert.match(r.trace.at(-1), /DECISION {2}FIRE: do it/);
 });

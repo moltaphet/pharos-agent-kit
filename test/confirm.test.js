@@ -102,3 +102,64 @@ test('RPC keeps disagreeing: still a mismatch', async () => {
   assert.equal(r.mismatch, 1);
   assert.equal(r.resolved, 0);
 });
+
+// ---- pinning ---------------------------------------------------------------------------------
+import { PIN_LAG, pinnedBlock } from '../lib/chain.js';
+
+test('pinnedBlock reads two blocks behind the head, never below 0', async () => {
+  const at = (n) => ({ callTool: async () => ({ blockNumber: String(n) }) });
+  assert.equal(PIN_LAG, 2);
+  assert.equal(await pinnedBlock(at(20_954_500)), 20_954_498);
+  assert.equal(await pinnedBlock(at(1)), 0);
+  assert.equal(await pinnedBlock(at(100), 'why', 5), 95);
+});
+
+// ---- batched cross-check -------------------------------------------------------------------------
+import { encodeAggregate3 as enc } from '../lib/multicall.js';
+
+// Builds the aggregate3 return value for [{success, data}], using the library's own layout knowledge.
+const word = (n) => BigInt(n).toString(16).padStart(64, '0');
+function aggregateReturn(items) {
+  const bodies = items.map(({ success, data }) => {
+    const b = data.replace(/^0x/, '');
+    const padded = b.padEnd(Math.ceil(b.length / 64) * 64, '0');
+    return word(success ? 1 : 0) + word(0x40) + word(b.length / 2) + padded;
+  });
+  let cursor = items.length * 32;
+  const offsets = bodies.map((b) => { const o = word(cursor); cursor += b.length / 2; return o; });
+  return '0x' + word(0x20) + word(items.length) + offsets.join('') + bodies.join('');
+}
+
+const ev3 = [
+  { field: 'name()', data: '0x06fdde03', raw: '0x' + word(1) },
+  { field: 'symbol()', data: '0x95d89b41', raw: '0x' + word(2) },
+  { field: 'owner()', data: '0x8da5cb5b', raw: null },
+];
+
+test('batched cross-check replays every field in ONE request and compares each', async () => {
+  const calls = [];
+  const call = async (m, params) => { calls.push(params); return aggregateReturn([{ success: true, data: '0x' + word(1) }, { success: true, data: '0x' + word(2) }, { success: false, data: '0x' }]); };
+  const r = await crossCheck('0xc', ev3, 100, call, { batch: true });
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0][0].to.toLowerCase(), '0xca11bde05977b3631167028862be2a173976ca11'); // Multicall3
+  assert.equal(calls[0][0].data, enc(ev3.map((e) => ({ target: '0xc', data: e.data }))));
+  assert.deepEqual([r.match, r.mismatch, r.inconclusive], [3, 0, 0]); // owner(): neither side has a value, which agrees
+});
+
+test('batched cross-check: a differing field is re-read on its own before being called a mismatch', async () => {
+  let n = 0;
+  const call = async (m, params) => (n++ === 0
+    ? aggregateReturn([{ success: true, data: '0x' + word(1) }, { success: true, data: '0x' + word(99) }, { success: false, data: '0x' }])
+    : '0x' + word(2)); // the re-read of symbol() agrees with Chain MCP
+  const r = await crossCheck('0xc', ev3, 100, call, { batch: true });
+  assert.equal(r.rows[1].status, 'resolved');
+  assert.equal(n, 2);
+});
+
+test('batched cross-check falls back to one request per field when the batch fails', async () => {
+  let n = 0;
+  const call = async (m, params) => { n++; if (params[0].to.toLowerCase().startsWith('0xca11')) throw new Error('multicall not available'); return '0x' + word(n === 2 ? 1 : 2); };
+  const r = await crossCheck('0xc', ev3, 100, call, { batch: true });
+  assert.equal(r.total, 3);
+  assert.ok(n >= 4); // 1 failed batch + 3 single calls
+});

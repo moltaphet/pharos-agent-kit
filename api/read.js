@@ -15,6 +15,6 @@ export default handle(async (q) => {
 
   const snapshot = await readSnapshot(chainClient(), { address, holders, block: block ? Number(block) : undefined });
   // Replay the same calls against the public RPC; a failure here never hides the snapshot.
-  const crosscheck = one(q.verify) === '0' ? null : await crossCheck(snapshot.contract, snapshot.evidence, snapshot.block.number).catch((err) => ({ error: err.message }));
+  const crosscheck = one(q.verify) === '0' ? null : await crossCheck(snapshot.contract, snapshot.evidence, snapshot.block.number, undefined, { batch: true }).catch((err) => ({ error: err.message }));
   return { ...snapshot, crosscheck };
 });
