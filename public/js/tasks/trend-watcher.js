@@ -107,7 +107,7 @@ export const mount = makePanel({
   ],
   button: 'Run',
   examples: [
-    { label: 'Real USDC supply: a real decline', values: { action: 'backfill', metric: 'usdc-supply', count: '8', step: '20000', direction: 'down', observations: '3', minStepPct: '0' } },
+    { label: 'Real USDC supply (live data, result varies)', values: { action: 'backfill', metric: 'usdc-supply', count: '8', step: '20000', direction: 'down', observations: '3', minStepPct: '0' } },
     { label: 'Synthetic: a single spike (does not fire)', values: { action: 'scenario', scenario: 'spike', direction: 'up', observations: '3', minStepPct: '0' } },
     { label: 'Synthetic: decline, recovery, decline', values: { action: 'scenario', scenario: 'recovery', direction: 'down', observations: '3', minStepPct: '0' } },
   ],

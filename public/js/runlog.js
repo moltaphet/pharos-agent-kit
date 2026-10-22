@@ -65,7 +65,7 @@ export function createRunLog(root, { task }) {
       <div class="log-tools">
         <label class="sr-only" for="lf-${task}">Filter log entries</label>
         <select id="lf-${task}" data-role="filter">
-          <option value="all">All steps</option><option value="calls">Server calls only</option><option value="errors">Errors only</option>
+          <option value="all">All steps</option><option value="calls">Server calls only</option><option value="errors">Errors and negative checks</option>
         </select>
         <button type="button" class="mini" data-role="expand">Expand all</button>
         <button type="button" class="mini" data-role="collapse">Collapse all</button>
@@ -82,17 +82,21 @@ export function createRunLog(root, { task }) {
   const counts = () => {
     let calls = 0;
     let errors = 0;
+    let failed = 0; // a check or probe that came back negative; often the point of the task (a gap found, a refusal shown)
     for (const r of runs) {
       for (const e of r.entries) {
         if (e.kind === 'mcp' || e.kind === 'rpc' || e.kind === 'web') calls++;
-        if (e.ok === false || e.kind === 'error') errors++;
+        if (e.kind === 'error') errors++;
+        else if (e.ok === false) failed++;
       }
     }
-    return { calls, errors };
+    return { calls, errors, failed };
   };
   const refresh = () => {
-    const { calls, errors } = counts();
-    $('[data-role=stats]', root).textContent = runs.length ? `${runs.length} run${runs.length === 1 ? '' : 's'} · ${calls} server call${calls === 1 ? '' : 's'} · ${errors} error${errors === 1 ? '' : 's'}` : '';
+    const { calls, errors, failed } = counts();
+    $('[data-role=stats]', root).textContent = runs.length
+      ? `${runs.length} run${runs.length === 1 ? '' : 's'} · ${calls} server call${calls === 1 ? '' : 's'} · ${errors} error${errors === 1 ? '' : 's'}${failed ? ` · ${failed} negative check${failed === 1 ? '' : 's'}` : ''}`
+      : '';
     $('[data-role=empty]', root).hidden = runs.length > 0;
   };
 
