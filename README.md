@@ -56,6 +56,17 @@ section), `scripts/`, `assets/` and `examples/`. `scripts/audit-static.mjs` chec
   - Read Contract State also replays every call against the public RPC; if the RPC's first answer
     differs, it is re-read twice before anything is called a mismatch (`lib/crosscheck.js`).
   - Every disagreement is recorded in the run log as a decision, so it is visible, not hidden.
+- **The Chain MCP is load-balanced across nodes that do not all have the newest block.** At the head that
+  `get_block_number` had just reported, `get_code` failed with `block is not available` (about 1 request in 10),
+  and a lagging node answered `get_code` with an *empty* result for a contract that has code, which two repeated
+  reads then agreed on (USDC was once reported as "no contract code"). What we do: every task pins reads two blocks
+  behind the head (`lib/chain.js`), the client retries `block is not available` a few times, and Read Contract State
+  checks the latest block before it ever says "wallet" (`lib/snapshot.js`).
+- **Rate limits are low and shared.** The Chain MCP allows 120 requests a minute per IP and answers a burst with
+  HTTP 429 and a 27 s `Retry-After`; the public RPC rejects more than a few requests a second ("cu limit exceeded").
+  Reading one contract took about 30 requests once every read was confirmed, so token fields, balances and the RPC
+  replay now go through one Multicall3 request each (about 16 requests), clients run at most 3 calls at once, and
+  every API request answers within 55 seconds even if an upstream is slow (`lib/limit.js`, `lib/server.js`).
 - **`eth_estimateGas` can undershoot on nested calls.** A redeem from the RockawayX vault (which withdraws from a lending market) ran out of gas on a limit that was estimated exactly (263,262 used of 263,262) and reverted with no reason, while the same call succeeded as `eth_call`. Its gas use had also nearly doubled (144k to 273k) between two recordings a few hours apart. Always add headroom (our fork harness adds 30%).
 - The Chain MCP server exposes **14** tools (including `send_raw_transaction`), is stateful (it needs
   an `initialize` handshake) and sends no CORS headers, so a browser cannot call it directly.

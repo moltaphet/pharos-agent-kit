@@ -35,10 +35,15 @@ await guard(async () => {
   check('cross-check against the public RPC: no mismatch', d?.crosscheck && d.crosscheck.mismatch === 0 && d.crosscheck.match >= 3 && d.crosscheck.match + d.crosscheck.inconclusive === d.crosscheck.total, // inconclusive = the public RPC did not answer; only a mismatch is a finding
    JSON.stringify({ m: d?.crosscheck?.match, i: d?.crosscheck?.inconclusive }));
   const hexBlock = '0x' + d.block.number.toString(16);
+  const isLatestCheck = (c) => /latest block/i.test(c.why ?? ''); // the wallet double-check reads the latest block on purpose
   const mcpCalls = r.body.trace.calls.filter((c) => c.kind === 'mcp' && ['eth_call', 'get_code', 'get_block'].includes(c.tool));
+  const pinnedCalls = mcpCalls.filter((c) => !isLatestCheck(c));
+  check('every MCP eth_call/get_code/get_block is pinned to the displayed block (except labelled latest-block checks)', pinnedCalls.length >= 5 && pinnedCalls.every((c) => (c.args.block ?? c.args.transaction?.block) === d.block.number), `${pinnedCalls.length} pinned, ${mcpCalls.length - pinnedCalls.length} latest-block checks`);
+  const headCall = r.body.trace.calls.find((c) => c.tool === 'get_block_number');
+  const head = Number(JSON.parse(headCall?.result?.text ?? '{}').blockNumber);
+  check('the displayed block is exactly 2 behind the head reported in the same trace', Number.isFinite(head) && d.block.number === head - 2, `head ${head}, shown ${d.block.number}`);
   const rpcCalls = r.body.trace.calls.filter((c) => c.kind === 'rpc' && c.tool === 'eth_call');
-  check('every MCP eth_call/get_code/get_block pinned to the displayed block', mcpCalls.length >= 6 && mcpCalls.every((c) => (c.args.block ?? c.args.transaction?.block) === d.block.number), `${mcpCalls.length} calls`);
-  check('every independent RPC replay is pinned to the same block (hex)', rpcCalls.length >= 5 && rpcCalls.every((c) => c.args[1] === hexBlock), `${rpcCalls.length} calls`);
+  check('the independent RPC replay is pinned to the same block (hex), batched into few requests', rpcCalls.length >= 1 && rpcCalls.length <= 3 && rpcCalls.every((c) => c.args[1] === hexBlock), `${rpcCalls.length} request(s)`);
   const w = await get('/api/read' + q({ address: '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0' }));
   check('a contract without owner() shows null, not an error', w.body?.ok && w.body.data.owner === null);
   check('rejects a short address with 400', is400(await get('/api/read' + q({ address: '0x12' }))));
