@@ -97,7 +97,9 @@ ephemeral Firecracker microVM) from a snapshot that has Foundry 1.4.0 installed,
 Pharos mainnet inside it and executes the saga as real EVM transactions. The page polls the machine and streams
 the state log as it happens (about 30 seconds). Guardrails (`lib/saga-sandbox.js`): four fixed scenarios and a
 retry limit of 1 to 5 are the only inputs, and none reaches a command line; the machine may only reach
-`rpc.pharos.xyz`, lives at most 6 minutes, at most 2 run at once, and one visitor waits 15 seconds between runs.
+`rpc.pharos.xyz`, lives at most 6 minutes; at most 2 run at once, a visitor has one run at a time with 15 seconds between
+runs, and there is an hourly cap of 40 (all read from the Sandbox listing, with a hashed visitor id, so they hold across
+server instances).
 Sandbox time is billed to the Vercel team that owns the project. Rebuild the snapshot (it never expires, but
 Foundry may need updating) with `vercel env pull .env.local && node --env-file=.env.local scripts/build-saga-snapshot.mjs`.
 
