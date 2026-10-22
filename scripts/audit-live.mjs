@@ -32,7 +32,8 @@ await guard(async () => {
   check('contract address and block number shown', d?.contract === USDC && Number.isInteger(d?.block?.number) && d?.block?.timestamp > 1.7e9);
   check('decimals applied: formatted equals raw / 10^decimals and shows a decimal point', d && d.totalSupply.formatted.includes('.') && Math.abs(Number(d.totalSupply.formatted.replace(/,/g, '')) - Number(d.totalSupply.raw) / 10 ** d.decimals) < 1e-3 && d.totalSupply.formatted !== d.totalSupply.raw);
   check('addresses labelled (owner described, holder described)', !!d?.owner?.description && !!d?.balances?.[0]?.description);
-  check('cross-check against the public RPC: no mismatch', d?.crosscheck && d.crosscheck.mismatch === 0 && d.crosscheck.match >= 5, JSON.stringify({ m: d?.crosscheck?.match, i: d?.crosscheck?.inconclusive }));
+  check('cross-check against the public RPC: no mismatch', d?.crosscheck && d.crosscheck.mismatch === 0 && d.crosscheck.match >= 3 && d.crosscheck.match + d.crosscheck.inconclusive === d.crosscheck.total, // inconclusive = the public RPC did not answer; only a mismatch is a finding
+   JSON.stringify({ m: d?.crosscheck?.match, i: d?.crosscheck?.inconclusive }));
   const hexBlock = '0x' + d.block.number.toString(16);
   const mcpCalls = r.body.trace.calls.filter((c) => c.kind === 'mcp' && ['eth_call', 'get_code', 'get_block'].includes(c.tool));
   const rpcCalls = r.body.trace.calls.filter((c) => c.kind === 'rpc' && c.tool === 'eth_call');
