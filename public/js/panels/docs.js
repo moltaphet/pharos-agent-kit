@@ -55,6 +55,7 @@ export default function mount(root, { slug, params }) {
           ['answer admits it cannot answer', d.checks.refusalPhrase ? 'yes' : 'no'],
           ['keyword search matches', `${d.checks.searchHits} page(s)`],
           ['docs pages linked in the answer', `${d.checks.linkedPages}`],
+          ['question words found in those pages', d.checks.questionSupport == null ? 'not tested (no key words)' : `${Math.round(d.checks.questionSupport * 100)}%  (needs 50%)`],
         ],
       });
       if (d.found) {

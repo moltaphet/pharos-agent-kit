@@ -77,3 +77,14 @@ test('a clean run reports no gaps', () => {
   const md = buildReport({ results: [{ goal: 'g', question: 'q', answer: 'a', checks: [], gap: null }], finale: null, generatedAt: 'now' });
   assert.match(md, /No gaps found in this run/);
 });
+
+test('llms.txt step: a curly-apostrophe refusal is not counted as "Docs MCP knows where it is"', async (t) => {
+  const real = globalThis.fetch;
+  globalThis.fetch = async () => ({ status: 200, ok: true, text: async () => '', body: { cancel: async () => {} } });
+  t.after(() => (globalThis.fetch = real));
+  const step = STEPS.find((s) => s.id === 'llms');
+  const verdict = async (text) => (await step.verify(text))[0].ok;
+  assert.equal(await verdict('I can’t find the llms.txt file in the docs.'), false); // curly apostrophe, mentions llms.txt
+  assert.equal(await verdict('The docs do not say where llms.txt lives.'), false); // no location given
+  assert.equal(await verdict('It is published at https://docs.pharos.xyz/llms.txt.'), true);
+});

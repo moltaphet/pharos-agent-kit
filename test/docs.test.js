@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildResult, cleanMarkdown, parseSearch, splitAnswer } from '../lib/docs.js';
+import { buildResult, cleanMarkdown, parseSearch, questionSupport, splitAnswer } from '../lib/docs.js';
 
 // Shapes captured from the live Developer Docs MCP server.
 const GOOD_ASK = `Deploy with Foundry. See [Write Your First Token](/developer-guide/foundry/write-your-first-token).
@@ -67,7 +67,8 @@ test('other refusal wordings are caught too, including curly apostrophes', () =>
 
 test('a real answer that mentions a missing detail is still an answer', () => {
   const ask = 'Get testnet PHRS from the faucet or the team. The docs don’t provide a faucet URL.\n\n# Sources\n\n- [Atlantic Testnet](https://docs.pharos.xyz/getting-started/network/atlantic-testnet)';
-  assert.equal(buildResult({ question: 'gas?', askText: ask, searchText: GOOD_SEARCH }).found, true);
+  const search = 'Title: Atlantic Testnet\nLink: https://docs.pharos.xyz/getting-started/network/atlantic-testnet\nContent: Request testnet gas tokens (PHRS) from the faucet.';
+  assert.equal(buildResult({ question: 'How do I get testnet gas tokens?', askText: ask, searchText: search }).found, true);
 });
 
 test('an answer with no supporting search hits or doc links is not trusted', () => {
@@ -82,7 +83,7 @@ test('empty responses do not throw', () => {
 
 test('the decision is explained with the checks it was based on', () => {
   const good = buildResult({ question: 'deploy?', askText: GOOD_ASK, searchText: GOOD_SEARCH });
-  assert.deepEqual(good.checks, { hasAnswer: true, refusalPhrase: false, searchHits: 2, linkedPages: 1 });
+  assert.deepEqual(good.checks, { hasAnswer: true, refusalPhrase: false, searchHits: 2, linkedPages: 1, questionSupport: 1 });
   assert.match(good.reason, /matched 2 page\(s\)/);
 
   const refused = buildResult({ question: 'swallow?', askText: BAD_ASK, searchText: GOOD_SEARCH });
@@ -100,4 +101,47 @@ test('the decision is explained with the checks it was based on', () => {
 test('maxSources caps the list', () => {
   const r = buildResult({ question: 'q', askText: GOOD_ASK, searchText: GOOD_SEARCH, maxSources: 1 });
   assert.equal(r.sources.length, 1);
+});
+
+// Four answers captured from production for off-topic questions. None uses the "cannot find…"
+// family, so phrase matching alone let them through as real answers.
+const SWALLOW = 'What is the airspeed velocity of an unladen swallow in Pharos?';
+const SOURDOUGH = 'How do I bake sourdough bread?';
+const DOCS_SEARCH_OFFTOPIC = `Title: About Pharos
+Link: https://docs.pharos.xyz/
+Content: Pharos is a Layer 1 blockchain network with parallel execution and a modular architecture.
+Title: Atlantic Testnet
+Link: https://docs.pharos.xyz/getting-started/network/atlantic-testnet
+Content: Network configuration, chain id and RPC endpoints for developers building on the testnet.`;
+const LEAKED = [
+  [SWALLOW, 'Pharos doesn’t specify a swallow’s airspeed. Its [About Pharos](https://docs.pharos.xyz/) covers blockchain architecture, not bird aerodynamics.'],
+  [SWALLOW, 'The Pharos docs don’t specify a swallow’s airspeed velocity. [About Pharos](https://docs.pharos.xyz/) covers the network’s blockchain architecture instead.'],
+  [SOURDOUGH, 'I can help with Pharos developer documentation, but sourdough baking isn’t covered here.'],
+];
+
+test('off-topic questions are refused even when the model words its refusal in a new way', () => {
+  for (const [question, answer] of LEAKED) {
+    const r = buildResult({ question, askText: answer, searchText: DOCS_SEARCH_OFFTOPIC });
+    assert.equal(r.found, false, answer);
+    assert.equal(r.answer, null);
+  }
+});
+
+test('when no refusal phrase matches, the reason names the missing question support', () => {
+  const r = buildResult({ question: SWALLOW, askText: LEAKED[0][1], searchText: DOCS_SEARCH_OFFTOPIC });
+  assert.equal(r.checks.refusalPhrase, false);
+  assert.equal(r.checks.questionSupport, 0);
+  assert.match(r.reason, /0% of the question's key words/);
+});
+
+test('questionSupport: stopwords and "pharos" are ignored, plurals match, no content words means untested', () => {
+  const hits = [{ title: 'Atlantic Testnet', content: 'Request testnet gas tokens from the faucet' }];
+  assert.equal(questionSupport('How do I get testnet gas token on Pharos?', hits), 1);
+  assert.equal(questionSupport('faucet sourdough', hits), 0.5);
+  assert.equal(questionSupport('What is it?', hits), null);
+});
+
+test('questionSupport gate does not reject real questions with thin snippets', () => {
+  const hits = [{ title: 'Write Your First Token', content: 'forge script deploy' }];
+  assert.ok(questionSupport('How do I deploy a token with Foundry?', hits) >= 0.5);
 });

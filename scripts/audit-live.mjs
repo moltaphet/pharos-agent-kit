@@ -6,7 +6,8 @@ const USDC = '0xc879c018db60520f4355c26ed1a6d572cdac1815';
 const MORPHO = '0x18573fA18fd17dDfD790B4a5B5b2977aad3b4Efb';
 const results = [];
 let section = '';
-const sec = (s) => { section = s; console.log(`\n### ${s}`); };
+class Skip extends Error {}
+const sec = (s) => { if (process.env.ONLY && !s.startsWith(process.env.ONLY)) throw new Skip(); section = s; console.log(`\n### ${s}`); };
 async function get(path, init) {
   const t = Date.now();
   const res = await fetch(BASE + path, { ...init, signal: AbortSignal.timeout(170_000) });
@@ -20,7 +21,7 @@ function check(name, ok, detail = '') {
   console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? `  [${String(detail).slice(0, 150)}]` : ''}`);
 }
 const is400 = (r) => r.status === 400 && r.body?.ok === false && typeof r.body.error === 'string';
-const guard = async (fn) => { try { await fn(); } catch (e) { check('(audit step did not crash)', false, e.message); } };
+const guard = async (fn) => { try { await fn(); } catch (e) { if (!(e instanceof Skip)) check('(audit step did not crash)', false, e.message); } };
 
 await guard(async () => {
   sec('1 Read Contract State');
@@ -29,11 +30,14 @@ await guard(async () => {
   check('answers ok with a trace', r.status === 200 && r.body.ok && r.body.trace.calls.length > 5, `${r.body?.trace?.calls?.length} calls`);
   check('>= 3 different values read (name, symbol, decimals, totalSupply, owner)', d && [d.name, d.symbol, d.decimals, d.totalSupply, d.owner].filter((x) => x != null).length >= 3);
   check('contract address and block number shown', d?.contract === USDC && Number.isInteger(d?.block?.number) && d?.block?.timestamp > 1.7e9);
-  check('decimals applied: formatted != raw and has a decimal point', d?.totalSupply?.formatted.includes('.') && d.totalSupply.formatted.replace(/[,.]/g, '') !== d.totalSupply.raw);
+  check('decimals applied: formatted equals raw / 10^decimals and shows a decimal point', d && d.totalSupply.formatted.includes('.') && Math.abs(Number(d.totalSupply.formatted.replace(/,/g, '')) - Number(d.totalSupply.raw) / 10 ** d.decimals) < 1e-3 && d.totalSupply.formatted !== d.totalSupply.raw);
   check('addresses labelled (owner described, holder described)', !!d?.owner?.description && !!d?.balances?.[0]?.description);
   check('cross-check against the public RPC: no mismatch', d?.crosscheck && d.crosscheck.mismatch === 0 && d.crosscheck.match >= 5, JSON.stringify({ m: d?.crosscheck?.match, i: d?.crosscheck?.inconclusive }));
-  const pinned = r.body?.trace?.calls?.filter((c) => c.tool === 'eth_call').every((c) => c.args.block === d.block.number);
-  check('every eth_call pinned to the displayed block', pinned);
+  const hexBlock = '0x' + d.block.number.toString(16);
+  const mcpCalls = r.body.trace.calls.filter((c) => c.kind === 'mcp' && ['eth_call', 'get_code', 'get_block'].includes(c.tool));
+  const rpcCalls = r.body.trace.calls.filter((c) => c.kind === 'rpc' && c.tool === 'eth_call');
+  check('every MCP eth_call/get_code/get_block pinned to the displayed block', mcpCalls.length >= 6 && mcpCalls.every((c) => (c.args.block ?? c.args.transaction?.block) === d.block.number), `${mcpCalls.length} calls`);
+  check('every independent RPC replay is pinned to the same block (hex)', rpcCalls.length >= 5 && rpcCalls.every((c) => c.args[1] === hexBlock), `${rpcCalls.length} calls`);
   const w = await get('/api/read' + q({ address: '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0' }));
   check('a contract without owner() shows null, not an error', w.body?.ok && w.body.data.owner === null);
   check('rejects a short address with 400', is400(await get('/api/read' + q({ address: '0x12' }))));
@@ -75,11 +79,16 @@ await guard(async () => {
   check('a real question is found with sources', g.body?.data?.found === true && g.body.data.sources.length >= 1 && g.body.data.sources.every((s) => /^https:\/\/docs\.pharos\.xyz/.test(s.url)), `${g.body?.data?.sources?.length} sources`);
   check('answer is concise (< 1500 chars)', (g.body?.data?.answer ?? '').length < 1500, (g.body?.data?.answer ?? '').length);
   const verdicts = [];
-  for (let i = 0; i < 4; i++) verdicts.push((await get('/api/docs' + q({ q: 'What is the airspeed velocity of an unladen swallow in Pharos?' }))).body?.data?.found);
-  check('nonsense question refused 4/4 times (no invented answer)', verdicts.every((v) => v === false), JSON.stringify(verdicts));
-  const n = await get('/api/docs' + q({ q: 'How do I bake sourdough bread?' }));
-  check('off-topic question #2 is also refused', n.body?.data?.found === false, n.body?.data?.reason);
-  check('refusal shows no answer text, only related pages', n.body?.data?.answer === null);
+  for (let i = 0; i < 10; i++) verdicts.push((await get('/api/docs' + q({ q: 'What is the airspeed velocity of an unladen swallow in Pharos?' }))).body?.data?.found);
+  check('nonsense question refused 10/10 times (no invented answer)', verdicts.every((v) => v === false), JSON.stringify(verdicts));
+  const offTopic = [];
+  for (let i = 0; i < 6; i++) offTopic.push((await get('/api/docs' + q({ q: 'How do I bake sourdough bread?' }))).body?.data);
+  check('off-topic question #2 is also refused 6/6 times', offTopic.every((d) => d?.found === false), JSON.stringify(offTopic.map((d) => d?.found)));
+  check('refusal shows no answer text, only related pages', offTopic.every((d) => d?.answer === null));
+  const real = ['How do I deploy a smart contract with Foundry?', 'How do I become a validator?', 'What are the Atlantic testnet RPC and chain id?'];
+  const realAns = [];
+  for (const rq of real) realAns.push((await get('/api/docs' + q({ q: rq }))).body?.data?.found);
+  check('real questions are not refused by the new support check', realAns.every(Boolean), JSON.stringify(realAns));
   check('2-char question rejected with 400', is400(await get('/api/docs' + q({ q: 'hi' }))));
   check('301-char question rejected with 400', is400(await get('/api/docs' + q({ q: 'a'.repeat(301) }))));
   check('empty question rejected with 400', is400(await get('/api/docs')));
