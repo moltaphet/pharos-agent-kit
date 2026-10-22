@@ -51,6 +51,7 @@ try {
   } else {
     console.log(`\nNo good answer found in the Pharos docs for: "${question}"`);
     console.log('Try rephrasing with more specific terms (e.g. a product, tool, or network name).');
+    if (result.partial) console.log(`\nWhat the docs server said instead (not a direct answer):\n  ${result.partial.replace(/\n+/g, '\n  ')}`);
     if (result.related.length) {
       console.log('\nClosest pages (related, not an answer):');
       result.related.forEach((s) => console.log(`  - ${s.title}: ${s.url}`));

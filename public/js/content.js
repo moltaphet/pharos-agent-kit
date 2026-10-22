@@ -165,7 +165,7 @@ Sources
     },
     verify: [
       { title: 'Open the cited page', text: 'Every answer lists the doc pages it came from. Open one and check that it says what the answer says.' },
-      { title: 'Ask the docs server directly', text: 'The same question through this repository’s MCP client, without the filtering. You will see the raw answer that our decision logic judged.', code: `node --input-type=module <<'EOF'\nimport { McpClient, PHAROS_DOCS_MCP } from './lib/mcp.js';\nconst client = new McpClient(PHAROS_DOCS_MCP);\nconsole.log(await client.callTool('askQuestion', { question: 'How do I get testnet gas tokens?' }));\nawait client.close();\nEOF` },
+      { title: 'Ask the docs server directly', text: 'The same question through this repository’s MCP client, without the filtering. You will see the raw answer that our decision logic judged.', code: `node --input-type=module <<'EOF'\nimport { McpClient, PHAROS_DOCS_MCP } from './lib/mcp.js';\nconst client = new McpClient(PHAROS_DOCS_MCP);\nconsole.log(await client.callTool('askQuestion', { question: 'How do I become a validator?' }));\nawait client.close();\nEOF` },
       { title: 'Try to trick it', text: 'Ask something the docs cannot answer, like the example chip about the swallow. It should refuse, and the log’s Decision entry shows why.' },
     ],
   },

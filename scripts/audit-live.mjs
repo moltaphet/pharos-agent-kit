@@ -75,7 +75,7 @@ await guard(async () => {
 
 await guard(async () => {
   sec('3 Doc-Search');
-  const g = await get('/api/docs' + q({ q: 'How do I get testnet gas tokens?' }));
+  const g = await get('/api/docs' + q({ q: 'How do I deploy a smart contract with Foundry?' }));
   check('a real question is found with sources', g.body?.data?.found === true && g.body.data.sources.length >= 1 && g.body.data.sources.every((s) => /^https:\/\/docs\.pharos\.xyz/.test(s.url)), `${g.body?.data?.sources?.length} sources`);
   check('answer is concise (< 1500 chars)', (g.body?.data?.answer ?? '').length < 1500, (g.body?.data?.answer ?? '').length);
   const verdicts = [];

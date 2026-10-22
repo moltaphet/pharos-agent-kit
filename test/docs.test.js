@@ -88,7 +88,7 @@ test('the decision is explained with the checks it was based on', () => {
 
   const refused = buildResult({ question: 'swallow?', askText: BAD_ASK, searchText: GOOD_SEARCH });
   assert.equal(refused.checks.refusalPhrase, true);
-  assert.match(refused.reason, /cannot answer/);
+  assert.match(refused.reason, /cannot find what was asked/);
 
   const empty = buildResult({ question: 'q', askText: '', searchText: '' });
   assert.equal(empty.checks.hasAnswer, false);
@@ -144,4 +144,22 @@ test('questionSupport: stopwords and "pharos" are ignored, plurals match, no con
 test('questionSupport gate does not reject real questions with thin snippets', () => {
   const hits = [{ title: 'Write Your First Token', content: 'forge script deploy' }];
   assert.ok(questionSupport('How do I deploy a token with Foundry?', hits) >= 0.5);
+});
+
+// Captured from production: the docs have no faucet page, so the model says so and adds related facts.
+const PARTIAL = 'I cannot find a testnet faucet or token-request process in the docs. For development, use [Atlantic Testnet](https://docs.pharos.xyz/getting-started/network/atlantic-testnet), chain ID `688689`.';
+const GAS_SEARCH = 'Title: Atlantic Testnet\nLink: https://docs.pharos.xyz/getting-started/network/atlantic-testnet\nContent: Request testnet gas tokens from the faucet. RPC and chain id.';
+
+test('"I cannot find X, but here is related info" is not an answer, and its text is kept as partial', () => {
+  const r = buildResult({ question: 'How do I get testnet gas tokens?', askText: PARTIAL, searchText: GAS_SEARCH });
+  assert.equal(r.found, false);
+  assert.equal(r.answer, null);
+  assert.equal(r.partial, PARTIAL);
+  assert.equal(r.checks.refusalMatch, 'cannot find');
+});
+
+test('an off-topic refusal never carries a partial text', () => {
+  for (const [question, answer] of LEAKED) assert.equal(buildResult({ question, askText: answer, searchText: DOCS_SEARCH_OFFTOPIC }).partial, null);
+  const r = buildResult({ question: SWALLOW, askText: BAD_ASK, searchText: GOOD_SEARCH });
+  assert.equal(r.partial, null);
 });

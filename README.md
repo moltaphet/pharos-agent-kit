@@ -268,27 +268,25 @@ Sources
 ### Example 2
 
 ```text
-$ pharos-docs --sources 3 "How do I get testnet gas tokens?"
+$ pharos-docs --sources 3 "How do I become a validator?"
 
-Q: How do I get testnet gas tokens?
+Q: How do I become a validator?
 
-For **Atlantic Testnet**, get testnet **PHRS** from the Pharos faucet or directly from the team. The docs don’t provide a faucet URL.
+To become a Pharos validator, deploy and sync a node, then register it on-chain using the same network and a hardware wallet or Safe.
 
-Add the network to your EVM wallet using the values in [Atlantic Testnet](https://docs.pharos.xyz/getting-started/network/atlantic-testnet):
+1. **Choose your network and deploy a node.** Follow [Validator Node Deployment](https://docs.pharos.xyz/node-and-validator-guide/validator-node-deployment). Recommended specs are 32 CPU cores, 256 GB RAM, 5 TB SSD, 0.5 Gbps bandwidth, and `ulimit -n ≥ 10000000`; see [Validator Requirements](https://docs.pharos.xyz/node-and-validator-guide/validator-requirements).
+2. **Register using the node’s existing public keys.** The endpoint must be publicly reachable, such as `tcp://YOUR_PUBLIC_IP:19000`. Generate an unsigned registration with `./ops add-validator ... --unsigned`, then submit it from the intended owner wallet. That wallet becomes the permanent validator owner.
+3. **Meet the activation stake threshold.** Atlantic testnet requires **100,000 PROS** total stake; Pacific mainnet requires **1,000,000 PROS**. Registration requires at least 100 PROS, but that alone won’t activate the validator.
 
-* **RPC:** `https://atlantic.dplabs-internal.com`
-* **Chain ID:** `688689`
-* **Token symbol:** `PHRS`
-
-Then request testnet tokens for your wallet address. Check your balance in the wallet or on the [Atlantic explorer](https://atlantic.pharosscan.xyz/).
+The [Node Management](https://docs.pharos.xyz/node-and-validator-guide/node-management) has network-specific commands, transaction submission steps, and post-registration health checks.
 
 Sources
-  1. Atlantic Testnet
-     https://docs.pharos.xyz/getting-started/network/atlantic-testnet
-  2. Piggy Bank Tutorial
-     https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide/piggybank-skill-guide
-  3. Get PROS Gas
-     https://docs.pharos.xyz/getting-started/get-pros-gas
+  1. Validator Node Deployment
+     https://docs.pharos.xyz/node-and-validator-guide/validator-node-deployment
+  2. Validator Requirements
+     https://docs.pharos.xyz/node-and-validator-guide/validator-requirements
+  3. Node Management
+     https://docs.pharos.xyz/node-and-validator-guide/node-management
 ```
 
 ### Example 3 — no good answer

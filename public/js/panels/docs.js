@@ -6,6 +6,7 @@ import { ICONS } from '../art.js';
 const EXAMPLES = [
   'How do I deploy a contract?',
   'What are the chain ID and RPC URL for Pharos mainnet?',
+  'How do I become a validator?',
   'How do I get testnet gas tokens?',
   'What is the airspeed velocity of an unladen swallow?',
 ];
@@ -20,7 +21,7 @@ export default function mount(root, { slug, params }) {
       </div>
     </form>
     <div class="chips" role="group" aria-label="Example questions">${EXAMPLES.map((x) => `<button type="button" class="chip" data-q="${esc(x)}">${esc(x)}</button>`).join('')}</div>
-    <div id="out" class="out" aria-live="polite"><div class="idle">Ask something or pick an example. The last one is a trap: the docs cannot answer it, and the tool should say so.</div></div>
+    <div id="out" class="out" aria-live="polite"><div class="idle">Ask something or pick an example. Two are special: the testnet gas question is a real gap (the docs have no faucet page, so the answer may say so), and the last one is a trap the docs cannot answer at all. The tool should refuse both as an answer.</div></div>
     <div id="log"></div>`;
 
   const q = $('#q', root);
@@ -64,7 +65,8 @@ export default function mount(root, { slug, params }) {
           .join('')}</ol><p class="check ok">✓ ${esc(d.reason)}</p></div>`;
       } else {
         out.innerHTML = `<div class="card none"><h4>No good answer found in the Pharos docs</h4>
-          <p>Nothing in the docs answers “${esc(question)}”. Try rephrasing with a product, tool or network name.</p>
+          <p>Nothing in the docs directly answers “${esc(question)}”. Try rephrasing with a product, tool or network name.</p>
+          ${d.partial ? `<p class="muted">What the docs server said instead (not a direct answer):</p><div class="answer">${md(d.partial)}</div>` : ''}
           ${d.related.length ? `<p class="muted">Closest pages (related, not an answer):</p><ul>${d.related.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}
           <p class="check warn">${esc(d.reason)}</p></div>`;
       }
