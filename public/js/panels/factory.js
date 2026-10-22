@@ -66,7 +66,7 @@ export function makePanel(cfg) {
     if (cfg.state) {
       $('#reset', root).onclick = () => {
         cfg.state.save(null);
-        out.innerHTML = '<div class="idle">Saved state cleared.</div>';
+        out.innerHTML = '<div class="idle">Saved history cleared.</div>';
       };
     }
 
@@ -85,8 +85,9 @@ export function makePanel(cfg) {
         r.add({ kind: 'http', title: `${extra.body === undefined ? 'GET' : 'POST'} /api/run answered ${res.status}`, ms: res.ms, at: sent, detail: res.url });
         r.addTrace(res.trace, sent);
         for (const e of cfg.decode?.(res.data) ?? []) r.add({ at: sent + res.ms, ...e });
-        cfg.state?.save(cfg.nextState ? cfg.nextState(res.data, state) : state);
-        out.innerHTML = cfg.render(res.data, { values: v });
+        const next = cfg.nextState ? cfg.nextState(res.data, state, v) : state;
+        cfg.state?.save(next);
+        out.innerHTML = cfg.render(res.data, { values: v, state: next });
         $('#share', root).disabled = false;
         const calls = res.trace.calls.filter((c) => c.kind === 'mcp' || c.kind === 'rpc').length;
         r.end({ status: cfg.verdict?.(res.data) ?? 'ok', summary: `${cfg.summary?.(res.data) ?? 'done'} · ${calls} server call${calls === 1 ? '' : 's'}` });
