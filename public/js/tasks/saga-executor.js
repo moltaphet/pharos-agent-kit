@@ -1,6 +1,9 @@
-// Saga Executor: content and a factory panel (simulator + recorded real-EVM fork runs).
-import { esc, short } from '../util.js';
-import { kv, makePanel, pill } from '../panels/factory.js';
+// Saga Executor: content and a live panel. Every run executes for real: a throwaway Vercel Sandbox forks Pharos
+// mainnet with anvil and the saga runs as real EVM transactions; the page streams the run while it happens.
+import { $, api, esc, short } from '../util.js';
+import { createRunLog } from '../runlog.js';
+import { ICONS } from '../art.js';
+import { kv, pill } from '../panels/factory.js';
 import { EXPLORER, REPO } from '../consts.js';
 
 const VAULT = '0x047cD0a91E9B92ED979189a6C8A120bf280f02E5';
@@ -12,10 +15,10 @@ export const content = {
   story: [
     'Some workflows cannot be left half-done. “Approve USDC, deposit it into a vault, send the shares to the treasury” is three transactions, and if the third fails after the second succeeded you are left holding shares and an open approval you never meant to keep. The Saga Executor is a Pharos Skill for exactly that: it runs the steps in order, and if one fails permanently it walks back through the finished ones and undoes them.',
     'Each step is checked twice before the next begins: the receipt must say success, and the resulting state must match (the allowance is what we set, shares were issued). Transient trouble such as a dropped transaction or an under-priced replacement is retried with backoff. A revert is never retried, because sending the same failing transaction again cannot fix it.',
-    'The real proof is on a local fork of Pharos mainnet: a real vault (RockawayX USDC), real USDC, real EVM execution, and no real funds. Two runs are recorded below: one that completes, and one forced to fail at the last step that recovers fully. The interactive demo uses the same engine against an in-memory model so you can try the scenarios yourself, including one where the undo itself fails.',
+    'Everything you run here is real. Each run boots a fresh, isolated machine on Vercel that forks Pharos mainnet with anvil, so the vault (RockawayX USDC), the USDC token and the EVM are the live ones, and the saga’s transactions are really executed, in about 30 seconds, with the log streaming into this page as it happens. Only the funds are fake: the fork exists for one run, the test account is funded on the fork alone, and nothing is ever sent to the real network. One scenario each shows a clean success, a retry, a failure that is fully undone, and an undo that gets stuck. Where we inject a fault to provoke the retry or the stuck undo, the log says so.',
   ],
   how: [
-    { server: 'chain', tool: 'anvil fork of mainnet', text: 'Fork Pharos mainnet locally so the vault and USDC are the real contracts. Fund a test account by impersonating a USDC holder, on the fork only.' },
+    { server: 'local', tool: 'Vercel Sandbox + anvil fork', text: 'Boot an isolated machine from a snapshot with Foundry, fork Pharos mainnet in it so the vault and USDC are the real contracts, and fund a test account by impersonating a USDC holder, on the fork only.' },
     { server: 'local', tool: 'step 1: approve', text: 'Approve the vault to take 100 USDC. Verify the allowance equals exactly that amount.' },
     { server: 'local', tool: 'step 2: deposit', text: 'Deposit into the vault. Verify shares were issued and remember how many (step 3 and the undo need that number).' },
     { server: 'local', tool: 'step 3: transfer', text: 'Send the shares to a treasury. Verify the treasury holds them. In the failure run this step sends them to the zero address and reverts.' },
@@ -28,6 +31,9 @@ export const content = {
     { title: 'Verify state, not just the receipt', text: 'A transaction can succeed and still not do what the next step needs. Every step has a state check, and a failed check is a permanent failure.' },
     { title: 'Reverts are never retried', text: 'Only network and mempool trouble is transient. The classification is tested, so a revert cannot loop.' },
     { title: 'Honest about a failed undo', text: 'If a compensation fails, the saga reports “compensation-failed” and lists what is stranded, instead of claiming a rollback. The “stuck” scenario shows it.' },
+    { title: 'No simulator in the demo', text: 'An in-memory model proves the engine, not the contracts, so the demo does not use one. Vercel’s functions cannot run anvil, so each run starts a Vercel Sandbox (a throwaway microVM) from a snapshot with Foundry installed and streams its output back. The in-memory model survives only as a test double for the engine’s unit tests.' },
+    { title: 'A public button that runs code must be locked down', text: 'A visitor can choose one of four fixed scenarios and a retry limit from 1 to 5, and nothing else; nothing they send reaches a command line (tested against injection attempts). The machine may only reach rpc.pharos.xyz, lives for at most 6 minutes, at most 2 run at once, and one visitor must wait 15 seconds between runs.' },
+    { title: 'Two things the sandbox taught us', text: 'The newest Foundry (anvil 1.8.6) cannot fork Pharos, because the Pharos RPC rejects a block parameter that version sends (“failed to parse block hash or number”); version 1.4.0 works, so the snapshot pins it. And a sandbox booted from a snapshot has no /vercel/sandbox directory, so our first version wrote its output nowhere and never reported progress; the run now uses absolute paths under /tmp.' },
     { title: 'A second bug: re-recording the runs failed, and it was gas', text: 'When we re-recorded the runs for this page, the forced-failure run ended stuck: the undo of the deposit reverted, four times out of four. A plain call of the same redeem succeeded, which ruled out the vault’s liquidity. A trace showed the transaction had used exactly its gas limit (263,262 of 263,262): the harness let anvil pick the limit, the estimate was exact, and this vault’s withdrawal needs more than the estimate because it calls into a lending market. The first recording had been clean only by luck (the redeem cost 144k gas then, 273k now). The harness now adds 30% headroom like a wallet does and reports “out of gas” instead of a bare revert, with tests for both.' },
     { title: 'A bug we caught in our own harness', text: 'The first recorded run called a completed saga “NOT CLEAN” because the check only knew about rollbacks, and a hand-written reset between runs corrupted the second run’s starting balance. The check now depends on the outcome, and every scenario starts from a fresh fork.' },
     { title: 'The injected fault is labelled', text: 'To show retries on demand the success run injects one transient error. It says so in the log (“injected fault”); it is not presented as a network failure.' },
@@ -35,13 +41,13 @@ export const content = {
   evidence: [
     'Three dependent steps (approve, deposit, transfer), each confirmed by its receipt and by a state check (allowance, shares, treasury balance) before the next starts.',
     'A defined retry policy: up to 3 attempts, exponential backoff, only for transient errors (underpriced, nonce, timeout, dropped, 429/503); reverts are never retried. Shown in the retry scenario and in the recorded success run.',
-    'A compensation path (bring shares back, redeem, revoke approval) with a demo: the forced-failure run, recorded on a real-EVM fork and runnable here.',
+    'A compensation path (bring shares back, redeem, revoke approval) with a demo: the forced-failure scenario runs for real on a fork, right here on this page.',
     'A state log records every transition with a timestamp: step start, attempt, sent, confirmed, retry, failed, compensation, and the final outcome.',
-    'One fully successful run and one forced-failure run with full recovery, both recorded on a fork of Pharos mainnet (reports/saga-runs.json) and both reproducible here.',
+    'Four real scenarios run on demand against a fork of Pharos mainnet (success, retry, forced failure with full recovery, stuck undo), plus the earlier success and failure runs recorded in reports/saga-runs.json with their provenance.',
   ],
-  files: ['skills/pharos-saga-executor/SKILL.md', 'skills/pharos-saga-executor/references/saga-executor.md', 'skills/pharos-saga-executor/scripts/saga.mjs', 'lib/saga.js', 'lib/saga-scenario.js', 'lib/saga-fork.js', 'lib/saga-sim.js'],
+  files: ['skills/pharos-saga-executor/SKILL.md', 'skills/pharos-saga-executor/references/saga-executor.md', 'skills/pharos-saga-executor/scripts/saga.mjs', 'lib/saga.js', 'lib/saga-scenario.js', 'lib/saga-fork.js', 'lib/saga-sandbox.js', 'scripts/build-saga-snapshot.mjs', 'config/saga-snapshot.json'],
   run: {
-    commands: ['node skills/pharos-saga-executor/scripts/saga.mjs', 'node skills/pharos-saga-executor/scripts/saga.mjs --scenario failure --out run.json'],
+    commands: ['node skills/pharos-saga-executor/scripts/saga.mjs', 'node skills/pharos-saga-executor/scripts/saga.mjs --scenario failure --out run.json', 'node skills/pharos-saga-executor/scripts/saga.mjs --scenario stuck --stream   # JSON lines, as the web page reads them'],
     sample: `=== vault-saga:failure → COMPENSATED ===
     0 ms  step:start                 approve
     8 ms  step:confirmed             approve
@@ -55,7 +61,7 @@ expected: everything undone, nothing left behind → AS EXPECTED`,
   },
   verify: [
     { title: 'The vault is real', text: 'The deposit goes into the RockawayX USDC vault on Pharos mainnet. Open it on the explorer.', link: [`${EXPLORER}/address/${VAULT}`, 'RockawayX USDC on Pharosscan'] },
-    { title: 'Reproduce the real-EVM run', text: 'Needs Foundry. This forks mainnet, runs both scenarios and exits 0 only if both ended as expected. Transaction hashes in the recorded run exist only on that local fork, so they will not appear on the explorer.', code: 'node skills/pharos-saga-executor/scripts/saga.mjs' },
+    { title: 'Reproduce a run on your own machine', text: 'Needs Foundry (anvil 1.4.0 works; the newest versions cannot fork Pharos). This forks mainnet, runs both recorded scenarios and exits 0 only if both ended as expected. Transaction hashes exist only on a fork, so they will not appear on the explorer.', code: 'node skills/pharos-saga-executor/scripts/saga.mjs' },
     { title: 'Check the revert reason yourself', text: 'The forced failure is a real revert of the vault’s transfer to the zero address.', code: `anvil --fork-url https://rpc.pharos.xyz --port 8599 &\ncast call ${VAULT} "transfer(address,uint256)" 0x0000000000000000000000000000000000000000 1 --from 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --rpc-url http://127.0.0.1:8599   # ZeroAddress` },
     { title: 'Read the recorded runs', text: 'The recorded state logs and final checks are in the repository.', link: [`${REPO}/blob/main/reports/saga-runs.json`, 'reports/saga-runs.json'] },
   ],
@@ -77,32 +83,137 @@ function runHtml(run, kind) {
     <div class="check ${f.clean ? 'ok' : 'bad'}"><b>${f.clean ? '✓ As expected' : '✗ Not as expected'}:</b> ${esc(f.expected)}.<br>USDC ${esc(f.usdc)} (started ${esc(f.usdcBefore)}, spent ${esc(f.spent)}) · account shares ${esc(f.accountShares)} · allowance ${esc(f.allowance)} · treasury shares ${esc(f.treasuryShares)}</div>`;
 }
 
-export const mount = makePanel({
-  intro: 'Pick a scenario. This runs the real engine against an in-memory model of the contracts (a simulation). The recorded runs on a real fork are one click away.',
-  fields: [
-    { name: 'scenario', label: 'Scenario', type: 'select', options: [['success', 'Success: all three steps'], ['retry', 'Retry: the deposit drops twice, then lands'], ['failure', 'Forced failure: step 3 reverts, undo steps 2 and 1'], ['stuck', 'Stuck: step 3 fails and the undo fails too'], ['recorded', 'Recorded real-EVM runs (anvil fork of mainnet)']], value: 'success' },
-    { name: 'maxAttempts', label: 'Max attempts', type: 'number', value: '3', min: 1, step: 1, hint: '1 to 5 (retry policy)' },
-  ],
-  button: 'Run the saga',
-  examples: [
-    { label: 'Retry scenario, 2 attempts (retries run out)', values: { scenario: 'retry', maxAttempts: '2' } },
-    { label: 'Forced failure with recovery', values: { scenario: 'failure', maxAttempts: '3' } },
-    { label: 'Show the recorded real-EVM runs', values: { scenario: 'recorded', maxAttempts: '3' } },
-  ],
-  title: (v) => (v.scenario === 'recorded' ? 'Recorded fork runs' : `Saga: ${v.scenario}`),
-  call: (v) => ({ params: { scenario: v.scenario, maxAttempts: v.maxAttempts } }),
-  decode: (d) => (d.recorded ? d.recorded.runs.map((r) => ({ kind: 'decision', title: `${r.name}: ${r.status}`, detail: `${r.log.length} state-log entries; final check ${r.finalCheck.clean ? 'as expected' : 'NOT as expected'}` })) : d.simulated.log.filter((e) => /confirmed|failed|retry|completed|compensated|stuck/.test(e.event)).map((e) => ({ kind: e.event.includes('failed') ? 'error' : 'decision', title: `${e.event}${e.step ? `: ${e.step}` : ''}`, detail: [e.error, e.why, e.txHash].filter(Boolean).join(' · ') || undefined }))),
-  verdict: (d) => (d.recorded ? 'ok' : d.simulated.status === 'completed' ? 'ok' : d.simulated.status === 'compensated' ? 'ok' : 'error'),
-  summary: (d) => (d.recorded ? `${d.recorded.runs.length} recorded runs` : `${d.simulated.status} · ${d.simulated.steps.map((s) => s.state).join(' / ')}`),
-  render: (d) =>
-    d.recorded
-      ? `${provenanceHtml(d.recorded)}${fidelityHtml(d.recorded.fidelity)}${d.recorded.runs.map((r) => `<div class="card" style="margin-bottom:14px">${runHtml(r, 'real EVM on a local fork')}</div>`).join('')}`
-      : `<div class="card">${runHtml(d.simulated, 'simulation (in-memory model, same engine)')}</div>`,
-});
+const SCENARIO_LABELS = {
+  plain: 'Success: all three steps',
+  retry: 'Retry: the deposit is dropped twice, then lands',
+  failure: 'Forced failure: step 3 reverts, undo steps 2 and 1',
+  stuck: 'Stuck: step 3 fails and the undo of the deposit is blocked',
+};
+const EXAMPLES = [
+  ['plain', 'Success'],
+  ['retry', 'Retry (2 injected drops)'],
+  ['failure', 'Forced failure with recovery'],
+  ['stuck', 'Stuck undo'],
+];
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const POLL_MS = 2500;
 
-function provenanceHtml(rec) {
+export function mount(root, { params }) {
+  let cancelled = false;
+  root.innerHTML = `
+    <p class="panel-intro">Each run starts a fresh, isolated machine that forks Pharos mainnet and executes the saga as real EVM transactions. It takes about 30 seconds and the log streams in below as it happens. Faults we inject (retry, stuck) are labelled.</p>
+    <form class="form" id="f" autocomplete="off">
+      <label class="grow">Scenario<select id="f-scenario">${Object.entries(SCENARIO_LABELS).map(([v, l]) => `<option value="${v}">${esc(l)}</option>`).join('')}</select></label>
+      <label>Max attempts<input id="f-attempts" type="number" min="1" max="5" step="1" value="3"><small class="hint">1 to 5 (retry policy)</small></label>
+      <div class="actions">
+        <button class="primary" id="go">${ICONS.play} Run for real</button>
+        <button class="ghost" type="button" id="recorded">Show the recorded runs</button>
+      </div>
+    </form>
+    <div class="chips" role="group" aria-label="Examples">${EXAMPLES.map(([v, l]) => `<button type="button" class="chip" data-sc="${v}">${esc(l)}</button>`).join('')}</div>
+    <div id="out" class="out" aria-live="polite"><div class="idle">Pick a scenario and press “Run for real”. A new machine starts, forks Pharos mainnet, and the transactions appear here one by one.</div></div>
+    <div id="log"></div>`;
+
+  const out = $('#out', root);
+  const go = $('#go', root);
+  const recordedBtn = $('#recorded', root);
+  const log = createRunLog($('#log', root), { task: 'saga-executor' });
+  const scenarioEl = $('#f-scenario', root);
+  const attemptsEl = $('#f-attempts', root);
+  if (SCENARIO_LABELS[params.scenario]) scenarioEl.value = params.scenario;
+  const busy = (b) => { go.disabled = b; recordedBtn.disabled = b; };
+
+  const eventRow = (e) => `<tr><td class="num">${e.t} ms</td><td><code>${esc(e.event)}</code></td><td>${esc([e.step, e.attempt && `attempt ${e.attempt}`, e.waitMs && `wait ${e.waitMs} ms`].filter(Boolean).join(' · '))}</td><td>${e.txHash ? `<code title="${esc(e.txHash)}">${esc(short(e.txHash))}</code>` : ''}${e.error ? `<span class="bad">${esc(e.error)}</span>` : ''}${e.why ? ` <small class="muted">${esc(e.why)}</small>` : ''}</td></tr>`;
+  const KEY = /confirmed|failed|retry|completed|compensated|stuck/;
+
+  async function runReal(scenario, maxAttempts) {
+    const r = log.run(`Real run: ${scenario}`);
+    r.add({ kind: 'ui', title: 'You started a real run', request: { scenario, maxAttempts } });
+    out.innerHTML = '<div class="idle">Starting a machine…</div>';
+    busy(true);
+    const t0 = performance.now();
+    try {
+      const sent = r.now();
+      const res = await api('run', { slug: 'saga-executor', real: 'start', scenario, maxAttempts });
+      const { started } = res.data;
+      r.add({ kind: 'http', title: `GET /api/run (start) answered ${res.status}`, ms: res.ms, at: sent, detail: `machine ${started.id}` });
+      out.innerHTML = `
+        <div class="card" id="live">
+          <div class="verdict info">RUNNING<small id="phase">Starting the machine…</small></div>
+          <p class="muted"><span id="elapsed">0</span> s elapsed · machine <code>${esc(started.id)}</code> · it is removed when the run ends (6 minutes at most)</p>
+          <div class="scroll"><table class="tbl"><thead><tr><th>Time</th><th>Event</th><th>Step</th><th>Detail</th></tr></thead><tbody id="events"></tbody></table></div>
+        </div>`;
+      const tick = setInterval(() => { const el = $('#elapsed', root); if (el) el.textContent = String(Math.round((performance.now() - t0) / 1000)); }, 500);
+      let from = 0;
+      let failures = 0;
+      try {
+        for (;;) {
+          if (cancelled) return;
+          await sleep(POLL_MS);
+          let st;
+          try {
+            st = (await api('run', { slug: 'saga-executor', real: 'status', id: started.id, from })).data.status;
+            failures = 0;
+          } catch (err) {
+            if (++failures >= 4) throw err;
+            continue;
+          }
+          const phase = $('#phase', root);
+          if (phase) phase.textContent = st.phase;
+          const body = $('#events', root);
+          for (const e of st.events) {
+            body?.insertAdjacentHTML('beforeend', eventRow(e));
+            if (KEY.test(e.event)) r.add({ kind: e.event.includes('failed') ? 'error' : 'decision', title: `${e.event}${e.step ? `: ${e.step}` : ''}`, detail: [e.error, e.why, e.txHash].filter(Boolean).join(' · ') || undefined, error: e.error, at: Math.round(performance.now() - t0) });
+          }
+          from = st.total;
+          if (st.state === 'running') continue;
+          if (st.state !== 'done') throw new Error(st.error ?? st.message ?? `the run ${st.state}`);
+          const rec = st.result;
+          const run = rec.runs[0];
+          out.innerHTML = `${provenanceHtml(rec, 'Ran on a throwaway machine just now')}<div class="card">${runHtml(run, 'real EVM on an anvil fork of Pharos mainnet, started for this click')}</div>`;
+          r.end({ status: run.finalCheck.clean ? 'ok' : 'error', summary: `${run.status} · ${run.steps.map((x) => x.state).join(' / ')} · ${Math.round((performance.now() - t0) / 1000)} s` });
+          return;
+        }
+      } finally {
+        clearInterval(tick);
+      }
+    } catch (err) {
+      r.add({ kind: 'error', title: err.message, error: err.detail ?? err.message });
+      r.end({ status: 'error', summary: err.message });
+      out.innerHTML = `<p class="error">${esc(err.message)}</p>`;
+    } finally {
+      busy(false);
+    }
+  }
+
+  async function showRecorded() {
+    const r = log.run('Recorded runs');
+    busy(true);
+    try {
+      const sent = r.now();
+      const res = await api('run', { slug: 'saga-executor', scenario: 'recorded' });
+      r.add({ kind: 'http', title: `GET /api/run answered ${res.status}`, ms: res.ms, at: sent, detail: res.url });
+      const rec = res.data.recorded;
+      out.innerHTML = `${provenanceHtml(rec, 'Recorded earlier')}${rec.runs.map((x) => `<div class="card" style="margin-bottom:14px">${runHtml(x, 'real EVM on a local anvil fork')}</div>`).join('')}`;
+      r.end({ status: 'ok', summary: `${rec.runs.length} recorded runs` });
+    } catch (err) {
+      r.add({ kind: 'error', title: err.message, error: err.message });
+      r.end({ status: 'error', summary: err.message });
+      out.innerHTML = `<p class="error">${esc(err.message)}</p>`;
+    } finally {
+      busy(false);
+    }
+  }
+
+  $('#f', root).onsubmit = (e) => { e.preventDefault(); runReal(scenarioEl.value, attemptsEl.value); };
+  recordedBtn.onclick = showRecorded;
+  root.querySelectorAll('.chip').forEach((b) => (b.onclick = () => { scenarioEl.value = b.dataset.sc; runReal(b.dataset.sc, attemptsEl.value); }));
+  return () => { cancelled = true; };
+}
+
+function provenanceHtml(rec, when) {
   const p = rec.provenance;
-  return `<p class="muted">Recorded ${esc(rec.recordedAt)} on a <b>${esc(rec.network)}</b>. Transaction hashes exist only on that fork.</p>${
+  return `<p class="muted">${esc(when)}${rec.recordedAt ? ` (${esc(rec.recordedAt)})` : ''}: <b>${esc(rec.network)}</b>. Transaction hashes exist only on that fork and will not appear on the explorer.</p>${
     p
       ? `<details class="prov"><summary>Where these numbers came from</summary>${kv([
           ['Command', `<code>${esc(p.command)}</code>`],
@@ -114,12 +225,4 @@ function provenanceHtml(rec) {
         ])}</details>`
       : ''
   }`;
-}
-
-function fidelityHtml(f) {
-  if (!f) return '';
-  const all = f.rows.every((r) => r.identical);
-  return `<div class="check ${all ? 'ok' : 'bad'}"><b>${all ? '✓ The interactive demo behaves exactly like the real EVM.' : '✗ The interactive demo differs from the real EVM.'}</b> The same scenarios were replayed through the in-memory simulator and compared with the recorded logs, entry by entry (${esc(f.compared)}).<br>${f.rows
-    .map((r) => (r.identical ? `${esc(r.run)}: ${r.realEntries} of ${r.realEntries} entries identical` : `${esc(r.run)}: first difference at entry ${r.firstDifference.index + 1}: real EVM <code>${esc(r.firstDifference.real)}</code>, simulator <code>${esc(r.firstDifference.simulated)}</code>`))
-    .join('<br>')}</div>`;
 }

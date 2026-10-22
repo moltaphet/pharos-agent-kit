@@ -7,6 +7,7 @@ import { readSkill } from '../lib/skills.js';
 
 export default function route(req, res) {
   return handle(async (q) => {
+    const ip = String(req.headers?.['x-forwarded-for'] ?? req.socket?.remoteAddress ?? 'unknown').split(',')[0].trim();
     const slug = one(q.slug);
     if (slug === '_skill') {
       const skill = await readSkill(one(q.task));
@@ -14,6 +15,6 @@ export default function route(req, res) {
       return skill;
     }
     need(slug && Object.hasOwn(TASKS, slug), `unknown task "${slug ?? ''}"`);
-    return TASKS[slug]({ q, body: req.body ?? null, chain: chainClient(), docs: docsClient() });
+    return TASKS[slug]({ q, body: req.body ?? null, chain: chainClient(), docs: docsClient(), ip });
   })(req, res);
 }

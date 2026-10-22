@@ -20,10 +20,11 @@ Ten working builds for the [Pharos Agent Arena](https://pharos-agent-arena.verce
 **Safety.** Nothing here signs or sends a transaction on the real Pharos network, and no private
 key is ever read or asked for. Tasks 6, 8 and 10 can also *execute* transactions, but only on a
 throwaway local **anvil fork** of mainnet (needs Foundry): the contracts and balances are real,
-the transactions exist only on your machine. The site shows recorded fork runs and, where
-there is no anvil, an in-memory simulator that says it is a simulation.
+the transactions exist only on that fork. The site's Saga demo runs a real fork for every click, inside a
+throwaway Vercel Sandbox (see below); it has no simulator.
 
-No dependencies, no API keys, no build step. Needs **Node.js 20+**.
+The command-line tools have no dependencies, no API keys and no build step; they need **Node.js 20+**. The web
+hub has one dependency, `@vercel/sandbox`, used only by the Saga Executor's live demo.
 
 ```bash
 git clone https://github.com/moltaphet/pharos-agent-kit && cd pharos-agent-kit
@@ -90,6 +91,15 @@ For a task that is built, the page has:
 - **Requirements**: the official list, with how this build meets each one.
 - **How it works**, **Decisions** (including bugs found and fixed), **Run it yourself**
   and **Verify independently** (block explorer, public RPC, reproducible commands).
+
+**The Saga demo is a real run.** Vercel's functions cannot run anvil, so each click starts a Vercel Sandbox (an
+ephemeral Firecracker microVM) from a snapshot that has Foundry 1.4.0 installed, uploads the engine, forks
+Pharos mainnet inside it and executes the saga as real EVM transactions. The page polls the machine and streams
+the state log as it happens (about 30 seconds). Guardrails (`lib/saga-sandbox.js`): four fixed scenarios and a
+retry limit of 1 to 5 are the only inputs, and none reaches a command line; the machine may only reach
+`rpc.pharos.xyz`, lives at most 6 minutes, at most 2 run at once, and one visitor waits 15 seconds between runs.
+Sandbox time is billed to the Vercel team that owns the project. Rebuild the snapshot (it never expires, but
+Foundry may need updating) with `vercel env pull .env.local && node --env-file=.env.local scripts/build-saga-snapshot.mjs`.
 
 The header shows live status of the three upstream services. Run links such as
 `/#/doc-search-cli/try?q=how+do+I+deploy+a+contract&run=1` re-run a demo when opened.

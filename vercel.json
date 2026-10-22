@@ -4,7 +4,7 @@
   "functions": {
     "api/*.js": {
       "maxDuration": 60,
-      "includeFiles": "{skills,reports}/**"
+      "includeFiles": "{skills,reports,lib,config}/**"
     }
   }
 }

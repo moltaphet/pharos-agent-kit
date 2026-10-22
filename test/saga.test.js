@@ -141,3 +141,12 @@ test('bad inputs are rejected', async () => {
   await assert.rejects(simulate({ scenario: 'nope' }), /scenario must be one of/);
   await assert.rejects(simulate({ scenario: 'success', maxAttempts: 9 }), /maxAttempts must be 1 to 5/);
 });
+
+test('onEvent receives every log entry as it happens, in order', async () => {
+  const seen = [];
+  const exec = { send: async () => '0xh', receipt: async () => ({ status: 'success', hash: '0xh', blockNumber: 1, gasUsed: 1 }) };
+  const r = await runSaga({ steps: [{ id: 'a', title: 'A', tx: () => ({}) }], exec, onEvent: (e) => seen.push(e.event) });
+  assert.deepEqual(seen, r.log.map((e) => e.event));
+  assert.equal(seen.at(0), 'saga:start');
+  assert.equal(seen.at(-1), 'saga:completed');
+});

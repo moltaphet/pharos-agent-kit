@@ -140,29 +140,39 @@ await guard(async () => {
 
 await guard(async () => {
   sec('6 Saga Executor');
-  const s = (o) => run('saga-executor', o).then((r) => r.body?.data?.simulated);
-  const recd = (await run('saga-executor', { scenario: 'recorded' })).body?.data?.recorded;
-  check('recorded real-EVM runs: both finished as expected and carry provenance', recd?.runs?.length === 2 && recd.runs.every((r) => r.finalCheck.clean) && recd.provenance?.forkBlocks?.success > 0 && /anvil/i.test(recd.provenance.anvil ?? ''));
-  check('the web simulator reproduces both recorded runs entry for entry', recd?.fidelity?.rows?.length === 2 && recd.fidelity.rows.every((r) => r.identical), JSON.stringify(recd?.fidelity?.rows?.map((r) => r.firstDifference)));
-  const ok = await s({ scenario: 'success' });
-  check('success: 3 steps confirmed, completed, final state as expected', ok?.status === 'completed' && ok.steps.every((x) => x.state === 'confirmed') && ok.finalCheck.clean);
-  const rt = await s({ scenario: 'retry', maxAttempts: 3 });
-  check('retry: deposit needed 3 attempts and completed', rt?.status === 'completed' && rt.steps[1].attempts === 3);
-  const rt2 = await s({ scenario: 'retry', maxAttempts: 2 });
-  check('retry with 2 attempts: gives up and rolls back (policy is respected)', rt2?.status === 'compensated' && rt2.failure.kind === 'transient');
-  const fl = await s({ scenario: 'failure' });
-  check('failure: ZeroAddress, undone newest first, nothing left behind', fl?.status === 'compensated' && /ZeroAddress/.test(fl.failure.error) && fl.finalCheck.clean && fl.finalCheck.allowance === '0');
-  const order = fl?.log.filter((e) => e.event === 'compensation:confirmed').map((e) => e.step);
-  check('compensation order is reverse (deposit, then approve)', JSON.stringify(order) === '["deposit","approve"]', JSON.stringify(order));
-  const st = await s({ scenario: 'stuck' });
-  check('stuck: reported as compensation-failed with stranded step, not "rolled back"', st?.status === 'compensation-failed' && st.stuck?.includes('deposit') && st.finalCheck.clean === false);
-  check('state log times are non-decreasing', fl?.log.every((e, i) => i === 0 || e.t >= fl.log[i - 1].t));
   const rec = (await run('saga-executor', { scenario: 'recorded' })).body?.data?.recorded;
-  check('recorded real-EVM runs: one completed, one compensated, both as expected', rec?.runs?.length === 2 && rec.runs[0].status === 'completed' && rec.runs[1].status === 'compensated' && rec.runs.every((r) => r.finalCheck.clean), rec?.network);
+  check('recorded runs: one completed, one compensated, both as expected, with provenance', rec?.runs?.length === 2 && rec.runs[0].status === 'completed' && rec.runs[1].status === 'compensated' && rec.runs.every((r) => r.finalCheck.clean) && rec.provenance?.forkBlocks?.success > 0 && /anvil/i.test(rec.provenance.anvil ?? ''));
   check('recorded failure shows the real revert reason', /ZeroAddress/.test(rec?.runs?.[1]?.failure?.error ?? ''));
-  check('bad scenario rejected with 400', is400(await run('saga-executor', { scenario: 'x' })));
-  check('maxAttempts 9 rejected with 400', is400(await run('saga-executor', { scenario: 'success', maxAttempts: 9 })));
-  check('non-numeric maxAttempts rejected with 400', is400(await run('saga-executor', { scenario: 'success', maxAttempts: 'abc' })));
+  const bare = await run('saga-executor', { scenario: 'plain' });
+  check('the demo has no simulated mode: a bare scenario is refused with a 400 that points to real=start', is400(bare) && /real=start/.test(bare.body?.error ?? ''), bare.body?.error?.slice(0, 60));
+  check('unknown scenario rejected with 400', is400(await run('saga-executor', { real: 'start', scenario: 'x' })));
+  check('a shell-injection attempt as the scenario is rejected with 400', is400(await run('saga-executor', { real: 'start', scenario: 'plain; id' })));
+  check('maxAttempts 9 rejected with 400', is400(await run('saga-executor', { real: 'start', scenario: 'plain', maxAttempts: 9 })));
+  check('non-numeric maxAttempts rejected with 400', is400(await run('saga-executor', { real: 'start', scenario: 'plain', maxAttempts: 'abc' })));
+  check('a malformed or path-like run id is rejected with 400', is400(await run('saga-executor', { real: 'status', id: '../../etc/passwd' })));
+  check('an unknown (well-formed) run id says the run is gone, not an error', (await run('saga-executor', { real: 'status', id: 'saga-plain-zzzzzzzz' })).body?.data?.status?.state === 'gone');
+
+  // One real run, end to end: a throwaway machine forks Pharos mainnet and executes the saga as real transactions.
+  const started = (await run('saga-executor', { real: 'start', scenario: 'retry', maxAttempts: 3 })).body;
+  check('a real run starts and returns a machine id', /^saga-retry-[a-z0-9]{8}$/.test(started?.data?.started?.id ?? ''), started?.error);
+  let st;
+  let from = 0;
+  const seen = [];
+  for (let i = 0; i < 60 && started?.ok; i++) {
+    await new Promise((r) => setTimeout(r, 3000));
+    st = (await run('saga-executor', { real: 'status', id: started.data.started.id, from })).body?.data?.status;
+    if (!st) continue;
+    seen.push(...st.events.map((e) => e.event));
+    from = st.total;
+    if (st.state !== 'running') break;
+  }
+  const real = st?.result?.runs?.[0];
+  check('the real run finished (done) within 3 minutes', st?.state === 'done', st?.error ?? st?.state);
+  check('real run: deposit retried twice (injected, labelled), then all three steps confirmed and completed', real?.status === 'completed' && real.steps.every((x) => x.state === 'confirmed') && real.steps[1].attempts === 3 && /injected fault/.test(real.injectedFault ?? ''));
+  check('real run: final state as expected (USDC spent, shares with the treasury, allowance 0)', real?.finalCheck?.clean === true && real.finalCheck.allowance === '0' && BigInt(real.finalCheck.treasuryShares) > 0n);
+  check('real run: events streamed in order and the stream matches the final log', seen[0] === 'saga:start' && seen.at(-1) === 'saga:completed' && seen.length === real?.log?.length, `${seen.length} streamed, ${real?.log?.length} in the result`);
+  check('real run: provenance names the fork block and anvil 1.4.0', st?.result?.provenance?.forkBlocks?.retry > 0 && /1\.4\.0/.test(st.result.provenance.anvil ?? ''), st?.result?.provenance?.anvil);
+  check('the machine is gone after the result was read', (await run('saga-executor', { real: 'status', id: started?.data?.started?.id ?? 'saga-plain-zzzzzzzz' })).body?.data?.status?.state === 'gone');
 });
 
 await guard(async () => {

@@ -9,19 +9,21 @@
 
 ### Overview
 
-Starts a fresh anvil fork of Pharos mainnet for each scenario, funds a test account with USDC (by impersonating a USDC holder, on the fork only), and runs the vault saga: **approve** USDC to the vault, **deposit** into the real RockawayX USDC vault, **transfer** the shares to a treasury. Scenario `success` also injects one transient fault to show the retry policy; scenario `failure` sends the shares to the zero address so step 3 fails for good and the saga must undo steps 2 and 1.
+Starts a fresh anvil fork of Pharos mainnet for each scenario, funds a test account with USDC (by impersonating a USDC holder, on the fork only), and runs the vault saga: **approve** USDC to the vault, **deposit** into the real RockawayX USDC vault, **transfer** the shares to a treasury. Scenario `success` also injects one transient fault to show the retry policy; scenario `failure` sends the shares to the zero address so step 3 fails for good and the saga must undo steps 2 and 1. Three more scenarios exist for demos: `plain` (nothing injected), `retry` (the deposit is dropped twice, then lands) and `stuck` (step 3 reverts, and the undo of the deposit is blocked by an injected "vault paused"). With `--stream` the script prints one JSON object per line as the run happens, which is how the website's live demo reads it from a Vercel Sandbox.
 
 ### Command Template
 
 ```bash
-node skills/pharos-saga-executor/scripts/saga.mjs [--scenario success|failure|both] [--out run.json]
+node skills/pharos-saga-executor/scripts/saga.mjs [--scenario success|failure|both|plain|retry|stuck] [--max-attempts 1..5] [--out run.json] [--stream]
 ```
 
 ### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `--scenario` | string | No (default `both`) | `success`, `failure`, or `both`. |
+| `--scenario` | string | No (default `both`) | `both` (success then failure, the recorded pair), `success`, `failure`, `plain`, `retry` or `stuck`. |
+| `--max-attempts` | integer | No (default 3) | Retry policy limit, 1 to 5. |
+| `--stream` | flag | No | Print JSON lines (`phase`, `event`, `result`, `error`) while the run happens. |
 | `--out` | path | No | Write the full run record (state log, steps, final check) as JSON. |
 
 ### Output Parsing
@@ -38,6 +40,7 @@ node skills/pharos-saga-executor/scripts/saga.mjs [--scenario success|failure|bo
 | Error Signature | Cause | Suggested Action |
 |----------------|-------|----|
 | `anvil did not start` | Foundry is not installed or the fork RPC is unreachable | Install Foundry; check `https://rpc.pharos.xyz`. |
+| `failed to parse block hash or number` while forking | The newest Foundry (1.8.x) sends a block parameter the Pharos RPC rejects | Use Foundry 1.4.0: `foundryup --install v1.4.0`. |
 | `command not found: anvil` | Foundry missing | Run `foundryup`. |
 | `execution reverted: ZeroAddress` | The forced failure in scenario `failure` (expected) | Nothing to fix; this is the demo. |
 | `HTTP 429` from the RPC | Fork source is rate limiting | Wait and re-run. |
