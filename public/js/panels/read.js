@@ -65,7 +65,7 @@ export default function mount(root, { slug, params }) {
     ];
     const cc = s.crosscheck;
     const status = (i) => cc?.rows?.[i]?.status;
-    const mark = (st) => (st === 'match' ? '<span class="ok" title="Matches the public RPC">✓ match</span>' : st === 'mismatch' ? '<span class="bad">✗ differs</span>' : st === 'inconclusive' ? '<span class="warn">? inconclusive</span>' : '<span class="muted">n/a</span>');
+    const mark = (st) => (st === 'match' ? '<span class="ok" title="Matches the public RPC">✓ match</span>' : st === 'resolved' ? '<span class="ok" title="The RPC’s first answer differed; a re-read agreed with Chain MCP">✓ match (re-read)</span>' : st === 'mismatch' ? '<span class="bad">✗ differs</span>' : st === 'inconclusive' ? '<span class="warn">? inconclusive</span>' : '<span class="muted">n/a</span>');
     const verdict = !cc
       ? ''
       : cc.error
@@ -74,7 +74,7 @@ export default function mount(root, { slug, params }) {
           ? `<p class="check bad">✗ ${cc.mismatch} of ${cc.total} values differ from the public RPC at block ${num(cc.block)}. Open the log to compare the raw bytes.</p>`
           : cc.inconclusive
             ? `<p class="check warn">${cc.match} of ${cc.total} values match the public RPC; ${cc.inconclusive} could not be confirmed.</p>`
-            : `<p class="check ok">✓ Independent check: all ${cc.total} values match what the public RPC (rpc.pharos.xyz) returns at block ${num(cc.block)}.</p>`;
+            : `<p class="check ok">✓ Independent check: all ${cc.total} values match what the public RPC (rpc.pharos.xyz) returns at block ${num(cc.block)}.${cc.resolved ? ` ${cc.resolved} needed a re-read because the node first answered inconsistently.` : ''}</p>`;
 
     out.innerHTML = `
       <div class="card">
@@ -128,7 +128,7 @@ export default function mount(root, { slug, params }) {
           kind: 'decision',
           at: afterServer,
           ok: cc.mismatch === 0,
-          title: `Cross-check: ${cc.match}/${cc.total} match the public RPC${cc.mismatch ? `, ${cc.mismatch} differ` : ''}${cc.inconclusive ? `, ${cc.inconclusive} inconclusive` : ''}`,
+          title: `Cross-check: ${cc.match + (cc.resolved ?? 0)}/${cc.total} match the public RPC${cc.resolved ? ` (${cc.resolved} after a re-read)` : ''}${cc.mismatch ? `, ${cc.mismatch} differ` : ''}${cc.inconclusive ? `, ${cc.inconclusive} inconclusive` : ''}`,
           lines: cc.rows.map((row) => [row.field, row.note ? `${row.status} (${row.note})` : row.status]),
         });
       }

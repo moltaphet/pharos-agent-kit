@@ -44,9 +44,18 @@ section), `scripts/`, `assets/` and `examples/`. `scripts/audit-static.mjs` chec
 
 - **The Pharos node sometimes answers a historical `eth_call` with another block's value.**
   About 10% of parallel historical reads on the public RPC (4 of 40), and occasionally even a single
-  call; the same wrong value appeared through Chain MCP, so it is the node. Anything that reads a
-  series of past blocks reads one at a time and accepts a value only when two reads agree
-  (`lib/stable.js`).
+  call; the same wrong value appeared through Chain MCP, so it is the node. What we do about it
+  (we cannot fix the node, only detect it):
+  - **Every read pinned to a block is confirmed** (`lib/confirm.js`): the web API wraps the Chain MCP
+    client so a call, balance, code, header or gas estimate at a block number is read twice in a row.
+    Two equal answers are accepted; if they differ a third read decides by majority; with no majority
+    the request fails with "the node is inconsistent" instead of showing a value that might be wrong.
+    Reads of `latest` are not confirmed, since they legitimately change.
+  - Series of past blocks (Trend Watcher, the vault condition of Threshold Guardian) read one at a
+    time and accept a value only when two reads agree (`lib/stable.js`).
+  - Read Contract State also replays every call against the public RPC; if the RPC's first answer
+    differs, it is re-read twice before anything is called a mismatch (`lib/crosscheck.js`).
+  - Every disagreement is recorded in the run log as a decision, so it is visible, not hidden.
 - The Chain MCP server exposes **14** tools (including `send_raw_transaction`), is stateful (it needs
   an `initialize` handshake) and sends no CORS headers, so a browser cannot call it directly.
 - `docs.pharos.xyz` and the faucet, `llms.txt`, Skill Engine install and x402 mainnet pages have gaps

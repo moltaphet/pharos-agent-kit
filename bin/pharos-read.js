@@ -4,6 +4,7 @@
 // and prints it the way a non-developer would want to read it.
 
 import { McpClient, PHAROS_CHAIN_MCP } from '../lib/mcp.js';
+import { confirmReads } from '../lib/confirm.js';
 import { readSnapshot } from '../lib/snapshot.js';
 import { formatInt, isAddress } from '../lib/abi.js';
 import { parseLabelFlags, shortAddress } from '../lib/labels.js';
@@ -39,7 +40,7 @@ if (!isAddress(address)) fail(`"${positionals[0]}" is not a valid 0x address`, u
 for (const h of values.holder ?? []) if (!isAddress(h)) fail(`--holder "${h}" is not a valid 0x address`, usage);
 if (values.block && !/^\d+$/.test(values.block)) fail('--block must be a block number', usage);
 
-const client = new McpClient(PHAROS_CHAIN_MCP);
+const client = confirmReads(new McpClient(PHAROS_CHAIN_MCP));
 
 try {
   const s = await readSnapshot(client, {
