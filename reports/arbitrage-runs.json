@@ -1,0 +1,368 @@
+{
+ "recordedAt": "2026-10-22T17:49:35.206Z",
+ "network": {
+  "name": "Pharos mainnet fork (local anvil)",
+  "chainId": 1672,
+  "forkRpc": "https://rpc.pharos.xyz"
+ },
+ "pair": "WPROS/DLP",
+ "contracts": {
+  "v2": "0xb7d5d299c671e4a4c7c0c5a33b812185182fc417",
+  "v3": "0xed7359fd2e74ce8d7910307fea4c8b6cb4afd44c",
+  "tokens": [
+   {
+    "symbol": "WPROS",
+    "address": "0x52c48d4213107b20bc583832b0d951fb9ca8f0b0"
+   },
+   {
+    "symbol": "DLP",
+    "address": "0xb98bd05255542404f68821065d2635da6ac80c87"
+   }
+  ]
+ },
+ "honesty": [
+  "The pools are the live FaroSwap V2 pair and V3 pool, and the swaps run on their real code in a real EVM.",
+  "Their real liquidity is dust (under 0.0001 WPROS in V2), so we re-priced the V2 pair with a real swap and deposited our own liquidity into both venues with real mint calls.",
+  "The price skew is a real swap we made ourselves. It is not a market opportunity, and nothing was sent to any real network."
+ ],
+ "scenarios": [
+  {
+   "id": "profitable",
+   "title": "A real 6% price gap: the scanner acts, both legs execute",
+   "note": "We sold 150 WPROS into V2 so DLP is dearer there than on V3.",
+   "forkBlock": 20950801,
+   "helper": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+   "steps": [
+    {
+     "what": "Deployed the ArbLab helper and funded it",
+     "contract": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+     "detail": "300,000 WPROS (wrapped from fork PROS) and 300,000 DLP (balance slot found: mapping slot 9)"
+    },
+    {
+     "what": "Live pools at the fork block",
+     "detail": "V2 holds 0.000067631379885632 WPROS and 1.6020178039280162 DLP; V3 liquidity 287370440737728641. That is less than the gas for a single swap, so no live trade can profit.",
+     "v2Price": 23687.49250181066,
+     "v3Price": 0.40879942695779264
+    },
+    {
+     "what": "Re-priced the V2 pair to the V3 price (real swap)",
+     "gasUsed": 96644,
+     "detail": "swapped 0.016236676388157532 WPROS into V2; V2 price now 0.4087994269577926 DLP per WPROS, V3 0.40879942695779264"
+    },
+    {
+     "what": "Deposited liquidity into both venues (real mint calls)",
+     "detail": "V2 now holds 5000.0 WPROS and 2044.0 DLP; V3 liquidity 100000287370440737728641 over ticks -9600..-8340"
+    },
+    {
+     "what": "Scan with both venues at the same price",
+     "decision": "skip",
+     "detail": "spread 0.0000% (V2 2.446187, V3 2.446187 WPROS per DLP): skip"
+    },
+    {
+     "what": "Moved V2's price with a real 150 WPROS swap, then scanned",
+     "gasUsed": 96644,
+     "decision": "execute-simulated",
+     "detail": "spread 6.081% → execute-simulated at size 112.47 WPROS, predicted net 3.3722 WPROS"
+    },
+    {
+     "what": "Executed both legs on the fork (real swaps)",
+     "gasUsed": 169627,
+     "detail": "profit 3.373495 WPROS before gas (the scanner's model said 3.373495); gas 169,627 units (the scanner assumes 270,000) = 0.000753 WPROS at 4.44 gwei; net 3.372742 WPROS"
+    },
+    {
+     "what": "Scanned again after the trade",
+     "decision": "skip",
+     "detail": "spread 1.2101% → skip (best net profit 0.04052 WPROS (at size 11.246827) is below the minimum 0.5 WPROS: gross edge 0.1361 − fees 0.06778 − price impact 0.02659 − gas 0.001198)"
+    }
+   ],
+   "baseline": {
+    "decision": "skip",
+    "block": 20950806,
+    "route": {
+     "buyOn": "FaroSwap V2",
+     "sellOn": "FaroSwap V3 (0.3% tier)"
+    },
+    "size": 6.324555320336759e-10,
+    "grossSpreadPct": 0,
+    "gross": 0,
+    "netBeforeGas": -1.0728851590020776e-11,
+    "net": -0.0014823175785488515,
+    "costs": {
+     "fees": 3.789041087317578e-12,
+     "priceImpact": 6.9398105027031975e-12,
+     "gas": 0.00148231756782,
+     "gasPros": 0.00148231756782,
+     "gasPriceGwei": 5.490065066
+    },
+    "reasons": [
+     "best net profit -0.001482 WPROS (at size 6.325e-10) is below the minimum 0.5 WPROS: gross edge 0 − fees 3.789e-12 − price impact 6.94e-12 − gas 0.001482"
+    ],
+    "prices": {
+     "v2": 2.4461873820171647,
+     "v3": 2.4461873820171647
+    },
+    "depth": {
+     "v3RangeBuyQuote": 426.04809375252336,
+     "v3RangeSellBase": 18.450894490147075,
+     "v2Quote": 5000.016304307768,
+     "v3Quote": 156403.37084846632
+    },
+    "inRange": true
+   },
+   "scan": {
+    "decision": "execute-simulated",
+    "block": 20950807,
+    "route": {
+     "buyOn": "FaroSwap V3 (0.3% tier)",
+     "sellOn": "FaroSwap V2"
+    },
+    "size": 112.46826503806982,
+    "grossSpreadPct": 6.080709879050805,
+    "gross": 6.838868902966952,
+    "netBeforeGas": 3.37349467299396,
+    "net": 3.3721638658311,
+    "costs": {
+     "fees": 0.6939967798914425,
+     "priceImpact": 2.771377450081549,
+     "gas": 0.00133080716286,
+     "gasPros": 0.00133080716286,
+     "gasPriceGwei": 4.928915418
+    },
+    "reasons": [],
+    "prices": {
+     "v2": 2.594932939815577,
+     "v3": 2.4461873820171647
+    },
+    "depth": {
+     "v3RangeBuyQuote": 426.04809375252336,
+     "v3RangeSellBase": 18.450894490147075,
+     "v2Quote": 5150.016304307768,
+     "v3Quote": 156403.37084846632
+    },
+    "inRange": true
+   },
+   "execution": {
+    "forced": false,
+    "route": {
+     "buyOn": "FaroSwap V3 (0.3% tier)",
+     "sellOn": "FaroSwap V2"
+    },
+    "quoteIn": 112.468265,
+    "status": "success",
+    "revertReason": null,
+    "gasUsed": 169627,
+    "predictedGrossProfit": 3.37349467299396,
+    "actualGrossProfit": 3.3734946727574298,
+    "predictedGasUnits": 270000,
+    "gasPriceGwei": 4.437967604,
+    "gasCostWpros": 0.000752799130763708,
+    "actualNet": 3.372741873626666,
+    "predictionErrorPct": 7.011433951701218e-9
+   },
+   "rescan": {
+    "decision": "skip",
+    "block": 20950808,
+    "route": {
+     "buyOn": "FaroSwap V3 (0.3% tier)",
+     "sellOn": "FaroSwap V2"
+    },
+    "size": 11.246826503806982,
+    "grossSpreadPct": 1.2101006583640217,
+    "gross": 0.13609792156762726,
+    "netBeforeGas": 0.0417221275147776,
+    "net": 0.0405238762616976,
+    "costs": {
+     "fees": 0.06778436749487868,
+     "priceImpact": 0.026591426557970983,
+     "gas": 0.00119825125308,
+     "gasPros": 0.00119825125308,
+     "gasPriceGwei": 4.437967604
+    },
+    "reasons": [
+     "best net profit 0.04052 WPROS (at size 11.246827) is below the minimum 0.5 WPROS: gross edge 0.1361 − fees 0.06778 − price impact 0.02659 − gas 0.001198"
+    ],
+    "prices": {
+     "v2": 2.479339937302153,
+     "v3": 2.4496961480862436
+    },
+    "depth": {
+     "v3RangeBuyQuote": 313.57982875251616,
+     "v3RangeSellBase": 64.394917950574,
+     "v2Quote": 5034.174544635011,
+     "v3Quote": 156515.5017086713
+    },
+    "inRange": true
+   }
+  },
+  {
+   "id": "marginal",
+   "title": "A 0.3% price gap: the scanner skips, and forcing the trade loses",
+   "note": "We sold only 8 WPROS into V2. The gap is smaller than the 0.6% of swap fees.",
+   "forkBlock": 20950830,
+   "helper": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+   "steps": [
+    {
+     "what": "Deployed the ArbLab helper and funded it",
+     "contract": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+     "detail": "300,000 WPROS (wrapped from fork PROS) and 300,000 DLP (balance slot found: mapping slot 9)"
+    },
+    {
+     "what": "Live pools at the fork block",
+     "detail": "V2 holds 0.000067631379885632 WPROS and 1.6020178039280162 DLP; V3 liquidity 287370440737728641. That is less than the gas for a single swap, so no live trade can profit.",
+     "v2Price": 23687.49250181066,
+     "v3Price": 0.40879942695779264
+    },
+    {
+     "what": "Re-priced the V2 pair to the V3 price (real swap)",
+     "gasUsed": 96644,
+     "detail": "swapped 0.016236676388157532 WPROS into V2; V2 price now 0.4087994269577926 DLP per WPROS, V3 0.40879942695779264"
+    },
+    {
+     "what": "Deposited liquidity into both venues (real mint calls)",
+     "detail": "V2 now holds 5000.0 WPROS and 2044.0 DLP; V3 liquidity 100000287370440737728641 over ticks -9600..-8340"
+    },
+    {
+     "what": "Scan with both venues at the same price",
+     "decision": "skip",
+     "detail": "spread 0.0000% (V2 2.446187, V3 2.446187 WPROS per DLP): skip"
+    },
+    {
+     "what": "Moved V2's price with a real 8 WPROS swap, then scanned",
+     "gasUsed": 96632,
+     "decision": "skip",
+     "detail": "spread 0.320% → skip (best net profit -0.001331 WPROS (at size 3.557e-10) is below the minimum 0.5 WPROS: gross edge 1.137e-12 − fees 2.211e-12 − price impact 0 − gas 0.001331)"
+    },
+    {
+     "what": "Forced a 5 WPROS trade anyway, to check the skip",
+     "gasUsed": 170223,
+     "detail": "LOSS -0.019180 WPROS before gas (the scanner's model said -0.019180); gas 170,223 units (the scanner assumes 270,000) = 0.000755 WPROS at 4.44 gwei; net -0.019935 WPROS, so skipping was right"
+    },
+    {
+     "what": "Scanned again after the trade",
+     "decision": "skip",
+     "detail": "spread 0.1136% → skip (best net profit -0.001198 WPROS (at size 3.557e-10) is below the minimum 0.5 WPROS: gross edge 4.042e-13 − fees 2.209e-12 − price impact 0 − gas 0.001198)"
+    }
+   ],
+   "baseline": {
+    "decision": "skip",
+    "block": 20950835,
+    "route": {
+     "buyOn": "FaroSwap V2",
+     "sellOn": "FaroSwap V3 (0.3% tier)"
+    },
+    "size": 6.324555320336759e-10,
+    "grossSpreadPct": 0,
+    "gross": 0,
+    "netBeforeGas": -1.0728851590020776e-11,
+    "net": -0.0014823175785488515,
+    "costs": {
+     "fees": 3.789041087317578e-12,
+     "priceImpact": 6.9398105027031975e-12,
+     "gas": 0.00148231756782,
+     "gasPros": 0.00148231756782,
+     "gasPriceGwei": 5.490065066
+    },
+    "reasons": [
+     "best net profit -0.001482 WPROS (at size 6.325e-10) is below the minimum 0.5 WPROS: gross edge 0 − fees 3.789e-12 − price impact 6.94e-12 − gas 0.001482"
+    ],
+    "prices": {
+     "v2": 2.4461873820171647,
+     "v3": 2.4461873820171647
+    },
+    "depth": {
+     "v3RangeBuyQuote": 426.04809375252336,
+     "v3RangeSellBase": 18.450894490147075,
+     "v2Quote": 5000.016304307768,
+     "v3Quote": 156403.37084846632
+    },
+    "inRange": true
+   },
+   "scan": {
+    "decision": "skip",
+    "block": 20950836,
+    "route": {
+     "buyOn": "FaroSwap V3 (0.3% tier)",
+     "sellOn": "FaroSwap V2"
+    },
+    "size": 3.556558820077846e-10,
+    "grossSpreadPct": 0.31977418842839,
+    "gross": 1.1372957102882266e-12,
+    "netBeforeGas": 2.4630643992215455e-11,
+    "net": -0.001330807134449356,
+    "costs": {
+     "fees": 2.21126010479437e-12,
+     "priceImpact": 0,
+     "gas": 0.00133080715908,
+     "gasPros": 0.00133080715908,
+     "gasPriceGwei": 4.928915404
+    },
+    "reasons": [
+     "best net profit -0.001331 WPROS (at size 3.557e-10) is below the minimum 0.5 WPROS: gross edge 1.137e-12 − fees 2.211e-12 − price impact 0 − gas 0.001331"
+    ],
+    "prices": {
+     "v2": 2.4540096578654476,
+     "v3": 2.4461873820171647
+    },
+    "depth": {
+     "v3RangeBuyQuote": 426.04809375252336,
+     "v3RangeSellBase": 18.450894490147075,
+     "v2Quote": 5008.016304307768,
+     "v3Quote": 156403.37084846632
+    },
+    "inRange": true
+   },
+   "execution": {
+    "forced": true,
+    "route": {
+     "buyOn": "FaroSwap V3 (0.3% tier)",
+     "sellOn": "FaroSwap V2"
+    },
+    "quoteIn": 5,
+    "status": "success",
+    "revertReason": null,
+    "gasUsed": 170223,
+    "predictedGrossProfit": -0.01917969302687744,
+    "actualGrossProfit": -0.019179693021032874,
+    "predictedGasUnits": 270000,
+    "gasPriceGwei": 4.437968177,
+    "gasCostWpros": 0.000755444256993471,
+    "actualNet": -0.019935137278026347,
+    "predictionErrorPct": 3.0472669231872994e-8
+   },
+   "rescan": {
+    "decision": "skip",
+    "block": 20950837,
+    "route": {
+     "buyOn": "FaroSwap V3 (0.3% tier)",
+     "sellOn": "FaroSwap V2"
+    },
+    "size": 3.556558820077846e-10,
+    "grossSpreadPct": 0.11364192824356856,
+    "gross": 4.0417420222532747e-13,
+    "netBeforeGas": 2.3873441992215455e-11,
+    "net": -0.0011982513839165578,
+    "costs": {
+     "fees": 2.2089816622291697e-12,
+     "priceImpact": 0,
+     "gas": 0.00119825140779,
+     "gasPros": 0.00119825140779,
+     "gasPriceGwei": 4.437968177
+    },
+    "reasons": [
+     "best net profit -0.001198 WPROS (at size 3.557e-10) is below the minimum 0.5 WPROS: gross edge 4.042e-13 − fees 2.209e-12 − price impact 0 − gas 0.001198"
+    ],
+    "prices": {
+     "v2": 2.4491233894844626,
+     "v3": 2.446343317766695
+    },
+    "depth": {
+     "v3RangeBuyQuote": 421.0480937525204,
+     "v3RangeSellBase": 20.494826479272707,
+     "v2Quote": 5003.035484000789,
+     "v3Quote": 156408.35584846628
+    },
+    "inRange": true
+   }
+  }
+ ]
+}

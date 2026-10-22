@@ -163,3 +163,44 @@ The header prints `[Synthetic: …]`. Never present a synthetic result as a mark
 
 > **Agent Guidelines**:
 > 1. Always say it is synthetic when you show it.
+
+---
+
+## Real-EVM fork run
+
+### Overview
+
+Proves the "act" path against the **real FaroSwap contracts** instead of a model. The live pools hold less than the gas of one swap, so the run happens on a **local anvil fork** of Pharos mainnet: it re-prices the dust V2 pair to the V3 price with a real swap, deposits its own liquidity into both venues with real `mint` calls, moves the V2 price with another real swap, lets this skill's scanner decide on that state, and executes both legs with the helper contract `contracts/ArbLab.sol`. Predicted and actual profit are recorded side by side in `reports/arbitrage-runs.json`. Two scenarios: a 6% gap (the scanner acts) and a 0.3% gap (it skips, and a forced 5 WPROS trade is executed anyway to show it loses). Nothing touches a real network.
+
+### Command Template
+
+```bash
+node scripts/arb-fork-run.mjs                       # rewrites reports/arbitrage-runs.json
+node scripts/arb-fork-run.mjs --out /tmp/runs.json  # write somewhere else
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `--out` | path | No | Where to write the report (default `reports/arbitrage-runs.json`). |
+
+Requires Foundry (`anvil`, `forge`, `cast`) and a reachable `https://rpc.pharos.xyz`. No key is read: anvil's dev accounts are unlocked and balances are set on the fork.
+
+### Output Parsing
+
+Per scenario: `scan.decision`, `execution.predictedGrossProfit` against `execution.actualGrossProfit`, `execution.predictionErrorPct`, the measured `execution.gasUsed` against the assumed `predictedGasUnits`, and `rescan.decision` (the scan after the trade). `honesty` states that the liquidity and the price gap were created by the run itself.
+
+### Error Handling
+
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `anvil did not start` | Foundry missing, or the public RPC is rate-limiting forks | Install Foundry; wait a minute and retry. |
+| `could not find the balance storage slot of …` | A token with an unusual storage layout | Add the layout to `setTokenBalance` in `lib/arb-fork.js`. |
+| `transaction reverted: …` | A setup step failed on the fork | Read the reason; it names the failing call. |
+
+> **Agent Guidelines**:
+> 1. Never present the fork run as a market opportunity: say the liquidity and the price gap were created by the run.
+> 2. Quote profit as "before gas" and "net after gas" separately; they are different rows in the report.
+> 3. The transaction hashes exist only on the local fork, so do not link them to the explorer.
+

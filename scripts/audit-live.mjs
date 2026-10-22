@@ -159,6 +159,11 @@ await guard(async () => {
 
 await guard(async () => {
   sec('7 Arbitrage Scanner');
+  const rec = (await run('arbitrage-scanner', { source: 'fork-recorded' })).body?.data?.recorded;
+  check('recorded fork run is served: two scenarios with honesty notes', rec?.scenarios?.length === 2 && rec.honesty?.length >= 3);
+  const [ra, rb] = rec?.scenarios ?? [];
+  check('recorded: the scanner acted and the real EVM matched its prediction', ra?.scan.decision === 'execute-simulated' && ra.execution.status === 'success' && ra.execution.predictionErrorPct < 1e-4 && ra.execution.actualNet > 0);
+  check('recorded: the refused trade really lost money', rb?.scan.decision === 'skip' && rb.execution.actualGrossProfit < 0);
   const live = (await run('arbitrage-scanner', { pair: 'WPROS/DLP', size: 1 })).body?.data?.scan;
   check('live scan reads both venues at one block', live?.block > 0 && live.sources.v2.price > 0 && live.sources.v3.price > 0);
   check('decomposition: gross - fees - impact = net before gas', live && Math.abs(live.gross - live.costs.fees - live.costs.priceImpact - live.netBeforeGas) < 1e-9 * Math.max(1, Math.abs(live.gross)));

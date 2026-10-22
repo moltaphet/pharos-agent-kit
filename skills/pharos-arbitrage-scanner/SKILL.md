@@ -24,6 +24,7 @@ Reads **Pharos mainnet** (chain 1672) through the Chain MCP server using one bat
 | "Keep checking", "log every scan", "watch for an opportunity" | Scan repeatedly and log | → references/arbitrage-scanner.md#scan-repeatedly-and-log |
 | "Why didn't it trade?", "what would it need to be profitable?" | Read the decision and the skip reasons | → references/arbitrage-scanner.md#read-the-decision |
 | "Show me what a profitable one looks like" | Run a labelled synthetic scenario | → references/arbitrage-scanner.md#synthetic-scenarios |
+| "Does the act path really work?", "prove the maths on the real contracts" | Run both legs on a local fork and compare prediction with outcome | → references/arbitrage-scanner.md#real-evm-fork-run |
 
 ## Write Operation Pre-checks
 

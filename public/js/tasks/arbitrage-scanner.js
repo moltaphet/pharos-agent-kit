@@ -25,6 +25,7 @@ export const content = {
   story: [
     'An arbitrage scanner is easy to fool. Two venues disagree on a price, the gap looks huge, and the bot trades into a pool that holds a few cents. This Pharos Skill reads the same token pair from two independent places at the same block (FaroSwap V2 reserves and FaroSwap V3 pool state), simulates buying on the cheaper venue and selling on the dearer one, and subtracts swap fees, price impact and gas before it will call anything profitable.',
     'It searches trade sizes rather than assuming one, because bigger is not better once price impact bites, and it checks that a V3 trade stays inside the pool’s active price range, where the maths is exact. If it cannot trust the estimate it skips and says why. It never sends a transaction: “acting” is a simulated fill.',
+    'The act path is proved on a real EVM, not only simulated. The live pools are far too thin to ever profit, so a local fork of Pharos mainnet re-prices the V2 pair with a real swap, deposits our own liquidity into both venues, makes a real price gap with another swap, lets this scanner decide on that state, and then executes both legs with a helper contract. The recorded run compares what the scanner predicted with what the EVM did: the profit matches to about eight decimal places.',
     'The honest headline from the live market is a skip. When we recorded this, the WPROS/DLP pair showed a gap of almost six million percent, but one pool held about 0.00007 WPROS and the other’s active price range could absorb only a tiny fraction of a token, so the best achievable net profit was negative after gas. Pool balances move, so run a scan to see today’s numbers. To show the “act” path too, there are two clearly labelled synthetic scenarios that run the same maths.',
   ],
   how: [
@@ -41,6 +42,8 @@ export const content = {
     { title: 'Refuse to estimate outside the range', text: 'V3 liquidity changes at tick boundaries we do not read. When a trade would cross one, the scan skips instead of guessing.' },
     { title: 'Threshold in tokens, not percent', text: 'The best size changes with the market, so a percentage threshold is ambiguous. The minimum is an absolute net profit in the quote token.' },
     { title: 'Gas must be priceable', text: 'Gas is paid in PROS. If the quote token cannot be converted to it, the scan skips rather than inventing an exchange rate.' },
+    { title: 'Prove the maths against the real contracts', text: 'A model that agrees with itself proves nothing. On the fork, the profit the scanner predicted for its chosen trade equals what the real FaroSwap contracts paid out (the recorded table shows both, differing by less than a millionth of a percent), and a trade it refused really lost money. The run says plainly that we deposited the liquidity and made the price gap ourselves.' },
+    { title: 'Gas is assumed high on purpose', text: 'The scanner assumes 270,000 gas units for the two swaps. The two legs measured about 170,000 inside one atomic helper call. We kept the higher figure: two separate transactions would cost more than the helper, and a scanner that underestimates cost acts when it should not.' },
     { title: 'Synthetic scenarios are labelled', text: 'The “profitable” and “marginal” states exist to demonstrate and test the act path. Every output says it is synthetic, and none is presented as a market observation.' },
   ],
   evidence: [
@@ -48,11 +51,11 @@ export const content = {
     'Net profit subtracts each venue’s swap fee, an estimate of price impact (searched across trade sizes) and gas (270k units at the live gas price, in WPROS).',
     'It acts (a simulated fill) only when net profit reaches a configurable minimum; otherwise the scan lists exactly why it skipped, with the numbers.',
     'Every scan records gross spread, costs, net result and decision: the history table below, the run log, and `--log scans.jsonl` in the CLI.',
-    'Execution is simulated only: no key, no transaction, no funds at risk.',
+    'Live scans never send anything: “acting” on live data is a simulated fill, so no key, no transaction and no funds are ever at risk. The act path itself was executed on a local fork of Pharos mainnet (real FaroSwap V2 and V3 contracts, a real EVM, anvil’s unlocked dev accounts), with predicted and actual profit recorded side by side in reports/arbitrage-runs.json.',
   ],
-  files: ['skills/pharos-arbitrage-scanner/SKILL.md', 'skills/pharos-arbitrage-scanner/references/arbitrage-scanner.md', 'skills/pharos-arbitrage-scanner/scripts/scan.mjs', 'lib/tasks/arbitrage-scanner.js', 'lib/amm.js', 'lib/multicall.js'],
+  files: ['scripts/arb-fork-run.mjs', 'contracts/ArbLab.sol', 'lib/arb-fork.js', 'skills/pharos-arbitrage-scanner/SKILL.md', 'skills/pharos-arbitrage-scanner/references/arbitrage-scanner.md', 'skills/pharos-arbitrage-scanner/scripts/scan.mjs', 'lib/tasks/arbitrage-scanner.js', 'lib/amm.js', 'lib/multicall.js'],
   run: {
-    commands: ['node skills/pharos-arbitrage-scanner/scripts/scan.mjs', 'node skills/pharos-arbitrage-scanner/scripts/scan.mjs --watch 10 --interval 5 --log scans.jsonl', 'node skills/pharos-arbitrage-scanner/scripts/scan.mjs --source profitable --size 50   # synthetic, exit 0'],
+    commands: ['node skills/pharos-arbitrage-scanner/scripts/scan.mjs', 'node skills/pharos-arbitrage-scanner/scripts/scan.mjs --watch 10 --interval 5 --log scans.jsonl', 'node skills/pharos-arbitrage-scanner/scripts/scan.mjs --source profitable --size 50   # synthetic, exit 0', 'node scripts/arb-fork-run.mjs   # real EVM on a local fork; needs Foundry'],
     sample: `scan 1/1  WPROS/DLP  block 20918559
   FaroSwap V2 0.000042216 WPROS/DLP   FaroSwap V3 (0.3% tier) 2.4462
   gross spread 5794000%   best size 1.7783e-9 WPROS
@@ -64,28 +67,13 @@ export const content = {
     { title: 'Read the V2 pool yourself', text: 'Reserves of the WPROS/DLP V2 pair: the first is WPROS, about 0.00007 in size.', code: 'cast call 0xb7d5d299c671e4a4c7c0c5a33b812185182fc417 "getReserves()(uint112,uint112,uint32)" --rpc-url https://rpc.pharos.xyz' },
     { title: 'Read the V3 pool yourself', text: 'The square-root price (first value), current tick and liquidity of the V3 pool. Price = (sqrtPriceX96 / 2^96)².', code: 'cast call 0xed7359fd2e74ce8d7910307fea4c8b6cb4afd44c "slot0()(uint160,int24,uint16,uint16,uint16,uint8,bool)" --rpc-url https://rpc.pharos.xyz\ncast call 0xed7359fd2e74ce8d7910307fea4c8b6cb4afd44c "liquidity()(uint128)" --rpc-url https://rpc.pharos.xyz' },
     { title: 'Check the pools are real FaroSwap contracts', text: 'The V2 pair reports FaroSwap’s V2 factory as its creator, and the V3 factory returns the V3 pool for the same two tokens and the 0.3% tier. Both should print the addresses in the comments.', code: 'cast call 0xb7d5d299c671e4a4c7c0c5a33b812185182fc417 "factory()(address)" --rpc-url https://rpc.pharos.xyz   # 0x18Fab7d7…F09 (V2 factory)\ncast call 0x2c90CcB0b989afA2433F499698451a25744A552b "getPool(address,address,uint24)(address)" 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0 0xb98bd05255542404f68821065d2635da6ac80c87 3000 --rpc-url https://rpc.pharos.xyz   # 0xed7359Fd…d44C' },
+    { title: 'Reproduce the real-EVM run', text: 'Needs Foundry (anvil, forge, cast). It forks Pharos mainnet, builds contracts/ArbLab.sol, runs both scenarios and rewrites the report. Transaction hashes exist only on that local fork. Your numbers will differ slightly because the fork block and gas price differ.', code: 'node scripts/arb-fork-run.mjs --out /tmp/arbitrage-runs.json' },
+    { title: 'Read the recorded run and the helper contract', text: 'The recorded report with every step, and the Solidity helper that adds liquidity and runs the two legs.', link: [`${REPO}/blob/main/reports/arbitrage-runs.json`, 'reports/arbitrage-runs.json'] },
     { title: 'Read the skill itself', text: 'SKILL.md, the reference and the script are in the repository.', link: [`${REPO}/tree/main/skills/pharos-arbitrage-scanner`, 'skills/pharos-arbitrage-scanner'] },
   ],
 };
 
-export const mount = makePanel({
-  intro: 'Scan the pair once, or pick a labelled synthetic scenario to see the act path. Every scan is added to the history below (kept in your browser).',
-  fields: [
-    { name: 'pair', label: 'Pair', type: 'select', options: [['WPROS/DLP', 'WPROS / DLP'], ['UNI-V2/PDOG', 'UNI-V2 / PDOG']], value: 'WPROS/DLP' },
-    { name: 'source', label: 'Data', type: 'select', options: [['live', 'Live Pharos mainnet'], ['profitable', 'Synthetic: profitable'], ['marginal', 'Synthetic: marginal']], value: 'live' },
-    { name: 'size', label: 'Max trade size', type: 'number', value: '1', step: 'any', min: 0, hint: 'in the quote token' },
-    { name: 'minNet', label: 'Minimum net profit', type: 'number', value: '0.001', step: 'any', min: 0, hint: 'in the quote token' },
-  ],
-  button: 'Scan now',
-  examples: [
-    { label: 'Live market (expect a skip)', values: { pair: 'WPROS/DLP', source: 'live', size: '1', minNet: '0.001' } },
-    { label: 'Synthetic profitable (expect an act)', values: { pair: 'WPROS/DLP', source: 'profitable', size: '50', minNet: '0.001' } },
-    { label: 'Synthetic marginal (expect a skip)', values: { pair: 'WPROS/DLP', source: 'marginal', size: '50', minNet: '0.001' } },
-  ],
-  state: history,
-  title: (v) => `Scan ${v.pair} (${v.source})`,
-  call: (v) => ({ params: { pair: v.pair, source: v.source, size: v.size, minNet: v.minNet } }),
-  nextState: (d, prev) => [{ at: new Date().toISOString().slice(11, 19), pair: d.scan.pair, source: d.scan.source, block: d.scan.block, spread: d.scan.grossSpreadPct, net: d.scan.net, decision: d.scan.decision, unit: d.scan.quote }, ...(prev ?? [])].slice(0, 25),
+const scanView = {
   decode: ({ scan: s }) => [
     { kind: 'decision', title: `Gross spread ${f(s.grossSpreadPct, 4)}% (${s.route.buyOn} → ${s.route.sellOn})`, lines: [['V2 price', `${f(s.sources.v2.price)} ${s.quote}/${s.base}`], ['V3 price', `${f(s.sources.v3.price)} ${s.quote}/${s.base}`], ['depth: V2 quote reserve', `${f(s.depth.v2Quote)} ${s.quote}`], ['depth: V3 range can absorb (selling base)', `${f(s.depth.v3RangeSellBase)} ${s.base}`]] },
     { kind: 'decision', title: `Net ${f(s.net)} ${s.quote} at size ${f(s.size)}`, lines: [['gross edge', f(s.gross)], ['swap fees', f(s.costs.fees)], ['price impact', f(s.costs.priceImpact)], ['gas', f(s.costs.gas)], ['minimum net', f(s.minNet)]] },
@@ -107,4 +95,52 @@ export const mount = makePanel({
     ${table(['Size', 'Net before gas', 'Net after gas', 'Estimate'], s.curve.map((c) => [f(c.size), f(c.netBeforeGas), c.net == null ? 'n/a' : f(c.net), c.inRange ? pill('trusted', 'ok') : pill('outside V3 range', 'warn')]))}
     <h4 class="list-h">Scan history <span class="muted">newest first, kept in this browser</span></h4>
     ${table(['Time (UTC)', 'Pair', 'Data', 'Gross spread', 'Net', 'Decision'], (state ?? []).map((h) => [h.at, esc(h.pair), esc(h.source), `${f(h.spread, 4)}%`, h.net == null ? 'n/a' : `${f(h.net)} ${esc(h.unit)}`, pill(h.decision === 'skip' ? 'skip' : 'execute (sim)', h.decision === 'skip' ? 'warn' : 'ok')]))}`,
+};
+
+const fx = (n, d = 6) => (n == null ? 'n/a' : Number(n).toLocaleString('en-US', { maximumFractionDigits: d }));
+const sgn = (n, d = 6) => (n == null ? 'n/a' : `${n > 0 ? '+' : ''}${fx(n, d)}`);
+
+const recordedView = {
+  decode: (r) => r.scenarios.map((s) => ({ kind: 'decision', ok: s.scan.decision !== 'skip' || s.execution.actualNet < 0, title: `${s.title}`, detail: `scanner: ${s.scan.decision}; real execution: ${s.execution.status}, ${s.execution.actualGrossProfit == null ? 'reverted' : `${sgn(s.execution.actualGrossProfit)} WPROS before gas (predicted ${sgn(s.execution.predictedGrossProfit)})`}; scan after the trade: ${s.rescan.decision}` })),
+  summary: (r) => `${r.scenarios.length} recorded fork scenarios · predicted vs actual profit within ${fx(Math.max(...r.scenarios.map((s) => s.execution.predictionErrorPct ?? 0)), 6)}%`,
+  render: (r) => `
+    <p class="check warn"><b>How to read this.</b> ${r.honesty.map(esc).join(' ')}</p>
+    <p class="muted">Recorded ${esc(r.recordedAt)} on a ${esc(r.network.name)}. Transaction hashes exist only on that fork.</p>
+    ${r.scenarios.map((s) => `
+      <div class="card" style="margin-bottom:14px">
+        <div class="verdict ${s.scan.decision === 'skip' ? 'warn' : 'ok'}">${s.scan.decision === 'skip' ? 'SCANNER SKIPPED' : 'SCANNER ACTED'}<small>${esc(s.title)}</small></div>
+        <p class="muted">${esc(s.note)} Fork block ${s.forkBlock.toLocaleString('en-US')}.</p>
+        <ol class="steps-list">${s.steps.map((st, i) => `<li><span class="si ok">${i + 1}</span><div><b>${esc(st.what)}</b>${st.decision ? ' ' + pill(st.decision === 'skip' ? 'skip' : 'act', st.decision === 'skip' ? 'warn' : 'ok') : ''}<p class="muted">${esc(st.detail)}</p></div></li>`).join('')}</ol>
+        <h4 class="list-h">Predicted by the scanner vs what the EVM did</h4>
+        ${table(['', 'Scanner’s model', 'Real EVM', 'Difference'], [
+          [s.execution.forced ? 'Profit before gas (forced 5 WPROS trade)' : 'Profit before gas', sgn(s.execution.predictedGrossProfit), s.execution.actualGrossProfit == null ? `reverted (${esc(s.execution.revertReason ?? '')})` : sgn(s.execution.actualGrossProfit), s.execution.predictionErrorPct == null ? 'n/a' : `${fx(s.execution.predictionErrorPct, 8)}%`],
+          ['Gas units, both legs', fx(s.execution.predictedGasUnits, 0) + ' (assumed)', fx(s.execution.gasUsed, 0), `${fx((1 - s.execution.gasUsed / s.execution.predictedGasUnits) * 100, 0)}% below the assumption`],
+          ['Net after gas', '', `<b class="${s.execution.actualNet >= 0 ? 'ok' : 'bad'}">${sgn(s.execution.actualNet)} WPROS</b>`, `gas ${fx(s.execution.gasCostWpros, 6)} WPROS at ${fx(s.execution.gasPriceGwei, 2)} gwei`],
+        ])}
+        <p class="check ${s.scan.decision === 'skip' && s.execution.actualNet < 0 ? 'ok' : s.scan.decision !== 'skip' && s.execution.actualNet > 0 ? 'ok' : 'bad'}">${s.scan.decision === 'skip' ? (s.execution.actualNet < 0 ? '✓ The scanner was right to skip: the trade it refused really lost money.' : '✗ The scanner skipped a trade that would have profited.') : (s.execution.actualNet > 0 ? '✓ The scanner was right to act: the trade really made money after gas.' : '✗ The scanner acted on a trade that lost money.')}</p>
+      </div>`).join('')}`,
+};
+
+export const mount = makePanel({
+  intro: 'Scan the pair once, or pick a labelled synthetic scenario to see the act path. Every scan is added to the history below (kept in your browser).',
+  fields: [
+    { name: 'pair', label: 'Pair', type: 'select', options: [['WPROS/DLP', 'WPROS / DLP'], ['UNI-V2/PDOG', 'UNI-V2 / PDOG']], value: 'WPROS/DLP' },
+    { name: 'source', label: 'Data', type: 'select', options: [['live', 'Live Pharos mainnet'], ['profitable', 'Synthetic: profitable'], ['marginal', 'Synthetic: marginal'], ['fork-recorded', 'Recorded real-EVM fork run']], value: 'live' },
+    { name: 'size', label: 'Max trade size', type: 'number', value: '1', step: 'any', min: 0, hint: 'in the quote token' },
+    { name: 'minNet', label: 'Minimum net profit', type: 'number', value: '0.001', step: 'any', min: 0, hint: 'in the quote token' },
+  ],
+  button: 'Scan now',
+  examples: [
+    { label: 'Live market (expect a skip)', values: { pair: 'WPROS/DLP', source: 'live', size: '1', minNet: '0.001' } },
+    { label: 'Synthetic profitable (expect an act)', values: { pair: 'WPROS/DLP', source: 'profitable', size: '50', minNet: '0.001' } },
+    { label: 'Synthetic marginal (expect a skip)', values: { pair: 'WPROS/DLP', source: 'marginal', size: '50', minNet: '0.001' } },
+    { label: 'Recorded real-EVM fork run (act, execute, verify)', values: { pair: 'WPROS/DLP', source: 'fork-recorded', size: '1', minNet: '0.001' } },
+  ],
+  state: history,
+  title: (v) => (v.source === 'fork-recorded' ? 'Recorded real-EVM fork run' : `Scan ${v.pair} (${v.source})`),
+  call: (v) => ({ params: { pair: v.pair, source: v.source, size: v.size, minNet: v.minNet } }),
+  nextState: (d, prev) => (d.recorded ? prev : [{ at: new Date().toISOString().slice(11, 19), pair: d.scan.pair, source: d.scan.source, block: d.scan.block, spread: d.scan.grossSpreadPct, net: d.scan.net, decision: d.scan.decision, unit: d.scan.quote }, ...(prev ?? [])].slice(0, 25)),
+  decode: (d) => (d.recorded ? recordedView.decode(d.recorded) : scanView.decode(d)),
+  summary: (d) => (d.recorded ? recordedView.summary(d.recorded) : scanView.summary(d)),
+  render: (d, ctx) => (d.recorded ? recordedView.render(d.recorded) : scanView.render(d, ctx)),
 });

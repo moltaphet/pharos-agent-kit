@@ -12,7 +12,7 @@ Ten working builds for the [Pharos Agent Arena](https://pharos-agent-arena.verce
 | 4 | Doc-Search CLI | `node bin/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
 | 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | read-only |
 | 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts, local fork | **fork only** |
-| 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | simulated fill |
+| 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | simulated fill on live data; act path executed on a real-EVM fork (`scripts/arb-fork-run.mjs`) |
 | 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulation (+ fork) |
 | 9 | Trend Watcher (Skill) | `skills/pharos-trend-watcher/` | Pharos mainnet history | read-only (+ state file) |
 | 10 | Batch Executor (Skill) | `skills/pharos-batch-executor/` | Pharos mainnet | prepared, unsigned (+ fork) |
