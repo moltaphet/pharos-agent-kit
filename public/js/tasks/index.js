@@ -9,6 +9,7 @@ import * as sagaExecutor from './saga-executor.js';
 import * as arbitrageScanner from './arbitrage-scanner.js';
 import * as dryRunExecutor from './dry-run-executor.js';
 import * as trendWatcher from './trend-watcher.js';
+import * as batchExecutor from './batch-executor.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -17,4 +18,5 @@ export const TASK_MODULES = {
   'arbitrage-scanner': arbitrageScanner,
   'dry-run-executor': dryRunExecutor,
   'trend-watcher': trendWatcher,
+  'batch-executor': batchExecutor,
 };

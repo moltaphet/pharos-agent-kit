@@ -1,0 +1,98 @@
+{
+  "recordedAt": "2026-10-22T10:22:32.966Z",
+  "plan": {
+    "block": 20920426,
+    "from": "0x9f8ea09770dc38fc61f5a62031b3be0526d54d92",
+    "onFailure": "exclude",
+    "actions": [
+      {
+        "id": "a1",
+        "to": "0xb7d5d299c671e4a4c7c0c5a33b812185182fc417",
+        "valuePros": "0",
+        "value": "0",
+        "status": "ok",
+        "reason": null,
+        "soloGas": 80751,
+        "included": true
+      },
+      {
+        "id": "a2",
+        "to": "0xb9f329a51837d27a20dff113679d47d673d5e45b",
+        "valuePros": "0",
+        "value": "0",
+        "status": "ok",
+        "reason": null,
+        "soloGas": 76019,
+        "included": true
+      },
+      {
+        "id": "a3",
+        "to": "0x7f4a462fc320db1e26dd1366dce9e276ee6c5930",
+        "valuePros": "0",
+        "value": "0",
+        "status": "ok",
+        "reason": null,
+        "soloGas": 86273,
+        "included": true
+      },
+      {
+        "id": "a4",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "valuePros": "0",
+        "value": "0",
+        "status": "fails",
+        "reason": "the call reverted without a reason",
+        "soloGas": null,
+        "included": false
+      }
+    ],
+    "included": [
+      "a1",
+      "a2",
+      "a3"
+    ],
+    "excluded": [
+      {
+        "id": "a4",
+        "why": "would fail: the call reverted without a reason"
+      }
+    ],
+    "batch": {
+      "to": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "value": "0",
+      "valuePros": "0",
+      "calls": 3,
+      "data": "0x174dea710000000000000000000000000000000000000000000000000000000000000020…",
+      "gas": 206150
+    },
+    "comparison": {
+      "transactionsBefore": 3,
+      "transactionsAfter": 1,
+      "soloGasTotal": 243043,
+      "batchGas": 206150,
+      "gasSaved": 36893,
+      "gasSavedPct": 15.179618421431599
+    },
+    "verdict": "ready",
+    "summary": "3 actions in 1 transaction: saves 36,893 gas (15.2%); 1 left out."
+  },
+  "fork": {
+    "network": "local anvil fork of Pharos mainnet",
+    "soloGasUsed": 178977,
+    "batchGasUsed": 150762,
+    "status": "success",
+    "saved": 28215,
+    "savedPct": 15.764595450812116,
+    "received": {
+      "a1": "0",
+      "a2": "0",
+      "a3": "0",
+      "a4": "0"
+    },
+    "forcedFailingAction": {
+      "reverted": true,
+      "reason": "Multicall3: call failed",
+      "recipientsUnchanged": true
+    }
+  }
+}
