@@ -102,3 +102,48 @@ test('rpcCall gives up after its retries and does not retry real errors at all',
     assert.equal(n, 1);
   } finally { globalThis.fetch = real; }
 });
+
+// ---- "block is not available" is retried ------------------------------------------------------------
+async function flakyBlockServer(failures) {
+  let n = 0;
+  const server = http.createServer((req, res) => {
+    let body = '';
+    req.on('data', (c) => (body += c));
+    req.on('end', () => {
+      const m = JSON.parse(body);
+      const reply = (result) => { res.setHeader('content-type', 'application/json'); res.setHeader('mcp-session-id', 's1'); res.end(JSON.stringify({ jsonrpc: '2.0', id: m.id, result })); };
+      if (m.method === 'initialize') return reply({ serverInfo: { name: 'test' }, protocolVersion: '2025-03-26' });
+      if (m.id === undefined) { res.statusCode = 202; return res.end(); }
+      n++;
+      const msg = m.params.name === 'other' ? 'execution reverted' : 'block is not available';
+      if (n <= failures || m.params.name === 'other') return reply({ isError: true, content: [{ type: 'text', text: JSON.stringify({ error: { message: msg, code: -32602 } }) }] });
+      reply({ content: [{ type: 'text', text: '"ok"' }] });
+    });
+  });
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  return { url: `http://127.0.0.1:${server.address().port}/mcp`, count: () => n, close: () => server.closeAllConnections() || server.close() };
+}
+
+test('"block is not available" is retried and the call then succeeds', async () => {
+  const s = await flakyBlockServer(2);
+  try {
+    assert.equal(await new McpClient(s.url, { retries: 0 }).callTool('get_code', {}), 'ok');
+    assert.equal(s.count(), 3);
+  } finally { s.close(); }
+});
+
+test('"block is not available" gives up after a few tries and surfaces the error', async () => {
+  const s = await flakyBlockServer(99);
+  try {
+    await assert.rejects(new McpClient(s.url, { retries: 0 }).callTool('get_code', {}), (e) => e.tool === true && /block is not available/.test(e.message));
+    assert.equal(s.count(), 4); // 1 + 3 retries
+  } finally { s.close(); }
+});
+
+test('other tool errors (a revert) are never retried', async () => {
+  const s = await flakyBlockServer(0);
+  try {
+    await assert.rejects(new McpClient(s.url, { retries: 0 }).callTool('other', {}), (e) => e.tool === true);
+    assert.equal(s.count(), 1);
+  } finally { s.close(); }
+});
