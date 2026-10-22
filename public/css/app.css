@@ -384,3 +384,6 @@ pre.plain { background: var(--surface-2); border: 1px solid var(--border); borde
 .md pre.plain { margin: 0; }
 
 .trend-chart { width: 100%; height: auto; color: var(--text); margin: 6px 0 10px; }
+
+/* Long unbroken strings (addresses, hashes, URLs) in running text must wrap instead of widening the page on phones. */
+#main p, #main li, #main h3, #main h4, #main dd, #main summary { overflow-wrap: break-word; }
