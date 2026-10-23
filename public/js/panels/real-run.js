@@ -35,7 +35,7 @@ export function mountRealRun(root, cfg) {
   const go = $('#rr-go', root);
   const rec = $('#rr-rec', root);
   const scenarioEl = $('#rr-scenario', root);
-  const log = createRunLog($('#rr-log', root), { task: cfg.slug });
+  const log = createRunLog($('#rr-log', root), { task: `${cfg.slug}-real` }); // a distinct id: the page also has the scan panel's log
   const busy = (b) => { go.disabled = b; if (rec) rec.disabled = b; };
 
   async function run(scenario) {

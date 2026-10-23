@@ -53,3 +53,18 @@ test('the saga demo and the arbitrage demo share one limit pool (a runner can no
   const sdk = { list: async () => [{ name: 'saga-plain-aaaaaaaa', status: 'running', createdAt: 0, tags: {} }, { name: 'arb-marginal-bbbbbbbb', status: 'running', createdAt: 0, tags: {} }] };
   await assert.rejects(startRun({ scenario: 'profitable', ip: '8.8.8.8' }, { Sandbox: sdk }), /already in progress/);
 });
+
+// The deployed function only contains files that vercel.json's includeFiles names. A file the sandbox runner uploads but the
+// function does not contain fails at run time in production (ENOENT /var/task/...), which no local test would notice.
+import { FILES as SAGA_FILES } from '../lib/saga-sandbox.js';
+import { FILES as ARB_FILES } from '../lib/arb-sandbox.js';
+
+test('every file either sandbox demo uploads is included in the deployed function (vercel.json includeFiles)', () => {
+  const cfg = JSON.parse(readFileSync(path.join(root, 'vercel.json'), 'utf8'));
+  const pattern = cfg.functions['api/*.js'].includeFiles; // e.g. "{skills,reports,lib}/**"
+  const dirs = pattern.match(/^\{([^}]+)\}\/\*\*$/)?.[1].split(',');
+  assert.ok(dirs, `unexpected includeFiles pattern ${pattern}`);
+  for (const f of [...SAGA_FILES, ...ARB_FILES, 'config/saga-snapshot.json']) {
+    assert.ok(dirs.includes(f.split('/')[0]), `${f} is uploaded to the sandbox but "${f.split('/')[0]}" is not in includeFiles (${pattern})`);
+  }
+});
