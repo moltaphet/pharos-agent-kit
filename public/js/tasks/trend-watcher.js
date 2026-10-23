@@ -99,7 +99,7 @@ export const mount = makePanel({
     { name: 'action', label: 'Action', type: 'select', options: [['backfill', 'Back-fill real history'], ['observe', 'Observe now (latest block)']], value: 'backfill' },
     { name: 'metric', label: 'Metric', type: 'select', options: [['usdc-supply', 'USDC total supply'], ['morpho-usdc', 'USDC held by Morpho Blue'], ['wpros-supply', 'WPROS total supply'], ['vrpcw-share', 'R25 VRPC-Weekly share price']], value: 'usdc-supply' },
     { name: 'count', label: 'Samples', type: 'number', value: '8', min: 1, step: 1 },
-    { name: 'step', label: 'Blocks apart', type: 'number', value: '20000', min: 100, step: 1000, hint: '~1 second per block' },
+    { name: 'step', label: 'Blocks apart', type: 'number', value: '20000', min: 100, step: 100, hint: '~1 second per block' },
     { name: 'direction', label: 'Trend direction', type: 'select', options: [['down', 'Falling'], ['up', 'Rising']], value: 'down' },
     { name: 'observations', label: 'Consecutive observations', type: 'number', value: '3', min: 3, step: 1, hint: 'at least 3' },
     { name: 'minStepPct', label: 'Min step (%)', type: 'number', value: '0', min: 0, step: 'any' },
