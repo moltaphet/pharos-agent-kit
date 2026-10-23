@@ -387,3 +387,8 @@ pre.plain { background: var(--surface-2); border: 1px solid var(--border); borde
 
 /* Long unbroken strings (addresses, hashes, URLs) in running text must wrap instead of widening the page on phones. */
 #main p, #main li, #main h3, #main h4, #main dd, #main summary { overflow-wrap: break-word; }
+
+/* sequence diagram and compact code in step tables */
+.diagram { margin: 0 0 22px; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.diagram figcaption { margin-top: 8px; font-size: 13px; }
+code.tiny { font-size: 11.5px; word-break: break-all; }

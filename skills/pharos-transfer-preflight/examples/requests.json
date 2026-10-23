@@ -1,0 +1,8 @@
+[
+  { "id": "ready", "label": "A transfer the policy allows and the chain confirms (a Thursday block)", "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54", "block": 20918892 },
+  { "id": "weekend", "label": "The same request at a Saturday block: the chain’s clock changes the answer", "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54", "block": 20471429 },
+  { "id": "over-limit", "label": "Over the policy’s per-request limit", "text": "send 150 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54", "block": 20918892 },
+  { "id": "no-balance", "label": "Allowed by the policy, but the sender holds no USDC: the chain stops it", "text": "send 1 USDC from 0x0000000000000000000000000000000000000001 to 0x768b959191ce5876cabbbc014a08d72615bdde54", "block": 20918892 },
+  { "id": "stranger", "label": "A recipient that is not on the allowlist", "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x3333333333333333333333333333333333333333", "block": 20918892 },
+  { "id": "latest", "label": "Right now: the latest block, whatever day it is", "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54", "block": null }
+]

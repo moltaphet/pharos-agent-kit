@@ -17,6 +17,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 9 | Trend Watcher | [demo](https://pharos-agent-kit.vercel.app/#/trend-watcher/try) | [skills/pharos-trend-watcher](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-trend-watcher) | [09-trend-watcher.md](09-trend-watcher.md) |
 | 10 | Batch Executor | [demo](https://pharos-agent-kit.vercel.app/#/batch-executor/try) | [skills/pharos-batch-executor](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-batch-executor) | [10-batch-executor.md](10-batch-executor.md) |
 | 11 | Policy Gatekeeper | [demo](https://pharos-agent-kit.vercel.app/#/policy-gatekeeper/try) | [skills/pharos-policy-gatekeeper](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-policy-gatekeeper) | [11-policy-gatekeeper.md](11-policy-gatekeeper.md) |
+| 12 | Skill + Chain MCP Flow | [demo](https://pharos-agent-kit.vercel.app/#/skill-chain-mcp-flow/try) | [skills/pharos-transfer-preflight](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-transfer-preflight) | [12-skill-chain-mcp-flow.md](12-skill-chain-mcp-flow.md) |
 
 ## Tests of the shared platform
 

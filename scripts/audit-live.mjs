@@ -331,11 +331,50 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  sec('12 Skill + Chain MCP Flow');
+  const SLUG = 'skill-chain-mcp-flow';
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('example policy and six example requests are served', ex?.policy?.rules?.length === 6 && ex.requests?.length === 6);
+  const flow = (text, block, extra = {}) => run(SLUG, {}, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text, ...(block != null && { block }), ...extra }) });
+  const [ready, weekend] = [ex.requests.find((r) => r.id === 'ready'), ex.requests.find((r) => r.id === 'weekend')];
+  const r1 = (await flow(ready.text, ready.block)).body?.data?.flow;
+  check('READY at the Thursday block: unsigned ERC-20 transfer, 13 Chain MCP calls, gas limit = estimate + 30%', r1?.verdict?.status === 'ready' && r1.chainCalls === 13 && r1.verdict.prepared?.data?.startsWith('0xa9059cbb') && r1.verdict.prepared.gasLimit === Math.ceil(r1.verdict.gas.units * 1.3), JSON.stringify(r1?.verdict?.headline));
+  check('READY: the block time came from the chain (Thursday 2026-10-22 10:00:01 UTC), the balance from the chain (1,242,441.562141 USDC)', r1?.block?.iso === '2026-10-22 10:00:01 UTC' && r1.dependsOn?.some((d) => /1,242,441\.562141 USDC/.test(d.value)));
+  check('READY: steps alternate Skill and Chain MCP, numbered 1..n, and the simulation comes after the policy gate', r1?.steps?.every((s, i) => s.n === i + 1) && r1.steps.findIndex((s) => s.name === 'policy-gate') < r1.steps.findIndex((s) => s.name === 'estimate_gas'));
+  const r2 = (await flow(weekend.text, weekend.block)).body?.data?.flow;
+  check('the SAME request at the Saturday block is STOP by office-hours (the chain’s clock decided)', r2?.verdict?.status === 'stop' && r2.verdict.rule?.id === 'office-hours' && r2.block.weekday === 'sat' && ready.text === weekend.text);
+  check('a deny never asks Chain MCP to simulate: 4 calls, none of estimate_gas / get_gas_price', r2?.chainCalls === 4 && !r2.steps.some((s) => ['estimate_gas', 'get_gas_price'].includes(s.name)) && r2.skippedChainCalls?.includes('estimate_gas'));
+  const r3 = (await flow(ex.requests.find((r) => r.id === 'over-limit').text, ready.block)).body?.data?.flow;
+  check('150 USDC is denied by the per-request spend limit', r3?.verdict?.rule?.id === 'usdc-cap' && /over the per-request limit/.test(r3.verdict.reason));
+  const r4 = (await flow(ex.requests.find((r) => r.id === 'stranger').text, ready.block)).body?.data?.flow;
+  check('a recipient off the allowlist is denied by known-recipients', r4?.verdict?.rule?.id === 'known-recipients');
+  const r5 = (await flow(ex.requests.find((r) => r.id === 'no-balance').text, ready.block)).body?.data?.flow;
+  check('the policy allows it but the chain stops it: STOP at the simulation with the decoded revert', r5?.verdict?.stage === 'simulation' && r5.decision?.decision === 'allow' && r5.verdict.reason === 'ERC20: transfer amount exceeds balance');
+  const live = (await flow(ready.text, null)).body?.data?.flow;
+  check('with no block given the flow reads the latest block (two behind the head) and its time', live?.block?.historical === false && live.block.number > 21_000_000 && live.block.timestamp > 1.79e9 && live.block.head - live.block.number === 2, JSON.stringify(live?.block));
+  const rec = (await run(SLUG, { recorded: '1' })).body?.data?.demo;
+  check('recorded demo: five cases pinned to mainnet blocks', rec?.cases?.length === 5 && rec.cases.every((c) => Number.isInteger(c.block)));
+  for (const id of ['ready', 'weekend']) {
+    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const c = rp?.comparison;
+    check(`replay "${id}": same verdict, and every pinned Chain MCP answer identical to the recording`, c?.sameVerdict === true && c.chainAnswers.compared >= 3 && c.chainAnswers.identical === c.chainAnswers.compared && c.sameStepCount, `${c?.chainAnswers?.identical}/${c?.chainAnswers?.compared}`);
+  }
+  check('native PROS requests are read too (no token lookups)', (await flow(`send 0.5 PROS from ${ready.text.split(' ')[4]} to ${ready.text.split(' ')[6]}`, ready.block)).body?.data?.flow?.steps?.every((s) => s.name !== 'token-check'));
+  check('garbage request rejected with 400', is400(await flow('hello world')));
+  check('unknown token rejected with 400', is400(await flow(ready.text.replace('USDC', 'DOGE'), ready.block)));
+  check('block beyond the head rejected with 400', is400(await flow(ready.text, 999999999)));
+  check('non-numeric block rejected with 400', is400(await run(SLUG, { text: ready.text, block: 'abc' })));
+  check('invalid policy rejected with 400', is400(await flow(ready.text, ready.block, { policy: { version: 1, rules: [] } })));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+  check('GET without a request rejected with 400', is400(await run(SLUG)));
+});
+
+await guard(async () => {
   sec('Cross-cutting');
   check('unknown task slug rejected with 400', is400(await run('nope')));
   check('prototype-pollution slug rejected with 400', is400(await run('__proto__')) && is400(await run('constructor')));
   check('missing slug rejected with 400', is400(await get('/api/run')));
-  check('skill files served for all 7 skills', (await Promise.all(['threshold-guardian', 'saga-executor', 'arbitrage-scanner', 'dry-run-executor', 'trend-watcher', 'batch-executor', 'policy-gatekeeper'].map((t) => get('/api/run' + q({ slug: '_skill', task: t }))))).every((r) => r.body?.ok && r.body.data.files.some((f) => f.path === 'SKILL.md')));
+  check('skill files served for all 8 skills', (await Promise.all(['threshold-guardian', 'saga-executor', 'arbitrage-scanner', 'dry-run-executor', 'trend-watcher', 'batch-executor', 'policy-gatekeeper', 'skill-chain-mcp-flow'].map((t) => get('/api/run' + q({ slug: '_skill', task: t }))))).every((r) => r.body?.ok && r.body.data.files.some((f) => f.path === 'SKILL.md')));
   check('skill request for a non-skill task rejected with 400', is400(await get('/api/run' + q({ slug: '_skill', task: 'doc-search-cli' }))));
   check('path traversal in skill task rejected', [400].includes((await get('/api/run' + q({ slug: '_skill', task: '../../etc/passwd' }))).status));
   const h = await get('/api/health');

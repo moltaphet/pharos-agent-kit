@@ -41,6 +41,8 @@ export const TASK_MAP = [
     tests: ['batch.test.js', 'multicall.test.js'] },
   { n: 11, slug: 'policy-gatekeeper', folder: TASK_FOLDERS['policy-gatekeeper'], entries: ['lib/tasks/policy-gatekeeper.js', 'scripts/testnet-gatekeeper.mjs'], data: ['reports/testnet-gatekeeper.json'], page: ['public/js/tasks/policy-gatekeeper.js'],
     tests: ['policy.test.js', 'audit-log.test.js', 'gatekeeper-task.test.js'] },
+  { n: 12, slug: 'skill-chain-mcp-flow', folder: TASK_FOLDERS['skill-chain-mcp-flow'], entries: ['lib/flow.js', 'lib/tasks/skill-chain-mcp-flow.js', 'scripts/flow-demo.mjs'], data: ['reports/flow-demo.json'], page: ['public/js/tasks/skill-chain-mcp-flow.js'],
+    tests: ['flow.test.js', 'flow-task.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

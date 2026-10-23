@@ -11,6 +11,7 @@ import * as dryRunExecutor from './dry-run-executor.js';
 import * as trendWatcher from './trend-watcher.js';
 import * as batchExecutor from './batch-executor.js';
 import * as policyGatekeeper from './policy-gatekeeper.js';
+import * as skillChainMcpFlow from './skill-chain-mcp-flow.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -21,4 +22,5 @@ export const TASK_MODULES = {
   'trend-watcher': trendWatcher,
   'batch-executor': batchExecutor,
   'policy-gatekeeper': policyGatekeeper,
+  'skill-chain-mcp-flow': skillChainMcpFlow,
 };

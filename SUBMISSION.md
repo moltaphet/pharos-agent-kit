@@ -169,6 +169,20 @@ Requirements it was built against (the Arena's own list):
 3. Denied actions are never executed. Shows at least one deny per rule type.
 4. Keeps an audit log of all decisions.
 
+## 12. Skill + Chain MCP Flow
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/skill-chain-mcp-flow/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/skill-chain-mcp-flow
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-transfer-preflight
+- **What the proof shows:** One sentence runs Chain MCP and two Skills end to end on Pharos mainnet; the same request is READY at a Thursday block and STOP at a Saturday block because the chain’s clock decides. Five recorded runs pinned to blocks, replayable.
+
+Requirements it was built against (the Arena's own list):
+
+1. The Skill's output depends on live data fetched via Chain MCP in the same flow.
+2. The flow runs end to end from a single user request.
+3. A diagram or short write-up of the flow: what calls what, and in what order.
+4. A demo run showing real data moving through both tools.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

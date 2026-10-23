@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "name": "treasury transfers on Pharos mainnet",
+  "rules": [
+    { "id": "usdc-cap", "type": "spend-limit", "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815", "decimals": 6, "symbol": "USDC", "perRequest": "100", "perWindow": { "amount": "250", "seconds": 86400 } },
+    { "id": "pros-cap", "type": "spend-limit", "asset": "native", "symbol": "PROS", "perRequest": "1" },
+    { "id": "known-targets", "type": "allowlist", "field": "target", "values": ["0xc879c018db60520f4355c26ed1a6d572cdac1815", "0x52c48d4213107b20bc583832b0d951fb9ca8f0b0", "0x768b959191ce5876cabbbc014a08d72615bdde54", "0x9f8ea09770dc38fc61f5a62031b3be0526d54d92"] },
+    { "id": "known-recipients", "type": "allowlist", "field": "recipient", "values": ["0x768b959191ce5876cabbbc014a08d72615bdde54", "0x9f8ea09770dc38fc61f5a62031b3be0526d54d92"] },
+    { "id": "known-functions", "type": "allowlist", "field": "selector", "values": ["0xa9059cbb"] },
+    { "id": "office-hours", "type": "time-window", "timezone": "UTC", "days": ["mon", "tue", "wed", "thu", "fri"], "from": "08:00", "to": "18:00" }
+  ]
+}

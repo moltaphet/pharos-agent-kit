@@ -74,7 +74,7 @@ function liveSections(t, live) {
     S('story', 'The story', live.story.map((p) => `<p class="story">${esc(p)}</p>`).join('')),
     S('try', 'Try it live', '<div class="panel" id="panel"></div>'),
     S('requirements', 'Requirements', requirements(t, live)),
-    S('how', 'How it works', flow(live.how)),
+    S('how', 'How it works', (live.diagram ?? '') + flow(live.how)),
     live.skill ? S('skill', 'The Skill', `<p class="muted">A Pharos Skill is a folder an AI agent reads: <code>SKILL.md</code> says what it can do and when, the references give exact commands, and the scripts do the work. This one is shipped in the repository.</p><div class="skill" id="skill-box" data-task="${slug}"><p class="muted">Loading the skill files…</p></div>`) : '',
     S('decisions', 'Decisions', `<div class="cards">${live.decisions.map((d) => `<article class="note-card"><h3>${esc(d.title)}</h3><p>${esc(d.text)}</p></article>`).join('')}</div>`),
     S(

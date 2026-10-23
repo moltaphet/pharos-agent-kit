@@ -17,6 +17,7 @@ export const TASK_FOLDERS = {
   'trend-watcher': 'skills/pharos-trend-watcher',
   'batch-executor': 'skills/pharos-batch-executor',
   'policy-gatekeeper': 'skills/pharos-policy-gatekeeper',
+  'skill-chain-mcp-flow': 'skills/pharos-transfer-preflight',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

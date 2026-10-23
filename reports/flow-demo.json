@@ -1,0 +1,2259 @@
+{
+ "recordedAt": "2026-10-23T12:18:19.942Z",
+ "network": {
+  "name": "Pharos Pacific Mainnet",
+  "chainId": 1672,
+  "mcp": "https://mcp.pharos.xyz/mcp"
+ },
+ "note": "Each case is pinned to a mainnet block. Replaying it later asks Chain MCP the same questions at the same block; only the head and the gas price (no block parameter) are current.",
+ "policy": {
+  "version": 1,
+  "name": "treasury transfers on Pharos mainnet",
+  "rules": [
+   {
+    "id": "usdc-cap",
+    "type": "spend-limit",
+    "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+    "decimals": 6,
+    "symbol": "USDC",
+    "perRequest": "100",
+    "perWindow": {
+     "amount": "250",
+     "seconds": 86400
+    }
+   },
+   {
+    "id": "pros-cap",
+    "type": "spend-limit",
+    "asset": "native",
+    "symbol": "PROS",
+    "perRequest": "1"
+   },
+   {
+    "id": "known-targets",
+    "type": "allowlist",
+    "field": "target",
+    "values": [
+     "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "0x52c48d4213107b20bc583832b0d951fb9ca8f0b0",
+     "0x768b959191ce5876cabbbc014a08d72615bdde54",
+     "0x9f8ea09770dc38fc61f5a62031b3be0526d54d92"
+    ]
+   },
+   {
+    "id": "known-recipients",
+    "type": "allowlist",
+    "field": "recipient",
+    "values": [
+     "0x768b959191ce5876cabbbc014a08d72615bdde54",
+     "0x9f8ea09770dc38fc61f5a62031b3be0526d54d92"
+    ]
+   },
+   {
+    "id": "known-functions",
+    "type": "allowlist",
+    "field": "selector",
+    "values": [
+     "0xa9059cbb"
+    ]
+   },
+   {
+    "id": "office-hours",
+    "type": "time-window",
+    "timezone": "UTC",
+    "days": [
+     "mon",
+     "tue",
+     "wed",
+     "thu",
+     "fri"
+    ],
+    "from": "08:00",
+    "to": "18:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "id": "ready",
+   "title": "A transfer the policy allows and the chain confirms (a Thursday block)",
+   "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+   "block": 20918892,
+   "result": {
+    "request": {
+     "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+     "parsed": {
+      "amount": "1",
+      "symbol": "USDC",
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+     }
+    },
+    "block": {
+     "number": 20918892,
+     "head": 21023856,
+     "historical": true,
+     "timestamp": 1792663201,
+     "iso": "2026-10-22 10:00:01 UTC",
+     "weekday": "thu"
+    },
+    "policy": {
+     "name": "treasury transfers on Pharos mainnet",
+     "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af",
+     "rules": [
+      {
+       "id": "usdc-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "pros-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "known-targets",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-recipients",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-functions",
+       "type": "allowlist"
+      },
+      {
+       "id": "office-hours",
+       "type": "time-window"
+      }
+     ]
+    },
+    "verdict": {
+     "status": "ready",
+     "stage": "prepared",
+     "headline": "READY: allowed, simulated, prepared (unsigned)",
+     "reason": "The simulation succeeded: the transaction would go through.",
+     "prepared": {
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f4240",
+      "value": "0",
+      "gasLimit": 76206,
+      "network": "Pharos mainnet (chain 1672)",
+      "note": "unsigned: nothing was sent"
+     },
+     "gas": {
+      "units": 58620,
+      "suggestedLimit": 70344,
+      "priceGwei": 10,
+      "costPros": "0.0005862",
+      "costWei": "586200000000000"
+     },
+     "outcome": {
+      "kind": "erc20-transfer",
+      "summary": "Move 1 USDC from 0x1857…4efb to 0x768b…de54",
+      "rows": [
+       {
+        "label": "0x1857…4efb USDC",
+        "before": "1,242,441.562141 USDC",
+        "after": "1,242,440.562141 USDC"
+       },
+       {
+        "label": "0x768b…de54 USDC",
+        "before": "357.25403 USDC",
+        "after": "358.25403 USDC"
+       }
+      ]
+     }
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "skill",
+      "name": "parse-request",
+      "summary": "Read the request: 1 USDC from 0x1857…4efb to 0x768b…de54.",
+      "uses": [],
+      "output": {
+       "amount": "1",
+       "symbol": "USDC",
+       "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+       "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so the flow can pin everything to one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21023856\",\"blockNumberHex\":\"0x140cc70\"}",
+      "ms": 2234
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its timestamp is the clock the policy’s time window is checked against",
+      "input": "{\"block\":20918892}",
+      "output": "{\"number\":\"0x13f326c\",\"hash\":\"0x963be7ef8ea03186398930a2d07fa24f2b90190f265f8335717e4935ef180287\",\"timestamp\":\"0x6ad9dea1\",\"…\":\"rest of the header omitted\"}",
+      "ms": 301
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "symbol(): is this contract really the token the request names?",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x95d89b41\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 451
+     },
+     {
+      "n": 5,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "decimals(): how many units make one token",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
+      "ms": 542
+     },
+     {
+      "n": 6,
+      "actor": "skill",
+      "name": "token-check",
+      "summary": "The chain confirms 0xc879c018db60520f4355c26ed1a6d572cdac1815 is USDC with 6 decimals (the policy agrees).",
+      "uses": [
+       4,
+       5
+      ],
+      "output": null
+     },
+     {
+      "n": 7,
+      "actor": "skill",
+      "name": "build-transaction",
+      "summary": "transfer(0x768b…de54, 1000000) on 0xc879…1815: 1 USDC is 1000000 units at 6 decimals.",
+      "uses": [
+       5
+      ],
+      "output": {
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f4240",
+       "value": "0"
+      }
+     },
+     {
+      "n": 8,
+      "actor": "skill",
+      "name": "policy-gate",
+      "summary": "Policy Gatekeeper: ALLOW by all-rules-passed (default). allowed: all 6 rules passed (5 applied)",
+      "uses": [
+       3,
+       7
+      ],
+      "output": {
+       "decision": "allow",
+       "rule": {
+        "id": "all-rules-passed",
+        "type": "default"
+       },
+       "checks": [
+        "usdc-cap: pass",
+        "pros-cap: n/a",
+        "known-targets: pass",
+        "known-recipients: pass",
+        "known-functions: pass",
+        "office-hours: pass"
+       ]
+      }
+     },
+     {
+      "n": 9,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Simulate the call (no broadcast): does it succeed?",
+      "input": "{\"transaction\":{\"from\":\"0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb\",\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000001\"}",
+      "ms": 621
+     },
+     {
+      "n": 10,
+      "actor": "chain-mcp",
+      "name": "estimate_gas",
+      "why": "Estimate the gas it would use",
+      "input": "{\"transaction\":{\"from\":\"0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb\",\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f…",
+      "output": "{\"gas\":\"58620\",\"gasHex\":\"0xe4fc\"}",
+      "ms": 426
+     },
+     {
+      "n": 11,
+      "actor": "chain-mcp",
+      "name": "get_gas_price",
+      "why": "Current gas price, to cost it",
+      "input": "{}",
+      "output": "{\"gasPriceWei\":\"10000000000\",\"gasPriceGwei\":\"10\",\"gasPriceHex\":\"0x2540be400\",\"maxPriorityFeePerGasWei\":\"0\",\"maxPriorityFeePerGasGwei\":\"0\",\"maxPriorityFeePerGasHex\":\"0x0\"}",
+      "ms": 425
+     },
+     {
+      "n": 12,
+      "actor": "chain-mcp",
+      "name": "get_code",
+      "why": "The call has data: does the target hold contract code at this block?",
+      "input": "{\"address\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"block\":20918892}",
+      "output": "{\"code\":\"0x60806040526004361061005a5760003560e01c80635c60da1b116100435780635c60da1b146101315780638f2839701461016f578063f851a440146101af5761005a565b80633659cfe6146100645780634f1ef286146100a4575b6100626101c4565b005b34801561007057600080fd5b50610062600480360360208…",
+      "ms": 315
+     },
+     {
+      "n": 13,
+      "actor": "chain-mcp",
+      "name": "get_code",
+      "why": "Check whether the address holds contract code",
+      "input": "{\"address\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"block\":20918892}",
+      "output": "{\"code\":\"0x60806040526004361061005a5760003560e01c80635c60da1b116100435780635c60da1b146101315780638f2839701461016f578063f851a440146101af5761005a565b80633659cfe6146100645780634f1ef286146100a4575b6100626101c4565b005b34801561007057600080fd5b50610062600480360360208…",
+      "ms": 332
+     },
+     {
+      "n": 14,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Token symbol, to label the outcome",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x95d89b41\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 515
+     },
+     {
+      "n": 15,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Token decimals, to format the outcome",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
+      "ms": 669
+     },
+     {
+      "n": 16,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "balanceOf(0x1857…4efb) before",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x70a0823100000000000000000000000018573fa18fd17ddfd790b4a5b5b2977aad3b4efb\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000001214749b81d\"}",
+      "ms": 666
+     },
+     {
+      "n": 17,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "balanceOf(0x768b…de54) before",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x70a08231000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde54\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x00000000000000000000000000000000000000000000000000000000154b438e\"}",
+      "ms": 756
+     },
+     {
+      "n": 18,
+      "actor": "skill",
+      "name": "dry-run-verdict",
+      "summary": "Dry-Run Executor: GO. The simulation succeeded: the transaction would go through. 0x1857…4efb USDC: 1,242,441.562141 USDC → 1,242,440.562141 USDC.",
+      "uses": [
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17
+      ],
+      "output": {
+       "verdict": "go",
+       "gas": 58620
+      }
+     },
+     {
+      "n": 19,
+      "actor": "skill",
+      "name": "verdict",
+      "summary": "READY: allowed by the policy and the simulation succeeds. Prepared an unsigned transaction with gas limit 76,206 (estimate 58,620 + 30%). Cost about 0.0005862 PROS.",
+      "uses": [
+       3,
+       7,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17
+      ],
+      "output": {
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f4240",
+       "value": "0",
+       "gasLimit": 76206,
+       "network": "Pharos mainnet (chain 1672)",
+       "note": "unsigned: nothing was sent"
+      }
+     }
+    ],
+    "dependsOn": [
+     {
+      "what": "USDC decimals",
+      "value": "6",
+      "step": 5,
+      "effect": "turned “1 USDC” into the integer the contract understands"
+     },
+     {
+      "what": "the block’s time",
+      "value": "thu 2026-10-22 10:00:01 UTC",
+      "step": 3,
+      "effect": "the time-window rule “office-hours” passed: thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+     },
+     {
+      "what": "the sender’s balance and the simulation",
+      "value": "0x1857…4efb USDC 1,242,441.562141 USDC",
+      "step": 16,
+      "effect": "the transfer would succeed (58,620 gas)"
+     }
+    ],
+    "chainCalls": 13,
+    "log": [
+     {
+      "seq": 0,
+      "kind": "decision",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "body": {
+       "decision": "allow",
+       "rule": {
+        "id": "all-rules-passed",
+        "type": "default"
+       },
+       "reason": "allowed: all 6 rules passed (5 applied)",
+       "checks": [
+        {
+         "rule": "usdc-cap",
+         "type": "spend-limit",
+         "applies": true,
+         "pass": true,
+         "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+        },
+        {
+         "rule": "pros-cap",
+         "type": "spend-limit",
+         "applies": false,
+         "pass": true,
+         "detail": "this request spends no native token, so the limit does not apply"
+        },
+        {
+         "rule": "known-targets",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "target 0xc879c0…1815 is on the allowlist"
+        },
+        {
+         "rule": "known-recipients",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "recipient 0x768b95…de54 is on the allowlist"
+        },
+        {
+         "rule": "known-functions",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "selector 0xa9059cbb is on the allowlist"
+        },
+        {
+         "rule": "office-hours",
+         "type": "time-window",
+         "applies": true,
+         "pass": true,
+         "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+        }
+       ],
+       "request": {
+        "id": null,
+        "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "selector": "0xa9059cbb",
+        "kind": "erc20-transfer",
+        "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+        "valueWei": "0"
+       },
+       "spend": [
+        {
+         "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+         "amountRaw": "1000000"
+        }
+       ],
+       "atSec": 1792663201,
+       "policy": {
+        "name": "treasury transfers on Pharos mainnet",
+        "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+       }
+      },
+      "hash": "e58cfa9243bfd494625f20570274a9600c76fe6f5b53af03e5b54370bca942e1"
+     },
+     {
+      "seq": 1,
+      "kind": "execution",
+      "prev": "e58cfa9243bfd494625f20570274a9600c76fe6f5b53af03e5b54370bca942e1",
+      "body": {
+       "decisionSeq": 0,
+       "status": "executed",
+       "result": {
+        "verdict": "go"
+       }
+      },
+      "hash": "5499366b61f50606a6819cdfae4fddc5174fbebefb6d65283e8ac465df3cce7c"
+     }
+    ],
+    "integrity": {
+     "ok": true,
+     "count": 2,
+     "head": "5499366b61f50606a6819cdfae4fddc5174fbebefb6d65283e8ac465df3cce7c",
+     "problems": []
+    },
+    "decision": {
+     "decision": "allow",
+     "rule": {
+      "id": "all-rules-passed",
+      "type": "default"
+     },
+     "reason": "allowed: all 6 rules passed (5 applied)",
+     "checks": [
+      {
+       "rule": "usdc-cap",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+      },
+      {
+       "rule": "pros-cap",
+       "type": "spend-limit",
+       "applies": false,
+       "pass": true,
+       "detail": "this request spends no native token, so the limit does not apply"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xc879c0…1815 is on the allowlist"
+      },
+      {
+       "rule": "known-recipients",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "recipient 0x768b95…de54 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "selector 0xa9059cbb is on the allowlist"
+      },
+      {
+       "rule": "office-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "selector": "0xa9059cbb",
+      "kind": "erc20-transfer",
+      "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+      "valueWei": "0"
+     },
+     "spend": [
+      {
+       "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "amountRaw": "1000000"
+      }
+     ],
+     "atSec": 1792663201,
+     "policy": {
+      "name": "treasury transfers on Pharos mainnet",
+      "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+     }
+    },
+    "simulation": {
+     "block": 20918892,
+     "tx": {
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f4240",
+      "value": "0"
+     },
+     "verdict": "go",
+     "summary": "The simulation succeeded: the transaction would go through.",
+     "prediction": "success",
+     "revert": null,
+     "returnData": "0x0000000000000000000000000000000000000000000000000000000000000001",
+     "gas": {
+      "units": 58620,
+      "suggestedLimit": 70344,
+      "priceGwei": 10,
+      "costPros": "0.0005862",
+      "costWei": "586200000000000"
+     },
+     "outcome": {
+      "kind": "erc20-transfer",
+      "summary": "Move 1 USDC from 0x1857…4efb to 0x768b…de54",
+      "rows": [
+       {
+        "label": "0x1857…4efb USDC",
+        "before": "1,242,441.562141 USDC",
+        "after": "1,242,440.562141 USDC"
+       },
+       {
+        "label": "0x768b…de54 USDC",
+        "before": "357.25403 USDC",
+        "after": "358.25403 USDC"
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "weekend",
+   "title": "The same request at a Saturday block: the chain’s clock changes the answer",
+   "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+   "block": 20471429,
+   "result": {
+    "request": {
+     "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+     "parsed": {
+      "amount": "1",
+      "symbol": "USDC",
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+     }
+    },
+    "block": {
+     "number": 20471429,
+     "head": 21023859,
+     "historical": true,
+     "timestamp": 1792231200,
+     "iso": "2026-10-17 10:00:00 UTC",
+     "weekday": "sat"
+    },
+    "policy": {
+     "name": "treasury transfers on Pharos mainnet",
+     "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af",
+     "rules": [
+      {
+       "id": "usdc-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "pros-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "known-targets",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-recipients",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-functions",
+       "type": "allowlist"
+      },
+      {
+       "id": "office-hours",
+       "type": "time-window"
+      }
+     ]
+    },
+    "verdict": {
+     "status": "stop",
+     "stage": "policy",
+     "headline": "STOP: the policy denies it (rule office-hours)",
+     "rule": {
+      "id": "office-hours",
+      "type": "time-window"
+     },
+     "reason": "denied by rule \"office-hours\" (time-window): sat 10:00 UTC is outside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)",
+     "failedRules": [
+      "office-hours"
+     ]
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "skill",
+      "name": "parse-request",
+      "summary": "Read the request: 1 USDC from 0x1857…4efb to 0x768b…de54.",
+      "uses": [],
+      "output": {
+       "amount": "1",
+       "symbol": "USDC",
+       "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+       "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so the flow can pin everything to one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21023859\",\"blockNumberHex\":\"0x140cc73\"}",
+      "ms": 307
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its timestamp is the clock the policy’s time window is checked against",
+      "input": "{\"block\":20471429}",
+      "output": "{\"number\":\"0x1385e85\",\"hash\":\"0xa11b26a394be91c43c49c9ee45aa46195f424a9e0ff1b7f22a887c0bea1f34b7\",\"timestamp\":\"0x6ad34720\",\"…\":\"rest of the header omitted\"}",
+      "ms": 296
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "symbol(): is this contract really the token the request names?",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x95d89b41\"},\"block\":20471429}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 453
+     },
+     {
+      "n": 5,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "decimals(): how many units make one token",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":20471429}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
+      "ms": 596
+     },
+     {
+      "n": 6,
+      "actor": "skill",
+      "name": "token-check",
+      "summary": "The chain confirms 0xc879c018db60520f4355c26ed1a6d572cdac1815 is USDC with 6 decimals (the policy agrees).",
+      "uses": [
+       4,
+       5
+      ],
+      "output": null
+     },
+     {
+      "n": 7,
+      "actor": "skill",
+      "name": "build-transaction",
+      "summary": "transfer(0x768b…de54, 1000000) on 0xc879…1815: 1 USDC is 1000000 units at 6 decimals.",
+      "uses": [
+       5
+      ],
+      "output": {
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f4240",
+       "value": "0"
+      }
+     },
+     {
+      "n": 8,
+      "actor": "skill",
+      "name": "policy-gate",
+      "summary": "Policy Gatekeeper: DENY by office-hours (time-window). denied by rule \"office-hours\" (time-window): sat 10:00 UTC is outside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)",
+      "uses": [
+       3,
+       7
+      ],
+      "output": {
+       "decision": "deny",
+       "rule": {
+        "id": "office-hours",
+        "type": "time-window"
+       },
+       "checks": [
+        "usdc-cap: pass",
+        "pros-cap: n/a",
+        "known-targets: pass",
+        "known-recipients: pass",
+        "known-functions: pass",
+        "office-hours: FAIL"
+       ]
+      }
+     },
+     {
+      "n": 9,
+      "actor": "skill",
+      "name": "simulation-skipped",
+      "summary": "Denied, so Chain MCP was never asked to simulate it: eth_call (simulate), estimate_gas, get_gas_price, balance reads were not called.",
+      "uses": [],
+      "output": {
+       "skipped": [
+        "eth_call (simulate)",
+        "estimate_gas",
+        "get_gas_price",
+        "balance reads"
+       ]
+      }
+     }
+    ],
+    "dependsOn": [
+     {
+      "what": "USDC decimals",
+      "value": "6",
+      "step": 5,
+      "effect": "turned “1 USDC” into the integer the contract understands"
+     },
+     {
+      "what": "the block’s time",
+      "value": "sat 2026-10-17 10:00:00 UTC",
+      "step": 3,
+      "effect": "the time-window rule “office-hours” FAILED: sat 10:00 UTC is outside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+     }
+    ],
+    "chainCalls": 4,
+    "log": [
+     {
+      "seq": 0,
+      "kind": "decision",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "body": {
+       "decision": "deny",
+       "rule": {
+        "id": "office-hours",
+        "type": "time-window"
+       },
+       "reason": "denied by rule \"office-hours\" (time-window): sat 10:00 UTC is outside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)",
+       "checks": [
+        {
+         "rule": "usdc-cap",
+         "type": "spend-limit",
+         "applies": true,
+         "pass": true,
+         "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+        },
+        {
+         "rule": "pros-cap",
+         "type": "spend-limit",
+         "applies": false,
+         "pass": true,
+         "detail": "this request spends no native token, so the limit does not apply"
+        },
+        {
+         "rule": "known-targets",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "target 0xc879c0…1815 is on the allowlist"
+        },
+        {
+         "rule": "known-recipients",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "recipient 0x768b95…de54 is on the allowlist"
+        },
+        {
+         "rule": "known-functions",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "selector 0xa9059cbb is on the allowlist"
+        },
+        {
+         "rule": "office-hours",
+         "type": "time-window",
+         "applies": true,
+         "pass": false,
+         "detail": "sat 10:00 UTC is outside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+        }
+       ],
+       "request": {
+        "id": null,
+        "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "selector": "0xa9059cbb",
+        "kind": "erc20-transfer",
+        "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+        "valueWei": "0"
+       },
+       "spend": [
+        {
+         "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+         "amountRaw": "1000000"
+        }
+       ],
+       "atSec": 1792231200,
+       "policy": {
+        "name": "treasury transfers on Pharos mainnet",
+        "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+       }
+      },
+      "hash": "46a58bf8fb4129a478a75bdab27185804ed2c98cd15ee401b2d3afd432623fcf"
+     },
+     {
+      "seq": 1,
+      "kind": "execution",
+      "prev": "46a58bf8fb4129a478a75bdab27185804ed2c98cd15ee401b2d3afd432623fcf",
+      "body": {
+       "decisionSeq": 0,
+       "status": "not-executed",
+       "note": "denied by office-hours; the executor was not called"
+      },
+      "hash": "d41998fd24433d23b6ea07331cbbc502e10fef8693d6a4d225a9515a8af558c1"
+     }
+    ],
+    "integrity": {
+     "ok": true,
+     "count": 2,
+     "head": "d41998fd24433d23b6ea07331cbbc502e10fef8693d6a4d225a9515a8af558c1",
+     "problems": []
+    },
+    "decision": {
+     "decision": "deny",
+     "rule": {
+      "id": "office-hours",
+      "type": "time-window"
+     },
+     "reason": "denied by rule \"office-hours\" (time-window): sat 10:00 UTC is outside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)",
+     "checks": [
+      {
+       "rule": "usdc-cap",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+      },
+      {
+       "rule": "pros-cap",
+       "type": "spend-limit",
+       "applies": false,
+       "pass": true,
+       "detail": "this request spends no native token, so the limit does not apply"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xc879c0…1815 is on the allowlist"
+      },
+      {
+       "rule": "known-recipients",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "recipient 0x768b95…de54 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "selector 0xa9059cbb is on the allowlist"
+      },
+      {
+       "rule": "office-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": false,
+       "detail": "sat 10:00 UTC is outside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "selector": "0xa9059cbb",
+      "kind": "erc20-transfer",
+      "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+      "valueWei": "0"
+     },
+     "spend": [
+      {
+       "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "amountRaw": "1000000"
+      }
+     ],
+     "atSec": 1792231200,
+     "policy": {
+      "name": "treasury transfers on Pharos mainnet",
+      "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+     }
+    },
+    "skippedChainCalls": [
+     "eth_call (simulate)",
+     "estimate_gas",
+     "get_gas_price",
+     "balance reads"
+    ]
+   }
+  },
+  {
+   "id": "over-limit",
+   "title": "Over the policy’s per-request limit",
+   "text": "send 150 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+   "block": 20918892,
+   "result": {
+    "request": {
+     "text": "send 150 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+     "parsed": {
+      "amount": "150",
+      "symbol": "USDC",
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+     }
+    },
+    "block": {
+     "number": 20918892,
+     "head": 21023861,
+     "historical": true,
+     "timestamp": 1792663201,
+     "iso": "2026-10-22 10:00:01 UTC",
+     "weekday": "thu"
+    },
+    "policy": {
+     "name": "treasury transfers on Pharos mainnet",
+     "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af",
+     "rules": [
+      {
+       "id": "usdc-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "pros-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "known-targets",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-recipients",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-functions",
+       "type": "allowlist"
+      },
+      {
+       "id": "office-hours",
+       "type": "time-window"
+      }
+     ]
+    },
+    "verdict": {
+     "status": "stop",
+     "stage": "policy",
+     "headline": "STOP: the policy denies it (rule usdc-cap)",
+     "rule": {
+      "id": "usdc-cap",
+      "type": "spend-limit"
+     },
+     "reason": "denied by rule \"usdc-cap\" (spend-limit): 150 USDC is over the per-request limit of 100 USDC",
+     "failedRules": [
+      "usdc-cap"
+     ]
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "skill",
+      "name": "parse-request",
+      "summary": "Read the request: 150 USDC from 0x1857…4efb to 0x768b…de54.",
+      "uses": [],
+      "output": {
+       "amount": "150",
+       "symbol": "USDC",
+       "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+       "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so the flow can pin everything to one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21023861\",\"blockNumberHex\":\"0x140cc75\"}",
+      "ms": 299
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its timestamp is the clock the policy’s time window is checked against",
+      "input": "{\"block\":20918892}",
+      "output": "{\"number\":\"0x13f326c\",\"hash\":\"0x963be7ef8ea03186398930a2d07fa24f2b90190f265f8335717e4935ef180287\",\"timestamp\":\"0x6ad9dea1\",\"…\":\"rest of the header omitted\"}",
+      "ms": 303
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "symbol(): is this contract really the token the request names?",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x95d89b41\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 619
+     },
+     {
+      "n": 5,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "decimals(): how many units make one token",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
+      "ms": 696
+     },
+     {
+      "n": 6,
+      "actor": "skill",
+      "name": "token-check",
+      "summary": "The chain confirms 0xc879c018db60520f4355c26ed1a6d572cdac1815 is USDC with 6 decimals (the policy agrees).",
+      "uses": [
+       4,
+       5
+      ],
+      "output": null
+     },
+     {
+      "n": 7,
+      "actor": "skill",
+      "name": "build-transaction",
+      "summary": "transfer(0x768b…de54, 150000000) on 0xc879…1815: 150 USDC is 150000000 units at 6 decimals.",
+      "uses": [
+       5
+      ],
+      "output": {
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde540000000000000000000000000000000000000000000000000000000008f0d180",
+       "value": "0"
+      }
+     },
+     {
+      "n": 8,
+      "actor": "skill",
+      "name": "policy-gate",
+      "summary": "Policy Gatekeeper: DENY by usdc-cap (spend-limit). denied by rule \"usdc-cap\" (spend-limit): 150 USDC is over the per-request limit of 100 USDC",
+      "uses": [
+       3,
+       7
+      ],
+      "output": {
+       "decision": "deny",
+       "rule": {
+        "id": "usdc-cap",
+        "type": "spend-limit"
+       },
+       "checks": [
+        "usdc-cap: FAIL",
+        "pros-cap: n/a",
+        "known-targets: pass",
+        "known-recipients: pass",
+        "known-functions: pass",
+        "office-hours: pass"
+       ]
+      }
+     },
+     {
+      "n": 9,
+      "actor": "skill",
+      "name": "simulation-skipped",
+      "summary": "Denied, so Chain MCP was never asked to simulate it: eth_call (simulate), estimate_gas, get_gas_price, balance reads were not called.",
+      "uses": [],
+      "output": {
+       "skipped": [
+        "eth_call (simulate)",
+        "estimate_gas",
+        "get_gas_price",
+        "balance reads"
+       ]
+      }
+     }
+    ],
+    "dependsOn": [
+     {
+      "what": "USDC decimals",
+      "value": "6",
+      "step": 5,
+      "effect": "turned “150 USDC” into the integer the contract understands"
+     },
+     {
+      "what": "the block’s time",
+      "value": "thu 2026-10-22 10:00:01 UTC",
+      "step": 3,
+      "effect": "the time-window rule “office-hours” passed: thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+     }
+    ],
+    "chainCalls": 4,
+    "log": [
+     {
+      "seq": 0,
+      "kind": "decision",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "body": {
+       "decision": "deny",
+       "rule": {
+        "id": "usdc-cap",
+        "type": "spend-limit"
+       },
+       "reason": "denied by rule \"usdc-cap\" (spend-limit): 150 USDC is over the per-request limit of 100 USDC",
+       "checks": [
+        {
+         "rule": "usdc-cap",
+         "type": "spend-limit",
+         "applies": true,
+         "pass": false,
+         "detail": "150 USDC is over the per-request limit of 100 USDC"
+        },
+        {
+         "rule": "pros-cap",
+         "type": "spend-limit",
+         "applies": false,
+         "pass": true,
+         "detail": "this request spends no native token, so the limit does not apply"
+        },
+        {
+         "rule": "known-targets",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "target 0xc879c0…1815 is on the allowlist"
+        },
+        {
+         "rule": "known-recipients",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "recipient 0x768b95…de54 is on the allowlist"
+        },
+        {
+         "rule": "known-functions",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "selector 0xa9059cbb is on the allowlist"
+        },
+        {
+         "rule": "office-hours",
+         "type": "time-window",
+         "applies": true,
+         "pass": true,
+         "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+        }
+       ],
+       "request": {
+        "id": null,
+        "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "selector": "0xa9059cbb",
+        "kind": "erc20-transfer",
+        "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+        "valueWei": "0"
+       },
+       "spend": [
+        {
+         "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+         "amountRaw": "150000000"
+        }
+       ],
+       "atSec": 1792663201,
+       "policy": {
+        "name": "treasury transfers on Pharos mainnet",
+        "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+       }
+      },
+      "hash": "c8ab313dd90416a978734281bbb4b0cb33f27da08891cb10496330666be5e848"
+     },
+     {
+      "seq": 1,
+      "kind": "execution",
+      "prev": "c8ab313dd90416a978734281bbb4b0cb33f27da08891cb10496330666be5e848",
+      "body": {
+       "decisionSeq": 0,
+       "status": "not-executed",
+       "note": "denied by usdc-cap; the executor was not called"
+      },
+      "hash": "fe8bccfe9bfff76763c3bf6c0110d468153209de20139e433a52c2836fb94b28"
+     }
+    ],
+    "integrity": {
+     "ok": true,
+     "count": 2,
+     "head": "fe8bccfe9bfff76763c3bf6c0110d468153209de20139e433a52c2836fb94b28",
+     "problems": []
+    },
+    "decision": {
+     "decision": "deny",
+     "rule": {
+      "id": "usdc-cap",
+      "type": "spend-limit"
+     },
+     "reason": "denied by rule \"usdc-cap\" (spend-limit): 150 USDC is over the per-request limit of 100 USDC",
+     "checks": [
+      {
+       "rule": "usdc-cap",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": false,
+       "detail": "150 USDC is over the per-request limit of 100 USDC"
+      },
+      {
+       "rule": "pros-cap",
+       "type": "spend-limit",
+       "applies": false,
+       "pass": true,
+       "detail": "this request spends no native token, so the limit does not apply"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xc879c0…1815 is on the allowlist"
+      },
+      {
+       "rule": "known-recipients",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "recipient 0x768b95…de54 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "selector 0xa9059cbb is on the allowlist"
+      },
+      {
+       "rule": "office-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "selector": "0xa9059cbb",
+      "kind": "erc20-transfer",
+      "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+      "valueWei": "0"
+     },
+     "spend": [
+      {
+       "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "amountRaw": "150000000"
+      }
+     ],
+     "atSec": 1792663201,
+     "policy": {
+      "name": "treasury transfers on Pharos mainnet",
+      "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+     }
+    },
+    "skippedChainCalls": [
+     "eth_call (simulate)",
+     "estimate_gas",
+     "get_gas_price",
+     "balance reads"
+    ]
+   }
+  },
+  {
+   "id": "no-balance",
+   "title": "Allowed by the policy, but the sender holds no USDC: the chain stops it",
+   "text": "send 1 USDC from 0x0000000000000000000000000000000000000001 to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+   "block": 20918892,
+   "result": {
+    "request": {
+     "text": "send 1 USDC from 0x0000000000000000000000000000000000000001 to 0x768b959191ce5876cabbbc014a08d72615bdde54",
+     "parsed": {
+      "amount": "1",
+      "symbol": "USDC",
+      "from": "0x0000000000000000000000000000000000000001",
+      "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+     }
+    },
+    "block": {
+     "number": 20918892,
+     "head": 21023862,
+     "historical": true,
+     "timestamp": 1792663201,
+     "iso": "2026-10-22 10:00:01 UTC",
+     "weekday": "thu"
+    },
+    "policy": {
+     "name": "treasury transfers on Pharos mainnet",
+     "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af",
+     "rules": [
+      {
+       "id": "usdc-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "pros-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "known-targets",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-recipients",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-functions",
+       "type": "allowlist"
+      },
+      {
+       "id": "office-hours",
+       "type": "time-window"
+      }
+     ]
+    },
+    "verdict": {
+     "status": "stop",
+     "stage": "simulation",
+     "headline": "STOP: the policy allows it, but the chain says it would fail",
+     "reason": "ERC20: transfer amount exceeds balance",
+     "outcome": {
+      "kind": "erc20-transfer",
+      "summary": "Move 1 USDC from 0x0000…0001 to 0x768b…de54",
+      "rows": [
+       {
+        "label": "0x0000…0001 USDC",
+        "before": "0 USDC",
+        "after": "unchanged (it would revert)"
+       },
+       {
+        "label": "0x768b…de54 USDC",
+        "before": "357.25403 USDC",
+        "after": "unchanged (it would revert)"
+       }
+      ]
+     }
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "skill",
+      "name": "parse-request",
+      "summary": "Read the request: 1 USDC from 0x0000…0001 to 0x768b…de54.",
+      "uses": [],
+      "output": {
+       "amount": "1",
+       "symbol": "USDC",
+       "from": "0x0000000000000000000000000000000000000001",
+       "to": "0x768b959191ce5876cabbbc014a08d72615bdde54"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so the flow can pin everything to one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21023862\",\"blockNumberHex\":\"0x140cc76\"}",
+      "ms": 311
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its timestamp is the clock the policy’s time window is checked against",
+      "input": "{\"block\":20918892}",
+      "output": "{\"number\":\"0x13f326c\",\"hash\":\"0x963be7ef8ea03186398930a2d07fa24f2b90190f265f8335717e4935ef180287\",\"timestamp\":\"0x6ad9dea1\",\"…\":\"rest of the header omitted\"}",
+      "ms": 313
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "symbol(): is this contract really the token the request names?",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x95d89b41\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 530
+     },
+     {
+      "n": 5,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "decimals(): how many units make one token",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
+      "ms": 530
+     },
+     {
+      "n": 6,
+      "actor": "skill",
+      "name": "token-check",
+      "summary": "The chain confirms 0xc879c018db60520f4355c26ed1a6d572cdac1815 is USDC with 6 decimals (the policy agrees).",
+      "uses": [
+       4,
+       5
+      ],
+      "output": null
+     },
+     {
+      "n": 7,
+      "actor": "skill",
+      "name": "build-transaction",
+      "summary": "transfer(0x768b…de54, 1000000) on 0xc879…1815: 1 USDC is 1000000 units at 6 decimals.",
+      "uses": [
+       5
+      ],
+      "output": {
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f4240",
+       "value": "0"
+      }
+     },
+     {
+      "n": 8,
+      "actor": "skill",
+      "name": "policy-gate",
+      "summary": "Policy Gatekeeper: ALLOW by all-rules-passed (default). allowed: all 6 rules passed (5 applied)",
+      "uses": [
+       3,
+       7
+      ],
+      "output": {
+       "decision": "allow",
+       "rule": {
+        "id": "all-rules-passed",
+        "type": "default"
+       },
+       "checks": [
+        "usdc-cap: pass",
+        "pros-cap: n/a",
+        "known-targets: pass",
+        "known-recipients: pass",
+        "known-functions: pass",
+        "office-hours: pass"
+       ]
+      }
+     },
+     {
+      "n": 9,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Simulate the call (no broadcast): does it succeed?",
+      "input": "{\"transaction\":{\"from\":\"0x0000000000000000000000000000000000000001\",\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f…",
+      "error": "eth_call: {\n  \"error\": {\n    \"message\": \"execution reverted: ERC20: transfer amount exceeds balance\",\n    \"code\": 3,\n    \"data\": \"0x08c379a0000000000000000000000000000000000000000000000000000000000000",
+      "ms": 641
+     },
+     {
+      "n": 10,
+      "actor": "chain-mcp",
+      "name": "estimate_gas",
+      "why": "Estimate the gas it would use",
+      "input": "{\"transaction\":{\"from\":\"0x0000000000000000000000000000000000000001\",\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f…",
+      "error": "estimate_gas: {\n  \"error\": {\n    \"message\": \"execution reverted: ERC20: transfer amount exceeds balance\",\n    \"code\": 3,\n    \"data\": \"0x08c379a000000000000000000000000000000000000000000000000000000000",
+      "ms": 574
+     },
+     {
+      "n": 11,
+      "actor": "chain-mcp",
+      "name": "get_gas_price",
+      "why": "Current gas price, to cost it",
+      "input": "{}",
+      "output": "{\"gasPriceWei\":\"10000000000\",\"gasPriceGwei\":\"10\",\"gasPriceHex\":\"0x2540be400\",\"maxPriorityFeePerGasWei\":\"0\",\"maxPriorityFeePerGasGwei\":\"0\",\"maxPriorityFeePerGasHex\":\"0x0\"}",
+      "ms": 433
+     },
+     {
+      "n": 12,
+      "actor": "chain-mcp",
+      "name": "get_code",
+      "why": "The call has data: does the target hold contract code at this block?",
+      "input": "{\"address\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"block\":20918892}",
+      "output": "{\"code\":\"0x60806040526004361061005a5760003560e01c80635c60da1b116100435780635c60da1b146101315780638f2839701461016f578063f851a440146101af5761005a565b80633659cfe6146100645780634f1ef286146100a4575b6100626101c4565b005b34801561007057600080fd5b50610062600480360360208…",
+      "ms": 309
+     },
+     {
+      "n": 13,
+      "actor": "chain-mcp",
+      "name": "get_code",
+      "why": "Check whether the address holds contract code",
+      "input": "{\"address\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"block\":20918892}",
+      "output": "{\"code\":\"0x60806040526004361061005a5760003560e01c80635c60da1b116100435780635c60da1b146101315780638f2839701461016f578063f851a440146101af5761005a565b80633659cfe6146100645780634f1ef286146100a4575b6100626101c4565b005b34801561007057600080fd5b50610062600480360360208…",
+      "ms": 302
+     },
+     {
+      "n": 14,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Token symbol, to label the outcome",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x95d89b41\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 649
+     },
+     {
+      "n": 15,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Token decimals, to format the outcome",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
+      "ms": 649
+     },
+     {
+      "n": 16,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "balanceOf(0x0000…0001) before",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x70a082310000000000000000000000000000000000000000000000000000000000000001\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 540
+     },
+     {
+      "n": 17,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "balanceOf(0x768b…de54) before",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x70a08231000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde54\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x00000000000000000000000000000000000000000000000000000000154b438e\"}",
+      "ms": 432
+     },
+     {
+      "n": 18,
+      "actor": "skill",
+      "name": "dry-run-verdict",
+      "summary": "Dry-Run Executor: BLOCKED. The simulation failed: ERC20: transfer amount exceeds balance. 0x0000…0001 USDC: 0 USDC → unchanged (it would revert).",
+      "uses": [
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17
+      ],
+      "output": {
+       "verdict": "blocked",
+       "gas": null
+      }
+     }
+    ],
+    "dependsOn": [
+     {
+      "what": "USDC decimals",
+      "value": "6",
+      "step": 5,
+      "effect": "turned “1 USDC” into the integer the contract understands"
+     },
+     {
+      "what": "the block’s time",
+      "value": "thu 2026-10-22 10:00:01 UTC",
+      "step": 3,
+      "effect": "the time-window rule “office-hours” passed: thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+     },
+     {
+      "what": "the sender’s balance and the simulation",
+      "value": "0x0000…0001 USDC 0 USDC",
+      "step": 16,
+      "effect": "the transfer would fail: ERC20: transfer amount exceeds balance"
+     }
+    ],
+    "chainCalls": 13,
+    "log": [
+     {
+      "seq": 0,
+      "kind": "decision",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "body": {
+       "decision": "allow",
+       "rule": {
+        "id": "all-rules-passed",
+        "type": "default"
+       },
+       "reason": "allowed: all 6 rules passed (5 applied)",
+       "checks": [
+        {
+         "rule": "usdc-cap",
+         "type": "spend-limit",
+         "applies": true,
+         "pass": true,
+         "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+        },
+        {
+         "rule": "pros-cap",
+         "type": "spend-limit",
+         "applies": false,
+         "pass": true,
+         "detail": "this request spends no native token, so the limit does not apply"
+        },
+        {
+         "rule": "known-targets",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "target 0xc879c0…1815 is on the allowlist"
+        },
+        {
+         "rule": "known-recipients",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "recipient 0x768b95…de54 is on the allowlist"
+        },
+        {
+         "rule": "known-functions",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "selector 0xa9059cbb is on the allowlist"
+        },
+        {
+         "rule": "office-hours",
+         "type": "time-window",
+         "applies": true,
+         "pass": true,
+         "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+        }
+       ],
+       "request": {
+        "id": null,
+        "from": "0x0000000000000000000000000000000000000001",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "selector": "0xa9059cbb",
+        "kind": "erc20-transfer",
+        "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+        "valueWei": "0"
+       },
+       "spend": [
+        {
+         "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+         "amountRaw": "1000000"
+        }
+       ],
+       "atSec": 1792663201,
+       "policy": {
+        "name": "treasury transfers on Pharos mainnet",
+        "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+       }
+      },
+      "hash": "7e3b25d5682f404000ea2f795328a2523ebe02b417bf34befb2dfa1d8a899271"
+     },
+     {
+      "seq": 1,
+      "kind": "execution",
+      "prev": "7e3b25d5682f404000ea2f795328a2523ebe02b417bf34befb2dfa1d8a899271",
+      "body": {
+       "decisionSeq": 0,
+       "status": "executed",
+       "result": {
+        "verdict": "blocked"
+       }
+      },
+      "hash": "e6f2a441ed8b65fb83ba0090c605e6625dac9b844d12651e1ca6cf49cd0560fa"
+     }
+    ],
+    "integrity": {
+     "ok": true,
+     "count": 2,
+     "head": "e6f2a441ed8b65fb83ba0090c605e6625dac9b844d12651e1ca6cf49cd0560fa",
+     "problems": []
+    },
+    "decision": {
+     "decision": "allow",
+     "rule": {
+      "id": "all-rules-passed",
+      "type": "default"
+     },
+     "reason": "allowed: all 6 rules passed (5 applied)",
+     "checks": [
+      {
+       "rule": "usdc-cap",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+      },
+      {
+       "rule": "pros-cap",
+       "type": "spend-limit",
+       "applies": false,
+       "pass": true,
+       "detail": "this request spends no native token, so the limit does not apply"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xc879c0…1815 is on the allowlist"
+      },
+      {
+       "rule": "known-recipients",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "recipient 0x768b95…de54 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "selector 0xa9059cbb is on the allowlist"
+      },
+      {
+       "rule": "office-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0000000000000000000000000000000000000001",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "selector": "0xa9059cbb",
+      "kind": "erc20-transfer",
+      "recipient": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+      "valueWei": "0"
+     },
+     "spend": [
+      {
+       "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "amountRaw": "1000000"
+      }
+     ],
+     "atSec": 1792663201,
+     "policy": {
+      "name": "treasury transfers on Pharos mainnet",
+      "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+     }
+    },
+    "simulation": {
+     "block": 20918892,
+     "tx": {
+      "from": "0x0000000000000000000000000000000000000001",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "data": "0xa9059cbb000000000000000000000000768b959191ce5876cabbbc014a08d72615bdde5400000000000000000000000000000000000000000000000000000000000f4240",
+      "value": "0"
+     },
+     "verdict": "blocked",
+     "summary": "The simulation failed: ERC20: transfer amount exceeds balance.",
+     "prediction": "revert",
+     "revert": {
+      "kind": "Error",
+      "name": "Error",
+      "message": "ERC20: transfer amount exceeds balance",
+      "raw": "0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002645524332303a207472616e7366657220616d6f756e7420657863656564732062616c616e63650000000000000000000000000000000000000000000000000000"
+     },
+     "returnData": null,
+     "gas": null,
+     "outcome": {
+      "kind": "erc20-transfer",
+      "summary": "Move 1 USDC from 0x0000…0001 to 0x768b…de54",
+      "rows": [
+       {
+        "label": "0x0000…0001 USDC",
+        "before": "0 USDC",
+        "after": "unchanged (it would revert)"
+       },
+       {
+        "label": "0x768b…de54 USDC",
+        "before": "357.25403 USDC",
+        "after": "unchanged (it would revert)"
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "stranger",
+   "title": "A recipient that is not on the allowlist",
+   "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x3333333333333333333333333333333333333333",
+   "block": 20918892,
+   "result": {
+    "request": {
+     "text": "send 1 USDC from 0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb to 0x3333333333333333333333333333333333333333",
+     "parsed": {
+      "amount": "1",
+      "symbol": "USDC",
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0x3333333333333333333333333333333333333333"
+     }
+    },
+    "block": {
+     "number": 20918892,
+     "head": 21023866,
+     "historical": true,
+     "timestamp": 1792663201,
+     "iso": "2026-10-22 10:00:01 UTC",
+     "weekday": "thu"
+    },
+    "policy": {
+     "name": "treasury transfers on Pharos mainnet",
+     "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af",
+     "rules": [
+      {
+       "id": "usdc-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "pros-cap",
+       "type": "spend-limit"
+      },
+      {
+       "id": "known-targets",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-recipients",
+       "type": "allowlist"
+      },
+      {
+       "id": "known-functions",
+       "type": "allowlist"
+      },
+      {
+       "id": "office-hours",
+       "type": "time-window"
+      }
+     ]
+    },
+    "verdict": {
+     "status": "stop",
+     "stage": "policy",
+     "headline": "STOP: the policy denies it (rule known-recipients)",
+     "rule": {
+      "id": "known-recipients",
+      "type": "allowlist"
+     },
+     "reason": "denied by rule \"known-recipients\" (allowlist): recipient 0x333333…3333 is not on the allowlist (2 allowed)",
+     "failedRules": [
+      "known-recipients"
+     ]
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "skill",
+      "name": "parse-request",
+      "summary": "Read the request: 1 USDC from 0x1857…4efb to 0x3333…3333.",
+      "uses": [],
+      "output": {
+       "amount": "1",
+       "symbol": "USDC",
+       "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+       "to": "0x3333333333333333333333333333333333333333"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so the flow can pin everything to one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21023866\",\"blockNumberHex\":\"0x140cc7a\"}",
+      "ms": 305
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its timestamp is the clock the policy’s time window is checked against",
+      "input": "{\"block\":20918892}",
+      "output": "{\"number\":\"0x13f326c\",\"hash\":\"0x963be7ef8ea03186398930a2d07fa24f2b90190f265f8335717e4935ef180287\",\"timestamp\":\"0x6ad9dea1\",\"…\":\"rest of the header omitted\"}",
+      "ms": 311
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "symbol(): is this contract really the token the request names?",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x95d89b41\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000045553444300000000000000000000000000000000000000000000000000000000\"}",
+      "ms": 513
+     },
+     {
+      "n": 5,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "decimals(): how many units make one token",
+      "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":20918892}",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
+      "ms": 482
+     },
+     {
+      "n": 6,
+      "actor": "skill",
+      "name": "token-check",
+      "summary": "The chain confirms 0xc879c018db60520f4355c26ed1a6d572cdac1815 is USDC with 6 decimals (the policy agrees).",
+      "uses": [
+       4,
+       5
+      ],
+      "output": null
+     },
+     {
+      "n": 7,
+      "actor": "skill",
+      "name": "build-transaction",
+      "summary": "transfer(0x3333…3333, 1000000) on 0xc879…1815: 1 USDC is 1000000 units at 6 decimals.",
+      "uses": [
+       5
+      ],
+      "output": {
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "data": "0xa9059cbb000000000000000000000000333333333333333333333333333333333333333300000000000000000000000000000000000000000000000000000000000f4240",
+       "value": "0"
+      }
+     },
+     {
+      "n": 8,
+      "actor": "skill",
+      "name": "policy-gate",
+      "summary": "Policy Gatekeeper: DENY by known-recipients (allowlist). denied by rule \"known-recipients\" (allowlist): recipient 0x333333…3333 is not on the allowlist (2 allowed)",
+      "uses": [
+       3,
+       7
+      ],
+      "output": {
+       "decision": "deny",
+       "rule": {
+        "id": "known-recipients",
+        "type": "allowlist"
+       },
+       "checks": [
+        "usdc-cap: pass",
+        "pros-cap: n/a",
+        "known-targets: pass",
+        "known-recipients: FAIL",
+        "known-functions: pass",
+        "office-hours: pass"
+       ]
+      }
+     },
+     {
+      "n": 9,
+      "actor": "skill",
+      "name": "simulation-skipped",
+      "summary": "Denied, so Chain MCP was never asked to simulate it: eth_call (simulate), estimate_gas, get_gas_price, balance reads were not called.",
+      "uses": [],
+      "output": {
+       "skipped": [
+        "eth_call (simulate)",
+        "estimate_gas",
+        "get_gas_price",
+        "balance reads"
+       ]
+      }
+     }
+    ],
+    "dependsOn": [
+     {
+      "what": "USDC decimals",
+      "value": "6",
+      "step": 5,
+      "effect": "turned “1 USDC” into the integer the contract understands"
+     },
+     {
+      "what": "the block’s time",
+      "value": "thu 2026-10-22 10:00:01 UTC",
+      "step": 3,
+      "effect": "the time-window rule “office-hours” passed: thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+     }
+    ],
+    "chainCalls": 4,
+    "log": [
+     {
+      "seq": 0,
+      "kind": "decision",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "body": {
+       "decision": "deny",
+       "rule": {
+        "id": "known-recipients",
+        "type": "allowlist"
+       },
+       "reason": "denied by rule \"known-recipients\" (allowlist): recipient 0x333333…3333 is not on the allowlist (2 allowed)",
+       "checks": [
+        {
+         "rule": "usdc-cap",
+         "type": "spend-limit",
+         "applies": true,
+         "pass": true,
+         "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+        },
+        {
+         "rule": "pros-cap",
+         "type": "spend-limit",
+         "applies": false,
+         "pass": true,
+         "detail": "this request spends no native token, so the limit does not apply"
+        },
+        {
+         "rule": "known-targets",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "target 0xc879c0…1815 is on the allowlist"
+        },
+        {
+         "rule": "known-recipients",
+         "type": "allowlist",
+         "applies": true,
+         "pass": false,
+         "detail": "recipient 0x333333…3333 is not on the allowlist (2 allowed)"
+        },
+        {
+         "rule": "known-functions",
+         "type": "allowlist",
+         "applies": true,
+         "pass": true,
+         "detail": "selector 0xa9059cbb is on the allowlist"
+        },
+        {
+         "rule": "office-hours",
+         "type": "time-window",
+         "applies": true,
+         "pass": true,
+         "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+        }
+       ],
+       "request": {
+        "id": null,
+        "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "selector": "0xa9059cbb",
+        "kind": "erc20-transfer",
+        "recipient": "0x3333333333333333333333333333333333333333",
+        "valueWei": "0"
+       },
+       "spend": [
+        {
+         "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+         "amountRaw": "1000000"
+        }
+       ],
+       "atSec": 1792663201,
+       "policy": {
+        "name": "treasury transfers on Pharos mainnet",
+        "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+       }
+      },
+      "hash": "add5c0333ca2254835e5fe70bf373fe4b13fcc3c6afbc168e0ca243dd0ab69a2"
+     },
+     {
+      "seq": 1,
+      "kind": "execution",
+      "prev": "add5c0333ca2254835e5fe70bf373fe4b13fcc3c6afbc168e0ca243dd0ab69a2",
+      "body": {
+       "decisionSeq": 0,
+       "status": "not-executed",
+       "note": "denied by known-recipients; the executor was not called"
+      },
+      "hash": "e0501ba9250cb1a8dd148e4b9272d93be5394023320e38ac70f640ccae2368a2"
+     }
+    ],
+    "integrity": {
+     "ok": true,
+     "count": 2,
+     "head": "e0501ba9250cb1a8dd148e4b9272d93be5394023320e38ac70f640ccae2368a2",
+     "problems": []
+    },
+    "decision": {
+     "decision": "deny",
+     "rule": {
+      "id": "known-recipients",
+      "type": "allowlist"
+     },
+     "reason": "denied by rule \"known-recipients\" (allowlist): recipient 0x333333…3333 is not on the allowlist (2 allowed)",
+     "checks": [
+      {
+       "rule": "usdc-cap",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "1 USDC (0 USDC already used of 250 USDC in the last 24 h)"
+      },
+      {
+       "rule": "pros-cap",
+       "type": "spend-limit",
+       "applies": false,
+       "pass": true,
+       "detail": "this request spends no native token, so the limit does not apply"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xc879c0…1815 is on the allowlist"
+      },
+      {
+       "rule": "known-recipients",
+       "type": "allowlist",
+       "applies": true,
+       "pass": false,
+       "detail": "recipient 0x333333…3333 is not on the allowlist (2 allowed)"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "selector 0xa9059cbb is on the allowlist"
+      },
+      {
+       "rule": "office-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "thu 10:00 UTC is inside the allowed window (mon/tue/wed/thu/fri 08:00-18:00 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "selector": "0xa9059cbb",
+      "kind": "erc20-transfer",
+      "recipient": "0x3333333333333333333333333333333333333333",
+      "valueWei": "0"
+     },
+     "spend": [
+      {
+       "asset": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "amountRaw": "1000000"
+      }
+     ],
+     "atSec": 1792663201,
+     "policy": {
+      "name": "treasury transfers on Pharos mainnet",
+      "hash": "36a7e0968ec4edfc093595d57319c71874a6900eed559f58e7ef501f69f8b8af"
+     }
+    },
+    "skippedChainCalls": [
+     "eth_call (simulate)",
+     "estimate_gas",
+     "get_gas_price",
+     "balance reads"
+    ]
+   }
+  }
+ ]
+}
