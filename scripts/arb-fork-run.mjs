@@ -172,8 +172,10 @@ try {
     if (i > 0) await sleep(5000); // let the public RPC recover before forking it again
     result.scenarios.push(await scenario(DEFS[id]));
   }
-  if (!only) writeFileSync(out, JSON.stringify(result, null, 1) + '\n');
-  log(`\nwrote ${out}`);
+  if (!only) {
+    writeFileSync(out, JSON.stringify(result, null, 1) + '\n');
+    log(`\nwrote ${out}`);
+  }
   emit({ type: 'result', record: result });
   if (!stream) for (const s of result.scenarios) console.log(`${s.id}: scan=${s.scan.decision} executed=${s.execution.status} predicted=${s.execution.predictedGrossProfit?.toFixed(6)} actual=${s.execution.actualGrossProfit?.toFixed(6)} err=${s.execution.predictionErrorPct?.toFixed(3)}% gas=${s.execution.gasUsed} rescan=${s.rescan.decision}`);
 } catch (err) {
