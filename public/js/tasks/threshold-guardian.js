@@ -67,7 +67,7 @@ RULE  all conditions must be met: 1 of 3 met
 DECISION  HOLD: 2 more conditions needed before prepare the vault rebalance`,
   },
   verify: [
-    { title: 'Open the real transaction the guardian sent', text: 'The FIRE run called ping() on the counter contract on Atlantic testnet; the HOLD run sent nothing.', link: ['https://atlantic.pharosscan.xyz/tx/0x5d8f3f1eba84e9fa488de8714485b39ed160bc514ec36095d42f5b39d1ff09fe', 'The FIRE transaction on the Atlantic explorer'] },
+    { title: 'Open the real transaction the guardian sent', text: 'The FIRE run called ping() on the counter contract on Atlantic testnet; the HOLD run sent nothing.', link: ['https://atlantic.pharosscan.xyz/tx/0xfd9df7e9dfefb2d0c67b5717d739aa840e6c333fbfd5e8ab7a5425fdc7d4695d', 'The FIRE transaction on the Atlantic explorer'] },
     { title: 'Check gas yourself', text: 'The guardian said 10 gwei. This is the same number straight from the public RPC, in wei.', code: 'cast gas-price --rpc-url https://rpc.pharos.xyz   # 10000000000' },
     { title: 'Check the share-price change yourself', text: 'Two calls at different blocks; divide the first by the second and subtract 1. Over 1,500,000 blocks it was +0.2452%.', code: `H=$(cast block-number --rpc-url https://rpc.pharos.xyz)\ncast call ${VAULT} "convertToAssets(uint256)(uint256)" 1000000 --rpc-url https://rpc.pharos.xyz\ncast call ${VAULT} "convertToAssets(uint256)(uint256)" 1000000 --rpc-url https://rpc.pharos.xyz --block $((H-1500000))` },
     { title: 'Read the skill itself', text: 'SKILL.md, the reference, the script and both example configs are in the repository.', link: [`${REPO}/tree/main/skills/pharos-threshold-guardian`, 'skills/pharos-threshold-guardian'] },

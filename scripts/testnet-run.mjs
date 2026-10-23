@@ -38,7 +38,7 @@ if (!live) {
   fork = await startFork({ port: 8700, forkUrl: ATLANTIC.rpc });
   RPC = fork.url;
 }
-const chain = rpcChain({ url: RPC, name: ATLANTIC.name, chainId: ATLANTIC.chainId });
+const chain = rpcChain({ url: RPC, name: ATLANTIC.name, chainId: ATLANTIC.chainId, nativeSymbol: 'PHRS' });
 
 // ---- helpers ---------------------------------------------------------------------------------------------------------
 const startedAt = new Date().toISOString();

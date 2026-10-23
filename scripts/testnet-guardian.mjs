@@ -35,7 +35,7 @@ if (!live) {
 }
 const startedAt = new Date().toISOString();
 const signer = makeSigner({ rpcUrl: RPC, budgetWei: BUDGET_WEI, log, startedAt });
-const chain = rpcChain({ url: RPC, name: ATLANTIC.name, chainId: ATLANTIC.chainId });
+const chain = rpcChain({ url: RPC, name: ATLANTIC.name, chainId: ATLANTIC.chainId, nativeSymbol: 'PHRS' });
 const word = (n) => BigInt(n).toString(16).padStart(64, '0');
 const countOf = async (id) => BigInt(await signer.rpc('eth_call', [{ to: counter, data: COUNT + word(id) }, 'latest']));
 

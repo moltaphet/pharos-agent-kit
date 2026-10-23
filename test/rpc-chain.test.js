@@ -22,7 +22,8 @@ test('tools return the same fields Chain MCP does', () =>
   withRpc({ eth_blockNumber: () => '0x10', eth_gasPrice: () => '0x2540be400', eth_getBalance: () => '0xde0b6b3a7640000', eth_getCode: () => '0x6080', eth_estimateGas: () => '0x5208', eth_call: () => '0x01', eth_chainId: () => '0x7' }, async (c) => {
     assert.deepEqual(await c.callTool('get_block_number'), { blockNumber: '16', blockNumberHex: '0x10' });
     assert.deepEqual(await c.callTool('get_gas_price'), { gasPriceWei: '10000000000', gasPriceGwei: '10' });
-    assert.deepEqual(await c.callTool('get_balance', { address: '0xabc' }), { address: '0xabc', balanceWei: '1000000000000000000', balance: '1' });
+    assert.deepEqual(await c.callTool('get_balance', { address: '0xabc' }), { address: '0xabc', balanceWei: '1000000000000000000', balance: '1', symbol: 'PROS' });
+    assert.equal((await rpcChain({ url: 'http://rpc.test', nativeSymbol: 'PHRS' }).callTool('get_balance', { address: '0xabc' })).symbol, 'PHRS'); // a network names its own token
     assert.deepEqual(await c.callTool('get_code', { address: '0xabc' }), { result: '0x6080' });
     assert.deepEqual(await c.callTool('estimate_gas', { transaction: {} }), { gas: '21000' });
     assert.deepEqual(await c.callTool('eth_call', { transaction: {} }), { result: '0x01' });

@@ -130,3 +130,16 @@ test('the Guardian transaction verifies against the chain, and a wrong claim abo
   const lied = await testnetEvidence({ rpc: chainFor(rec, () => ({ status: 'reverted' })), report: rec });
   assert.equal(lied.verification.verifiedCount, 0);
 });
+
+test('hash links written into page text point at the transactions in the recorded reports (re-recording must not leave stale links)', () => {
+  const page = readFileSync(new URL('../public/js/tasks/threshold-guardian.js', import.meta.url), 'utf8');
+  const fire = guardian.runs.find((r) => r.id === 'fire').action.tx.hash;
+  const linked = [...page.matchAll(/atlantic\.pharosscan\.xyz\/tx\/(0x[0-9a-f]{64})/g)].map((m) => m[1]);
+  assert.ok(linked.length >= 1, 'the Guardian page links the real transaction');
+  for (const h of linked) assert.equal(h, fire, 'the Guardian page links a transaction that is not in reports/testnet-guardian.json');
+  for (const file of ['dry-run-executor.js', 'batch-executor.js']) {
+    const src = readFileSync(new URL(`../public/js/tasks/${file}`, import.meta.url), 'utf8');
+    const all = new Set(report.transactions.map((t) => t.hash));
+    for (const m of src.matchAll(/atlantic\.pharosscan\.xyz\/tx\/(0x[0-9a-f]{64})/g)) assert.ok(all.has(m[1]), `${file} links a transaction that is not in reports/testnet-runs.json`);
+  }
+});
