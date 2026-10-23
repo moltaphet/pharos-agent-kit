@@ -35,7 +35,7 @@ export const content = {
     { title: 'Refuse what Multicall3 breaks', text: 'The inner sender is Multicall3. An ERC-20 transfer would move Multicall3’s tokens, and approving Multicall3 so it could move yours would let anyone spend them. Those actions are rejected with that explanation.' },
     { title: 'All-or-nothing on chain', text: 'Every inner call has allowFailure=false. With allowFailure on, a failed call’s value stays inside Multicall3 and is lost. Failures are caught in simulation instead, by name.' },
     { title: 'A test setup that fooled us', text: 'Our first “forced failure” demo seemed to prove the batch reverts, but the reason was “insufficient funds for gas”: the node gave up at gas estimation. With explicit gas the revert happens inside the EVM and the real reason, “Multicall3: call failed”, appears.' },
-    { title: 'Prepared, never sent', text: 'The output is an unsigned transaction. No key is involved.' },
+    { title: 'Prepared, never sent', text: 'The skill’s output is an unsigned transaction and no key is involved in it. The testnet card on this page sent the same kind of batch with a separate script and a throwaway testnet wallet, only to compare the plan with reality.' },
   ],
   evidence: [
     'Accepts a list of at least 3 independent actions (up to 25), validated one by one.',

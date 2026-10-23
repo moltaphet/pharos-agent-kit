@@ -4,6 +4,8 @@ Ten working builds for the [Pharos Agent Arena](https://pharos-agent-arena.verce
 **Season of AI** tasks, plus a site where each one can be tested and inspected:
 **https://pharos-agent-kit.vercel.app**
 
+Per-task proof links, repo links and the requirements each task was built against: [SUBMISSION.md](SUBMISSION.md).
+
 | # | Task | Run it | Real data? | Execution |
 |---|---|---|---|---|
 | 1 | Read Contract State | `node bin/pharos-read.js` | Pharos mainnet | read-only |
@@ -11,17 +13,22 @@ Ten working builds for the [Pharos Agent Arena](https://pharos-agent-arena.verce
 | 3 | Docs MCP Onboarding | `node bin/pharos-onboard.js` | Docs MCP + mainnet + Atlantic checks | read-only |
 | 4 | Doc-Search CLI | `node bin/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
 | 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | read-only |
-| 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts, local fork | **fork only** |
+| 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts on a mainnet fork | real EVM transactions on a fork, on demand (fake funds) |
 | 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | live scan decides (nothing sent); the act path runs for real on a fork, on demand (`scripts/arb-fork-run.mjs`) |
-| 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulation (+ fork) |
+| 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulates only; its predictions are checked against real Atlantic testnet transactions |
 | 9 | Trend Watcher (Skill) | `skills/pharos-trend-watcher/` | Pharos mainnet history | read-only (+ state file) |
-| 10 | Batch Executor (Skill) | `skills/pharos-batch-executor/` | Pharos mainnet | prepared, unsigned (+ fork) |
+| 10 | Batch Executor (Skill) | `skills/pharos-batch-executor/` | Pharos mainnet | prepared, unsigned; its plan is checked against real Atlantic testnet transactions |
 
-**Safety.** Nothing here signs or sends a transaction on the real Pharos network, and no private
-key is ever read or asked for. Tasks 6, 8 and 10 can also *execute* transactions, but only on a
-throwaway local **anvil fork** of mainnet (needs Foundry): the contracts and balances are real,
-the transactions exist only on that fork. The site's Saga demo runs a real fork for every click, inside a
-throwaway Vercel Sandbox (see below); it has no simulator.
+**Safety.** The skills in `skills/` never take a key: they read, simulate, or prepare unsigned transactions. Nothing in
+this repository sends a transaction to Pharos **mainnet**. Real execution happens in two places, and neither involves real money:
+
+1. **Throwaway forks of mainnet** (tasks 6 and 7): anvil forks Pharos, the contracts are the live ones, the funds are fake,
+   and the transactions exist only on that fork. On the site every click runs one inside a throwaway Vercel Sandbox (see
+   below); the CLIs run it on your own machine (needs Foundry). There is no simulator.
+2. **Pharos Atlantic testnet** (tasks 8 and 10): `scripts/testnet-run.mjs` sends real transactions from a throwaway wallet that
+   only ever holds test tokens. Its key lives in a git-ignored file, is never printed or committed, and the script refuses to
+   send unless the chain id is 688689 (so it cannot reach mainnet) and stops past a small gas budget. The key is not used by
+   any skill, and the website holds no key at all: it only re-reads the recorded transactions from the chain.
 
 The command-line tools have no dependencies, no API keys and no build step; they need **Node.js 20+**. The web
 hub has one dependency, `@vercel/sandbox`, used only by the Saga Executor's live demo.

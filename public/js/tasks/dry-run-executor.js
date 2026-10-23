@@ -38,7 +38,7 @@ export const content = {
     { title: 'Predict what we can prove', text: 'Transfers, approvals and native value have an exact after-state. For any other call the page says a state diff cannot be predicted from the call data, and points to the fork run.' },
     { title: 'The gate is tested', text: 'Unit tests assert that after a failed simulation the executor’s send is never called, and that a passing simulation reaches it exactly once.' },
     { title: 'The estimate is not a guarantee', text: 'For the simple token transfer the recorded run estimated 58,353 gas and used 44,843, so the estimate was generous. For a nested call it can be too tight: in the Saga Executor’s real-EVM run a vault withdrawal ran out of gas on a limit that had been estimated exactly. That is why this report also gives a suggested limit 20% above the estimate. Send with at least that.' },
-    { title: 'No key, ever', text: 'A simulation needs only the sender’s address. The skill ships no signer; on a fork the sender is impersonated, which only exists locally.' },
+    { title: 'No key, ever', text: 'A simulation needs only the sender’s address. The skill ships no signer; on a fork the sender is impersonated, which only exists locally. The testnet card on this page comes from a separate script (scripts/testnet-run.mjs) that signs with a throwaway Atlantic wallet holding test tokens only; the skill never sees that key.' },
   ],
   evidence: [
     'Uses eth_call and estimate_gas on the live chain at a pinned block to simulate the transaction without broadcasting it.',
