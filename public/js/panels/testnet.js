@@ -48,7 +48,10 @@ function batchView(rec, ver) {
   const cmp = (c, noun) => {
     const rc = c.realComparison;
     const worse = rc.gasSaved < 0;
-    return `<p class="check ${worse ? 'warn' : 'ok'}"><b>${worse ? `Batching cost ${Math.abs(rc.gasSavedPct).toFixed(1)}% MORE gas` : `Batching saved ${rc.gasSavedPct.toFixed(1)}% of the gas`}</b> (${n(rc.gasSeparate)} → ${n(rc.gasBatched)}). The planner predicted ${sign(rc.plannedGasSavedPct * 1)} before sending${worse ? (Math.abs(rc.plannedGasSavedPct - rc.gasSavedPct) > 5 ? ', so it overstated the cost but pointed the same way' : '') : ', within a few points of the real result'}.${noun}</p>`;
+    const pl = rc.plannedGasSavedPct;
+    const planned = pl < 0 ? `it would cost ${Math.abs(pl).toFixed(1)}% more` : `it would save ${pl.toFixed(1)}%`;
+    const gap = Math.abs(pl - rc.gasSavedPct);
+    return `<p class="check ${worse ? 'warn' : 'ok'}"><b>${worse ? `Batching cost ${Math.abs(rc.gasSavedPct).toFixed(1)}% MORE gas` : `Batching saved ${rc.gasSavedPct.toFixed(1)}% of the gas`}</b> (${n(rc.gasSeparate)} → ${n(rc.gasBatched)}). Before sending, the planner predicted ${planned}${gap > 5 ? `: the right direction, but off by ${gap.toFixed(0)} points` : `: within ${Math.max(1, Math.ceil(gap))} point${gap > 1 ? 's' : ''} of the real result`}.${noun}</p>`;
   };
   return `
     <h4 class="list-h">Three plain transfers: one by one vs one Multicall3 transaction</h4>
