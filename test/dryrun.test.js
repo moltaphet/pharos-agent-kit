@@ -9,7 +9,7 @@ const revertErr = (message, data = '0x') => new Error(`eth_call: ${JSON.stringif
 const errorString = (s) => '0x08c379a0' + word(0x20) + word(s.length) + Buffer.from(s).toString('hex').padEnd(64, '0');
 
 // A scripted chain: `behaviour` decides what eth_call / estimate_gas do.
-function chain({ call = () => ({ result: '0x' }), gas = () => ({ gas: '21000' }) } = {}) {
+function chain({ call = () => ({ result: '0x' }), gas = () => ({ gas: '21000' }), noCode = false } = {}) {
   const seen = [];
   return {
     seen,
@@ -18,7 +18,7 @@ function chain({ call = () => ({ result: '0x' }), gas = () => ({ gas: '21000' })
       if (name === 'get_block_number') return { blockNumber: '500' };
       if (name === 'get_gas_price') return { gasPriceWei: '10000000000', gasPriceGwei: '10' };
       if (name === 'get_balance') return { balanceWei: '5000000000000000000' };
-      if (name === 'get_code') return { code: '0x6080' };
+      if (name === 'get_code') return { code: noCode ? '0x' : '0x6080' };
       if (name === 'eth_call') {
         const d = args.transaction.data;
         if (d === '0x95d89b41') return { result: '0x' + word(0x20) + word(4) + Buffer.from('USDC').toString('hex').padEnd(64, '0') };
@@ -113,4 +113,17 @@ test('THE GATE: a successful simulation is handed to the executor exactly once',
   assert.equal(sent.length, 1);
   assert.equal(sent[0].from, A);
   assert.equal(sent[0].data.slice(0, 10), '0xa9059cbb');
+});
+
+test('a call with data to an address without code is BLOCKED: a simulation cannot fail there, so "success" would be meaningless', async () => {
+  const r = await dryRun({ chain: chain({ noCode: true }) }, { from: '0x' + '1'.repeat(40), to: '0x' + '2'.repeat(40), data: '0x773acdef' + '0'.repeat(64) });
+  assert.equal(r.verdict, 'blocked');
+  assert.equal(r.revert.kind, 'no-code');
+  assert.match(r.revert.message, /no contract code at 0x2222.* on block 498/);
+  assert.match(r.summary, /no contract code/);
+});
+
+test('a plain value transfer (no data) to an account without code is still a GO', async () => {
+  const r = await dryRun({ chain: chain({ noCode: true }) }, { from: '0x' + '1'.repeat(40), to: '0x' + '2'.repeat(40), data: '0x', value: '1' });
+  assert.equal(r.verdict, 'go');
 });

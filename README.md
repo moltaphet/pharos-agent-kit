@@ -103,6 +103,14 @@ server instances).
 Sandbox time is billed to the Vercel team that owns the project. Rebuild the snapshot (it never expires, but
 Foundry may need updating) with `vercel env pull .env.local && node --env-file=.env.local scripts/build-saga-snapshot.mjs`.
 
+**Real transactions on Atlantic testnet.** The Dry-Run Executor and the Batch Executor pages open with a card of
+transactions that were really sent on Pharos Atlantic testnet (`scripts/testnet-run.mjs --live`, report in
+`reports/testnet-runs.json`) from a throwaway wallet that only ever holds test tokens. The card does not ask to be trusted:
+when it loads, the API re-reads every transaction from the public Atlantic RPC and shows a green check only where the chain
+still agrees on status, gas used, block and value (`lib/testnet-report.js`). Without `--live` the script rehearses on a free
+local fork of Atlantic. The wallet's key lives in `.wallet/` (git-ignored) and is never printed or committed; the script
+refuses to send unless the chain id is 688689, so it cannot reach mainnet, and stops past a gas budget.
+
 The header shows live status of the three upstream services. Run links such as
 `/#/doc-search-cli/try?q=how+do+I+deploy+a+contract&run=1` re-run a demo when opened.
 

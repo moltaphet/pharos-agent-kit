@@ -1,5 +1,6 @@
 // Dry-Run Executor: content and a factory panel with presets.
 import { esc } from '../util.js';
+import { mountTestnet } from '../panels/testnet.js';
 import { makePanel, pill, table } from '../panels/factory.js';
 import { REPO } from '../consts.js';
 
@@ -30,6 +31,8 @@ export const content = {
     { server: 'local', tool: 'gate', text: 'Return GO or BLOCKED. Only GO may reach an executor; BLOCKED returns without ever calling send.' },
   ],
   decisions: [
+    { title: 'Real transactions on a real testnet, not only a fork', text: 'The recorded run on Pharos Atlantic testnet (the card above the live panel) simulates three transactions and then does what the verdict says: the passing transfer is really sent and its gas matches the estimate, the unaffordable transfer is never sent, and the blocked ERC-20 transfer is sent once anyway, with a fixed gas limit, to prove the prediction. It really reverted. The page re-reads all of it from the chain every time it loads, so you are not asked to trust our file.' },
+    { title: 'A bug the real run found: a call to an address with no code can never fail', text: 'While testing batches on the testnet we planned a call to a contract deployed a moment earlier. The simulation said GO, because a call with data to an address without code is just a value transfer: it cannot revert. The planners pin to a block two behind the head, which did not have the contract yet, so the “success” meant nothing. Now a call with data to an address that has no code at the pinned block is BLOCKED with an explanation (a wrong address, or a contract deployed in the last few blocks), in this skill and in the Batch Executor. A plain value transfer to such an account is still allowed.' },
     { title: 'A network failure is not a revert', text: 'Only a node reply that carries revert data counts as a failed simulation. A timeout is reported as an error to retry, never as “the transaction would fail”.' },
     { title: 'Either tool failing blocks it', text: 'eth_call and estimate_gas are both checked. If the call passes but gas estimation reverts, the transaction is still blocked.' },
     { title: 'Predict what we can prove', text: 'Transfers, approvals and native value have an exact after-state. For any other call the page says a state diff cannot be predicted from the call data, and points to the fork run.' },
@@ -40,10 +43,10 @@ export const content = {
   evidence: [
     'Uses eth_call and estimate_gas on the live chain at a pinned block to simulate the transaction without broadcasting it.',
     'Reports predicted success or revert, including the decoded revert reason (string, panic, or known custom error), and the estimated gas and its cost in PROS.',
-    'Shows the expected before/after for ERC-20 transfers, approvals and native value; the fork run produces the real diff to compare against.',
+    'Shows the expected before/after for ERC-20 transfers, approvals and native value; the real testnet run and the fork run produce the actual outcome to compare against.',
     'The gate blocks execution automatically when the simulation fails: the executor’s send is never called (unit-tested), and the CLI prints “EXECUTION BLOCKED”.',
   ],
-  files: ['skills/pharos-dry-run-executor/SKILL.md', 'skills/pharos-dry-run-executor/references/dry-run-executor.md', 'skills/pharos-dry-run-executor/scripts/dryrun.mjs', 'lib/tasks/dry-run-executor.js', 'lib/revert.js'],
+  files: ['scripts/testnet-run.mjs', 'lib/rpc-chain.js', 'lib/testnet-report.js', 'reports/testnet-runs.json', 'skills/pharos-dry-run-executor/SKILL.md', 'skills/pharos-dry-run-executor/references/dry-run-executor.md', 'skills/pharos-dry-run-executor/scripts/dryrun.mjs', 'lib/tasks/dry-run-executor.js', 'lib/revert.js'],
   run: {
     commands: [`node skills/pharos-dry-run-executor/scripts/dryrun.mjs --from ${MORPHO} --to ${USDC} --data $(cast calldata "transfer(address,uint256)" ${DEAD} 1000000)`, '… --fork --execute --watch ' + USDC + '   # really executes on a local fork and prints the real diff', `node skills/pharos-dry-run-executor/scripts/dryrun.mjs --from ${EMPTY} --to ${USDC} --data <same calldata> --execute   # BLOCKED`],
     sample: `DRY RUN  ·  block 20,918,943  ·  GO
@@ -56,6 +59,8 @@ export const content = {
     fork state diff 0xc879c0…: 1242441562141 → 1242440562141 (-1000000)`,
   },
   verify: [
+    { title: 'Open the real transactions', text: 'Every hash on the testnet card links to the Atlantic explorer. The sender is a throwaway wallet that only ever holds test tokens.', link: ['https://atlantic.pharosscan.xyz/address/0x0eC197b8A30543c93e521a6C3F2DB5d110e60850', 'Sender on the Atlantic explorer'] },
+    { title: 'Re-run it with your own key', text: 'Needs Foundry and a funded Atlantic testnet key in .wallet/atlantic-testnet.json. Without --live it rehearses on a free local fork of Atlantic.', code: 'node scripts/testnet-run.mjs --live' },
     { title: 'Simulate it yourself', text: 'The same simulation straight from the public RPC. A reverting call prints the revert reason.', code: `cast call ${USDC} "transfer(address,uint256)(bool)" ${DEAD} 1000000 --from ${EMPTY} --rpc-url https://rpc.pharos.xyz   # reverts: ERC20: transfer amount exceeds balance` },
     { title: 'Estimate the gas yourself', text: 'Compare with the page’s estimate for the passing transfer.', code: `cast estimate ${USDC} "transfer(address,uint256)" ${DEAD} 1000000 --from ${MORPHO} --rpc-url https://rpc.pharos.xyz` },
     { title: 'Read the skill itself', text: 'SKILL.md, the reference and the script are in the repository.', link: [`${REPO}/tree/main/skills/pharos-dry-run-executor`, 'skills/pharos-dry-run-executor'] },
@@ -70,7 +75,7 @@ const PRESETS = {
   native: { label: 'Send 0.001 PROS to a token contract (reverts)', v: { from: '0x9f8ea09770dc38fc61f5a62031b3be0526d54d92', to: USDC, data: '0x', value: '1000000000000000' } },
 };
 
-export const mount = makePanel({
+const livePanel = makePanel({
   intro: 'Describe a transaction (sender, target, calldata, value) or load an example. Nothing is sent: it is simulated on the live chain.',
   fields: [
     { name: 'from', label: 'From (sender address)', type: 'text', value: PRESETS.ok.v.from, grow: true },
@@ -99,3 +104,10 @@ export const mount = makePanel({
     <p class="check ${r.verdict === 'go' ? 'ok' : 'bad'}"><b>Execution gate:</b> ${r.verdict === 'go' ? 'open. This transaction may be handed to an executor. (Here there is none: Chain MCP is read-only and no key is held.)' : 'closed. Nothing was sent, and nothing will be sent.'}</p>
     <p class="muted">A passing simulation is a prediction about the chain right now; state can change before a transaction is mined.</p>`,
 });
+
+// The recorded real run on Atlantic testnet sits above the live panel, which reads mainnet.
+export function mount(root, ctx) {
+  root.innerHTML = '<div data-slot="testnet"></div><div data-slot="live"></div>';
+  mountTestnet(root.querySelector('[data-slot=testnet]'), { slug: ctx.slug, kind: 'dry-run' });
+  return livePanel(root.querySelector('[data-slot=live]'), ctx);
+}

@@ -204,6 +204,12 @@ await guard(async () => {
 
 await guard(async () => {
   sec('8 Dry-Run Executor');
+
+  for (const slug of ['dry-run-executor', 'batch-executor']) {
+    const tn = (await run(slug, { real: 'testnet' })).body?.data?.testnet;
+    check(`${slug}: the recorded Atlantic testnet run is served and every transaction verifies on-chain right now`, tn?.report?.mode === 'live' && tn.verification?.total === 12 && tn.verification.verifiedCount === 12, `${tn?.verification?.verifiedCount}/${tn?.verification?.total}`);
+    check(`${slug}: the testnet run names a wallet and stayed inside its gas budget`, /^0x[0-9a-fA-F]{40}$/.test(tn?.report?.wallet ?? '') && BigInt(tn?.report?.budget?.spentWei ?? '1') < BigInt(tn?.report?.budget?.limitWei ?? '0'));
+  }
   const word = (n) => BigInt(n).toString(16).padStart(64, '0');
   const dead = '000000000000000000000000000000000000dead';
   const xfer = '0xa9059cbb' + dead.padStart(64, '0') + word(1_000_000);

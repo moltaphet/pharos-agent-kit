@@ -8,10 +8,11 @@ const FROM = '0x9f8ea09770dc38fc61f5a62031b3be0526d54d92';
 const A = (n) => '0x' + String(n).repeat(40);
 const revert = (m = 'execution reverted: ') => new Error(`x: ${JSON.stringify({ error: { message: m, code: 3, data: '0x' } })}`);
 // A chain stub. `failing` is a set of target addresses whose individual simulation reverts.
-function chain({ failing = [], batchFails = false, gas = { solo: 80_000, batch: 200_000 } } = {}) {
+function chain({ failing = [], batchFails = false, gas = { solo: 80_000, batch: 200_000 }, noCode = [] } = {}) {
   return {
     callTool: async (name, args) => {
       if (name === 'get_block_number') return { blockNumber: '10' };
+      if (name === 'get_code') return { result: noCode.includes(args.address) ? '0x' : '0x6080' };
       const t = args.transaction;
       const isBatch = t.to === MULTICALL3;
       if (isBatch && batchFails) throw revert('execution reverted: Multicall3: call failed');
@@ -112,4 +113,18 @@ test('values are summed into the single payment', async () => {
 test('bad policy and sender are rejected', async () => {
   await assert.rejects(planBatch({ chain: chain() }, { from: '0x1', actions: four }), /from must be a 0x address/);
   await assert.rejects(planBatch({ chain: chain() }, { from: FROM, actions: four, onFailure: 'yolo' }), /onFailure must be/);
+});
+
+test('an action with data aimed at an address without code is refused, because a simulation can never fail there', async () => {
+  const plan = await planBatch({ chain: chain({ noCode: [A(2)] }) }, { from: FROM, actions: four });
+  assert.deepEqual(plan.included, ['a1', 'a3', 'a4']);
+  const bad = plan.actions.find((a) => a.id === 'a2');
+  assert.equal(bad.status, 'fails');
+  assert.match(bad.reason, /no contract code at 0x2222.* on block 8/);
+});
+
+test('a plain value transfer (no data) to an account without code is fine', async () => {
+  const plan = await planBatch({ chain: chain({ noCode: [A(1), A(2), A(3)] }) }, { from: FROM, actions: [1, 2, 3].map((n) => ({ to: A(n), amountPros: '0.001' })) });
+  assert.equal(plan.verdict, 'ready');
+  assert.equal(plan.included.length, 3);
 });

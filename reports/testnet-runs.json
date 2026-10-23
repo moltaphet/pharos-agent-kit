@@ -1,0 +1,553 @@
+{
+ "recordedAt": "2026-10-23T06:34:34.848Z",
+ "mode": "live",
+ "network": {
+  "name": "Pharos Atlantic Testnet",
+  "chainId": 688689,
+  "rpc": "https://atlantic.dplabs-internal.com",
+  "explorer": "https://atlantic.pharosscan.xyz",
+  "headAtStart": 31771551
+ },
+ "wallet": "0x0eC197b8A30543c93e521a6C3F2DB5d110e60850",
+ "budget": {
+  "startWei": "50000000000000000",
+  "endWei": "49299711999299703",
+  "spentWei": "700288000700297",
+  "limitWei": "10000000000000000"
+ },
+ "dryRun": {
+  "cases": [
+   {
+    "id": "native-transfer",
+    "title": "Send 1 wei: simulated GO, then really sent",
+    "input": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x982f8cc7eab1ee205e912ca5175c7e3f90654901",
+     "data": "0x",
+     "value": "1"
+    },
+    "report": {
+     "block": 31771549,
+     "verdict": "go",
+     "summary": "The simulation succeeded: the transaction would go through.",
+     "prediction": "success",
+     "revert": null,
+     "gas": {
+      "units": 21000,
+      "suggestedLimit": 25200,
+      "priceGwei": 10,
+      "costPros": "0.00021",
+      "costWei": "210000000000000"
+     },
+     "outcome": {
+      "kind": "native-transfer",
+      "summary": "Send <0.000001 PROS from 0x0ec1…0850 to 0x982f…4901 (gas is extra)",
+      "rows": [
+       {
+        "label": "0x0ec1…0850 PROS",
+        "before": "0.05 PROS",
+        "after": "0.049999 PROS (before gas)"
+       },
+       {
+        "label": "0x982f…4901 PROS",
+        "before": "0 PROS",
+        "after": "<0.000001 PROS"
+       }
+      ]
+     }
+    },
+    "sent": {
+     "label": "dry-run: 1 wei transfer",
+     "hash": "0x79363e34be685e5bff405cd648ab3c68a6a27243ca0905cc50f644003f2fd565",
+     "blockNumber": 31771554,
+     "status": "success",
+     "gasUsed": 21000,
+     "gasLimit": 25200,
+     "gasPriceGwei": 1.000000001,
+     "costWei": "21000000021000",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x982f8cc7eab1ee205e912ca5175c7e3f90654901",
+     "valueWei": "1"
+    },
+    "check": {
+     "predicted": "success",
+     "actual": "success",
+     "predictedGas": 21000,
+     "actualGas": 21000,
+     "gasErrorPct": 0,
+     "recipientGained": "1",
+     "matched": true
+    }
+   },
+   {
+    "id": "unaffordable",
+    "title": "Send more than the wallet holds: simulated BLOCKED, never sent",
+    "input": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x900399d7d6215be1fe81a9e0f0ecabe904527ce3",
+     "data": "0x",
+     "value": "1050000000000000000"
+    },
+    "report": {
+     "block": 31771554,
+     "verdict": "blocked",
+     "summary": "The simulation failed: The caller does not have enough funds for value transfer..",
+     "prediction": "revert",
+     "revert": {
+      "message": "The caller does not have enough funds for value transfer.",
+      "kind": "empty"
+     },
+     "gas": null,
+     "outcome": {
+      "kind": "native-transfer",
+      "summary": "Send 1.05 PROS from 0x0ec1…0850 to 0x9003…7ce3 (gas is extra)",
+      "rows": [
+       {
+        "label": "0x0ec1…0850 PROS",
+        "before": "0.049978 PROS",
+        "after": "unchanged (it would revert)"
+       },
+       {
+        "label": "0x9003…7ce3 PROS",
+        "before": "0 PROS",
+        "after": "unchanged (it would revert)"
+       }
+      ]
+     }
+    },
+    "sent": null,
+    "check": {
+     "predicted": "revert",
+     "actual": "not sent",
+     "matched": true
+    }
+   },
+   {
+    "id": "token-revert",
+    "title": "Send 1 USDC the wallet does not have: simulated BLOCKED, then sent anyway to check the prediction",
+    "input": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0xcfC8330f4BCAB529c625D12781b1C19466A9Fc8B",
+     "data": "0xa9059cbb…",
+     "value": "0"
+    },
+    "report": {
+     "block": 31771557,
+     "verdict": "blocked",
+     "summary": "The simulation failed: ERC20: transfer amount exceeds balance.",
+     "prediction": "revert",
+     "revert": {
+      "message": "ERC20: transfer amount exceeds balance",
+      "kind": "Error"
+     },
+     "gas": null,
+     "outcome": {
+      "kind": "erc20-transfer",
+      "summary": "Move 1 USDC from 0x0ec1…0850 to 0xd95b…e4bf",
+      "rows": [
+       {
+        "label": "0x0ec1…0850 USDC",
+        "before": "0 USDC",
+        "after": "unchanged (it would revert)"
+       },
+       {
+        "label": "0xd95b…e4bf USDC",
+        "before": "0 USDC",
+        "after": "unchanged (it would revert)"
+       }
+      ]
+     }
+    },
+    "sent": {
+     "label": "dry-run: forced USDC transfer (predicted to revert)",
+     "hash": "0x0c760f7353ddfa20a228326afd1afc4501c2f7fe9bd907daffd34cffe00e9115",
+     "blockNumber": 31771566,
+     "status": "reverted",
+     "gasUsed": 36176,
+     "gasLimit": 120000,
+     "gasPriceGwei": 1.000000001,
+     "costWei": "36176000036176",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0xcfc8330f4bcab529c625d12781b1c19466a9fc8b",
+     "valueWei": "0"
+    },
+    "check": {
+     "predicted": "revert",
+     "actual": "reverted",
+     "gasWasted": 36176,
+     "matched": true
+    }
+   }
+  ]
+ },
+ "batch": {
+  "transfers": {
+   "separate": {
+    "transactions": [
+     {
+      "label": "batch: separate transfer solo-a",
+      "hash": "0x1e318ee91d4419d052279453971f1bab539103c29d4a95f845d4781e965677e0",
+      "blockNumber": 31771580,
+      "status": "success",
+      "gasUsed": 21000,
+      "gasLimit": 27300,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "21000000021000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x96f8d0adda4eb97bd4f9ed15fedb8bf787da16c8",
+      "valueWei": "1",
+      "plannedGas": 21000
+     },
+     {
+      "label": "batch: separate transfer solo-b",
+      "hash": "0xbd8166cd63c5f862d5d1ffe308640acfa2baeb4a5d042f615b6225356b47fbab",
+      "blockNumber": 31771587,
+      "status": "success",
+      "gasUsed": 21000,
+      "gasLimit": 27300,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "21000000021000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x935710648fc73c3d7a02156ecd3873981f4afebf",
+      "valueWei": "1",
+      "plannedGas": 21000
+     },
+     {
+      "label": "batch: separate transfer solo-c",
+      "hash": "0x126dac51428fc5d73fa75f0eef519b338235bc4974175c6fc13847d7bb965808",
+      "blockNumber": 31771594,
+      "status": "success",
+      "gasUsed": 21000,
+      "gasLimit": 27300,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "21000000021000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x32acb2e2adfbe03047840a12fe4447d72f0c7fc2",
+      "valueWei": "1",
+      "plannedGas": 21000
+     }
+    ],
+    "totalGas": 63000,
+    "plannedGasTotal": 63000
+   },
+   "batched": {
+    "transaction": {
+     "label": "batch: one Multicall3 transaction with 3 transfers",
+     "hash": "0x5209545ea0481ac0abd27ba4ac6b11ba0afb91a14b2c518ecd533893725fe14a",
+     "blockNumber": 31771605,
+     "status": "success",
+     "gasUsed": 132016,
+     "gasLimit": 216132,
+     "gasPriceGwei": 1.000000001,
+     "costWei": "132016000132016",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0xca11bde05977b3631167028862be2a173976ca11",
+     "valueWei": "3"
+    },
+    "plannedGas": 166255,
+    "plannedSaving": {
+     "transactionsBefore": 3,
+     "transactionsAfter": 1,
+     "soloGasTotal": 63000,
+     "batchGas": 166255,
+     "gasSaved": -103255,
+     "gasSavedPct": -163.8968253968254
+    },
+    "recipientsFunded": true
+   },
+   "realComparison": {
+    "gasSeparate": 63000,
+    "gasBatched": 132016,
+    "gasSaved": -69016,
+    "gasSavedPct": -109.54920634920636,
+    "plannedGasSavedPct": -163.8968253968254
+   }
+  },
+  "calls": {
+   "contract": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+   "deployment": {
+    "label": "batch: deploy the Counter contract",
+    "hash": "0xa5e06a4147d5f3d3400401c33efed874c47f0982613f8c37945cf69b7bf2fb02",
+    "blockNumber": 31771626,
+    "status": "success",
+    "gasUsed": 113061,
+    "gasLimit": 250000,
+    "gasPriceGwei": 1.000000001,
+    "costWei": "113061000113061",
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": null,
+    "valueWei": "0",
+    "contractAddress": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2"
+   },
+   "separate": {
+    "transactions": [
+     {
+      "label": "batch: separate call ping-101",
+      "hash": "0x2982bbc5d496344f69247f334326ebe5236ba2cee928e00697d63ddd407fe7dd",
+      "blockNumber": 31771638,
+      "status": "success",
+      "gasUsed": 45060,
+      "gasLimit": 75036,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "45060000045060",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+      "valueWei": "0",
+      "plannedGas": 57720
+     },
+     {
+      "label": "batch: separate call ping-102",
+      "hash": "0x937dde3c00371b4951b91fa8a80a5b6e9757039c34589753305fb6d5c8e88365",
+      "blockNumber": 31771646,
+      "status": "success",
+      "gasUsed": 45060,
+      "gasLimit": 75036,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "45060000045060",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+      "valueWei": "0",
+      "plannedGas": 57720
+     },
+     {
+      "label": "batch: separate call ping-103",
+      "hash": "0xdd7fb2e02ea27cba65d650aba10ebcf1a7b371199bd3fd62bbadb6e511e5082a",
+      "blockNumber": 31771653,
+      "status": "success",
+      "gasUsed": 45060,
+      "gasLimit": 75036,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "45060000045060",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+      "valueWei": "0",
+      "plannedGas": 57720
+     }
+    ],
+    "totalGas": 135180,
+    "plannedGasTotal": 173160
+   },
+   "batched": {
+    "transaction": {
+     "label": "batch: one Multicall3 transaction with 3 calls",
+     "hash": "0x37fd3313534ab882ddc5f5e35ebdc8f5efb5aee62474dd2e352fc9bfec0e34e3",
+     "blockNumber": 31771664,
+     "status": "success",
+     "gasUsed": 104438,
+     "gasLimit": 171755,
+     "gasPriceGwei": 1.000000001,
+     "costWei": "104438000104438",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0xca11bde05977b3631167028862be2a173976ca11",
+     "valueWei": "0"
+    },
+    "plannedGas": 132119,
+    "plannedSaving": {
+     "transactionsBefore": 3,
+     "transactionsAfter": 1,
+     "soloGasTotal": 173160,
+     "batchGas": 132119,
+     "gasSaved": 41041,
+     "gasSavedPct": 23.7012012012012
+    },
+    "everyCallLanded": true
+   },
+   "realComparison": {
+    "gasSeparate": 135180,
+    "gasBatched": 104438,
+    "gasSaved": 30742,
+    "gasSavedPct": 22.74152981210238,
+    "plannedGasSavedPct": 23.7012012012012
+   }
+  },
+  "exclude": {
+   "included": [
+    "ex-a",
+    "ex-b"
+   ],
+   "excluded": [
+    {
+     "id": "ex-bad",
+     "why": "would fail: The caller does not have enough funds for value transfer."
+    }
+   ],
+   "transaction": {
+    "label": "batch: policy exclude (unaffordable action left out)",
+    "hash": "0x3edfa22d3c37313a34b82f513896652c27ea43468ac4bacebfe03841da62c32a",
+    "blockNumber": 31771618,
+    "status": "success",
+    "gasUsed": 95417,
+    "gasLimit": 157239,
+    "gasPriceGwei": 1.000000001,
+    "costWei": "95417000095417",
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0xca11bde05977b3631167028862be2a173976ca11",
+    "valueWei": "2"
+   },
+   "recipientsFunded": true,
+   "plan": {
+    "verdict": "ready",
+    "summary": "2 actions in 1 transaction: costs 78,953 gas (188.0%); 1 left out."
+   }
+  }
+ },
+ "transactions": [
+  {
+   "label": "dry-run: 1 wei transfer",
+   "hash": "0x79363e34be685e5bff405cd648ab3c68a6a27243ca0905cc50f644003f2fd565",
+   "blockNumber": 31771554,
+   "status": "success",
+   "gasUsed": 21000,
+   "gasLimit": 25200,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "21000000021000",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x982f8cc7eab1ee205e912ca5175c7e3f90654901",
+   "valueWei": "1"
+  },
+  {
+   "label": "dry-run: forced USDC transfer (predicted to revert)",
+   "hash": "0x0c760f7353ddfa20a228326afd1afc4501c2f7fe9bd907daffd34cffe00e9115",
+   "blockNumber": 31771566,
+   "status": "reverted",
+   "gasUsed": 36176,
+   "gasLimit": 120000,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "36176000036176",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0xcfc8330f4bcab529c625d12781b1c19466a9fc8b",
+   "valueWei": "0"
+  },
+  {
+   "label": "batch: separate transfer solo-a",
+   "hash": "0x1e318ee91d4419d052279453971f1bab539103c29d4a95f845d4781e965677e0",
+   "blockNumber": 31771580,
+   "status": "success",
+   "gasUsed": 21000,
+   "gasLimit": 27300,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "21000000021000",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x96f8d0adda4eb97bd4f9ed15fedb8bf787da16c8",
+   "valueWei": "1"
+  },
+  {
+   "label": "batch: separate transfer solo-b",
+   "hash": "0xbd8166cd63c5f862d5d1ffe308640acfa2baeb4a5d042f615b6225356b47fbab",
+   "blockNumber": 31771587,
+   "status": "success",
+   "gasUsed": 21000,
+   "gasLimit": 27300,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "21000000021000",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x935710648fc73c3d7a02156ecd3873981f4afebf",
+   "valueWei": "1"
+  },
+  {
+   "label": "batch: separate transfer solo-c",
+   "hash": "0x126dac51428fc5d73fa75f0eef519b338235bc4974175c6fc13847d7bb965808",
+   "blockNumber": 31771594,
+   "status": "success",
+   "gasUsed": 21000,
+   "gasLimit": 27300,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "21000000021000",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x32acb2e2adfbe03047840a12fe4447d72f0c7fc2",
+   "valueWei": "1"
+  },
+  {
+   "label": "batch: one Multicall3 transaction with 3 transfers",
+   "hash": "0x5209545ea0481ac0abd27ba4ac6b11ba0afb91a14b2c518ecd533893725fe14a",
+   "blockNumber": 31771605,
+   "status": "success",
+   "gasUsed": 132016,
+   "gasLimit": 216132,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "132016000132016",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0xca11bde05977b3631167028862be2a173976ca11",
+   "valueWei": "3"
+  },
+  {
+   "label": "batch: policy exclude (unaffordable action left out)",
+   "hash": "0x3edfa22d3c37313a34b82f513896652c27ea43468ac4bacebfe03841da62c32a",
+   "blockNumber": 31771618,
+   "status": "success",
+   "gasUsed": 95417,
+   "gasLimit": 157239,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "95417000095417",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0xca11bde05977b3631167028862be2a173976ca11",
+   "valueWei": "2"
+  },
+  {
+   "label": "batch: deploy the Counter contract",
+   "hash": "0xa5e06a4147d5f3d3400401c33efed874c47f0982613f8c37945cf69b7bf2fb02",
+   "blockNumber": 31771626,
+   "status": "success",
+   "gasUsed": 113061,
+   "gasLimit": 250000,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "113061000113061",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": null,
+   "valueWei": "0",
+   "contractAddress": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2"
+  },
+  {
+   "label": "batch: separate call ping-101",
+   "hash": "0x2982bbc5d496344f69247f334326ebe5236ba2cee928e00697d63ddd407fe7dd",
+   "blockNumber": 31771638,
+   "status": "success",
+   "gasUsed": 45060,
+   "gasLimit": 75036,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "45060000045060",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+   "valueWei": "0"
+  },
+  {
+   "label": "batch: separate call ping-102",
+   "hash": "0x937dde3c00371b4951b91fa8a80a5b6e9757039c34589753305fb6d5c8e88365",
+   "blockNumber": 31771646,
+   "status": "success",
+   "gasUsed": 45060,
+   "gasLimit": 75036,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "45060000045060",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+   "valueWei": "0"
+  },
+  {
+   "label": "batch: separate call ping-103",
+   "hash": "0xdd7fb2e02ea27cba65d650aba10ebcf1a7b371199bd3fd62bbadb6e511e5082a",
+   "blockNumber": 31771653,
+   "status": "success",
+   "gasUsed": 45060,
+   "gasLimit": 75036,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "45060000045060",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+   "valueWei": "0"
+  },
+  {
+   "label": "batch: one Multicall3 transaction with 3 calls",
+   "hash": "0x37fd3313534ab882ddc5f5e35ebdc8f5efb5aee62474dd2e352fc9bfec0e34e3",
+   "blockNumber": 31771664,
+   "status": "success",
+   "gasUsed": 104438,
+   "gasLimit": 171755,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "104438000104438",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0xca11bde05977b3631167028862be2a173976ca11",
+   "valueWei": "0"
+  }
+ ]
+}

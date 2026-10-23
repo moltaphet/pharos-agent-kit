@@ -6,3 +6,4 @@ contracts/cache/
 .env
 .env.*
 .env*.local
+.wallet/

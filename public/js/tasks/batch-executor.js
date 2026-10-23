@@ -1,5 +1,6 @@
 // Batch Executor: content and a factory panel.
 import { esc } from '../util.js';
+import { mountTestnet } from '../panels/testnet.js';
 import { makePanel, pill, table } from '../panels/factory.js';
 import { REPO } from '../consts.js';
 
@@ -28,6 +29,8 @@ export const content = {
     { server: 'chain', tool: 'eth_call · estimate_gas (the batch)', text: 'Simulate the whole batch and compare its gas with the sum of the separate transactions.' },
   ],
   decisions: [
+    { title: 'The planner was checked against real transactions', text: 'On Pharos Atlantic testnet we sent the same three actions both ways and compared. Three plain transfers cost 63,000 gas one by one and 132,016 as one batch (110% more; the planner said it would cost more). Three calls to a small contract we deployed cost 135,180 gas one by one and 104,438 as one batch: a real saving of 22.7%, against 23.7% predicted. Every hash is on the card above the live panel and is re-read from the chain each time the page loads.' },
+    { title: 'A bug the real run found: a new contract is invisible to a plan pinned behind the head', text: 'Our first testnet run planned calls to the Counter contract right after deploying it. The planner pins two blocks behind the head, where the contract did not exist yet, so it saw a call to an empty address (which “succeeds” and costs only 21,000 gas), set a gas limit that was far too small, and the three real calls reverted. Two fixes: a call with data to an address without code is now refused with an explanation, and the run waits until the contract is old enough to be seen. The free rehearsal on a local fork of Atlantic caught it before any real gas was spent.' },
     { title: 'A batch is not always cheaper, and we say so', text: 'The first test run used two precompile addresses and showed a 13% saving, which was an accident. With ordinary recipients a native-transfer batch costs 70% more on a fork. The page reports the measured number either way.' },
     { title: 'Refuse what Multicall3 breaks', text: 'The inner sender is Multicall3. An ERC-20 transfer would move Multicall3’s tokens, and approving Multicall3 so it could move yours would let anyone spend them. Those actions are rejected with that explanation.' },
     { title: 'All-or-nothing on chain', text: 'Every inner call has allowFailure=false. With allowFailure on, a failed call’s value stays inside Multicall3 and is lost. Failures are caught in simulation instead, by name.' },
@@ -40,7 +43,7 @@ export const content = {
     'Reports the gas and step change against sending them one by one: estimated here, and measured on a real-EVM fork (178,977 → 150,762 gas for the sync workload; and honestly +70% for plain transfers).',
     'Handles partial failure by name: each failing action is listed with its reason, the policy decides whether to exclude it or abort, and forcing it in makes the whole batch revert with nothing changed.',
   ],
-  files: ['skills/pharos-batch-executor/SKILL.md', 'skills/pharos-batch-executor/references/batch-executor.md', 'skills/pharos-batch-executor/scripts/batch.mjs', 'lib/tasks/batch-executor.js', 'lib/multicall.js'],
+  files: ['scripts/testnet-run.mjs', 'contracts/Counter.sol', 'lib/rpc-chain.js', 'lib/testnet-report.js', 'reports/testnet-runs.json', 'skills/pharos-batch-executor/SKILL.md', 'skills/pharos-batch-executor/references/batch-executor.md', 'skills/pharos-batch-executor/scripts/batch.mjs', 'lib/tasks/batch-executor.js', 'lib/multicall.js'],
   run: {
     commands: ['node skills/pharos-batch-executor/scripts/batch.mjs --from 0x9f8ea09770dc38fc61f5a62031b3be0526d54d92 --actions skills/pharos-batch-executor/examples/sync-pairs.json', '… --fork --out run.json   # real execution on a local fork', '… --actions skills/pharos-batch-executor/examples/native-transfers.json   # shows a batch that costs MORE'],
     sample: `PLAN @ block 20,920,350  ·  3 actions in 1 transaction: saves 36,893 gas (15.2%); 1 left out.
@@ -52,6 +55,7 @@ FORK (real EVM, throwaway): one by one used 178,977 gas; the batch used 150,762 
   forcing the failing action into the batch: the WHOLE batch reverts (Multicall3: call failed); no recipient balance changed: yes`,
   },
   verify: [
+    { title: 'Open the real transactions', text: 'Every hash on the testnet card links to the Atlantic explorer, including the one-transaction batch and the three separate ones it replaces.', link: ['https://atlantic.pharosscan.xyz/address/0x773cca27b9f92efe3fca92c71800415d6d58d7b2', 'The Counter contract on the Atlantic explorer'] },
     { title: 'Check the encoding yourself', text: 'cast encodes a batch of two calls to the same bytes the planner produces for them.', code: 'cast calldata "aggregate3Value((address,bool,uint256,bytes)[])" "[(0x1111111111111111111111111111111111111111,false,1000000000000000,0x),(0x2222222222222222222222222222222222222222,true,2,0xdeadbeef)]"' },
     { title: 'Check a solo cost yourself', text: 'The planner’s “solo gas” for one sync() call.', code: 'cast estimate 0xb7d5d299c671e4a4c7c0c5a33b812185182fc417 "sync()" --from 0x9f8ea09770dc38fc61f5a62031b3be0526d54d92 --rpc-url https://rpc.pharos.xyz' },
     { title: 'Reproduce the real-EVM comparison', text: 'Needs Foundry. Prints actual gas used for both ways and the all-or-nothing revert.', code: 'node skills/pharos-batch-executor/scripts/batch.mjs --from 0x9f8ea09770dc38fc61f5a62031b3be0526d54d92 --actions skills/pharos-batch-executor/examples/sync-pairs.json --fork' },
@@ -59,7 +63,7 @@ FORK (real EVM, throwaway): one by one used 178,977 gas; the batch used 150,762 
   ],
 };
 
-export const mount = makePanel({
+const livePanel = makePanel({
   intro: 'Describe at least 3 independent actions as JSON and plan the batch. Nothing is sent: the result is a prepared, unsigned transaction.',
   fields: [
     { name: 'from', label: 'From (sender address)', type: 'text', value: FROM, grow: true },
@@ -87,3 +91,10 @@ export const mount = makePanel({
     ${p.comparison ? `<h4 class="list-h">One transaction instead of ${p.comparison.transactionsBefore}</h4>${table(['Sent one by one', 'As one batch', 'Difference'], [[`${g(p.comparison.soloGasTotal)} gas`, `${g(p.comparison.batchGas)} gas`, `<b class="${p.comparison.gasSaved >= 0 ? 'ok' : 'bad'}">${p.comparison.gasSaved >= 0 ? 'saves' : 'costs'} ${g(Math.abs(p.comparison.gasSaved))} gas (${Math.abs(p.comparison.gasSavedPct).toFixed(1)}%)</b>`]])}${p.comparison.gasSaved < 0 ? '<p class="check warn">These actions are already the cheapest a transaction can be, so batching them costs more gas. Batch them only for convenience (one signature), not to save gas.</p>' : ''}<p class="muted">Estimates from estimate_gas. The real-EVM fork run is in the story above.</p>` : ''}
     ${p.batch?.tx ? `<h4 class="list-h">Prepared transaction (unsigned)</h4><pre class="plain">to    ${esc(p.batch.to)}  (Multicall3)\nvalue ${esc(p.batch.valuePros)} PROS\ncalls ${p.batch.calls}\ndata  ${esc(p.batch.data.slice(0, 90))}…</pre><p class="muted">Nothing was sent. Signing is your step.</p>` : ''}`,
 });
+
+// The recorded real run on Atlantic testnet sits above the live panel, which reads mainnet.
+export function mount(root, ctx) {
+  root.innerHTML = '<div data-slot="testnet"></div><div data-slot="live"></div>';
+  mountTestnet(root.querySelector('[data-slot=testnet]'), { slug: ctx.slug, kind: 'batch' });
+  return livePanel(root.querySelector('[data-slot=live]'), ctx);
+}
