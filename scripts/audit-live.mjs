@@ -188,18 +188,35 @@ await guard(async () => {
   check('net = netBeforeGas - gas', live && Math.abs(live.net - (live.netBeforeGas - live.costs.gas)) < 1e-12);
   check('decision matches the threshold rule', live && ((live.decision === 'execute-simulated') === (live.net >= live.minNet && live.reasons.length === 0)));
   check('skip carries at least one reason', live?.decision !== 'skip' || live.reasons.length >= 1);
-  const pr = (await run('arbitrage-scanner', { source: 'profitable', size: 50 })).body?.data?.scan;
-  check('synthetic profitable: acts, simulated, labelled synthetic', pr?.decision === 'execute-simulated' && pr.fill?.simulated === true && /Synthetic/.test(pr.sourceLabel));
-  const mg = (await run('arbitrage-scanner', { source: 'marginal', size: 50 })).body?.data?.scan;
-  check('synthetic marginal: skips (gap smaller than fees)', mg?.decision === 'skip');
-  const hi = (await run('arbitrage-scanner', { source: 'profitable', size: 50, minNet: 100 })).body?.data?.scan;
-  check('threshold is configurable: minNet=100 makes profitable skip', hi?.decision === 'skip');
+  check('synthetic data is no longer offered: source=profitable is refused with a 400', is400(await run('arbitrage-scanner', { source: 'profitable', size: 50 })));
+  check('synthetic data is no longer offered: source=marginal is refused with a 400', is400(await run('arbitrage-scanner', { source: 'marginal', size: 50 })));
   const pd = (await run('arbitrage-scanner', { pair: 'UNI-V2/PDOG', size: 1 })).body?.data?.scan;
   check('second pair: scans and refuses to guess unpriced gas', pd?.decision === 'skip' && pd.costs.gas === null);
   check('bad pair rejected with 400', is400(await run('arbitrage-scanner', { pair: 'X/Y' })));
-  check('negative size rejected with 400', is400(await run('arbitrage-scanner', { source: 'profitable', size: -1 })));
+  check('negative size rejected with 400', is400(await run('arbitrage-scanner', { size: -1 })));
   check('bad source rejected with 400', is400(await run('arbitrage-scanner', { source: 'bogus' })));
-  check('minNet=abc rejected with 400', is400(await run('arbitrage-scanner', { source: 'profitable', minNet: 'abc' })));
+  check('minNet=abc rejected with 400', is400(await run('arbitrage-scanner', { minNet: 'abc' })));
+  check('a shell-injection attempt as the real-run scenario is rejected with 400', is400(await run('arbitrage-scanner', { real: 'start', scenario: 'profitable; id' })));
+  check('a run id from another demo is rejected with 400', is400(await run('arbitrage-scanner', { real: 'status', id: 'saga-plain-abcd1234' })));
+  // The act path, for real: a throwaway machine forks Pharos mainnet and executes both legs on the real FaroSwap contracts.
+  const arbStart = (await run('arbitrage-scanner', { real: 'start', scenario: 'profitable' })).body;
+  check('a real arbitrage run starts and returns a machine id', /^arb-profitable-[a-z0-9]{8}$/.test(arbStart?.data?.started?.id ?? ''), arbStart?.error);
+  let arb;
+  let arbFrom = 0;
+  const arbSeen = [];
+  for (let i = 0; i < 60 && arbStart?.ok; i++) {
+    await new Promise((r) => setTimeout(r, 3000));
+    arb = (await run('arbitrage-scanner', { real: 'status', id: arbStart.data.started.id, from: arbFrom })).body?.data?.status;
+    if (!arb) continue;
+    arbSeen.push(...arb.events.map((e) => e.what));
+    arbFrom = arb.total;
+    if (arb.state !== 'running') break;
+  }
+  const arbRun = arb?.result?.scenarios?.[0];
+  check('the real arbitrage run finished (done)', arb?.state === 'done', arb?.error ?? arb?.state);
+  check('real arbitrage: both venues agreed first (no gap), then a real swap made one and the scanner acted', arbRun?.baseline?.decision === 'skip' && Math.abs(arbRun.baseline.grossSpreadPct) < 0.01 && arbRun.scan.decision === 'execute-simulated');
+  check('real arbitrage: the EVM paid out what the scanner predicted (within a millionth of a percent) and gas was subtracted', arbRun?.execution?.status === 'success' && arbRun.execution.predictionErrorPct < 1e-4 && arbRun.execution.actualNet > 0 && arbRun.execution.actualNet < arbRun.execution.actualGrossProfit);
+  check('real arbitrage: after the trade the scanner skips (the edge is used up); the steps streamed in order', arbRun?.rescan?.decision === 'skip' && arbSeen.length === arbRun.steps.length, `${arbSeen.length} streamed, ${arbRun?.steps?.length} in the result`);
 });
 
 await guard(async () => {
@@ -236,12 +253,8 @@ await guard(async () => {
 await guard(async () => {
   sec('9 Trend Watcher');
   const post = (o, state) => run('trend-watcher', o, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state }) });
-  const dec = (await post({ action: 'scenario', scenario: 'decline', direction: 'down', observations: 3 }, null)).body?.data;
-  check('decline fires exactly once, at the 3rd observation', dec?.results?.map((r) => r.fired).join() === 'false,false,true,false,false' && dec.state.events.length === 1);
-  for (const sc of ['spike', 'dip']) { const r = (await post({ action: 'scenario', scenario: sc, direction: sc === 'spike' ? 'up' : 'down', observations: 3 }, null)).body?.data; check(`single ${sc} never triggers`, r?.state?.events?.length === 0 && !r.state.active); }
-  const rec = (await post({ action: 'scenario', scenario: 'recovery', direction: 'down', observations: 3 }, null)).body?.data;
-  check('recovery: triggered, cleared, triggered', rec?.state?.events?.map((e) => e.type).join() === 'triggered,cleared,triggered');
-  check('rule with 2 observations rejected with 400', is400(await post({ action: 'scenario', scenario: 'decline', observations: 2 }, null)));
+  check('synthetic scenarios are no longer offered: action=scenario is refused with a 400', is400(await post({ action: 'scenario', scenario: 'decline', direction: 'down', observations: 3 }, null)));
+  check('rule with 2 observations rejected with 400', is400(await post({ action: 'backfill', metric: 'usdc-supply', observations: 2 }, null)));
   const a = (await post({ action: 'backfill', metric: 'usdc-supply', count: 5, step: 20000, direction: 'down', observations: 3 }, null)).body?.data;
   check('live backfill stores 5 observations on a fixed grid', a?.state?.observations?.length === 5 && a.state.observations.every((o) => o.block % 20000 === 0));
   const b = (await post({ action: 'backfill', metric: 'usdc-supply', count: 5, step: 20000, direction: 'down', observations: 3 }, a.state)).body?.data;
@@ -252,7 +265,7 @@ await guard(async () => {
   check('no isolated spike in the series (a wrong-block value would show as one)', vals.every((v, i) => i === 0 || i === vals.length - 1 || !((v > vals[i - 1] * 1.3 && v > vals[i + 1] * 1.3) || (v < vals[i - 1] * 0.7 && v < vals[i + 1] * 0.7))), vals?.join(' '));
   check('count=99 rejected with 400', is400(await post({ action: 'backfill', metric: 'usdc-supply', count: 99 }, null)));
   check('unknown metric rejected with 400', is400(await post({ action: 'backfill', metric: 'nope' }, null)));
-  const evil = await run('trend-watcher', { action: 'scenario', scenario: 'decline' }, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state: { version: 1, rule: { direction: 'down', observations: 3 }, observations: 'not-an-array', active: false, events: [] } }) });
+  const evil = await run('trend-watcher', { action: 'backfill', metric: 'usdc-supply', count: 3 }, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state: { version: 1, rule: { direction: 'down', observations: 3 }, observations: 'not-an-array', active: false, events: [] } }) });
   check('a malformed posted state does not cause a 500', evil.status !== 500, evil.status);
 });
 

@@ -24,7 +24,6 @@ node skills/pharos-arbitrage-scanner/scripts/scan.mjs --pair WPROS/DLP --size 1 
 | `--pair` | string | No (default `WPROS/DLP`) | `WPROS/DLP` or `UNI-V2/PDOG` (pairs that exist on both V2 and V3 with liquidity). |
 | `--size` | number | No (default 1) | The **largest** trade considered, in the quote token. |
 | `--min-net` | number | No (default 0.001) | Minimum net profit in the quote token. Below it the scan skips. |
-| `--source` | string | No (default `live`) | `live`, or a labelled synthetic scenario (see below). |
 | `--json` | flag | No | One JSON object per scan. |
 
 ### Output Parsing
@@ -127,42 +126,6 @@ node skills/pharos-arbitrage-scanner/scripts/scan.mjs --json
 
 > **Agent Guidelines**:
 > 1. State what would have to be true for a trade: a smaller price gap is useless; deeper pools are what is missing.
-
----
-
-## Synthetic scenarios
-
-### Overview
-
-Today's real FaroSwap pools are too thin for a profitable trade, so the "act" path is demonstrated on **clearly labelled synthetic pool states** that run the same maths: `profitable` (V3 prices the base 3% above V2, deep pools) and `marginal` (0.4% above, less than the fees).
-
-### Command Template
-
-```bash
-node skills/pharos-arbitrage-scanner/scripts/scan.mjs --source profitable --size 50   # exit 0
-node skills/pharos-arbitrage-scanner/scripts/scan.mjs --source marginal   --size 50   # exit 10
-```
-
-### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `--source` | string | Yes | `profitable` or `marginal` (or `live` for the real market). |
-| `--size` | number | No | Largest trade considered, in the quote token. Use about 50 for the synthetic pools. |
-| `--min-net` | number | No | Minimum net profit in the quote token (default 0.001). |
-
-### Output Parsing
-
-The header prints `[Synthetic: …]`. Never present a synthetic result as a market observation.
-
-### Error Handling
-
-| Error Signature | Cause | Suggested Action |
-|----------------|-------|----|
-| `source must be live or one of …` | Unknown scenario | Use `profitable` or `marginal`. |
-
-> **Agent Guidelines**:
-> 1. Always say it is synthetic when you show it.
 
 ---
 

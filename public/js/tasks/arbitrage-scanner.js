@@ -1,6 +1,7 @@
 // Arbitrage Scanner: content and a factory panel with a browser-side scan history.
 import { esc, store } from '../util.js';
 import { makePanel, pill, table } from '../panels/factory.js';
+import { mountRealRun } from '../panels/real-run.js';
 import { EXPLORER, REPO } from '../consts.js';
 
 const KEY = 'arb-history-v1';
@@ -26,7 +27,7 @@ export const content = {
     'An arbitrage scanner is easy to fool. Two venues disagree on a price, the gap looks huge, and the bot trades into a pool that holds a few cents. This Pharos Skill reads the same token pair from two independent places at the same block (FaroSwap V2 reserves and FaroSwap V3 pool state), simulates buying on the cheaper venue and selling on the dearer one, and subtracts swap fees, price impact and gas before it will call anything profitable.',
     'It searches trade sizes rather than assuming one, because bigger is not better once price impact bites, and it checks that a V3 trade stays inside the pool’s active price range, where the maths is exact. If it cannot trust the estimate it skips and says why. It never sends a transaction: “acting” is a simulated fill.',
     'The act path is proved on a real EVM, not only simulated. The live pools are far too thin to ever profit, so a local fork of Pharos mainnet re-prices the V2 pair with a real swap, deposits our own liquidity into both venues, makes a real price gap with another swap, lets this scanner decide on that state, and then executes both legs with a helper contract. The recorded run compares what the scanner predicted with what the EVM did: the profit matches to about eight decimal places.',
-    'The honest headline from the live market is a skip. When we recorded this, the WPROS/DLP pair showed a gap of almost six million percent, but one pool held about 0.00007 WPROS and the other’s active price range could absorb only a tiny fraction of a token, so the best achievable net profit was negative after gas. Pool balances move, so run a scan to see today’s numbers. To show the “act” path too, there are two clearly labelled synthetic scenarios that run the same maths.',
+    'The honest headline from the live market is a skip. When we recorded this, the WPROS/DLP pair showed a gap of almost six million percent, but one pool held about 0.00007 WPROS and the other’s active price range could absorb only a tiny fraction of a token, so the best achievable net profit was negative after gas. Pool balances move, so run a scan to see today’s numbers. There is no synthetic data on this page: the act path is proved by the real run above, on a fork.',
   ],
   how: [
     { server: 'chain', tool: 'get_block_number', text: 'Pin both venues to one block so the two prices describe the same moment.' },
@@ -44,7 +45,7 @@ export const content = {
     { title: 'Gas must be priceable', text: 'Gas is paid in PROS. If the quote token cannot be converted to it, the scan skips rather than inventing an exchange rate.' },
     { title: 'Prove the maths against the real contracts', text: 'A model that agrees with itself proves nothing. On the fork, the profit the scanner predicted for its chosen trade equals what the real FaroSwap contracts paid out (the recorded table shows both, differing by less than a millionth of a percent), and a trade it refused really lost money. The run says plainly that we deposited the liquidity and made the price gap ourselves.' },
     { title: 'Gas is assumed high on purpose', text: 'The scanner assumes 270,000 gas units for the two swaps. The two legs measured about 170,000 inside one atomic helper call. We kept the higher figure: two separate transactions would cost more than the helper, and a scanner that underestimates cost acts when it should not.' },
-    { title: 'Synthetic scenarios are labelled', text: 'The “profitable” and “marginal” states exist to demonstrate and test the act path. Every output says it is synthetic, and none is presented as a market observation.' },
+    { title: 'No synthetic data', text: 'An earlier version offered two made-up pool states to show the act path. They proved the maths agreed with itself, so they were removed from the page. What replaced them is the real run: the same scanner, deciding on real contracts in a real EVM, with the predicted profit compared with what the EVM paid out.' },
   ],
   evidence: [
     'Both venues are read in the same scan at one pinned block: FaroSwap V2 (reserves) and FaroSwap V3 (slot0, liquidity), through one Multicall3 call.',
@@ -55,7 +56,7 @@ export const content = {
   ],
   files: ['scripts/arb-fork-run.mjs', 'contracts/ArbLab.sol', 'lib/arb-fork.js', 'skills/pharos-arbitrage-scanner/SKILL.md', 'skills/pharos-arbitrage-scanner/references/arbitrage-scanner.md', 'skills/pharos-arbitrage-scanner/scripts/scan.mjs', 'lib/tasks/arbitrage-scanner.js', 'lib/amm.js', 'lib/multicall.js'],
   run: {
-    commands: ['node skills/pharos-arbitrage-scanner/scripts/scan.mjs', 'node skills/pharos-arbitrage-scanner/scripts/scan.mjs --watch 10 --interval 5 --log scans.jsonl', 'node skills/pharos-arbitrage-scanner/scripts/scan.mjs --source profitable --size 50   # synthetic, exit 0', 'node scripts/arb-fork-run.mjs   # real EVM on a local fork; needs Foundry'],
+    commands: ['node skills/pharos-arbitrage-scanner/scripts/scan.mjs', 'node skills/pharos-arbitrage-scanner/scripts/scan.mjs --watch 10 --interval 5 --log scans.jsonl', 'node scripts/arb-fork-run.mjs   # real EVM on a local fork; needs Foundry'],
     sample: `scan 1/1  WPROS/DLP  block 20918559
   FaroSwap V2 0.000042216 WPROS/DLP   FaroSwap V3 (0.3% tier) 2.4462
   gross spread 5794000%   best size 1.7783e-9 WPROS
@@ -81,7 +82,6 @@ const scanView = {
   ],
   summary: ({ scan: s }) => `${s.decision} · gross ${f(s.grossSpreadPct, 4)}% · net ${f(s.net)} ${s.quote}`,
   render: ({ scan: s }, { state }) => `
-    ${s.sourceLabel ? `<p class="check warn"><b>Synthetic data:</b> ${esc(s.sourceLabel)}. This is not a market observation.</p>` : ''}
     <div class="verdict ${s.decision === 'skip' ? 'warn' : 'ok'}">${s.decision === 'skip' ? 'SKIP' : 'EXECUTE (simulated)'}<small>${esc(s.pair)} · ${s.block ? `block ${s.block.toLocaleString('en-US')}` : 'synthetic state'} · ${esc(s.route.buyOn)} → ${esc(s.route.sellOn)}</small></div>
     ${table(['Venue', `Price (${s.quote}/${s.base})`, 'Fee', 'Depth'], [
       [esc(s.sources.v2.venue), `<b>${f(s.sources.v2.price)}</b>`, `${(s.sources.v2.fee * 100).toFixed(1)}%`, `${f(s.depth.v2Quote)} ${s.quote} reserve`],
@@ -121,26 +121,42 @@ const recordedView = {
       </div>`).join('')}`,
 };
 
-export const mount = makePanel({
-  intro: 'Scan the pair once, or pick a labelled synthetic scenario to see the act path. Every scan is added to the history below (kept in your browser).',
+const scanPanel = makePanel({
+  intro: 'Scan the real pools once: the live prices on both venues, every cost, and the decision. Every scan is added to the history below (kept in your browser). Nothing is sent.',
   fields: [
     { name: 'pair', label: 'Pair', type: 'select', options: [['WPROS/DLP', 'WPROS / DLP'], ['UNI-V2/PDOG', 'UNI-V2 / PDOG']], value: 'WPROS/DLP' },
-    { name: 'source', label: 'Data', type: 'select', options: [['live', 'Live Pharos mainnet'], ['profitable', 'Synthetic: profitable'], ['marginal', 'Synthetic: marginal'], ['fork-recorded', 'Recorded real-EVM fork run']], value: 'live' },
     { name: 'size', label: 'Max trade size', type: 'number', value: '1', step: 'any', min: 0, hint: 'in the quote token' },
     { name: 'minNet', label: 'Minimum net profit', type: 'number', value: '0.001', step: 'any', min: 0, hint: 'in the quote token' },
   ],
   button: 'Scan now',
   examples: [
-    { label: 'Live market (expect a skip)', values: { pair: 'WPROS/DLP', source: 'live', size: '1', minNet: '0.001' } },
-    { label: 'Synthetic profitable (expect an act)', values: { pair: 'WPROS/DLP', source: 'profitable', size: '50', minNet: '0.001' } },
-    { label: 'Synthetic marginal (expect a skip)', values: { pair: 'WPROS/DLP', source: 'marginal', size: '50', minNet: '0.001' } },
-    { label: 'Recorded real-EVM fork run (act, execute, verify)', values: { pair: 'WPROS/DLP', source: 'fork-recorded', size: '1', minNet: '0.001' } },
+    { label: 'WPROS / DLP, today', values: { pair: 'WPROS/DLP', size: '1', minNet: '0.001' } },
+    { label: 'UNI-V2 / PDOG, today', values: { pair: 'UNI-V2/PDOG', size: '1', minNet: '0.001' } },
   ],
   state: history,
-  title: (v) => (v.source === 'fork-recorded' ? 'Recorded real-EVM fork run' : `Scan ${v.pair} (${v.source})`),
-  call: (v) => ({ params: { pair: v.pair, source: v.source, size: v.size, minNet: v.minNet } }),
-  nextState: (d, prev) => (d.recorded ? prev : [{ at: new Date().toISOString().slice(11, 19), pair: d.scan.pair, source: d.scan.source, block: d.scan.block, spread: d.scan.grossSpreadPct, net: d.scan.net, decision: d.scan.decision, unit: d.scan.quote }, ...(prev ?? [])].slice(0, 25)),
-  decode: (d) => (d.recorded ? recordedView.decode(d.recorded) : scanView.decode(d)),
-  summary: (d) => (d.recorded ? recordedView.summary(d.recorded) : scanView.summary(d)),
-  render: (d, ctx) => (d.recorded ? recordedView.render(d.recorded) : scanView.render(d, ctx)),
+  title: (v) => `Scan ${v.pair}`,
+  call: (v) => ({ params: { pair: v.pair, source: 'live', size: v.size, minNet: v.minNet } }),
+  nextState: (d, prev) => ([{ at: new Date().toISOString().slice(11, 19), pair: d.scan.pair, source: d.scan.source, block: d.scan.block, spread: d.scan.grossSpreadPct, net: d.scan.net, decision: d.scan.decision, unit: d.scan.quote }, ...(prev ?? [])].slice(0, 25)),
+  decode: (d) => scanView.decode(d),
+  summary: (d) => scanView.summary(d),
+  render: (d, ctx) => scanView.render(d, ctx),
 });
+
+// Two panels: a scan of the real pools (a decision, nothing sent), and the act path executed for real on a fork.
+export function mount(root, ctx) {
+  root.innerHTML = '<h4 class="list-h">1. Scan the real pools</h4><div data-slot="scan"></div><h4 class="list-h" style="margin-top:28px">2. Run the act path for real</h4><div data-slot="real"></div>';
+  const stopScan = scanPanel(root.querySelector('[data-slot=scan]'), ctx);
+  const stopReal = mountRealRun(root.querySelector('[data-slot=real]'), {
+    slug: ctx.slug,
+    intro: 'The live pools hold less than one swap’s gas, so no live trade can profit. This starts a fresh machine that forks Pharos mainnet, re-prices the V2 pair and adds liquidity to both venues with real swaps and mints, makes a price gap with another real swap, lets the scanner above decide, and executes both legs on the real FaroSwap contracts. The liquidity and the gap are ours, and the page says so.',
+    button: 'Run for real',
+    scenarios: Object.entries({ profitable: 'A real 6% price gap: the scanner acts, both legs execute', marginal: 'A 0.3% price gap: the scanner skips, and forcing the trade loses' }),
+    eventHead: ['Time', 'Step', 'Detail'],
+    eventRow: (e) => `<tr><td class="num">${(e.t / 1000).toFixed(1)} s</td><td>${esc(e.what)}${e.decision ? ' ' + pill(e.decision === 'skip' ? 'skip' : 'act', e.decision === 'skip' ? 'warn' : 'ok') : ''}</td><td class="muted">${esc(e.detail ?? '')}</td></tr>`,
+    resultHtml: (rec) => recordedView.render(rec),
+    verdict: (rec) => (rec.scenarios.every((x) => (x.scan.decision === 'skip') === (x.execution.actualNet < 0)) ? 'ok' : 'error'),
+    summary: (rec) => rec.scenarios.map((x) => `${x.id}: scanner ${x.scan.decision === 'skip' ? 'skipped' : 'acted'}, real net ${f(x.execution.actualNet)} WPROS`).join(' · '),
+    recorded: { label: 'Show the recorded run', params: { source: 'fork-recorded' }, html: (d) => recordedView.render(d.recorded) },
+  });
+  return () => { stopScan?.(); stopReal?.(); };
+}

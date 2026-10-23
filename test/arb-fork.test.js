@@ -87,3 +87,11 @@ test('recorded run: the trade the scanner refused really lost money, as the mode
 test('recorded run: the gas assumption is reported against the measured gas', () => {
   for (const s of report.scenarios) assert.ok(s.execution.gasUsed > 100_000 && s.execution.gasUsed < s.execution.predictedGasUnits, `${s.id} used ${s.execution.gasUsed}`);
 });
+
+import { createHash } from 'node:crypto';
+test('the committed ArbLab bytecode was built from the current source (so the Sandbox runs what the repository shows)', () => {
+  const art = JSON.parse(readFileSync(new URL('../contracts/ArbLab.bytecode.json', import.meta.url), 'utf8'));
+  const src = readFileSync(new URL('../contracts/ArbLab.sol', import.meta.url));
+  assert.equal(art.sourceSha256, createHash('sha256').update(src).digest('hex'), 'contracts/ArbLab.sol changed: run node scripts/export-lab-bytecode.mjs');
+  assert.match(art.bytecode, /^0x[0-9a-f]{1000,}$/);
+});
