@@ -14,31 +14,32 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { TASK_FOLDERS } from '../public/js/consts.js';
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 
 export const TASK_MAP = [
-  { n: 1, slug: 'read-contract-state', folder: 'agents/read-contract-state', entries: ['api/read.js'], data: [], page: ['public/js/content.js', 'public/js/panels/read.js'],
+  { n: 1, slug: 'read-contract-state', folder: TASK_FOLDERS['read-contract-state'], entries: ['api/read.js'], data: [], page: ['public/js/content.js', 'public/js/panels/read.js'],
     tests: ['snapshot.test.js', 'confirm.test.js', 'crosscheck.test.js', 'stable.test.js'] },
-  { n: 2, slug: 'event-log-monitor', folder: 'agents/event-log-monitor', entries: ['api/logs.js'], data: [], page: ['public/js/content.js', 'public/js/panels/watch.js'],
+  { n: 2, slug: 'event-log-monitor', folder: TASK_FOLDERS['event-log-monitor'], entries: ['api/logs.js'], data: [], page: ['public/js/content.js', 'public/js/panels/watch.js'],
     tests: ['watch.test.js'] },
-  { n: 3, slug: 'docs-mcp-onboarding', folder: 'agents/docs-mcp-onboarding', entries: ['lib/tasks/docs-mcp-onboarding.js'], data: ['reports/docs-mcp-onboarding.md'], page: ['public/js/tasks/docs-mcp-onboarding.js'],
+  { n: 3, slug: 'docs-mcp-onboarding', folder: TASK_FOLDERS['docs-mcp-onboarding'], entries: ['lib/tasks/docs-mcp-onboarding.js'], data: ['reports/docs-mcp-onboarding.md'], page: ['public/js/tasks/docs-mcp-onboarding.js'],
     tests: ['onboarding.test.js'] },
-  { n: 4, slug: 'doc-search-cli', folder: 'agents/doc-search-cli', entries: ['api/docs.js'], data: [], page: ['public/js/content.js', 'public/js/panels/docs.js'],
+  { n: 4, slug: 'doc-search-cli', folder: TASK_FOLDERS['doc-search-cli'], entries: ['api/docs.js'], data: [], page: ['public/js/content.js', 'public/js/panels/docs.js'],
     tests: ['docs.test.js'] },
-  { n: 5, slug: 'threshold-guardian', folder: 'skills/pharos-threshold-guardian', entries: ['lib/tasks/threshold-guardian.js', 'scripts/testnet-guardian.mjs'], data: ['reports/testnet-guardian.json', 'reports/testnet-runs.json'], page: ['public/js/tasks/threshold-guardian.js'],
+  { n: 5, slug: 'threshold-guardian', folder: TASK_FOLDERS['threshold-guardian'], entries: ['lib/tasks/threshold-guardian.js', 'scripts/testnet-guardian.mjs'], data: ['reports/testnet-guardian.json', 'reports/testnet-runs.json'], page: ['public/js/tasks/threshold-guardian.js'],
     tests: ['guardian.test.js'] },
-  { n: 6, slug: 'saga-executor', folder: 'skills/pharos-saga-executor', entries: ['lib/tasks/saga-executor.js', 'lib/saga-sandbox.js'], data: ['reports/saga-runs.json', 'config/saga-snapshot.json', 'scripts/build-saga-snapshot.mjs'], page: ['public/js/tasks/saga-executor.js'],
+  { n: 6, slug: 'saga-executor', folder: TASK_FOLDERS['saga-executor'], entries: ['lib/tasks/saga-executor.js', 'lib/saga-sandbox.js'], data: ['reports/saga-runs.json', 'config/saga-snapshot.json', 'scripts/build-saga-snapshot.mjs'], page: ['public/js/tasks/saga-executor.js'],
     tests: ['saga.test.js', 'saga-fidelity.test.js', 'saga-fork.test.js', 'saga-sandbox.test.js', 'start-fork.test.js'] },
-  { n: 7, slug: 'arbitrage-scanner', folder: 'skills/pharos-arbitrage-scanner', entries: ['lib/tasks/arbitrage-scanner.js', 'lib/arb-sandbox.js', 'scripts/arb-fork-run.mjs'], data: ['reports/arbitrage-runs.json', 'contracts/ArbLab.sol', 'contracts/ArbLab.bytecode.json'], page: ['public/js/tasks/arbitrage-scanner.js'],
+  { n: 7, slug: 'arbitrage-scanner', folder: TASK_FOLDERS['arbitrage-scanner'], entries: ['lib/tasks/arbitrage-scanner.js', 'lib/arb-sandbox.js', 'scripts/arb-fork-run.mjs'], data: ['reports/arbitrage-runs.json', 'contracts/ArbLab.sol', 'contracts/ArbLab.bytecode.json'], page: ['public/js/tasks/arbitrage-scanner.js'],
     tests: ['arbitrage.test.js', 'amm.test.js', 'arb-fork.test.js', 'arb-sandbox.test.js'] },
-  { n: 8, slug: 'dry-run-executor', folder: 'skills/pharos-dry-run-executor', entries: ['lib/tasks/dry-run-executor.js', 'scripts/testnet-run.mjs'], data: ['reports/testnet-runs.json', 'contracts/Counter.sol'], page: ['public/js/tasks/dry-run-executor.js'],
+  { n: 8, slug: 'dry-run-executor', folder: TASK_FOLDERS['dry-run-executor'], entries: ['lib/tasks/dry-run-executor.js', 'scripts/testnet-run.mjs'], data: ['reports/testnet-runs.json', 'contracts/Counter.sol'], page: ['public/js/tasks/dry-run-executor.js'],
     tests: ['dryrun.test.js', 'revert.test.js'] },
-  { n: 9, slug: 'trend-watcher', folder: 'skills/pharos-trend-watcher', entries: ['lib/tasks/trend-watcher.js'], data: [], page: ['public/js/tasks/trend-watcher.js'],
+  { n: 9, slug: 'trend-watcher', folder: TASK_FOLDERS['trend-watcher'], entries: ['lib/tasks/trend-watcher.js'], data: [], page: ['public/js/tasks/trend-watcher.js'],
     tests: ['trend-watcher.test.js', 'trend.test.js'] },
-  { n: 10, slug: 'batch-executor', folder: 'skills/pharos-batch-executor', entries: ['lib/tasks/batch-executor.js', 'scripts/testnet-run.mjs'], data: ['reports/batch-runs.json', 'reports/testnet-runs.json', 'contracts/Counter.sol'], page: ['public/js/tasks/batch-executor.js'],
+  { n: 10, slug: 'batch-executor', folder: TASK_FOLDERS['batch-executor'], entries: ['lib/tasks/batch-executor.js', 'scripts/testnet-run.mjs'], data: ['reports/batch-runs.json', 'reports/testnet-runs.json', 'contracts/Counter.sol'], page: ['public/js/tasks/batch-executor.js'],
     tests: ['batch.test.js', 'multicall.test.js'] },
-  { n: 11, slug: 'policy-gatekeeper', folder: 'skills/pharos-policy-gatekeeper', entries: ['lib/tasks/policy-gatekeeper.js', 'scripts/testnet-gatekeeper.mjs'], data: ['reports/testnet-gatekeeper.json'], page: ['public/js/tasks/policy-gatekeeper.js'],
+  { n: 11, slug: 'policy-gatekeeper', folder: TASK_FOLDERS['policy-gatekeeper'], entries: ['lib/tasks/policy-gatekeeper.js', 'scripts/testnet-gatekeeper.mjs'], data: ['reports/testnet-gatekeeper.json'], page: ['public/js/tasks/policy-gatekeeper.js'],
     tests: ['policy.test.js', 'audit-log.test.js', 'gatekeeper-task.test.js'] },
 ];
 

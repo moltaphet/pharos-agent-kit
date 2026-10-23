@@ -93,3 +93,16 @@ test('dependencies are found, not hand-written: a task folder README lists the l
 test('no points anywhere in the generated files', () => {
   for (const [p, text] of files) assert.equal(/\bpoints?\b|\bpts\b/i.test(text), false, p);
 });
+
+test('the site shows each task’s GitHub folder: the front-end map matches the task map and the hero and run section use it', async () => {
+  const { TASK_FOLDERS, folderUrl } = await import('../public/js/consts.js');
+  assert.deepEqual(Object.keys(TASK_FOLDERS).sort(), TASK_MAP.map((t) => t.slug).sort());
+  for (const t of TASK_MAP) {
+    assert.equal(TASK_FOLDERS[t.slug], t.folder);
+    assert.equal(folderUrl(t.slug), `${REPO}/tree/main/${t.folder}`);
+  }
+  assert.equal(folderUrl('not-a-task'), null);
+  const views = readFileSync(ROOT + 'public/js/views.js', 'utf8');
+  assert.match(views, /Code on GitHub/);
+  assert.match(views, /This task’s folder on GitHub/);
+});

@@ -4,6 +4,7 @@ import { $, $$, api, copyText, esc, mdFull } from './util.js';
 import { ICONS, categoryOf, constellation } from './art.js';
 import { ABOUT, EXPLORER, PLAN, REPO, SECTIONS, liveOf } from './content.js';
 import { TASK_MODULES } from './tasks/index.js';
+import { folderOf, folderUrl } from './consts.js';
 import readPanel from './panels/read.js';
 import watchPanel from './panels/watch.js';
 import docsPanel from './panels/docs.js';
@@ -44,6 +45,7 @@ function hero(t) {
       <div class="hero-actions">
         ${live ? `<a class="btn solid" href="#/${t.slug}/try">${ICONS.play} Try it live</a><a class="btn" href="#/${t.slug}/story">Read the story</a>` : `<a class="btn" href="#/${t.slug}/requirements">See the requirements</a>`}
         <button type="button" class="btn" data-link="${esc(`${location.origin}/#/${t.slug}`)}">${ICONS.link} Copy link</button>
+        ${folderUrl(t.slug) ? `<a class="btn" href="${esc(folderUrl(t.slug))}" target="_blank" rel="noopener" title="${esc(folderOf(t.slug))}">Code on GitHub ↗</a>` : ''}
         <a class="btn" href="${esc(t.url)}" target="_blank" rel="noopener">Task brief ↗</a>
       </div>
     </div>
@@ -78,7 +80,8 @@ function liveSections(t, live) {
     S(
       'run',
       'Run it yourself',
-      `<p>No install step and no dependencies. Needs Node.js 20+. Clone <a href="${REPO}" target="_blank" rel="noopener">the repository</a> and run:</p>
+      `<p class="repo-line">This task’s folder on GitHub: <a class="file" href="${esc(folderUrl(slug))}" target="_blank" rel="noopener"><code>${esc(folderOf(slug))}</code></a> (its README maps every requirement to where it is met).</p>
+       <p>No install step and no dependencies. Needs Node.js 20+. Clone <a href="${REPO}" target="_blank" rel="noopener">the repository</a> and run:</p>
        ${live.run.commands.map((c) => codeBlock(c)).join('')}
        <p class="muted">Real output from a mainnet run:</p>${codeBlock(live.run.sample)}
        <p>Code: ${live.files.map((f) => `<a class="file" href="${REPO}/blob/main/${f}" target="_blank" rel="noopener"><code>${f}</code></a>`).join(' ')}</p>`,
