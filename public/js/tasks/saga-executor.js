@@ -163,7 +163,8 @@ export function mount(root, { params }) {
           const body = $('#events', root);
           for (const e of st.events) {
             body?.insertAdjacentHTML('beforeend', eventRow(e));
-            if (KEY.test(e.event)) r.add({ kind: e.event.includes('failed') ? 'error' : 'decision', title: `${e.event}${e.step ? `: ${e.step}` : ''}`, detail: [e.error, e.why, e.txHash].filter(Boolean).join(' · ') || undefined, error: e.error, at: Math.round(performance.now() - t0) });
+            if (KEY.test(e.event)) // A failed step is usually the point of the scenario, so it is a negative check in the log, not an error of the run.
+            r.add({ kind: 'decision', ok: !e.event.includes('failed'), title: `${e.event}${e.step ? `: ${e.step}` : ''}`, detail: [e.error, e.why, e.txHash].filter(Boolean).join(' · ') || undefined, at: Math.round(performance.now() - t0) });
           }
           from = st.total;
           if (st.state === 'running') continue;
