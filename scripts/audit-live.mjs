@@ -20,6 +20,21 @@ function check(name, ok, detail = '') {
   results.push({ section, name, ok });
   console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? `  [${String(detail).slice(0, 150)}]` : ''}`);
 }
+// The Docs server answers in 13-27 s, so Docs-heavy checks run in small concurrent batches, and an upstream 5xx (slowness, not a
+// wrong answer) is retried before a check is judged.
+const sleepMs = (ms) => new Promise((r) => setTimeout(r, ms));
+const pool = async (items, n, fn) => {
+  const out = new Array(items.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => { for (let i = next++; i < items.length; i = next++) out[i] = await fn(items[i], i); }));
+  return out;
+};
+const withRetry = async (call, tries = 3) => {
+  let r;
+  for (let i = 0; i < tries; i++) { r = await call(); if (r.status < 500) return r; await sleepMs(3000); }
+  return r;
+};
+const docsData = async (question) => (await withRetry(() => get('/api/docs' + q({ q: question })))).body?.data;
 const is400 = (r) => r.status === 400 && r.body?.ok === false && typeof r.body.error === 'string';
 const guard = async (fn) => { try { await fn(); } catch (e) { if (!(e instanceof Skip)) check('(audit step did not crash)', false, e.message); } };
 
@@ -81,19 +96,16 @@ await guard(async () => {
 
 await guard(async () => {
   sec('3 Doc-Search');
-  const g = await get('/api/docs' + q({ q: 'How do I deploy a smart contract with Foundry?' }));
+  const g = await withRetry(() => get('/api/docs' + q({ q: 'How do I deploy a smart contract with Foundry?' })));
   check('a real question is found with sources', g.body?.data?.found === true && g.body.data.sources.length >= 1 && g.body.data.sources.every((s) => /^https:\/\/docs\.pharos\.xyz/.test(s.url)), `${g.body?.data?.sources?.length} sources`);
   check('answer is concise (< 1500 chars)', (g.body?.data?.answer ?? '').length < 1500, (g.body?.data?.answer ?? '').length);
-  const verdicts = [];
-  for (let i = 0; i < 10; i++) verdicts.push((await get('/api/docs' + q({ q: 'What is the airspeed velocity of an unladen swallow in Pharos?' }))).body?.data?.found);
+  const verdicts = (await pool(Array.from({ length: 10 }), 4, () => docsData('What is the airspeed velocity of an unladen swallow in Pharos?'))).map((d) => d?.found);
   check('nonsense question refused 10/10 times (no invented answer)', verdicts.every((v) => v === false), JSON.stringify(verdicts));
-  const offTopic = [];
-  for (let i = 0; i < 6; i++) offTopic.push((await get('/api/docs' + q({ q: 'How do I bake sourdough bread?' }))).body?.data);
+  const offTopic = await pool(Array.from({ length: 6 }), 4, () => docsData('How do I bake sourdough bread?'));
   check('off-topic question #2 is also refused 6/6 times', offTopic.every((d) => d?.found === false), JSON.stringify(offTopic.map((d) => d?.found)));
   check('refusal shows no answer text, only related pages', offTopic.every((d) => d?.answer === null));
   const real = ['How do I deploy a smart contract with Foundry?', 'How do I become a validator?', 'What are the Atlantic testnet RPC and chain id?'];
-  const realAns = [];
-  for (const rq of real) realAns.push((await get('/api/docs' + q({ q: rq }))).body?.data?.found);
+  const realAns = (await pool(real, 3, docsData)).map((d) => d?.found);
   check('real questions are not refused by the new support check', realAns.every(Boolean), JSON.stringify(realAns));
   check('2-char question rejected with 400', is400(await get('/api/docs' + q({ q: 'hi' }))));
   check('301-char question rejected with 400', is400(await get('/api/docs' + q({ q: 'a'.repeat(301) }))));
@@ -111,7 +123,7 @@ await guard(async () => {
   const f = await run('docs-mcp-onboarding', { step: 'finale' });
   check('finale reports what was run, chain 1672, and what could not be done', f.body?.data?.built?.length >= 3 && f.body.data.chainId === 1672 && f.body.data.couldNot.length >= 1);
   const all = [];
-  for (const s of p.body.data.steps) { const r = await run('docs-mcp-onboarding', { step: s.id }); all.push({ id: s.id, ok: r.status === 200, gap: r.body?.data?.gap?.title, checks: r.body?.data?.checks?.length }); }
+  all.push(...(await pool(p.body.data.steps, 3, async (s) => { const r = await withRetry(() => run('docs-mcp-onboarding', { step: s.id })); return { id: s.id, ok: r.status === 200, gap: r.body?.data?.gap?.title, checks: r.body?.data?.checks?.length }; })));
   check('every one of the steps answers without a server error', all.every((x) => x.ok), JSON.stringify(all.filter((x) => !x.ok)));
   const gaps = all.filter((x) => x.gap);
   check('at least 3 concrete gaps found in this live run', gaps.length >= 3, gaps.map((g) => g.id).join(','));
