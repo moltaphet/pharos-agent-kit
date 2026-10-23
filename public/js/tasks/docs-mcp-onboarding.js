@@ -98,9 +98,22 @@ export function mount(root, { slug }) {
         paint();
         const r = log.run(`${i + 1}. ${steps[i].goal}`, { open: false });
         r.add({ kind: 'ui', title: 'Asked Developer Docs MCP', request: { question: steps[i].question } });
-        const sent = r.now();
+        let sent = r.now();
         try {
-          const res = await api('run', { slug, step: steps[i].id });
+          // Docs MCP now and then takes longer than our 50 s limit on one answer. Each question is independent, so a slow or failed one
+          // (a 5xx from our API) is asked once more instead of leaving a hole in the report; the retry is written to the run log.
+          let res;
+          for (let attempt = 1; ; attempt++) {
+            try {
+              res = await api('run', { slug, step: steps[i].id });
+              break;
+            } catch (err) {
+              if (attempt >= 2 || !(err.status >= 500)) throw err;
+              if (err.trace) r.addTrace(err.trace, sent);
+              r.add({ kind: 'error', title: `Attempt 1 failed (${err.message}); asking once more`, error: err.detail ?? err.message, at: sent + (err.ms ?? 0) });
+              sent = r.now();
+            }
+          }
           r.add({ kind: 'http', title: `GET /api/run answered ${res.status}`, ms: res.ms, at: sent, detail: res.url });
           r.addTrace(res.trace, sent);
           for (const c of res.data.checks) r.add({ kind: 'decision', at: sent + res.ms, ok: c.ok !== false, title: `${c.ok === true ? 'Pass' : c.ok === false ? 'Fail' : 'Info'}: ${c.name}`, detail: c.detail });
