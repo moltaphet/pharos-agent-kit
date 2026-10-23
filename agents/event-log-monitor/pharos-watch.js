@@ -3,12 +3,12 @@
 // Polls get_logs filtered by contract address + event topic, prints each new
 // event exactly once, and keeps running until stopped.
 
-import { McpClient, PHAROS_CHAIN_MCP } from '../lib/mcp.js';
-import { blockNumber, readToken } from '../lib/chain.js';
-import { EVENTS, formatInt, isAddress, isHash32 } from '../lib/abi.js';
-import { makeLabeler, parseLabelFlags, shortAddress } from '../lib/labels.js';
-import { Dedupe, OVERLAP, decodeLog, pageRange } from '../lib/watch.js';
-import { fail, parseCli, utc } from '../lib/cli.js';
+import { McpClient, PHAROS_CHAIN_MCP } from '../../lib/mcp.js';
+import { blockNumber, readToken } from '../../lib/chain.js';
+import { EVENTS, formatInt, isAddress, isHash32 } from '../../lib/abi.js';
+import { makeLabeler, parseLabelFlags, shortAddress } from '../../lib/labels.js';
+import { Dedupe, OVERLAP, decodeLog, pageRange } from '../../lib/watch.js';
+import { fail, parseCli, utc } from '../../lib/cli.js';
 
 const DEFAULT_CONTRACT = '0xc879c018db60520f4355c26ed1a6d572cdac1815'; // USDC on Pharos mainnet
 

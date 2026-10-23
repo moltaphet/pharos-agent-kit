@@ -5,9 +5,9 @@
 // did not, and what the docs should say instead.
 
 import { writeFile } from 'node:fs/promises';
-import { McpClient, PHAROS_CHAIN_MCP, PHAROS_DOCS_MCP } from '../lib/mcp.js';
-import run, { STEPS, buildReport } from '../lib/tasks/docs-mcp-onboarding.js';
-import { fail, parseCli } from '../lib/cli.js';
+import { McpClient, PHAROS_CHAIN_MCP, PHAROS_DOCS_MCP } from '../../lib/mcp.js';
+import run, { STEPS, buildReport } from '../../lib/tasks/docs-mcp-onboarding.js';
+import { fail, parseCli } from '../../lib/cli.js';
 
 const usage = `Usage: pharos-onboard [--out report.md]
 

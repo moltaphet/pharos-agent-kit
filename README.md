@@ -6,12 +6,14 @@ Eleven working builds for the [Pharos Agent Arena](https://pharos-agent-arena.ve
 
 Per-task proof links, repo links and the requirements each task was built against: [SUBMISSION.md](SUBMISSION.md).
 
+**Every task has its own folder** (the third column), and each folder has a README that maps the Arena's requirements to where they are met, lists the shared code it imports and the tests that cover it. Shared code stays in `lib/`, so every task runs from a plain clone. The links to paste into the Arena's form are in [submission/](submission/README.md).
+
 | # | Task | Run it | Real data? | Execution |
 |---|---|---|---|---|
-| 1 | Read Contract State | `node bin/pharos-read.js` | Pharos mainnet | read-only |
-| 2 | Event/Log Monitor | `node bin/pharos-watch.js` | Pharos mainnet | read-only |
-| 3 | Docs MCP Onboarding | `node bin/pharos-onboard.js` | Docs MCP + mainnet + Atlantic checks | read-only |
-| 4 | Doc-Search CLI | `node bin/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
+| 1 | Read Contract State | `node agents/read-contract-state/pharos-read.js` | Pharos mainnet | read-only |
+| 2 | Event/Log Monitor | `node agents/event-log-monitor/pharos-watch.js` | Pharos mainnet | read-only |
+| 3 | Docs MCP Onboarding | `node agents/docs-mcp-onboarding/pharos-onboard.js` | Docs MCP + mainnet + Atlantic checks | read-only |
+| 4 | Doc-Search CLI | `node agents/doc-search-cli/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
 | 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | decides only; shown acting for real on Atlantic testnet (FIRE sends a transaction, HOLD sends nothing) |
 | 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts on a mainnet fork | real EVM transactions on a fork, on demand (fake funds) |
 | 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | live scan decides (nothing sent); the act path runs for real on a fork, on demand (`scripts/arb-fork-run.mjs`) |
@@ -36,9 +38,9 @@ hub has one dependency, `@vercel/sandbox`, used only by the Saga Executor's live
 
 ```bash
 git clone https://github.com/moltaphet/pharos-agent-kit && cd pharos-agent-kit
-node bin/pharos-read.js
-node bin/pharos-watch.js
-node bin/pharos-docs.js "how do I deploy a contract?"
+node agents/read-contract-state/pharos-read.js
+node agents/event-log-monitor/pharos-watch.js
+node agents/doc-search-cli/pharos-docs.js "how do I deploy a contract?"
 npm test                          # offline unit tests (no network)
 npm run web                       # the site at http://localhost:3000
 node scripts/audit-static.mjs     # requirements vs evidence, skill template lint
@@ -142,7 +144,7 @@ How it is put together:
 
 ### Adding the next task
 
-1. Put the logic in `lib/` (pure, testable) and, if it makes sense, a CLI in `bin/`.
+1. Put the logic in `lib/` (pure, testable), the task's own folder in `agents/<slug>/` (a CLI) or `skills/pharos-<slug>/` (a Skill), and register the task in `scripts/task-map.mjs` so its README and submission page are generated.
 2. Add an API route in `api/` if the page needs server access to an upstream service.
    Give each call a `{ why }` so it reads well in the log.
 3. Add a panel in `public/js/panels/` and register it in `PANELS` in `public/js/views.js`.
@@ -367,9 +369,14 @@ $ echo $?
 ## Layout
 
 ```text
-bin/pharos-read.js    pharos-watch.js    pharos-docs.js   the three CLIs
-api/read.js  logs.js  docs.js  health.js                web API routes (Vercel functions)
+agents/<task>/        tasks 1-4: one folder each (read-contract-state, event-log-monitor, docs-mcp-onboarding, doc-search-cli) with its CLI
+skills/pharos-<task>/ tasks 5-11: one Skill folder each (SKILL.md, references/, scripts/, examples/, assets/)
+submission/           the index and one page per task with the Arena form's fields
+api/read.js  logs.js  docs.js  run.js  health.js         web API routes (Vercel functions)
 public/               the web hub: index.html, css/, js/ (views, panels, run log, content), registry.json
+lib/tasks/            the server-side handler of each task
+scripts/              real-run scripts (testnet, fork), audits, make-submission.mjs, task-map.mjs
+reports/  contracts/  config/    recorded runs, the lab contracts, the sandbox snapshot description
 lib/mcp.js            MCP Streamable-HTTP client (retries, sessions, timeouts)
 lib/chain.js          Chain MCP helpers: pinned eth_call, token reads
 lib/snapshot.js       one pinned-block contract snapshot (CLI and web share it)

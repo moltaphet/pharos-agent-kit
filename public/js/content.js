@@ -47,9 +47,9 @@ export const LIVE = {
       'Decimals applied and thousands grouped with the raw value kept; addresses labelled from the Pharos registry, as wallet or contract, or with your own label.',
       'This page and the README document the contract chosen, how to run it, and real sample output.',
     ],
-    files: ['bin/pharos-read.js', 'lib/snapshot.js', 'lib/chain.js', 'lib/crosscheck.js', 'api/read.js'],
+    files: ['agents/read-contract-state/pharos-read.js', 'lib/snapshot.js', 'lib/chain.js', 'lib/crosscheck.js', 'api/read.js'],
     run: {
-      commands: ['node bin/pharos-read.js', `node bin/pharos-read.js ${USDC} --holder 0x768b959191ce5876cabbbc014a08d72615bdde54`, 'node bin/pharos-read.js 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0 --json'],
+      commands: ['node agents/read-contract-state/pharos-read.js', `node agents/read-contract-state/pharos-read.js ${USDC} --holder 0x768b959191ce5876cabbbc014a08d72615bdde54`, 'node agents/read-contract-state/pharos-read.js 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0 --json'],
       sample: `Pharos contract snapshot
 ────────────────────────────────────────────────────────────
   Contract       USDC
@@ -101,9 +101,9 @@ Values read via Chain MCP (eth_call at that block)
       'Each event is decoded into from, to, amount (decimals and symbol applied), tx hash, block and block time.',
       'Busy mainnet contracts emit events within seconds, so you can watch live events arrive above. A CLI run is in the README.',
     ],
-    files: ['bin/pharos-watch.js', 'lib/watch.js', 'api/logs.js'],
+    files: ['agents/event-log-monitor/pharos-watch.js', 'lib/watch.js', 'api/logs.js'],
     run: {
-      commands: ['node bin/pharos-watch.js', 'node bin/pharos-watch.js --max-events 3 --interval 2', 'node bin/pharos-watch.js 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0 --event Deposit --from-block 20908000 --json'],
+      commands: ['node agents/event-log-monitor/pharos-watch.js', 'node agents/event-log-monitor/pharos-watch.js --max-events 3 --interval 2', 'node agents/event-log-monitor/pharos-watch.js 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0 --event Deposit --from-block 20908000 --json'],
       sample: `Watching Transfer on USDC ${USDC}
 Starting at block 20,911,107 (chain head 20,911,106), polling every 2s. Ctrl-C to stop.
 
@@ -147,9 +147,9 @@ Stopped after 2 events; last scanned block 20,911,116.`,
       'Says “no good answer” when the answer admits it, or when the question’s key words appear in none of the pages the docs search returns, and shows nearby pages labelled as not an answer.',
       'README has install and usage steps and three real example queries with output.',
     ],
-    files: ['bin/pharos-docs.js', 'lib/docs.js', 'api/docs.js'],
+    files: ['agents/doc-search-cli/pharos-docs.js', 'lib/docs.js', 'api/docs.js'],
     run: {
-      commands: ['node bin/pharos-docs.js "how do I deploy a contract?"', 'node bin/pharos-docs.js --json "What are the chain ID and RPC URL for Pharos mainnet?"', 'node bin/pharos-docs.js "airspeed of an unladen swallow"; echo $?'],
+      commands: ['node agents/doc-search-cli/pharos-docs.js "how do I deploy a contract?"', 'node agents/doc-search-cli/pharos-docs.js --json "What are the chain ID and RPC URL for Pharos mainnet?"', 'node agents/doc-search-cli/pharos-docs.js "airspeed of an unladen swallow"; echo $?'],
       sample: `Q: What are the chain ID and RPC URL for Pharos mainnet?
 
 Pharos Pacific Mainnet uses:

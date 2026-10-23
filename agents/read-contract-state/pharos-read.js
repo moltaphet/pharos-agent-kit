@@ -3,12 +3,12 @@
 // Reads live state from a Pharos contract through the hosted Chain MCP server
 // and prints it the way a non-developer would want to read it.
 
-import { McpClient, PHAROS_CHAIN_MCP } from '../lib/mcp.js';
-import { confirmReads } from '../lib/confirm.js';
-import { readSnapshot } from '../lib/snapshot.js';
-import { formatInt, isAddress } from '../lib/abi.js';
-import { parseLabelFlags, shortAddress } from '../lib/labels.js';
-import { fail, parseCli, utc } from '../lib/cli.js';
+import { McpClient, PHAROS_CHAIN_MCP } from '../../lib/mcp.js';
+import { confirmReads } from '../../lib/confirm.js';
+import { readSnapshot } from '../../lib/snapshot.js';
+import { formatInt, isAddress } from '../../lib/abi.js';
+import { parseLabelFlags, shortAddress } from '../../lib/labels.js';
+import { fail, parseCli, utc } from '../../lib/cli.js';
 
 const DEFAULT_CONTRACT = '0xc879c018db60520f4355c26ed1a6d572cdac1815'; // USDC on Pharos mainnet
 

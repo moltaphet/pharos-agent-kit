@@ -3,9 +3,9 @@
 // Ask a question in plain English, get a concise answer plus the doc pages it
 // came from, straight from the terminal. Says so when the docs don't know.
 
-import { McpClient, PHAROS_DOCS_MCP } from '../lib/mcp.js';
-import { DOCS_GOAL, buildResult } from '../lib/docs.js';
-import { fail, parseCli } from '../lib/cli.js';
+import { McpClient, PHAROS_DOCS_MCP } from '../../lib/mcp.js';
+import { DOCS_GOAL, buildResult } from '../../lib/docs.js';
+import { fail, parseCli } from '../../lib/cli.js';
 
 const usage = `Usage: pharos-docs "<question>" [options]
 

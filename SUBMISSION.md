@@ -2,15 +2,17 @@
 
 Everything to paste into the Arena's submit form, per task. Repository: https://github.com/moltaphet/pharos-agent-kit (public, MIT). Site: https://pharos-agent-kit.vercel.app
 
-For every task the proof is the **deployed demo link** below (it runs against Pharos, or against a real mainnet fork or Atlantic testnet, and shows an exact run log), plus the **repo link**. Where real testnet transactions exist, an explorer link is listed too.
+The same content is split per task in [submission/](submission/README.md). Every task has its own folder with a README (requirements, how each is met, run commands, dependencies, tests).
 
-The testnet transactions were sent from `0x0eC197b8A30543c93e521a6C3F2DB5d110e60850` (a throwaway wallet that only holds test tokens) on 2026-10-23; the page re-reads each one from the chain every time it loads.
+For every task the proof is the **deployed demo link** below (it runs against Pharos, or against a real mainnet fork or Atlantic testnet, and shows an exact run log), plus the **repo link** to the task’s folder. Where real testnet transactions exist, an explorer link is listed too.
+
+The testnet transactions were sent from `0x0eC197b8A30543c93e521a6C3F2DB5d110e60850` (a throwaway wallet that only holds test tokens) on 2026-10-23; the pages re-read each one from the chain every time they load.
 
 ## 1. Read Contract State
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/read-contract-state/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/read-contract-state
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `bin/pharos-read.js`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/read-contract-state
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/read-contract-state
 - **What the proof shows:** Live read of USDC (name, symbol, decimals, supply, owner, balances) at one pinned block, cross-checked against the public RPC.
 
 Requirements it was built against (the Arena's own list):
@@ -23,8 +25,8 @@ Requirements it was built against (the Arena's own list):
 ## 2. Event/Log Monitor
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/event-log-monitor/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/event-log-monitor
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `bin/pharos-watch.js`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/event-log-monitor
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/event-log-monitor
 - **What the proof shows:** Live Transfer/Approval log watcher with block cursor, duplicate suppression and a run log.
 
 Requirements it was built against (the Arena's own list):
@@ -37,8 +39,8 @@ Requirements it was built against (the Arena's own list):
 ## 3. Docs MCP Onboarding
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/docs-mcp-onboarding/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/docs-mcp-onboarding
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `bin/pharos-onboard.js`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/docs-mcp-onboarding
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/docs-mcp-onboarding
 - **What the proof shows:** Ten onboarding questions asked to Docs MCP; every documentation gap is confirmed by a live check against the network.
 
 Requirements it was built against (the Arena's own list):
@@ -51,8 +53,8 @@ Requirements it was built against (the Arena's own list):
 ## 4. Doc-Search CLI
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/doc-search-cli/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/doc-search-cli
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `bin/pharos-docs.js`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/doc-search-cli
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/doc-search-cli
 - **What the proof shows:** Concise sourced answers, and a refusal (not an invented answer) for questions the docs cannot answer.
 
 Requirements it was built against (the Arena's own list):
@@ -65,8 +67,8 @@ Requirements it was built against (the Arena's own list):
 ## 5. Threshold Guardian
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/threshold-guardian/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/threshold-guardian
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-threshold-guardian/`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/threshold-guardian
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-threshold-guardian
 - **Explorer proof (real testnet transaction):** https://atlantic.pharosscan.xyz/tx/0xfd9df7e9dfefb2d0c67b5717d739aa840e6c333fbfd5e8ab7a5425fdc7d4695d
 - **What the proof shows:** Several live conditions at one block against thresholds; FIRE or HOLD with the full working. Shown acting for real on Atlantic testnet: the FIRE run sent a transaction, the HOLD run sent nothing.
 
@@ -80,8 +82,8 @@ Requirements it was built against (the Arena's own list):
 ## 6. Saga Executor
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/saga-executor/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/saga-executor
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-saga-executor/`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/saga-executor
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-saga-executor
 - **What the proof shows:** Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo).
 
 Requirements it was built against (the Arena's own list):
@@ -95,8 +97,8 @@ Requirements it was built against (the Arena's own list):
 ## 7. Arbitrage Scanner
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/arbitrage-scanner/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/arbitrage-scanner
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-arbitrage-scanner/`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/arbitrage-scanner
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-arbitrage-scanner
 - **What the proof shows:** Live scan of two real FaroSwap venues, plus the act path executed for real on a fork with predicted vs actual profit side by side.
 
 Requirements it was built against (the Arena's own list):
@@ -110,8 +112,8 @@ Requirements it was built against (the Arena's own list):
 ## 8. Dry-Run Executor
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/dry-run-executor/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/dry-run-executor
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-dry-run-executor/`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/dry-run-executor
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-dry-run-executor
 - **Explorer proof (real testnet transaction):** https://atlantic.pharosscan.xyz/tx/0x79363e34be685e5bff405cd648ab3c68a6a27243ca0905cc50f644003f2fd565
 - **What the proof shows:** Simulation gate; the page re-verifies the real Atlantic testnet transactions that confirm its predictions.
 
@@ -125,8 +127,8 @@ Requirements it was built against (the Arena's own list):
 ## 9. Trend Watcher
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/trend-watcher/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/trend-watcher
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-trend-watcher/`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/trend-watcher
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-trend-watcher
 - **What the proof shows:** Persistent multi-observation trend rule on real chain history; restarts lose nothing and duplicate nothing.
 
 Requirements it was built against (the Arena's own list):
@@ -140,8 +142,8 @@ Requirements it was built against (the Arena's own list):
 ## 10. Batch Executor
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/batch-executor/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/batch-executor
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-batch-executor/`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/batch-executor
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-batch-executor
 - **Explorer proof (real testnet transaction):** https://atlantic.pharosscan.xyz/tx/0x37fd3313534ab882ddc5f5e35ebdc8f5efb5aee62474dd2e352fc9bfec0e34e3
 - **What the proof shows:** Plans a Multicall3 batch with a gas comparison; real Atlantic testnet transactions show the plan against reality.
 
@@ -155,8 +157,8 @@ Requirements it was built against (the Arena's own list):
 ## 11. Policy Gatekeeper
 
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/policy-gatekeeper/try
-- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/policy-gatekeeper
-- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-policy-gatekeeper/`)
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/policy-gatekeeper
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-policy-gatekeeper
 - **Explorer proof (real testnet transaction):** https://atlantic.pharosscan.xyz/tx/0x6dfe7b23afd362bf2119c0b651db91af61c33ef7f5573c945b46e9feabedd79f
 - **What the proof shows:** Policy (spend limit, allowlist, time window) in front of a real wallet: 2 requests allowed and sent on Atlantic, 6 denied by named rules and never sent; the chain confirms it. Hash-chained audit log, re-verified on load.
 

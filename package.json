@@ -1,16 +1,16 @@
 {
   "name": "pharos-agent-kit",
   "version": "0.1.0",
-  "description": "Three small agents on Pharos: read contract state and watch events via Chain MCP, search docs via Developer Docs MCP.",
+  "description": "Eleven agents and Skills for Pharos (Chain MCP, Docs MCP, real testnet and fork runs), one folder per task, plus the site that tests them.",
   "type": "module",
   "license": "MIT",
   "engines": {
     "node": ">=20"
   },
   "bin": {
-    "pharos-read": "bin/pharos-read.js",
-    "pharos-watch": "bin/pharos-watch.js",
-    "pharos-docs": "bin/pharos-docs.js"
+    "pharos-read": "agents/read-contract-state/pharos-read.js",
+    "pharos-watch": "agents/event-log-monitor/pharos-watch.js",
+    "pharos-docs": "agents/doc-search-cli/pharos-docs.js"
   },
   "scripts": {
     "test": "node --test test/",

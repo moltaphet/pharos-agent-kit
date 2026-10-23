@@ -34,9 +34,9 @@ export const content = {
     'Each gap carries a written suggestion of what the docs should have said.',
     'The report ends with what the onboarding actually ran (MCP connection, both RPCs, live reads) and what it could not do, and why.',
   ],
-  files: ['bin/pharos-onboard.js', 'lib/tasks/docs-mcp-onboarding.js', 'lib/http.js', 'reports/docs-mcp-onboarding.md'],
+  files: ['agents/docs-mcp-onboarding/pharos-onboard.js', 'lib/tasks/docs-mcp-onboarding.js', 'lib/http.js', 'reports/docs-mcp-onboarding.md'],
   run: {
-    commands: ['node bin/pharos-onboard.js', 'node bin/pharos-onboard.js --out report.md'],
+    commands: ['node agents/docs-mcp-onboarding/pharos-onboard.js', 'node agents/docs-mcp-onboarding/pharos-onboard.js --out report.md'],
     sample: `### Gap 3: Two different “USDC” addresses on Atlantic, with no guidance on which to use
 
 - **Exact query:** \`What is the USDC token address on Atlantic testnet?\`
