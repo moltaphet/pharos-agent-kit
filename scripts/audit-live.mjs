@@ -266,7 +266,7 @@ await guard(async () => {
   check('count=99 rejected with 400', is400(await post({ action: 'backfill', metric: 'usdc-supply', count: 99 }, null)));
   check('unknown metric rejected with 400', is400(await post({ action: 'backfill', metric: 'nope' }, null)));
   const evil = await run('trend-watcher', { action: 'backfill', metric: 'usdc-supply', count: 3 }, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state: { version: 1, rule: { direction: 'down', observations: 3 }, observations: 'not-an-array', active: false, events: [] } }) });
-  check('a malformed posted state does not cause a 500', evil.status !== 500, evil.status);
+  check('a malformed posted history is rejected with a clear 400 (never a 500) that says how to recover', is400(evil) && /Reset saved state/.test(evil.body?.error ?? ''), `${evil.status} ${evil.body?.error?.slice(0, 50)}`);
 });
 
 await guard(async () => {

@@ -74,3 +74,25 @@ test('bad inputs are rejected', async () => {
   await assert.rejects(runTrend({ chain: null }, { action: 'scenario', scenario: 'x', rule }, now), /scenario must be one of/);
   await assert.rejects(runTrend({ chain: null }, { action: 'scenario', scenario: 'decline', rule: { observations: 2 } }, now), /at least 3/);
 });
+
+import { validateState } from '../lib/tasks/trend-watcher.js';
+import { UserError as UE } from '../lib/snapshot.js';
+
+test('validateState accepts what the engine itself produces', () => {
+  const s = newState({ direction: 'down', observations: 3 });
+  assert.equal(validateState(s), s);
+  const withData = { ...s, observations: [{ id: 'b100', block: 100, time: 't', value: 5 }, { id: 'b200', block: 200, time: null, value: 4 }], active: true, events: [{ type: 'triggered', block: 200 }] };
+  assert.equal(validateState(withData), withData);
+});
+
+test('validateState refuses malformed saved histories with a precise error instead of letting the engine crash', () => {
+  const good = newState({ direction: 'down', observations: 3 });
+  const bads = [
+    'text', 42, [], { ...good, version: 2 }, { ...good, observations: 'not-an-array' }, { ...good, observations: [null] },
+    { ...good, observations: [{ id: 'b1', block: 1, value: 'x' }] }, { ...good, observations: [{ id: 'wrong', block: 1, value: 1 }] },
+    { ...good, observations: [{ id: 'b1', block: -1, value: 1 }] }, { ...good, observations: [{ id: 'b1', block: 1, value: Infinity }] },
+    { ...good, observations: Array.from({ length: 201 }, (_, i) => ({ id: `b${i + 1}`, block: i + 1, value: 1 })) },
+    { ...good, active: 'yes' }, { ...good, events: 'nope' }, { ...good, events: [{ type: 'exploded' }] },
+  ];
+  for (const b of bads) assert.throws(() => validateState(b), (e) => e instanceof UE && /saved history is not valid/.test(e.message), JSON.stringify(b).slice(0, 60));
+});
