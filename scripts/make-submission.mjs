@@ -11,8 +11,9 @@ const registry = JSON.parse(readFileSync(new URL('../public/registry.json', impo
 const tasks = registry.tasks ?? registry;
 const testnet = JSON.parse(readFileSync(new URL('../reports/testnet-runs.json', import.meta.url), 'utf8'));
 const guardian = JSON.parse(readFileSync(new URL('../reports/testnet-guardian.json', import.meta.url), 'utf8'));
+const gatekeeper = JSON.parse(readFileSync(new URL('../reports/testnet-gatekeeper.json', import.meta.url), 'utf8'));
 
-// The ten built tasks, in the Arena's order, with where their code lives and what makes the proof link worth opening.
+// The built tasks, in the Arena's order, with where their code lives and what makes the proof link worth opening.
 const BUILT = {
   'read-contract-state': { code: 'bin/pharos-read.js', how: 'Live read of USDC (name, symbol, decimals, supply, owner, balances) at one pinned block, cross-checked against the public RPC.' },
   'event-log-monitor': { code: 'bin/pharos-watch.js', how: 'Live Transfer/Approval log watcher with block cursor, duplicate suppression and a run log.' },
@@ -24,6 +25,7 @@ const BUILT = {
   'dry-run-executor': { code: 'skills/pharos-dry-run-executor/', how: 'Simulation gate; the page re-verifies the real Atlantic testnet transactions that confirm its predictions.', tx: () => testnet.dryRun.cases.find((c) => c.sent?.status === 'success')?.sent },
   'trend-watcher': { code: 'skills/pharos-trend-watcher/', how: 'Persistent multi-observation trend rule on real chain history; restarts lose nothing and duplicate nothing.' },
   'batch-executor': { code: 'skills/pharos-batch-executor/', how: 'Plans a Multicall3 batch with a gas comparison; real Atlantic testnet transactions show the plan against reality.', tx: () => testnet.batch.calls.batched.transaction },
+  'policy-gatekeeper': { code: 'skills/pharos-policy-gatekeeper/', how: 'Policy (spend limit, allowlist, time window) in front of a real wallet: 2 requests allowed and sent on Atlantic, 6 denied by named rules and never sent; the chain confirms it. Hash-chained audit log, re-verified on load.', tx: () => gatekeeper.transactions[0] },
 };
 
 const out = [];

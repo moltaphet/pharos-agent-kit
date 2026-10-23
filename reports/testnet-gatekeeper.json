@@ -1,0 +1,1216 @@
+{
+ "recordedAt": "2026-10-23T11:06:48.701Z",
+ "mode": "live",
+ "network": {
+  "name": "Pharos Atlantic Testnet",
+  "chainId": 688689,
+  "rpc": "https://atlantic.dplabs-internal.com",
+  "explorer": "https://atlantic.pharosscan.xyz"
+ },
+ "wallet": "0x0eC197b8A30543c93e521a6C3F2DB5d110e60850",
+ "counter": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+ "policies": {
+  "open": {
+   "source": {
+    "version": 1,
+    "name": "testnet policy (every day)",
+    "rules": [
+     {
+      "id": "native-spend",
+      "type": "spend-limit",
+      "asset": "native",
+      "symbol": "PHRS",
+      "perRequest": "0.0002",
+      "perWindow": {
+       "amount": "0.0003",
+       "seconds": 3600
+      }
+     },
+     {
+      "id": "known-targets",
+      "type": "allowlist",
+      "field": "target",
+      "values": [
+       "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+       "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+       "0x773cca27b9f92efe3fca92c71800415d6d58d7b2"
+      ]
+     },
+     {
+      "id": "known-functions",
+      "type": "allowlist",
+      "field": "selector",
+      "values": [
+       "0xa9059cbb"
+      ]
+     },
+     {
+      "id": "allowed-hours",
+      "type": "time-window",
+      "timezone": "UTC",
+      "days": [
+       "sun",
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri",
+       "sat"
+      ],
+      "from": "00:00",
+      "to": "23:59"
+     }
+    ]
+   },
+   "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+  },
+  "closedToday": {
+   "source": {
+    "version": 1,
+    "name": "testnet policy (not on fri)",
+    "rules": [
+     {
+      "id": "native-spend",
+      "type": "spend-limit",
+      "asset": "native",
+      "symbol": "PHRS",
+      "perRequest": "0.0002",
+      "perWindow": {
+       "amount": "0.0003",
+       "seconds": 3600
+      }
+     },
+     {
+      "id": "known-targets",
+      "type": "allowlist",
+      "field": "target",
+      "values": [
+       "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+       "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+       "0x773cca27b9f92efe3fca92c71800415d6d58d7b2"
+      ]
+     },
+     {
+      "id": "known-functions",
+      "type": "allowlist",
+      "field": "selector",
+      "values": [
+       "0xa9059cbb"
+      ]
+     },
+     {
+      "id": "allowed-hours",
+      "type": "time-window",
+      "timezone": "UTC",
+      "days": [
+       "sun",
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "sat"
+      ],
+      "from": "00:00",
+      "to": "23:59"
+     }
+    ]
+   },
+   "hash": "497b8009a2e44a431c2f4dcbe92b62789e8319b89fbe2d4f24598ba60d379d9e"
+  }
+ },
+ "results": [
+  {
+   "id": "pay-a",
+   "title": "Pay recipient A 0.0001 PHRS",
+   "policy": "testnet policy (every day)",
+   "policyHash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+    "value": "100000000000000"
+   },
+   "nowSec": 1792753610,
+   "decision": "allow",
+   "rule": {
+    "id": "all-rules-passed",
+    "type": "default"
+   },
+   "reason": "allowed: all 4 rules passed (3 applied)",
+   "checks": [
+    {
+     "rule": "native-spend",
+     "type": "spend-limit",
+     "applies": true,
+     "pass": true,
+     "detail": "0.0001 PHRS (0 PHRS already used of 0.0003 PHRS in the last 1 h)"
+    },
+    {
+     "rule": "known-targets",
+     "type": "allowlist",
+     "applies": true,
+     "pass": true,
+     "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+    },
+    {
+     "rule": "known-functions",
+     "type": "allowlist",
+     "applies": false,
+     "pass": true,
+     "detail": "this request has no selector to check (a plain transfer calls no function)"
+    },
+    {
+     "rule": "allowed-hours",
+     "type": "time-window",
+     "applies": true,
+     "pass": true,
+     "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+    }
+   ],
+   "executed": true,
+   "transaction": {
+    "label": "Pay recipient A 0.0001 PHRS",
+    "hash": "0x6dfe7b23afd362bf2119c0b651db91af61c33ef7f5573c945b46e9feabedd79f",
+    "blockNumber": 31779462,
+    "status": "success",
+    "gasUsed": 21000,
+    "gasLimit": 30000,
+    "gasPriceGwei": 1.000000001,
+    "costWei": "21000000021000",
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+    "valueWei": "100000000000000"
+   },
+   "decisionSeq": 0,
+   "executionSeq": 1,
+   "matched": true
+  },
+  {
+   "id": "pay-b",
+   "title": "Pay recipient B 0.0001 PHRS",
+   "policy": "testnet policy (every day)",
+   "policyHash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+    "value": "100000000000000"
+   },
+   "nowSec": 1792753614,
+   "decision": "allow",
+   "rule": {
+    "id": "all-rules-passed",
+    "type": "default"
+   },
+   "reason": "allowed: all 4 rules passed (3 applied)",
+   "checks": [
+    {
+     "rule": "native-spend",
+     "type": "spend-limit",
+     "applies": true,
+     "pass": true,
+     "detail": "0.0001 PHRS (0.0001 PHRS already used of 0.0003 PHRS in the last 1 h)"
+    },
+    {
+     "rule": "known-targets",
+     "type": "allowlist",
+     "applies": true,
+     "pass": true,
+     "detail": "target 0x1c654a…48c5 is on the allowlist"
+    },
+    {
+     "rule": "known-functions",
+     "type": "allowlist",
+     "applies": false,
+     "pass": true,
+     "detail": "this request has no selector to check (a plain transfer calls no function)"
+    },
+    {
+     "rule": "allowed-hours",
+     "type": "time-window",
+     "applies": true,
+     "pass": true,
+     "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+    }
+   ],
+   "executed": true,
+   "transaction": {
+    "label": "Pay recipient B 0.0001 PHRS",
+    "hash": "0x8684fec70db3138ff16e5ffcb22b2d764a415f4508761ec7fbe0070225b216b8",
+    "blockNumber": 31779467,
+    "status": "success",
+    "gasUsed": 21000,
+    "gasLimit": 30000,
+    "gasPriceGwei": 1.000000001,
+    "costWei": "21000000021000",
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+    "valueWei": "100000000000000"
+   },
+   "decisionSeq": 2,
+   "executionSeq": 3,
+   "matched": true
+  },
+  {
+   "id": "too-big",
+   "title": "Pay recipient A 0.001 PHRS (limit per request is 0.0002)",
+   "policy": "testnet policy (every day)",
+   "policyHash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+    "value": "1000000000000000"
+   },
+   "nowSec": 1792753618,
+   "decision": "deny",
+   "rule": {
+    "id": "native-spend",
+    "type": "spend-limit"
+   },
+   "reason": "denied by rule \"native-spend\" (spend-limit): 0.001 PHRS is over the per-request limit of 0.0002 PHRS",
+   "checks": [
+    {
+     "rule": "native-spend",
+     "type": "spend-limit",
+     "applies": true,
+     "pass": false,
+     "detail": "0.001 PHRS is over the per-request limit of 0.0002 PHRS"
+    },
+    {
+     "rule": "known-targets",
+     "type": "allowlist",
+     "applies": true,
+     "pass": true,
+     "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+    },
+    {
+     "rule": "known-functions",
+     "type": "allowlist",
+     "applies": false,
+     "pass": true,
+     "detail": "this request has no selector to check (a plain transfer calls no function)"
+    },
+    {
+     "rule": "allowed-hours",
+     "type": "time-window",
+     "applies": true,
+     "pass": true,
+     "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+    }
+   ],
+   "executed": false,
+   "transaction": null,
+   "decisionSeq": 4,
+   "executionSeq": 5,
+   "matched": true
+  },
+  {
+   "id": "over-the-hour",
+   "title": "Pay recipient A 0.0002 PHRS (fine alone, but 0.0002 was already allowed this hour and the window limit is 0.0003)",
+   "policy": "testnet policy (every day)",
+   "policyHash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+    "value": "200000000000000"
+   },
+   "nowSec": 1792753619,
+   "decision": "deny",
+   "rule": {
+    "id": "native-spend",
+    "type": "spend-limit"
+   },
+   "reason": "denied by rule \"native-spend\" (spend-limit): 0.0002 PHRS on top of 0.0002 PHRS already allowed in the last 1 h would be 0.0004 PHRS, over the window limit of 0.0003 PHRS",
+   "checks": [
+    {
+     "rule": "native-spend",
+     "type": "spend-limit",
+     "applies": true,
+     "pass": false,
+     "detail": "0.0002 PHRS on top of 0.0002 PHRS already allowed in the last 1 h would be 0.0004 PHRS, over the window limit of 0.0003 PHRS"
+    },
+    {
+     "rule": "known-targets",
+     "type": "allowlist",
+     "applies": true,
+     "pass": true,
+     "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+    },
+    {
+     "rule": "known-functions",
+     "type": "allowlist",
+     "applies": false,
+     "pass": true,
+     "detail": "this request has no selector to check (a plain transfer calls no function)"
+    },
+    {
+     "rule": "allowed-hours",
+     "type": "time-window",
+     "applies": true,
+     "pass": true,
+     "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+    }
+   ],
+   "executed": false,
+   "transaction": null,
+   "decisionSeq": 6,
+   "executionSeq": 7,
+   "matched": true
+  },
+  {
+   "id": "stranger",
+   "title": "Pay an address that is not on the allowlist",
+   "policy": "testnet policy (every day)",
+   "policyHash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0x09c3d13f7e33e4fac1e010a84a8849bca582ea50",
+    "value": "100000000000000"
+   },
+   "nowSec": 1792753619,
+   "decision": "deny",
+   "rule": {
+    "id": "known-targets",
+    "type": "allowlist"
+   },
+   "reason": "denied by rule \"known-targets\" (allowlist): target 0x09c3d1…ea50 is not on the allowlist (3 allowed)",
+   "checks": [
+    {
+     "rule": "native-spend",
+     "type": "spend-limit",
+     "applies": true,
+     "pass": true,
+     "detail": "0.0001 PHRS (0.0002 PHRS already used of 0.0003 PHRS in the last 1 h)"
+    },
+    {
+     "rule": "known-targets",
+     "type": "allowlist",
+     "applies": true,
+     "pass": false,
+     "detail": "target 0x09c3d1…ea50 is not on the allowlist (3 allowed)"
+    },
+    {
+     "rule": "known-functions",
+     "type": "allowlist",
+     "applies": false,
+     "pass": true,
+     "detail": "this request has no selector to check (a plain transfer calls no function)"
+    },
+    {
+     "rule": "allowed-hours",
+     "type": "time-window",
+     "applies": true,
+     "pass": true,
+     "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+    }
+   ],
+   "executed": false,
+   "transaction": null,
+   "decisionSeq": 8,
+   "executionSeq": 9,
+   "matched": true
+  },
+  {
+   "id": "unlisted-function",
+   "title": "Call Counter.ping(id): the contract is allowed, the function is not",
+   "policy": "testnet policy (every day)",
+   "policyHash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+    "data": "0x773acdef0000000000000000000000000000000000000000000000000000000032e112f4"
+   },
+   "nowSec": 1792753619,
+   "decision": "deny",
+   "rule": {
+    "id": "known-functions",
+    "type": "allowlist"
+   },
+   "reason": "denied by rule \"known-functions\" (allowlist): selector 0x773acdef is not on the allowlist (1 allowed)",
+   "checks": [
+    {
+     "rule": "native-spend",
+     "type": "spend-limit",
+     "applies": false,
+     "pass": true,
+     "detail": "this request spends no native token, so the limit does not apply"
+    },
+    {
+     "rule": "known-targets",
+     "type": "allowlist",
+     "applies": true,
+     "pass": true,
+     "detail": "target 0x773cca…d7b2 is on the allowlist"
+    },
+    {
+     "rule": "known-functions",
+     "type": "allowlist",
+     "applies": true,
+     "pass": false,
+     "detail": "selector 0x773acdef is not on the allowlist (1 allowed)"
+    },
+    {
+     "rule": "allowed-hours",
+     "type": "time-window",
+     "applies": true,
+     "pass": true,
+     "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+    }
+   ],
+   "executed": false,
+   "transaction": null,
+   "decisionSeq": 10,
+   "executionSeq": 11,
+   "matched": true
+  },
+  {
+   "id": "wrong-day",
+   "title": "Pay recipient A 0.0001 PHRS, under a policy that is closed on fri",
+   "policy": "testnet policy (not on fri)",
+   "policyHash": "497b8009a2e44a431c2f4dcbe92b62789e8319b89fbe2d4f24598ba60d379d9e",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+    "value": "100000000000000"
+   },
+   "nowSec": 1792753620,
+   "decision": "deny",
+   "rule": {
+    "id": "allowed-hours",
+    "type": "time-window"
+   },
+   "reason": "denied by rule \"allowed-hours\" (time-window): fri 11:07 UTC is outside the allowed window (sun/mon/tue/wed/thu/sat 00:00-23:59 UTC)",
+   "checks": [
+    {
+     "rule": "native-spend",
+     "type": "spend-limit",
+     "applies": true,
+     "pass": true,
+     "detail": "0.0001 PHRS (0.0002 PHRS already used of 0.0003 PHRS in the last 1 h)"
+    },
+    {
+     "rule": "known-targets",
+     "type": "allowlist",
+     "applies": true,
+     "pass": true,
+     "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+    },
+    {
+     "rule": "known-functions",
+     "type": "allowlist",
+     "applies": false,
+     "pass": true,
+     "detail": "this request has no selector to check (a plain transfer calls no function)"
+    },
+    {
+     "rule": "allowed-hours",
+     "type": "time-window",
+     "applies": true,
+     "pass": false,
+     "detail": "fri 11:07 UTC is outside the allowed window (sun/mon/tue/wed/thu/sat 00:00-23:59 UTC)"
+    }
+   ],
+   "executed": false,
+   "transaction": null,
+   "decisionSeq": 12,
+   "executionSeq": 13,
+   "matched": true
+  },
+  {
+   "id": "garbage",
+   "title": "A request that cannot be read",
+   "policy": "testnet policy (every day)",
+   "policyHash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca",
+   "request": {
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "to": "not-an-address"
+   },
+   "nowSec": 1792753620,
+   "decision": "deny",
+   "rule": {
+    "id": "request-shape",
+    "type": "request"
+   },
+   "reason": "the request could not be read, so it is denied: \"to\" must be a 0x address",
+   "checks": [],
+   "executed": false,
+   "transaction": null,
+   "decisionSeq": 14,
+   "executionSeq": 15,
+   "matched": true
+  }
+ ],
+ "summary": {
+  "requests": 8,
+  "allowed": 2,
+  "denied": 6,
+  "deniedByRule": {
+   "native-spend": 2,
+   "known-targets": 1,
+   "known-functions": 1,
+   "allowed-hours": 1,
+   "request-shape": 1
+  },
+  "deniedThatWereExecuted": 0
+ },
+ "auditLog": {
+  "entries": [
+   {
+    "seq": 0,
+    "kind": "decision",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "body": {
+     "decision": "allow",
+     "rule": {
+      "id": "all-rules-passed",
+      "type": "default"
+     },
+     "reason": "allowed: all 4 rules passed (3 applied)",
+     "checks": [
+      {
+       "rule": "native-spend",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "0.0001 PHRS (0 PHRS already used of 0.0003 PHRS in the last 1 h)"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": false,
+       "pass": true,
+       "detail": "this request has no selector to check (a plain transfer calls no function)"
+      },
+      {
+       "rule": "allowed-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "selector": null,
+      "kind": "native-transfer",
+      "recipient": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "valueWei": "100000000000000"
+     },
+     "spend": [
+      {
+       "asset": "native",
+       "amountRaw": "100000000000000"
+      }
+     ],
+     "atSec": 1792753610,
+     "policy": {
+      "name": "testnet policy (every day)",
+      "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+     }
+    },
+    "hash": "09e00921f51f5a8eee83fd1166405192ec87f35bcddd8ac223c4f468e5c533af"
+   },
+   {
+    "seq": 1,
+    "kind": "execution",
+    "prev": "09e00921f51f5a8eee83fd1166405192ec87f35bcddd8ac223c4f468e5c533af",
+    "body": {
+     "decisionSeq": 0,
+     "status": "executed",
+     "result": {
+      "label": "Pay recipient A 0.0001 PHRS",
+      "hash": "0x6dfe7b23afd362bf2119c0b651db91af61c33ef7f5573c945b46e9feabedd79f",
+      "blockNumber": 31779462,
+      "status": "success",
+      "gasUsed": 21000,
+      "gasLimit": 30000,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "21000000021000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "valueWei": "100000000000000"
+     }
+    },
+    "hash": "06cc17da00d693711499d4fbde0a71cedd0c281110544e529f51805d1c78cc60"
+   },
+   {
+    "seq": 2,
+    "kind": "decision",
+    "prev": "06cc17da00d693711499d4fbde0a71cedd0c281110544e529f51805d1c78cc60",
+    "body": {
+     "decision": "allow",
+     "rule": {
+      "id": "all-rules-passed",
+      "type": "default"
+     },
+     "reason": "allowed: all 4 rules passed (3 applied)",
+     "checks": [
+      {
+       "rule": "native-spend",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "0.0001 PHRS (0.0001 PHRS already used of 0.0003 PHRS in the last 1 h)"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0x1c654a…48c5 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": false,
+       "pass": true,
+       "detail": "this request has no selector to check (a plain transfer calls no function)"
+      },
+      {
+       "rule": "allowed-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+      "selector": null,
+      "kind": "native-transfer",
+      "recipient": "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+      "valueWei": "100000000000000"
+     },
+     "spend": [
+      {
+       "asset": "native",
+       "amountRaw": "100000000000000"
+      }
+     ],
+     "atSec": 1792753614,
+     "policy": {
+      "name": "testnet policy (every day)",
+      "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+     }
+    },
+    "hash": "f718b0086c003520b19b634c9568dc6ceea2eb76b1ba8bb438723e677c8e280d"
+   },
+   {
+    "seq": 3,
+    "kind": "execution",
+    "prev": "f718b0086c003520b19b634c9568dc6ceea2eb76b1ba8bb438723e677c8e280d",
+    "body": {
+     "decisionSeq": 2,
+     "status": "executed",
+     "result": {
+      "label": "Pay recipient B 0.0001 PHRS",
+      "hash": "0x8684fec70db3138ff16e5ffcb22b2d764a415f4508761ec7fbe0070225b216b8",
+      "blockNumber": 31779467,
+      "status": "success",
+      "gasUsed": 21000,
+      "gasLimit": 30000,
+      "gasPriceGwei": 1.000000001,
+      "costWei": "21000000021000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+      "valueWei": "100000000000000"
+     }
+    },
+    "hash": "fdf36157f68123cae34070c1c1b3a3f6f384793472c975960e14d33da0be7cc3"
+   },
+   {
+    "seq": 4,
+    "kind": "decision",
+    "prev": "fdf36157f68123cae34070c1c1b3a3f6f384793472c975960e14d33da0be7cc3",
+    "body": {
+     "decision": "deny",
+     "rule": {
+      "id": "native-spend",
+      "type": "spend-limit"
+     },
+     "reason": "denied by rule \"native-spend\" (spend-limit): 0.001 PHRS is over the per-request limit of 0.0002 PHRS",
+     "checks": [
+      {
+       "rule": "native-spend",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": false,
+       "detail": "0.001 PHRS is over the per-request limit of 0.0002 PHRS"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": false,
+       "pass": true,
+       "detail": "this request has no selector to check (a plain transfer calls no function)"
+      },
+      {
+       "rule": "allowed-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "selector": null,
+      "kind": "native-transfer",
+      "recipient": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "valueWei": "1000000000000000"
+     },
+     "spend": [
+      {
+       "asset": "native",
+       "amountRaw": "1000000000000000"
+      }
+     ],
+     "atSec": 1792753618,
+     "policy": {
+      "name": "testnet policy (every day)",
+      "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+     }
+    },
+    "hash": "aa17f083301846e4b9a94135fe21404023e22a57f76c56032c3fb7bbe14f71c6"
+   },
+   {
+    "seq": 5,
+    "kind": "execution",
+    "prev": "aa17f083301846e4b9a94135fe21404023e22a57f76c56032c3fb7bbe14f71c6",
+    "body": {
+     "decisionSeq": 4,
+     "status": "not-executed",
+     "note": "denied by native-spend; the executor was not called"
+    },
+    "hash": "10e782cf64ffec874e4183735019e8f3fd5c007468ca1ad3782a27ae4f7cba1f"
+   },
+   {
+    "seq": 6,
+    "kind": "decision",
+    "prev": "10e782cf64ffec874e4183735019e8f3fd5c007468ca1ad3782a27ae4f7cba1f",
+    "body": {
+     "decision": "deny",
+     "rule": {
+      "id": "native-spend",
+      "type": "spend-limit"
+     },
+     "reason": "denied by rule \"native-spend\" (spend-limit): 0.0002 PHRS on top of 0.0002 PHRS already allowed in the last 1 h would be 0.0004 PHRS, over the window limit of 0.0003 PHRS",
+     "checks": [
+      {
+       "rule": "native-spend",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": false,
+       "detail": "0.0002 PHRS on top of 0.0002 PHRS already allowed in the last 1 h would be 0.0004 PHRS, over the window limit of 0.0003 PHRS"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": false,
+       "pass": true,
+       "detail": "this request has no selector to check (a plain transfer calls no function)"
+      },
+      {
+       "rule": "allowed-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "selector": null,
+      "kind": "native-transfer",
+      "recipient": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "valueWei": "200000000000000"
+     },
+     "spend": [
+      {
+       "asset": "native",
+       "amountRaw": "200000000000000"
+      }
+     ],
+     "atSec": 1792753619,
+     "policy": {
+      "name": "testnet policy (every day)",
+      "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+     }
+    },
+    "hash": "23059298f928145b8428de33ab74f9b38d1d97c8a1a65c559ad577923deec90a"
+   },
+   {
+    "seq": 7,
+    "kind": "execution",
+    "prev": "23059298f928145b8428de33ab74f9b38d1d97c8a1a65c559ad577923deec90a",
+    "body": {
+     "decisionSeq": 6,
+     "status": "not-executed",
+     "note": "denied by native-spend; the executor was not called"
+    },
+    "hash": "fdcd26d9daa2464cb91192c092c240138683c24c273e8a8984ce4c38790d1572"
+   },
+   {
+    "seq": 8,
+    "kind": "decision",
+    "prev": "fdcd26d9daa2464cb91192c092c240138683c24c273e8a8984ce4c38790d1572",
+    "body": {
+     "decision": "deny",
+     "rule": {
+      "id": "known-targets",
+      "type": "allowlist"
+     },
+     "reason": "denied by rule \"known-targets\" (allowlist): target 0x09c3d1…ea50 is not on the allowlist (3 allowed)",
+     "checks": [
+      {
+       "rule": "native-spend",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "0.0001 PHRS (0.0002 PHRS already used of 0.0003 PHRS in the last 1 h)"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": false,
+       "detail": "target 0x09c3d1…ea50 is not on the allowlist (3 allowed)"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": false,
+       "pass": true,
+       "detail": "this request has no selector to check (a plain transfer calls no function)"
+      },
+      {
+       "rule": "allowed-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x09c3d13f7e33e4fac1e010a84a8849bca582ea50",
+      "selector": null,
+      "kind": "native-transfer",
+      "recipient": "0x09c3d13f7e33e4fac1e010a84a8849bca582ea50",
+      "valueWei": "100000000000000"
+     },
+     "spend": [
+      {
+       "asset": "native",
+       "amountRaw": "100000000000000"
+      }
+     ],
+     "atSec": 1792753619,
+     "policy": {
+      "name": "testnet policy (every day)",
+      "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+     }
+    },
+    "hash": "e40b4f330358c5a39845ec4637c98f9de67f62897cb90c7353146149be88aeda"
+   },
+   {
+    "seq": 9,
+    "kind": "execution",
+    "prev": "e40b4f330358c5a39845ec4637c98f9de67f62897cb90c7353146149be88aeda",
+    "body": {
+     "decisionSeq": 8,
+     "status": "not-executed",
+     "note": "denied by known-targets; the executor was not called"
+    },
+    "hash": "4fbe928f4809165146a86d32b3c82aeb0abee403da04d95e281d1726aa7bd5a7"
+   },
+   {
+    "seq": 10,
+    "kind": "decision",
+    "prev": "4fbe928f4809165146a86d32b3c82aeb0abee403da04d95e281d1726aa7bd5a7",
+    "body": {
+     "decision": "deny",
+     "rule": {
+      "id": "known-functions",
+      "type": "allowlist"
+     },
+     "reason": "denied by rule \"known-functions\" (allowlist): selector 0x773acdef is not on the allowlist (1 allowed)",
+     "checks": [
+      {
+       "rule": "native-spend",
+       "type": "spend-limit",
+       "applies": false,
+       "pass": true,
+       "detail": "this request spends no native token, so the limit does not apply"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0x773cca…d7b2 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": true,
+       "pass": false,
+       "detail": "selector 0x773acdef is not on the allowlist (1 allowed)"
+      },
+      {
+       "rule": "allowed-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": true,
+       "detail": "fri 11:06 UTC is inside the allowed window (every day 00:00-23:59 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+      "selector": "0x773acdef",
+      "kind": "contract-call",
+      "recipient": null,
+      "valueWei": "0"
+     },
+     "spend": [],
+     "atSec": 1792753619,
+     "policy": {
+      "name": "testnet policy (every day)",
+      "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+     }
+    },
+    "hash": "99522a81d61e890da63407f38a2c5f01839641727db0b8f9f6c1d854ea6ecb1e"
+   },
+   {
+    "seq": 11,
+    "kind": "execution",
+    "prev": "99522a81d61e890da63407f38a2c5f01839641727db0b8f9f6c1d854ea6ecb1e",
+    "body": {
+     "decisionSeq": 10,
+     "status": "not-executed",
+     "note": "denied by known-functions; the executor was not called"
+    },
+    "hash": "2a5037286e5f4e90dadab2285fe59caefa8382a6a79e647e379c23cf2e304a6e"
+   },
+   {
+    "seq": 12,
+    "kind": "decision",
+    "prev": "2a5037286e5f4e90dadab2285fe59caefa8382a6a79e647e379c23cf2e304a6e",
+    "body": {
+     "decision": "deny",
+     "rule": {
+      "id": "allowed-hours",
+      "type": "time-window"
+     },
+     "reason": "denied by rule \"allowed-hours\" (time-window): fri 11:07 UTC is outside the allowed window (sun/mon/tue/wed/thu/sat 00:00-23:59 UTC)",
+     "checks": [
+      {
+       "rule": "native-spend",
+       "type": "spend-limit",
+       "applies": true,
+       "pass": true,
+       "detail": "0.0001 PHRS (0.0002 PHRS already used of 0.0003 PHRS in the last 1 h)"
+      },
+      {
+       "rule": "known-targets",
+       "type": "allowlist",
+       "applies": true,
+       "pass": true,
+       "detail": "target 0xbcf95d…9fe3 is on the allowlist"
+      },
+      {
+       "rule": "known-functions",
+       "type": "allowlist",
+       "applies": false,
+       "pass": true,
+       "detail": "this request has no selector to check (a plain transfer calls no function)"
+      },
+      {
+       "rule": "allowed-hours",
+       "type": "time-window",
+       "applies": true,
+       "pass": false,
+       "detail": "fri 11:07 UTC is outside the allowed window (sun/mon/tue/wed/thu/sat 00:00-23:59 UTC)"
+      }
+     ],
+     "request": {
+      "id": null,
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "selector": null,
+      "kind": "native-transfer",
+      "recipient": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+      "valueWei": "100000000000000"
+     },
+     "spend": [
+      {
+       "asset": "native",
+       "amountRaw": "100000000000000"
+      }
+     ],
+     "atSec": 1792753620,
+     "policy": {
+      "name": "testnet policy (not on fri)",
+      "hash": "497b8009a2e44a431c2f4dcbe92b62789e8319b89fbe2d4f24598ba60d379d9e"
+     }
+    },
+    "hash": "7c2aec2b1973b77f62ae4e31b2daed0cbfbce6d70c73577be6521a938cd8e37c"
+   },
+   {
+    "seq": 13,
+    "kind": "execution",
+    "prev": "7c2aec2b1973b77f62ae4e31b2daed0cbfbce6d70c73577be6521a938cd8e37c",
+    "body": {
+     "decisionSeq": 12,
+     "status": "not-executed",
+     "note": "denied by allowed-hours; the executor was not called"
+    },
+    "hash": "a28e8499357652928de5067f267bbbb8618149ee0e7f61743a6cfa0017fa635e"
+   },
+   {
+    "seq": 14,
+    "kind": "decision",
+    "prev": "a28e8499357652928de5067f267bbbb8618149ee0e7f61743a6cfa0017fa635e",
+    "body": {
+     "decision": "deny",
+     "rule": {
+      "id": "request-shape",
+      "type": "request"
+     },
+     "reason": "the request could not be read, so it is denied: \"to\" must be a 0x address",
+     "checks": [],
+     "request": {
+      "raw": "{\"from\":\"0x0ec197b8a30543c93e521a6c3f2db5d110e60850\",\"to\":\"not-an-address\"}"
+     },
+     "spend": [],
+     "atSec": 1792753620,
+     "policy": {
+      "name": "testnet policy (every day)",
+      "hash": "e73319e29ea00039698bffd2b7d30d6c1eee6c490520b3bf4f053ae20c368cca"
+     }
+    },
+    "hash": "df01831bab0604710ea3c822b599b78032794dbbe7d62eb022590355e0b51bb6"
+   },
+   {
+    "seq": 15,
+    "kind": "execution",
+    "prev": "df01831bab0604710ea3c822b599b78032794dbbe7d62eb022590355e0b51bb6",
+    "body": {
+     "decisionSeq": 14,
+     "status": "not-executed",
+     "note": "denied by request-shape; the executor was not called"
+    },
+    "hash": "40da481f8549c50a47acc901df0e1695b1d7ffe1fb308312c355c3a0f51e502b"
+   }
+  ],
+  "integrity": {
+   "ok": true,
+   "count": 16,
+   "head": "40da481f8549c50a47acc901df0e1695b1d7ffe1fb308312c355c3a0f51e502b",
+   "problems": []
+  }
+ },
+ "proof": {
+  "walletNonce": {
+   "before": "14",
+   "after": "16",
+   "allowedRequests": 2,
+   "ok": true
+  },
+  "balances": [
+   {
+    "label": "recipient A (allowed)",
+    "address": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+    "expectedWei": "100000000000000",
+    "chainWei": "100000000000000",
+    "ok": true
+   },
+   {
+    "label": "recipient B (allowed)",
+    "address": "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+    "expectedWei": "100000000000000",
+    "chainWei": "100000000000000",
+    "ok": true
+   },
+   {
+    "label": "stranger (denied)",
+    "address": "0x09c3d13f7e33e4fac1e010a84a8849bca582ea50",
+    "expectedWei": "0",
+    "chainWei": "0",
+    "ok": true
+   }
+  ],
+  "counter": {
+   "address": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+   "id": 853611252,
+   "expected": "0",
+   "chain": "0",
+   "ok": true
+  },
+  "ok": true
+ },
+ "budget": {
+  "startWei": "48803655999254607",
+  "endWei": "48561655999212607",
+  "spentWei": "242000000042000",
+  "limitWei": "2000000000000000"
+ },
+ "transactions": [
+  {
+   "label": "Pay recipient A 0.0001 PHRS",
+   "hash": "0x6dfe7b23afd362bf2119c0b651db91af61c33ef7f5573c945b46e9feabedd79f",
+   "blockNumber": 31779462,
+   "status": "success",
+   "gasUsed": 21000,
+   "gasLimit": 30000,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "21000000021000",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0xbcf95d0346cfb03263e8dd8a74036ce15de29fe3",
+   "valueWei": "100000000000000"
+  },
+  {
+   "label": "Pay recipient B 0.0001 PHRS",
+   "hash": "0x8684fec70db3138ff16e5ffcb22b2d764a415f4508761ec7fbe0070225b216b8",
+   "blockNumber": 31779467,
+   "status": "success",
+   "gasUsed": 21000,
+   "gasLimit": 30000,
+   "gasPriceGwei": 1.000000001,
+   "costWei": "21000000021000",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x1c654af951a2df2ad2596d066c67b27d84ac48c5",
+   "valueWei": "100000000000000"
+  }
+ ]
+}

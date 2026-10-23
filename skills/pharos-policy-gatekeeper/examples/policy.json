@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "name": "treasury-agent policy",
+  "rules": [
+    { "id": "native-spend", "type": "spend-limit", "asset": "native", "symbol": "PROS", "perRequest": "0.01", "perWindow": { "amount": "0.02", "seconds": 86400 } },
+    { "id": "known-targets", "type": "allowlist", "field": "target", "values": ["0x1111111111111111111111111111111111111111", "0x2222222222222222222222222222222222222222"] },
+    { "id": "known-functions", "type": "allowlist", "field": "selector", "values": ["0xa9059cbb"] },
+    { "id": "office-hours", "type": "time-window", "timezone": "UTC", "days": ["mon", "tue", "wed", "thu", "fri"], "from": "08:00", "to": "18:00" }
+  ]
+}

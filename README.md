@@ -1,6 +1,6 @@
 # pharos-agent-kit
 
-Ten working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
+Eleven working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
 **Season of AI** tasks, plus a site where each one can be tested and inspected:
 **https://pharos-agent-kit.vercel.app**
 
@@ -18,6 +18,7 @@ Per-task proof links, repo links and the requirements each task was built agains
 | 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulates only; its predictions are checked against real Atlantic testnet transactions |
 | 9 | Trend Watcher (Skill) | `skills/pharos-trend-watcher/` | Pharos mainnet history | read-only (+ state file) |
 | 10 | Batch Executor (Skill) | `skills/pharos-batch-executor/` | Pharos mainnet | prepared, unsigned; its plan is checked against real Atlantic testnet transactions |
+| 11 | Policy Gatekeeper (Skill) | `skills/pharos-policy-gatekeeper/` | Chain MCP for the clock; Atlantic testnet for the real run | decides and logs only; in front of a real testnet wallet it allowed 2 requests (sent) and denied 6 (never sent), and the chain confirms it |
 
 **Safety.** The skills in `skills/` never take a key: they read, simulate, or prepare unsigned transactions. Nothing in
 this repository sends a transaction to Pharos **mainnet**. Real execution happens in two places, and neither involves real money:
@@ -25,7 +26,7 @@ this repository sends a transaction to Pharos **mainnet**. Real execution happen
 1. **Throwaway forks of mainnet** (tasks 6 and 7): anvil forks Pharos, the contracts are the live ones, the funds are fake,
    and the transactions exist only on that fork. On the site every click runs one inside a throwaway Vercel Sandbox (see
    below); the CLIs run it on your own machine (needs Foundry). There is no simulator.
-2. **Pharos Atlantic testnet** (tasks 5, 8 and 10): `scripts/testnet-run.mjs` and `scripts/testnet-guardian.mjs` send real transactions from a throwaway wallet that
+2. **Pharos Atlantic testnet** (tasks 5, 8, 10 and 11): `scripts/testnet-run.mjs`, `scripts/testnet-guardian.mjs` and `scripts/testnet-gatekeeper.mjs` send real transactions from a throwaway wallet that
    only ever holds test tokens. Its key lives in a git-ignored file, is never printed or committed, and the script refuses to
    send unless the chain id is 688689 (so it cannot reach mainnet) and stops past a small gas budget. The key is not used by
    any skill, and the website holds no key at all: it only re-reads the recorded transactions from the chain.

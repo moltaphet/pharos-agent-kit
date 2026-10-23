@@ -234,7 +234,7 @@ await guard(async () => {
 await guard(async () => {
   sec('8 Dry-Run Executor');
 
-  for (const [slug, reportName] of [['dry-run-executor', 'testnet-runs'], ['batch-executor', 'testnet-runs'], ['threshold-guardian', 'testnet-guardian']]) {
+  for (const [slug, reportName] of [['dry-run-executor', 'testnet-runs'], ['batch-executor', 'testnet-runs'], ['threshold-guardian', 'testnet-guardian'], ['policy-gatekeeper', 'testnet-gatekeeper']]) {
     const tn = (await run(slug, { real: 'testnet' })).body?.data?.testnet;
     check(`${slug}: the recorded Atlantic testnet run (${reportName}) is served and every transaction verifies on-chain right now`, tn?.report?.mode === 'live' && tn.verification?.total >= 1 && tn.verification.verifiedCount === tn.verification.total, `${tn?.verification?.verifiedCount}/${tn?.verification?.total}`);
     check(`${slug}: the testnet run names a wallet and stayed inside its gas budget`, /^0x[0-9a-fA-F]{40}$/.test(tn?.report?.wallet ?? '') && BigInt(tn?.report?.budget?.spentWei ?? '1') < BigInt(tn?.report?.budget?.limitWei ?? '0'));
@@ -308,11 +308,34 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  sec('11 Policy Gatekeeper');
+  const post = (body, o = {}) => run('policy-gatekeeper', o, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const ex = (await run('policy-gatekeeper', { example: '1' })).body?.data;
+  check('example policy and requests are served', ex?.policy?.rules?.length === 4 && ex.requests?.length === 8);
+  const g = (await post({ policy: ex.policy, requests: ex.requests })).body?.data?.gate;
+  check('example: 2 allowed, 6 denied; the executor ran for the 2 allowed and for no denied request', g?.summary?.allowed === 2 && g.summary.denied === 6 && g.summary.executorCalls === 2 && g.summary.deniedThatReachedTheExecutor === 0);
+  check('example: a deny for each rule type, each naming its rule', ['native-spend', 'known-targets', 'known-functions', 'office-hours', 'request-shape'].every((id) => g?.summary?.deniedByRule?.[id] >= 1));
+  check('example: audit log has a decision and an outcome per request and verifies', g?.log?.length === 16 && g.integrity?.ok === true);
+  const t = (await post({ policy: ex.policy, requests: ex.requests, tamper: 2 })).body?.data?.tamper;
+  check('tampering with entry 2 is detected', t?.integrity?.ok === false && /entry 2/.test(t.integrity.problems[0].problem));
+  check('tamper index out of range rejected with 400', is400(await post({ policy: ex.policy, requests: ex.requests, tamper: 99 })));
+  check('policy with only two rule types rejected with 400', is400(await post({ policy: { ...ex.policy, rules: ex.policy.rules.filter((r) => r.type !== 'time-window') }, requests: ex.requests })));
+  check('empty request list rejected with 400', is400(await post({ policy: ex.policy, requests: [] })));
+  check('bad "at" rejected with 400', is400(await post({ policy: ex.policy, requests: [{ ...ex.requests[0], at: 'soon' }] })));
+  check('GET without a body rejected with 400', is400(await run('policy-gatekeeper')));
+  const live = (await post({ policy: ex.policy, requests: [{ from: ex.requests[0].from, to: ex.requests[0].to, value: '1' }, { from: ex.requests[0].from, to: 'nope' }] })).body?.data?.gate;
+  check('a request with no "at" is checked at the live chain block time', live?.results?.[0]?.clock === 'chain' && live.results[0].nowSec > 1.7e9 && live.results[1].decision.rule.id === 'request-shape', JSON.stringify(live?.results?.[0]?.nowSec));
+  const tn = (await run('policy-gatekeeper', { real: 'testnet' })).body?.data?.testnet;
+  check('testnet run: the audit log hash chain re-verifies now', tn?.auditNow?.ok === true && tn.auditNow.count === 16);
+  check('testnet run: recipients still hold exactly what was recorded', tn?.balancesNow?.length === 3 && tn.balancesNow.every((b) => b.matchesRecorded), JSON.stringify(tn?.balancesNow?.map((b) => b.wei)));
+});
+
+await guard(async () => {
   sec('Cross-cutting');
   check('unknown task slug rejected with 400', is400(await run('nope')));
   check('prototype-pollution slug rejected with 400', is400(await run('__proto__')) && is400(await run('constructor')));
   check('missing slug rejected with 400', is400(await get('/api/run')));
-  check('skill files served for all 6 skills', (await Promise.all(['threshold-guardian', 'saga-executor', 'arbitrage-scanner', 'dry-run-executor', 'trend-watcher', 'batch-executor'].map((t) => get('/api/run' + q({ slug: '_skill', task: t }))))).every((r) => r.body?.ok && r.body.data.files.some((f) => f.path === 'SKILL.md')));
+  check('skill files served for all 7 skills', (await Promise.all(['threshold-guardian', 'saga-executor', 'arbitrage-scanner', 'dry-run-executor', 'trend-watcher', 'batch-executor', 'policy-gatekeeper'].map((t) => get('/api/run' + q({ slug: '_skill', task: t }))))).every((r) => r.body?.ok && r.body.data.files.some((f) => f.path === 'SKILL.md')));
   check('skill request for a non-skill task rejected with 400', is400(await get('/api/run' + q({ slug: '_skill', task: 'doc-search-cli' }))));
   check('path traversal in skill task rejected', [400].includes((await get('/api/run' + q({ slug: '_skill', task: '../../etc/passwd' }))).status));
   const h = await get('/api/health');

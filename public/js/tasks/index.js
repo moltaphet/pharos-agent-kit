@@ -10,6 +10,7 @@ import * as arbitrageScanner from './arbitrage-scanner.js';
 import * as dryRunExecutor from './dry-run-executor.js';
 import * as trendWatcher from './trend-watcher.js';
 import * as batchExecutor from './batch-executor.js';
+import * as policyGatekeeper from './policy-gatekeeper.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -19,4 +20,5 @@ export const TASK_MODULES = {
   'dry-run-executor': dryRunExecutor,
   'trend-watcher': trendWatcher,
   'batch-executor': batchExecutor,
+  'policy-gatekeeper': policyGatekeeper,
 };

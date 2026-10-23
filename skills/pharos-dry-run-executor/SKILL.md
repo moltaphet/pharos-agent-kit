@@ -35,4 +35,4 @@ Dry-running sends nothing. **Sending for real** is a separate step: complete the
 
 - A passing simulation is a prediction about *now*. State can change before the transaction is mined; do not treat it as a guarantee.
 - A revert with no reason is still a failure. Never send anyway.
-- Estimated gas is an upper-bound guide; real usage is often lower.
+- Estimated gas is a guide, not a bound: real usage is often lower, but an estimate can also undershoot (nested calls), so send with headroom.

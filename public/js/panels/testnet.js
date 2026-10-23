@@ -81,15 +81,43 @@ function guardianView(rec, ver) {
   return `<h4 class="list-h">Two runs of the same guardian, on the real testnet</h4>${cards.join('')}`;
 }
 
+function gatekeeperView(rec, ver, extra) {
+  const rows = rec.results.map((r) => {
+    const deny = r.decision === 'deny';
+    const said = `${pill(deny ? 'DENY' : 'ALLOW', deny ? 'bad' : 'ok')} <code>${esc(r.rule.id)}</code><br><small class="muted">${esc(r.reason)}</small>`;
+    const did = r.executed
+      ? `${txLink(r.transaction.hash, ver)} ${pill(r.transaction.status, 'ok')}`
+      : '<span class="muted">never sent</span>';
+    return [esc(r.title), said, did, r.matched ? pill('✓ as expected', 'ok') : pill('✗ differs', 'bad')];
+  });
+  const p = rec.proof;
+  const audit = extra.auditNow;
+  const balanceRows = p.balances.map((b, i) => [esc(b.label), `<a href="${EXPLORER}/address/${esc(b.address)}" target="_blank" rel="noopener"><code>${esc(short(b.address))}</code></a>`, phrs(b.expectedWei, 4), phrs(b.chainWei, 4), extra.balancesNow[i]?.matchesRecorded ? pill('✓ still true now', 'ok') : pill('✗ changed since', 'bad')]);
+  return `
+    <h4 class="list-h">${rec.summary.requests} requests through the gate: ${rec.summary.allowed} allowed and sent, ${rec.summary.denied} denied and never sent</h4>
+    ${table(['Request', 'The gate said', 'The chain (after)', ''], rows)}
+    <p class="check ${rec.summary.deniedThatWereExecuted === 0 ? 'ok' : 'bad'}">${rec.summary.deniedThatWereExecuted === 0 ? '✓' : '✗'} <b>Denied requests that were executed: ${rec.summary.deniedThatWereExecuted}.</b> Denials by rule: ${Object.entries(rec.summary.deniedByRule).map(([k, v]) => `<code>${esc(k)}</code> × ${v}`).join(', ')}.</p>
+    <h4 class="list-h">Asked of the chain afterwards: did the denied requests happen?</h4>
+    ${table(['Account', 'Address', 'Allowed to receive', 'Holds on chain', ''], balanceRows)}
+    <p class="check ${p.walletNonce.ok ? 'ok' : 'bad'}">${p.walletNonce.ok ? '✓' : '✗'} The sending wallet's nonce grew from ${esc(p.walletNonce.before)} to ${esc(p.walletNonce.after)}: exactly ${p.walletNonce.allowedRequests} transactions, the number of allowed requests. A denied request that had slipped through would have used a nonce too.</p>
+    <p class="check ${p.counter.ok ? 'ok' : 'bad'}">${p.counter.ok ? '✓' : '✗'} The denied call <code>Counter.ping(${esc(String(p.counter.id))})</code> never landed: that counter reads <b>${esc(p.counter.chain)}</b> on the chain.</p>
+    <h4 class="list-h">Policies in force</h4>
+    ${table(['Policy', 'SHA-256', 'Rules, in the order they are checked'], Object.values(rec.policies).map((x) => [esc(x.source.name), `<code>${esc(x.hash.slice(0, 16))}…</code>`, x.source.rules.map((r) => `<code>${esc(r.id)}</code> <small class="muted">${esc(r.type)}</small>`).join('<br>')]))}
+    <h4 class="list-h">Audit log</h4>
+    <p class="check ${audit.ok ? 'ok' : 'bad'}">${audit.ok ? '✓' : '✗'} <b>The hash chain of all ${audit.count} entries was re-checked just now: ${audit.ok ? 'intact' : 'BROKEN'}.</b> Head <code>${esc(audit.head.slice(0, 24))}…</code>. ${audit.ok ? '' : esc(audit.problems[0].problem)}</p>
+    <details><summary>Show the ${audit.count} entries</summary><pre class="plain">${esc(rec.auditLog.entries.map((e) => `${String(e.seq).padStart(2)}  ${e.kind.padEnd(9)} ${e.kind === 'decision' ? `${e.body.decision.toUpperCase().padEnd(5)} ${e.body.rule.id}` : `${e.body.status}`}  hash ${e.hash.slice(0, 12)}… prev ${e.prev.slice(0, 12)}…`).join('\n'))}</pre></details>`;
+}
+
 export function mountTestnet(el, { slug, kind }) {
   el.innerHTML = '<section class="card tn"><h3>Real transactions on Pharos Atlantic testnet</h3><div class="idle" data-role="body">Reading every recorded transaction back from the chain…</div></section>';
   const body = el.querySelector('[data-role=body]');
   api('run', { slug, real: 'testnet' })
     .then(({ data }) => {
       const { report: rec, verification: ver } = data.testnet;
+      const extra = data.testnet;
       body.classList.remove('idle');
-      const script = kind === 'guardian' ? 'testnet-guardian' : 'testnet-run';
-      body.innerHTML = header(rec, ver) + (kind === 'batch' ? batchView(rec, ver) : kind === 'guardian' ? guardianView(rec, ver) : dryRunView(rec, ver)) + `<p class="muted">Re-run it yourself with your own funded testnet key: <code>node scripts/${script}.mjs --live</code> (a rehearsal on a free local fork is the default).</p>`;
+      const script = kind === 'guardian' ? 'testnet-guardian' : kind === 'gatekeeper' ? 'testnet-gatekeeper' : 'testnet-run';
+      body.innerHTML = header(rec, ver) + (kind === 'batch' ? batchView(rec, ver) : kind === 'guardian' ? guardianView(rec, ver) : kind === 'gatekeeper' ? gatekeeperView(rec, ver, extra) : dryRunView(rec, ver)) + `<p class="muted">Re-run it yourself with your own funded testnet key: <code>node scripts/${script}.mjs --live</code> (a rehearsal on a free local fork is the default).</p>`;
     })
     .catch((err) => {
       body.classList.remove('idle');

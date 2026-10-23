@@ -152,6 +152,21 @@ Requirements it was built against (the Arena's own list):
 3. Reports the gas saving or step reduction compared with running them individually.
 4. Handles partial failure clearly: which action failed and what happened to the rest.
 
+## 11. Policy Gatekeeper
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/policy-gatekeeper/try
+- **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/policy-gatekeeper
+- **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-policy-gatekeeper/`)
+- **Explorer proof (real testnet transaction):** https://atlantic.pharosscan.xyz/tx/0x6dfe7b23afd362bf2119c0b651db91af61c33ef7f5573c945b46e9feabedd79f
+- **What the proof shows:** Policy (spend limit, allowlist, time window) in front of a real wallet: 2 requests allowed and sent on Atlantic, 6 denied by named rules and never sent; the chain confirms it. Hash-chained audit log, re-verified on load.
+
+Requirements it was built against (the Arena's own list):
+
+1. A policy file or config with at least 3 rule types: spend limit, allowlist, time window.
+2. Every request returns allow or deny with the specific rule that decided it.
+3. Denied actions are never executed. Shows at least one deny per rule type.
+4. Keeps an audit log of all decisions.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.
