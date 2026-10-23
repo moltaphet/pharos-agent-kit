@@ -10,6 +10,7 @@ const EXPLORER = 'https://atlantic.pharosscan.xyz';
 const registry = JSON.parse(readFileSync(new URL('../public/registry.json', import.meta.url), 'utf8'));
 const tasks = registry.tasks ?? registry;
 const testnet = JSON.parse(readFileSync(new URL('../reports/testnet-runs.json', import.meta.url), 'utf8'));
+const guardian = JSON.parse(readFileSync(new URL('../reports/testnet-guardian.json', import.meta.url), 'utf8'));
 
 // The ten built tasks, in the Arena's order, with where their code lives and what makes the proof link worth opening.
 const BUILT = {
@@ -17,7 +18,7 @@ const BUILT = {
   'event-log-monitor': { code: 'bin/pharos-watch.js', how: 'Live Transfer/Approval log watcher with block cursor, duplicate suppression and a run log.' },
   'docs-mcp-onboarding': { code: 'bin/pharos-onboard.js', how: 'Ten onboarding questions asked to Docs MCP; every documentation gap is confirmed by a live check against the network.' },
   'doc-search-cli': { code: 'bin/pharos-docs.js', how: 'Concise sourced answers, and a refusal (not an invented answer) for questions the docs cannot answer.' },
-  'threshold-guardian': { code: 'skills/pharos-threshold-guardian/', how: 'Several live conditions at one block against thresholds; FIRE or HOLD with the full working. Never acts.' },
+  'threshold-guardian': { code: 'skills/pharos-threshold-guardian/', how: 'Several live conditions at one block against thresholds; FIRE or HOLD with the full working. Shown acting for real on Atlantic testnet: the FIRE run sent a transaction, the HOLD run sent nothing.', tx: () => guardian.runs.find((r) => r.id === 'fire').action.tx },
   'saga-executor': { code: 'skills/pharos-saga-executor/', how: 'Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo).' },
   'arbitrage-scanner': { code: 'skills/pharos-arbitrage-scanner/', how: 'Live scan of two real FaroSwap venues, plus the act path executed for real on a fork with predicted vs actual profit side by side.' },
   'dry-run-executor': { code: 'skills/pharos-dry-run-executor/', how: 'Simulation gate; the page re-verifies the real Atlantic testnet transactions that confirm its predictions.', tx: () => testnet.dryRun.cases.find((c) => c.sent?.status === 'success')?.sent },

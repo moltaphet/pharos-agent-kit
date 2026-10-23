@@ -1,0 +1,210 @@
+{
+ "recordedAt": "2026-10-23T10:35:28.225Z",
+ "mode": "live",
+ "network": {
+  "name": "Pharos Atlantic Testnet",
+  "chainId": 688689,
+  "rpc": "https://atlantic.dplabs-internal.com",
+  "explorer": "https://atlantic.pharosscan.xyz"
+ },
+ "wallet": "0x0eC197b8A30543c93e521a6C3F2DB5d110e60850",
+ "counter": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+ "budget": {
+  "startWei": "49299711999299703",
+  "endWei": "48848751999299703",
+  "spentWei": "450960000000000",
+  "limitWei": "1000000000000000"
+ },
+ "runs": [
+  {
+   "id": "fire",
+   "title": "Every condition is met: the guardian FIRES and the action is really sent",
+   "config": {
+    "name": "testnet-guardian (fire)",
+    "action": "send Counter.ping(id) on Atlantic testnet",
+    "require": "all",
+    "conditions": [
+     {
+      "id": "gas",
+      "type": "gas-price",
+      "op": "<=",
+      "threshold": 100
+     },
+     {
+      "id": "wallet-phrs",
+      "type": "native-balance",
+      "address": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "op": ">=",
+      "threshold": 0.01
+     },
+     {
+      "id": "usdc-holder",
+      "type": "token-balance",
+      "token": "0xcfC8330f4BCAB529c625D12781b1C19466A9Fc8B",
+      "holder": "0x43a40934a22261b3d2b1e41aab56c37a0e6cb269",
+      "op": ">=",
+      "threshold": 0.1
+     }
+    ]
+   },
+   "expected": "fire",
+   "decision": "fire",
+   "block": 31778529,
+   "passed": 3,
+   "total": 3,
+   "trace": [
+    "PASS  gas: 10 gwei <= 100  →  met",
+    "PASS  wallet-phrs: 0.0492997 PROS >= 0.01  →  met",
+    "PASS  usdc-holder: 0.97 tokens >= 0.1  →  met",
+    "RULE  all conditions must be met: 3 of 3 met",
+    "DECISION  FIRE: send Counter.ping(id) on Atlantic testnet"
+   ],
+   "conditions": [
+    {
+     "id": "gas",
+     "type": "gas-price",
+     "op": "<=",
+     "threshold": 100,
+     "value": 10,
+     "unit": "gwei",
+     "detail": "10 gwei",
+     "pass": true
+    },
+    {
+     "id": "wallet-phrs",
+     "type": "native-balance",
+     "op": ">=",
+     "threshold": 0.01,
+     "value": 0.0492997119992997,
+     "unit": "PROS",
+     "detail": "0.049299711999299703 PROS",
+     "pass": true
+    },
+    {
+     "id": "usdc-holder",
+     "type": "token-balance",
+     "op": ">=",
+     "threshold": 0.1,
+     "value": 0.97,
+     "unit": "tokens",
+     "detail": "0.97 tokens",
+     "pass": true
+    }
+   ],
+   "action": {
+    "kind": "Counter.ping",
+    "counter": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+    "id": 851729226,
+    "tx": {
+     "label": "guardian fire: Counter.ping(851729226)",
+     "hash": "0x5d8f3f1eba84e9fa488de8714485b39ed160bc514ec36095d42f5b39d1ff09fe",
+     "blockNumber": 31778538,
+     "status": "success",
+     "gasUsed": 45096,
+     "gasLimit": 120000,
+     "gasPriceGwei": 10,
+     "costWei": "450960000000000",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+     "valueWei": "0"
+    }
+   },
+   "counterAfter": "1",
+   "matched": true
+  },
+  {
+   "id": "hold",
+   "title": "One condition is not met (the wallet is asked to hold 1 PHRS): the guardian HOLDS and sends nothing",
+   "config": {
+    "name": "testnet-guardian (hold)",
+    "action": "send Counter.ping(id) on Atlantic testnet",
+    "require": "all",
+    "conditions": [
+     {
+      "id": "gas",
+      "type": "gas-price",
+      "op": "<=",
+      "threshold": 100
+     },
+     {
+      "id": "wallet-phrs",
+      "type": "native-balance",
+      "address": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "op": ">=",
+      "threshold": 1
+     },
+     {
+      "id": "usdc-holder",
+      "type": "token-balance",
+      "token": "0xcfC8330f4BCAB529c625D12781b1C19466A9Fc8B",
+      "holder": "0x43a40934a22261b3d2b1e41aab56c37a0e6cb269",
+      "op": ">=",
+      "threshold": 0.1
+     }
+    ]
+   },
+   "expected": "hold",
+   "decision": "hold",
+   "block": 31778538,
+   "passed": 2,
+   "total": 3,
+   "trace": [
+    "PASS  gas: 10 gwei <= 100  →  met",
+    "FAIL  wallet-phrs: 0.0488488 PROS >= 1  →  not met",
+    "PASS  usdc-holder: 0.97 tokens >= 0.1  →  met",
+    "RULE  all conditions must be met: 2 of 3 met",
+    "DECISION  HOLD: 1 more condition needed before send Counter.ping(id) on Atlantic testnet"
+   ],
+   "conditions": [
+    {
+     "id": "gas",
+     "type": "gas-price",
+     "op": "<=",
+     "threshold": 100,
+     "value": 10,
+     "unit": "gwei",
+     "detail": "10 gwei",
+     "pass": true
+    },
+    {
+     "id": "wallet-phrs",
+     "type": "native-balance",
+     "op": ">=",
+     "threshold": 1,
+     "value": 0.0488487519992997,
+     "unit": "PROS",
+     "detail": "0.048848751999299703 PROS",
+     "pass": false
+    },
+    {
+     "id": "usdc-holder",
+     "type": "token-balance",
+     "op": ">=",
+     "threshold": 0.1,
+     "value": 0.97,
+     "unit": "tokens",
+     "detail": "0.97 tokens",
+     "pass": true
+    }
+   ],
+   "action": null,
+   "counterAfter": "0",
+   "matched": true
+  }
+ ],
+ "transactions": [
+  {
+   "label": "guardian fire: Counter.ping(851729226)",
+   "hash": "0x5d8f3f1eba84e9fa488de8714485b39ed160bc514ec36095d42f5b39d1ff09fe",
+   "blockNumber": 31778538,
+   "status": "success",
+   "gasUsed": 45096,
+   "gasLimit": 120000,
+   "gasPriceGwei": 10,
+   "costWei": "450960000000000",
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0x773cca27b9f92efe3fca92c71800415d6d58d7b2",
+   "valueWei": "0"
+  }
+ ]
+}

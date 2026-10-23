@@ -67,7 +67,8 @@ Requirements it was built against (the Arena's own list):
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/threshold-guardian/try
 - **Task page, with the story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/threshold-guardian
 - **Repo link:** https://github.com/moltaphet/pharos-agent-kit  (code: `skills/pharos-threshold-guardian/`)
-- **What the proof shows:** Several live conditions at one block against thresholds; FIRE or HOLD with the full working. Never acts.
+- **Explorer proof (real testnet transaction):** https://atlantic.pharosscan.xyz/tx/0x5d8f3f1eba84e9fa488de8714485b39ed160bc514ec36095d42f5b39d1ff09fe
+- **What the proof shows:** Several live conditions at one block against thresholds; FIRE or HOLD with the full working. Shown acting for real on Atlantic testnet: the FIRE run sent a transaction, the HOLD run sent nothing.
 
 Requirements it was built against (the Arena's own list):
 

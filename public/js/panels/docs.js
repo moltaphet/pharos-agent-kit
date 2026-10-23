@@ -61,7 +61,7 @@ export default function mount(root, { slug, params }) {
       });
       if (d.found) {
         out.innerHTML = `<div class="card answer">${md(d.answer)}<h4>Sources</h4><ol class="sources">${d.sources
-          .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a><span>${esc(s.url)}</span></li>`)
+          .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> ${s.cited ? '<span class="tpill ok" title="The answer itself links to this page">cited in the answer</span>' : '<span class="tpill" title="Listed by the docs search as related; not proof of the answer">related</span>'}<span>${esc(s.url)}</span></li>`)
           .join('')}</ol><p class="check ok">✓ ${esc(d.reason)}</p></div>`;
       } else {
         out.innerHTML = `<div class="card none"><h4>No good answer found in the Pharos docs</h4>

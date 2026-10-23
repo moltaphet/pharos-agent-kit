@@ -1,5 +1,6 @@
 // Threshold Guardian: content and a factory panel.
 import { esc } from '../util.js';
+import { mountTestnet } from '../panels/testnet.js';
 import { makePanel, pill, table } from '../panels/factory.js';
 import { REPO } from '../consts.js';
 
@@ -44,7 +45,7 @@ export const content = {
   decisions: [
     { title: 'Fail safe, not fail open', text: 'If a vault does not answer, that condition is marked ERROR and counts as not met. A guardian that fires when it is blind is worse than none.' },
     { title: 'One block for everything', text: 'Conditions are read at the same pinned block, so “gas is cheap and liquidity is high” cannot straddle two different moments.' },
-    { title: 'It never acts', text: 'The skill is read-only and says so in SKILL.md: on FIRE it reports what would fire and asks. No key is ever involved.' },
+    { title: 'The skill decides; a separate script acts, and only on FIRE', text: 'The skill itself is read-only: on FIRE it reports what would fire and asks, and no key is involved (SKILL.md says so). To show the decision driving a real action, scripts/testnet-guardian.mjs runs the same guardian code against Pharos Atlantic testnet and, only when it decides FIRE, sends the configured action: one real transaction, with the chain asked afterwards whether it happened. On HOLD it sends nothing, and the chain is asked that too. Both runs are in the card above, with the transaction re-read from the chain each time the page loads.' },
     { title: 'A real Pharos Skill, not a script with a README', text: 'SKILL.md has the Capability Index in the user’s own words, the reference follows the Skill Engine template (command, parameters, output parsing, errors, agent guidelines), and the `cast` equivalents in it were run before being written down.' },
     { title: 'Cross-checked by hand', text: 'The share-price change the guardian reported (0.245232%) matches what we computed independently from two `cast` calls at different blocks.' },
   ],
@@ -52,9 +53,9 @@ export const content = {
     'Three independent conditions are read from chain: gas price (get_gas_price), a token balance (eth_call balanceOf), and a vault’s share-price change (eth_call convertToAssets now versus N blocks earlier).',
     'Condition types, operators, thresholds, addresses, the look-back window and the rule are all in the JSON config; edit it above and run again. Nothing is hard-coded.',
     'Every run prints a trace: each condition’s value, threshold and pass/fail, the rule, and the final decision. The same lines are recorded in the run log.',
-    'examples/fires.json fires and examples/holds.json holds, both on live data; each is a chip above, and both are shown in the recorded outputs below.',
+    'examples/fires.json fires and examples/holds.json holds, both on live data; each is a chip above. The testnet card shows both outcomes acting for real: the FIRE sent a real transaction and the HOLD sent nothing.',
   ],
-  files: ['skills/pharos-threshold-guardian/SKILL.md', 'skills/pharos-threshold-guardian/references/threshold-guardian.md', 'skills/pharos-threshold-guardian/scripts/guardian.mjs', 'lib/tasks/threshold-guardian.js'],
+  files: ['scripts/testnet-guardian.mjs', 'lib/testnet-signer.js', 'reports/testnet-guardian.json', 'skills/pharos-threshold-guardian/SKILL.md', 'skills/pharos-threshold-guardian/references/threshold-guardian.md', 'skills/pharos-threshold-guardian/scripts/guardian.mjs', 'lib/tasks/threshold-guardian.js'],
   run: {
     commands: ['node skills/pharos-threshold-guardian/scripts/guardian.mjs skills/pharos-threshold-guardian/examples/fires.json   # exit 0', 'node skills/pharos-threshold-guardian/scripts/guardian.mjs skills/pharos-threshold-guardian/examples/holds.json   # exit 10'],
     sample: `rebalance-gate (strict: should HOLD)  ·  block 20,917,208
@@ -66,6 +67,7 @@ RULE  all conditions must be met: 1 of 3 met
 DECISION  HOLD: 2 more conditions needed before prepare the vault rebalance`,
   },
   verify: [
+    { title: 'Open the real transaction the guardian sent', text: 'The FIRE run called ping() on the counter contract on Atlantic testnet; the HOLD run sent nothing.', link: ['https://atlantic.pharosscan.xyz/tx/0x5d8f3f1eba84e9fa488de8714485b39ed160bc514ec36095d42f5b39d1ff09fe', 'The FIRE transaction on the Atlantic explorer'] },
     { title: 'Check gas yourself', text: 'The guardian said 10 gwei. This is the same number straight from the public RPC, in wei.', code: 'cast gas-price --rpc-url https://rpc.pharos.xyz   # 10000000000' },
     { title: 'Check the share-price change yourself', text: 'Two calls at different blocks; divide the first by the second and subtract 1. Over 1,500,000 blocks it was +0.2452%.', code: `H=$(cast block-number --rpc-url https://rpc.pharos.xyz)\ncast call ${VAULT} "convertToAssets(uint256)(uint256)" 1000000 --rpc-url https://rpc.pharos.xyz\ncast call ${VAULT} "convertToAssets(uint256)(uint256)" 1000000 --rpc-url https://rpc.pharos.xyz --block $((H-1500000))` },
     { title: 'Read the skill itself', text: 'SKILL.md, the reference, the script and both example configs are in the repository.', link: [`${REPO}/tree/main/skills/pharos-threshold-guardian`, 'skills/pharos-threshold-guardian'] },
@@ -74,7 +76,7 @@ DECISION  HOLD: 2 more conditions needed before prepare the vault rebalance`,
 
 const tone = (r) => (r.pass ? 'ok' : r.error ? 'warn' : 'bad');
 
-export const mount = makePanel({
+const livePanel = makePanel({
   intro: 'Edit the guardian config (it is plain JSON) and run it against live Pharos mainnet. Nothing is sent on chain.',
   fields: [{ name: 'config', label: 'Guardian config', type: 'textarea', rows: 16, wide: true, value: FIRES, hint: 'Types: gas-price, native-balance, token-balance, share-price-change. Operators: >= > <= < ==. Rule: "all", "any" or { "atLeast": n }.' }],
   button: 'Evaluate the guardian',
@@ -97,3 +99,10 @@ export const mount = makePanel({
     )}
     <h4 class="list-h">Decision trace</h4><pre class="plain">${esc(d.trace.join('\n'))}</pre>`,
 });
+
+// The recorded real run on Atlantic testnet sits above the live panel, which reads mainnet and only decides.
+export function mount(root, ctx) {
+  root.innerHTML = '<div data-slot="testnet"></div><div data-slot="live"></div>';
+  mountTestnet(root.querySelector('[data-slot=testnet]'), { slug: ctx.slug, kind: 'guardian' });
+  return livePanel(root.querySelector('[data-slot=live]'), ctx);
+}

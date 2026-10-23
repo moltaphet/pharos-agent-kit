@@ -169,3 +169,12 @@ test('the goal sent to askQuestion asks for a concise answer', () => {
   assert.match(DOCS_GOAL, /concisely/i);
   assert.match(DOCS_GOAL, /Pharos/);
 });
+
+test('sources say whether the answer itself cites them or they are only related', () => {
+  const r = buildResult({ question: 'deploy?', askText: GOOD_ASK, searchText: GOOD_SEARCH });
+  const bySlug = Object.fromEntries(r.sources.map((s) => [s.url.split('/').pop(), s.cited]));
+  assert.equal(bySlug['write-your-first-token'], true); // linked inside the answer text
+  assert.equal(bySlug['write-your-first-uniswap-contract'], false); // only a keyword-search hit
+  assert.equal(bySlug['validator-node-deployment'], false); // only in the server's own list
+  assert.ok(r.sources[0].cited, 'cited pages come first');
+});

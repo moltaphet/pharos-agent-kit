@@ -46,7 +46,7 @@ try {
     console.log(JSON.stringify(result, null, 2));
   } else if (result.found) {
     console.log(`\nQ: ${question}\n\n${result.answer}\n\nSources`);
-    result.sources.forEach((s, i) => console.log(`  ${i + 1}. ${s.title}\n     ${s.url}`));
+    result.sources.forEach((s, i) => console.log(`  ${i + 1}. ${s.title}${s.cited ? '  (cited in the answer)' : '  (related)'}\n     ${s.url}`));
     console.log();
   } else {
     console.log(`\nNo good answer found in the Pharos docs for: "${question}"`);

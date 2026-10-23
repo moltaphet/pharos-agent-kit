@@ -66,6 +66,21 @@ function batchView(rec, ver) {
     <p>Sent as ${txLink(exclude.transaction.hash, ver)} (${n(exclude.transaction.gasUsed)} gas). ${exclude.recipientsFunded ? '✓ Both remaining recipients received their funds.' : '✗ A recipient did not receive its funds.'}</p>`;
 }
 
+function guardianView(rec, ver) {
+  const cards = rec.runs.map((run) => {
+    const fired = run.decision === 'fire';
+    const rows = run.conditions.map((c) => [`<code>${esc(c.id)}</code>`, esc(c.detail ?? String(c.value)), `${esc(c.op)} ${n(c.threshold)}`, c.pass ? pill('met', 'ok') : pill('not met', 'bad')]);
+    const action = run.action
+      ? `<p class="check ok">✓ The guardian <b>fired</b>, and the action really happened: ${txLink(run.action.tx.hash, ver)} (${n(run.action.tx.gasUsed)} gas) called <code>ping(${esc(String(run.action.id))})</code> on the counter contract. Afterwards the chain says that counter reads <b>${esc(run.counterAfter)}</b>.</p>`
+      : `<p class="check ok">✓ The guardian <b>held</b>: ${run.passed} of ${run.total} conditions were met, so <b>nothing was sent</b>. The counter for this run's id reads <b>${esc(run.counterAfter)}</b> on the chain, as it should.</p>`;
+    return `
+      <div class="verdict ${fired ? 'ok' : 'warn'}">${fired ? 'FIRE' : 'HOLD'}<small>${esc(run.title)} · read at testnet block ${n(run.block)}</small></div>
+      ${table(['Condition', 'Value read from the chain', 'Rule', ''], rows)}
+      ${action}`;
+  });
+  return `<h4 class="list-h">Two runs of the same guardian, on the real testnet</h4>${cards.join('')}`;
+}
+
 export function mountTestnet(el, { slug, kind }) {
   el.innerHTML = '<section class="card tn"><h3>Real transactions on Pharos Atlantic testnet</h3><div class="idle" data-role="body">Reading every recorded transaction back from the chain…</div></section>';
   const body = el.querySelector('[data-role=body]');
@@ -73,7 +88,8 @@ export function mountTestnet(el, { slug, kind }) {
     .then(({ data }) => {
       const { report: rec, verification: ver } = data.testnet;
       body.classList.remove('idle');
-      body.innerHTML = header(rec, ver) + (kind === 'batch' ? batchView(rec, ver) : dryRunView(rec, ver)) + `<p class="muted">Re-run it yourself with your own funded testnet key: <code>node scripts/testnet-run.mjs --live</code> (a rehearsal on a free local fork is the default).</p>`;
+      const script = kind === 'guardian' ? 'testnet-guardian' : 'testnet-run';
+      body.innerHTML = header(rec, ver) + (kind === 'batch' ? batchView(rec, ver) : kind === 'guardian' ? guardianView(rec, ver) : dryRunView(rec, ver)) + `<p class="muted">Re-run it yourself with your own funded testnet key: <code>node scripts/${script}.mjs --live</code> (a rehearsal on a free local fork is the default).</p>`;
     })
     .catch((err) => {
       body.classList.remove('idle');

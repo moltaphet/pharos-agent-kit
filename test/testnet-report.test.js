@@ -94,3 +94,39 @@ test('the live check is cached for a minute so a page view does not hammer the p
   assert.ok(calls > first, 'refreshed after the TTL');
   resetTestnetCache();
 });
+
+// ---- the Guardian's recorded run ---------------------------------------------------------------------
+const guardian = JSON.parse(readFileSync(new URL('../reports/testnet-guardian.json', import.meta.url), 'utf8'));
+
+test('the Guardian ran for real on the testnet: FIRE sent one transaction that landed, HOLD sent nothing', () => {
+  assert.equal(guardian.mode, 'live');
+  assert.equal(guardian.network.chainId, 688689);
+  const [fire, hold] = [guardian.runs.find((r) => r.id === 'fire'), guardian.runs.find((r) => r.id === 'hold')];
+  assert.equal(fire.decision, 'fire');
+  assert.equal(fire.passed, fire.total);
+  assert.equal(fire.action.tx.status, 'success');
+  assert.equal(fire.counterAfter, '1', 'the chain says the action happened');
+  assert.equal(hold.decision, 'hold');
+  assert.ok(hold.passed < hold.total && hold.conditions.some((c) => !c.pass));
+  assert.equal(hold.action, null);
+  assert.equal(hold.counterAfter, '0', 'the chain says nothing happened');
+  assert.ok(guardian.runs.every((r) => r.matched));
+  assert.equal(guardian.transactions.length, 1, 'only the FIRE run sent a transaction');
+  assert.equal(JSON.stringify(guardian).includes('privateKey'), false);
+});
+
+test('the Guardian run reads three independent conditions, each with its value on the trace', () => {
+  for (const run of guardian.runs) {
+    assert.equal(run.conditions.length, 3);
+    assert.equal(new Set(run.conditions.map((c) => c.type)).size, 3, 'three different kinds of condition');
+    assert.ok(run.trace.some((l) => /^DECISION/.test(l)));
+  }
+});
+
+test('the Guardian transaction verifies against the chain, and a wrong claim about it does not', async () => {
+  const rec = { ...guardian };
+  const ok = await testnetEvidence({ rpc: chainFor(rec), report: rec });
+  assert.equal(ok.verification.verifiedCount, 1);
+  const lied = await testnetEvidence({ rpc: chainFor(rec, () => ({ status: 'reverted' })), report: rec });
+  assert.equal(lied.verification.verifiedCount, 0);
+});

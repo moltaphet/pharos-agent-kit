@@ -12,7 +12,7 @@ Per-task proof links, repo links and the requirements each task was built agains
 | 2 | Event/Log Monitor | `node bin/pharos-watch.js` | Pharos mainnet | read-only |
 | 3 | Docs MCP Onboarding | `node bin/pharos-onboard.js` | Docs MCP + mainnet + Atlantic checks | read-only |
 | 4 | Doc-Search CLI | `node bin/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
-| 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | read-only |
+| 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | decides only; shown acting for real on Atlantic testnet (FIRE sends a transaction, HOLD sends nothing) |
 | 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts on a mainnet fork | real EVM transactions on a fork, on demand (fake funds) |
 | 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | live scan decides (nothing sent); the act path runs for real on a fork, on demand (`scripts/arb-fork-run.mjs`) |
 | 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulates only; its predictions are checked against real Atlantic testnet transactions |
@@ -25,7 +25,7 @@ this repository sends a transaction to Pharos **mainnet**. Real execution happen
 1. **Throwaway forks of mainnet** (tasks 6 and 7): anvil forks Pharos, the contracts are the live ones, the funds are fake,
    and the transactions exist only on that fork. On the site every click runs one inside a throwaway Vercel Sandbox (see
    below); the CLIs run it on your own machine (needs Foundry). There is no simulator.
-2. **Pharos Atlantic testnet** (tasks 8 and 10): `scripts/testnet-run.mjs` sends real transactions from a throwaway wallet that
+2. **Pharos Atlantic testnet** (tasks 5, 8 and 10): `scripts/testnet-run.mjs` and `scripts/testnet-guardian.mjs` send real transactions from a throwaway wallet that
    only ever holds test tokens. Its key lives in a git-ignored file, is never printed or committed, and the script refuses to
    send unless the chain id is 688689 (so it cannot reach mainnet) and stops past a small gas budget. The key is not used by
    any skill, and the website holds no key at all: it only re-reads the recorded transactions from the chain.
@@ -116,7 +116,7 @@ swap, lets the real scanner decide, and executes both legs through `contracts/Ar
 sandbox cannot download a compiler; a test fails if the bytecode and the source drift apart). The page shows the predicted and
 the real profit side by side. No synthetic data is offered anywhere on the site.
 
-**Real transactions on Atlantic testnet.** The Dry-Run Executor and the Batch Executor pages open with a card of
+**Real transactions on Atlantic testnet.** The Threshold Guardian, Dry-Run Executor and Batch Executor pages open with a card of
 transactions that were really sent on Pharos Atlantic testnet (`scripts/testnet-run.mjs --live`, report in
 `reports/testnet-runs.json`) from a throwaway wallet that only ever holds test tokens. The card does not ask to be trusted:
 when it loads, the API re-reads every transaction from the public Atlantic RPC and shows a green check only where the chain
@@ -311,11 +311,11 @@ Pharos Pacific Mainnet uses:
 See [Pacific Mainnet](https://docs.pharos.xyz/getting-started/network/pacific-mainnet).
 
 Sources
-  1. Pacific Mainnet
+  1. Pacific Mainnet  (cited in the answer)
      https://docs.pharos.xyz/getting-started/network/pacific-mainnet
-  2. Cross Chain Infrastructure
+  2. Cross Chain Infrastructure  (related)
      https://docs.pharos.xyz/tooling-and-infrastructure/cross-chain
-  3. ZAN RPC
+  3. ZAN RPC  (related)
      https://docs.pharos.xyz/tooling-and-infrastructure/rpc/zan
 ```
 
@@ -326,23 +326,22 @@ $ pharos-docs --sources 3 "How do I become a validator?"
 
 Q: How do I become a validator?
 
-To become a Pharos validator:
+To become a validator:
 
-1. Deploy and sync a validator node. Recommended hardware: **32 CPU cores, 256 GB RAM, 5 TB SSD**, and **0.5 Gbps** network bandwidth.
-2. Register on-chain with the latest `ops` tool, using your node’s public keys and a reachable endpoint such as `tcp://YOUR_PUBLIC_IP:19000`.
-3. Reach the activation stake: **100,000 PROS on Atlantic testnet** or **1,000,000 PROS on Pacific mainnet**. Registration requires at least **100 PROS**, but that alone won’t activate the validator.
+1. Deploy and sync a validator node. Recommended hardware: **32 CPU cores, 256 GB RAM, 5 TB SSD**, and **0.5 Gbps** network.
+2. Register it using the latest `ops` tool and your node’s public keys. Set a reachable public endpoint, such as `tcp://YOUR_PUBLIC_IP:19000`.
+3. Submit the registration from a **hardware wallet or Safe**. The sender becomes the permanent validator owner; ownership cannot be changed.
+4. Reach the activation stake threshold: **100,000 PROS** on Atlantic testnet or **1,000,000 PROS** on Pacific mainnet. Registration alone requires at least **100 PROS**, but that won’t activate the validator.
 
-A **hardware wallet or Safe multisig is mandatory**. The registration sender becomes the permanent validator owner.
-
-Follow [Node Management](https://docs.pharos.xyz/node-and-validator-guide/node-management) for network-specific setup and registration steps, and [Validator Requirements](https://docs.pharos.xyz/node-and-validator-guide/validator-requirements) for hardware details.
+Follow [Node Management](https://docs.pharos.xyz/node-and-validator-guide/node-management) for network-specific commands and transaction steps.
 
 Sources
-  1. Node Management
+  1. Node Management  (cited in the answer)
      https://docs.pharos.xyz/node-and-validator-guide/node-management
-  2. Validator Requirements
-     https://docs.pharos.xyz/node-and-validator-guide/validator-requirements
-  3. x402 Atlantic Testnet
+  2. x402 Atlantic Testnet  (related)
      https://docs.pharos.xyz/developer-guide/x402/x402-atlantic-testnet
+  3. x402 Pacific Mainnet  (related)
+     https://docs.pharos.xyz/developer-guide/x402/x402-pacific-mainnet
 ```
 
 ### Example 3 — no good answer

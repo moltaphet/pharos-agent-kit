@@ -13,11 +13,10 @@
 // What it proves: the Dry-Run Executor's simulation is compared with what the chain then did, and the Batch Executor's
 // planned gas saving is compared with the real gas of three separate transactions against one Multicall3 transaction.
 
-import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { ATLANTIC, rpcChain } from '../lib/rpc-chain.js';
-import { rpcCall } from '../lib/rpc.js';
+import { makeSigner, phrs } from '../lib/testnet-signer.js';
 import { startFork } from '../lib/saga-fork.js';
 import { dryRun } from '../lib/tasks/dry-run-executor.js';
 import { planBatch } from '../lib/tasks/batch-executor.js';
@@ -30,9 +29,8 @@ const out = outArg > -1 ? process.argv[outArg + 1] : live ? 'reports/testnet-run
 const BUDGET_WEI = 10n ** 16n; // 0.01 PHRS: the most a run may spend on gas and transfers (we hold 0.05)
 const log = (...a) => console.error(...a);
 
-const walletFile = fileURLToPath(new URL('../.wallet/atlantic-testnet.json', import.meta.url));
-const wallet = JSON.parse(readFileSync(walletFile, 'utf8'));
-const FROM = wallet.address.toLowerCase();
+const FROM = JSON.parse(readFileSync(fileURLToPath(new URL('../.wallet/atlantic-testnet.json', import.meta.url)), 'utf8')).address.toLowerCase();
+const wallet = { address: FROM };
 
 let fork = null;
 let RPC = ATLANTIC.rpc;
@@ -41,47 +39,14 @@ if (!live) {
   RPC = fork.url;
 }
 const chain = rpcChain({ url: RPC, name: ATLANTIC.name, chainId: ATLANTIC.chainId });
-const rpc = (method, params = []) => rpcCall(method, params, { url: RPC, why: method });
 
 // ---- helpers ---------------------------------------------------------------------------------------------------------
-const cast = (args, { signed = false } = {}) => execFileSync('cast', signed ? [args[0], '--private-key', wallet.privateKey, ...args.slice(1)] : args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-const wei = (v) => BigInt(v);
-const fmt = (w) => `${(Number(w) / 1e18).toFixed(9)} PHRS`;
-const balance = async (a) => wei(await rpc('eth_getBalance', [a, 'latest']));
-// A fresh address per label and run, so every recipient is a brand new account (same cost in every comparison).
-const fresh = (label) => '0x' + cast(['keccak', `pharos-agent-kit:${wallet.address}:${startedAt}:${label}`]).trim().slice(-40);
 const startedAt = new Date().toISOString();
-
+const signer = makeSigner({ rpcUrl: RPC, budgetWei: BUDGET_WEI, log, startedAt });
+const { send, txs, fresh, rpc } = signer;
+const fmt = phrs;
+const balance = signer.balance;
 const startBalance = await balance(FROM);
-let spent = 0n;
-const txs = [];
-
-async function send({ label, to, data = '0x', value = 0n, gas, create = null }) {
-  if (BigInt(await rpc('eth_chainId')) !== BigInt(ATLANTIC.chainId)) throw new Error('refusing to send: this is not Pharos Atlantic testnet (688689)');
-  if (spent > BUDGET_WEI) throw new Error(`stopping: spent ${fmt(spent)}, over the ${fmt(BUDGET_WEI)} budget`);
-  const args = ['send', '--json', '--rpc-url', RPC, '--gas-limit', String(gas), ...(value > 0n ? ['--value', value.toString()] : []), ...(create ? ['--create', create] : [to, ...(data !== '0x' ? [data] : [])])];
-  let hash;
-  try {
-    hash = JSON.parse(cast(args, { signed: true })).transactionHash;
-  } catch (err) {
-    // cast exits non-zero on a reverted transaction but still mined it: recover the hash from its message
-    const m = `${err.stdout ?? ''}${err.stderr ?? ''}`.match(/0x[0-9a-fA-F]{64}/);
-    if (!m) throw new Error(`cast send failed: ${String(err.stderr ?? '').split('\n')[0].replaceAll(wallet.privateKey, '[key]')}`);
-    hash = m[0];
-  }
-  let r = null;
-  for (let i = 0; i < 60 && !r; i++) { r = await rpc('eth_getTransactionReceipt', [hash]); if (!r) await new Promise((x) => setTimeout(x, 1000)); }
-  if (!r) throw new Error(`no receipt for ${hash}`);
-  const gasUsed = Number(BigInt(r.gasUsed));
-  const price = BigInt(r.effectiveGasPrice);
-  const cost = BigInt(gasUsed) * price;
-  spent += cost + (r.status === '0x1' ? value : 0n);
-  const tx = { label, hash, blockNumber: Number(BigInt(r.blockNumber)), status: r.status === '0x1' ? 'success' : 'reverted', gasUsed, gasLimit: gas, gasPriceGwei: Number(price) / 1e9, costWei: cost.toString(), from: r.from, to: r.to, valueWei: value.toString() };
-  if (r.contractAddress) tx.contractAddress = r.contractAddress;
-  txs.push(tx);
-  log(`  tx ${label}: ${tx.status}, gas ${gasUsed.toLocaleString('en-US')}, ${hash.slice(0, 12)}…`);
-  return tx;
-}
 
 try {
   log(`${live ? 'LIVE on Pharos Atlantic testnet' : 'REHEARSAL on a local fork of Atlantic'}; wallet ${wallet.address}, balance ${fmt(startBalance)}`);

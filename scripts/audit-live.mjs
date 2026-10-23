@@ -234,9 +234,9 @@ await guard(async () => {
 await guard(async () => {
   sec('8 Dry-Run Executor');
 
-  for (const slug of ['dry-run-executor', 'batch-executor']) {
+  for (const [slug, reportName] of [['dry-run-executor', 'testnet-runs'], ['batch-executor', 'testnet-runs'], ['threshold-guardian', 'testnet-guardian']]) {
     const tn = (await run(slug, { real: 'testnet' })).body?.data?.testnet;
-    check(`${slug}: the recorded Atlantic testnet run is served and every transaction verifies on-chain right now`, tn?.report?.mode === 'live' && tn.verification?.total === 12 && tn.verification.verifiedCount === 12, `${tn?.verification?.verifiedCount}/${tn?.verification?.total}`);
+    check(`${slug}: the recorded Atlantic testnet run (${reportName}) is served and every transaction verifies on-chain right now`, tn?.report?.mode === 'live' && tn.verification?.total >= 1 && tn.verification.verifiedCount === tn.verification.total, `${tn?.verification?.verifiedCount}/${tn?.verification?.total}`);
     check(`${slug}: the testnet run names a wallet and stayed inside its gas budget`, /^0x[0-9a-fA-F]{40}$/.test(tn?.report?.wallet ?? '') && BigInt(tn?.report?.budget?.spentWei ?? '1') < BigInt(tn?.report?.budget?.limitWei ?? '0'));
   }
   const word = (n) => BigInt(n).toString(16).padStart(64, '0');
