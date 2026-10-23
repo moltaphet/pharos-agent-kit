@@ -242,7 +242,8 @@ await guard(async () => {
   check('RESTART: same backfill again adds 0 and keeps 5 (nothing lost or duplicated)', b?.results?.every((r) => r.duplicate) && b.state.observations.length === 5);
   check('observations are in block order with timestamps', a?.state?.observations?.every((o, i, arr) => (i === 0 || o.block > arr[i - 1].block) && /UTC$/.test(o.time)));
   const vals = a?.state?.observations?.map((o) => o.value);
-  check('values are plausible (no wild outlier: each within 40% of the median)', (() => { const m = [...vals].sort((x, y) => x - y)[2]; return vals.every((v) => Math.abs(v - m) / m < 0.4); })(), vals?.join(' '));
+  // A node glitch looks like an isolated spike: one point far from BOTH neighbours in the same direction. A real level shift (supply fell 24% and stayed there, confirmed against the public RPC) is not one.
+  check('no isolated spike in the series (a wrong-block value would show as one)', vals.every((v, i) => i === 0 || i === vals.length - 1 || !((v > vals[i - 1] * 1.3 && v > vals[i + 1] * 1.3) || (v < vals[i - 1] * 0.7 && v < vals[i + 1] * 0.7))), vals?.join(' '));
   check('count=99 rejected with 400', is400(await post({ action: 'backfill', metric: 'usdc-supply', count: 99 }, null)));
   check('unknown metric rejected with 400', is400(await post({ action: 'backfill', metric: 'nope' }, null)));
   const evil = await run('trend-watcher', { action: 'scenario', scenario: 'decline' }, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state: { version: 1, rule: { direction: 'down', observations: 3 }, observations: 'not-an-array', active: false, events: [] } }) });
