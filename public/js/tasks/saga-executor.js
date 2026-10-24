@@ -1,5 +1,6 @@
 // Saga Executor: content and a live panel. Every run executes for real: a throwaway Vercel Sandbox forks Pharos
 // mainnet with anvil and the saga runs as real EVM transactions; the page streams the run while it happens.
+import { mountTestnet } from '../panels/testnet.js';
 import { $, api, esc, short } from '../util.js';
 import { createRunLog } from '../runlog.js';
 import { ICONS } from '../art.js';
@@ -36,6 +37,7 @@ export const content = {
     { title: 'Two things the sandbox taught us', text: 'The newest Foundry (anvil 1.8.6) cannot fork Pharos, because the Pharos RPC rejects a block parameter that version sends (“failed to parse block hash or number”); version 1.4.0 works, so the snapshot pins it. And a sandbox booted from a snapshot has no /vercel/sandbox directory, so our first version wrote its output nowhere and never reported progress; the run now uses absolute paths under /tmp.' },
     { title: 'A second bug: re-recording the runs failed, and it was gas', text: 'When we re-recorded the runs for this page, the forced-failure run ended stuck: the undo of the deposit reverted, four times out of four. A plain call of the same redeem succeeded, which ruled out the vault’s liquidity. A trace showed the transaction had used exactly its gas limit (263,262 of 263,262): the harness let anvil pick the limit, the estimate was exact, and this vault’s withdrawal needs more than the estimate because it calls into a lending market. The first recording had been clean only by luck (the redeem cost 144k gas then, 273k now). The harness now adds 30% headroom like a wallet does and reports “out of gas” instead of a bare revert, with tests for both.' },
     { title: 'A bug we caught in our own harness', text: 'The first recorded run called a completed saga “NOT CLEAN” because the check only knew about rollbacks, and a hand-written reset between runs corrupted the second run’s starting balance. The check now depends on the outcome, and every scenario starts from a fresh fork.' },
+    { title: 'Proved on the real testnet, with the old engine next to the new one', text: 'A stress test found two flaws in our own engine: when the receipt lookup timed out after a step was sent, it sent the step again (the step ran twice), and a step that executed but failed its check was never undone. We reproduced both on Pharos Atlantic testnet with a small Ledger contract that counts how often a step ran, fixed them, and ran the same cases again. The ledger shows step 2 credited 3 times with the old engine and once with the current one, and a leftover credit of 1 against 0 after the undo. The only thing injected is the network trouble; every send and every balance is the chain’s. See the card above and reports/testnet-saga.json.' },
     { title: 'The injected fault is labelled', text: 'To show retries on demand the success run injects one transient error. It says so in the log (“injected fault”); it is not presented as a network failure.' },
   ],
   evidence: [
@@ -112,8 +114,10 @@ export function mount(root, { params }) {
     </form>
     <div class="chips" role="group" aria-label="Examples">${EXAMPLES.map(([v, l]) => `<button type="button" class="chip" data-sc="${v}">${esc(l)}</button>`).join('')}</div>
     <div id="out" class="out" aria-live="polite"><div class="idle">Pick a scenario and press “Run for real”. A new machine starts, forks Pharos mainnet, and the transactions appear here one by one.</div></div>
+    <div data-slot="testnet"></div>
     <div id="log"></div>`;
 
+  mountTestnet(root.querySelector('[data-slot=testnet]'), { slug: 'saga-executor', kind: 'saga' });
   const out = $('#out', root);
   const go = $('#go', root);
   const recordedBtn = $('#recorded', root);

@@ -33,7 +33,7 @@ const PROOF = {
   'docs-mcp-onboarding': { how: 'Ten onboarding questions asked to Docs MCP; every documentation gap is confirmed by a live check against the network.' },
   'doc-search-cli': { how: 'Concise sourced answers, and a refusal (not an invented answer) for questions the docs cannot answer.' },
   'threshold-guardian': { how: 'Several live conditions at one block against thresholds; FIRE or HOLD with the full working. Shown acting for real on Atlantic testnet: the FIRE run sent a transaction, the HOLD run sent nothing.', tx: () => guardian.runs.find((r) => r.id === 'fire').action.tx },
-  'saga-executor': { how: 'Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo).' },
+  'saga-executor': { how: 'Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo). The retry and undo rules are also proved on the real Atlantic testnet: a step whose receipt times out is not sent twice, and a step that executed but failed its check is undone (the chain’s own ledger shows 1 instead of 3, and 0 instead of 1).' },
   'arbitrage-scanner': { how: 'Live scan of two real FaroSwap venues, plus the act path executed for real on a fork with predicted vs actual profit side by side.' },
   'dry-run-executor': { how: 'Simulation gate; the page re-verifies the real Atlantic testnet transactions that confirm its predictions.', tx: () => testnet.dryRun.cases.find((c) => c.sent?.status === 'success')?.sent },
   'trend-watcher': { how: 'Persistent multi-observation trend rule on real chain history; restarts lose nothing and duplicate nothing.' },

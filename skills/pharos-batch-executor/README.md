@@ -63,11 +63,13 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 - [lib/tasks/batch-executor.js](../../lib/tasks/batch-executor.js)
 - [scripts/testnet-run.mjs](../../scripts/testnet-run.mjs)
+- [scripts/batch-sender-proof.mjs](../../scripts/batch-sender-proof.mjs)
 - [public/js/tasks/batch-executor.js](../../public/js/tasks/batch-executor.js) (page in the web hub)
 
 ## Recorded data, contracts and config it uses
 
 - [reports/batch-runs.json](../../reports/batch-runs.json)
+- [reports/batch-sender-proof.json](../../reports/batch-sender-proof.json)
 - [reports/testnet-runs.json](../../reports/testnet-runs.json)
 - [contracts/Counter.sol](../../contracts/Counter.sol)
 
@@ -75,7 +77,7 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 Found by following the imports from this folder and the files above, so the list cannot go stale.
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 14, 15), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/revert.js](../../lib/revert.js) (also tasks 8, 12, 13, 15), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 5, 8, 11, 12), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 6, 7, 8, 11, 12, 13, 14, 15), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 6, 7, 8, 11, 15), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/tasks/dry-run-executor.js](../../lib/tasks/dry-run-executor.js) (also tasks 8, 12), [lib/testnet-contracts.js](../../lib/testnet-contracts.js) (also task 8), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 5, 8, 11, 12), [lib/testnet-signer.js](../../lib/testnet-signer.js) (also tasks 5, 8, 11), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 14, 15), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/revert.js](../../lib/revert.js) (also tasks 8, 12, 13, 15), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 5, 6, 8, 11, 12), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 6, 7, 8, 11, 12, 13, 14, 15), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 6, 7, 8, 11, 15), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/tasks/dry-run-executor.js](../../lib/tasks/dry-run-executor.js) (also tasks 8, 12), [lib/testnet-contracts.js](../../lib/testnet-contracts.js) (also tasks 6, 8), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 5, 6, 8, 11, 12), [lib/testnet-signer.js](../../lib/testnet-signer.js) (also tasks 5, 6, 8, 11), [lib/trace.js](../../lib/trace.js) (all tasks)
 
 ## Tests
 

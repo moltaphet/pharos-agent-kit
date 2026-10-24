@@ -84,7 +84,7 @@ Requirements it was built against (the Arena's own list):
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/saga-executor/try
 - **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/saga-executor
 - **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-saga-executor
-- **What the proof shows:** Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo).
+- **What the proof shows:** Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo). The retry and undo rules are also proved on the real Atlantic testnet: a step whose receipt times out is not sent twice, and a step that executed but failed its check is undone (the chain’s own ledger shows 1 instead of 3, and 0 instead of 1).
 
 Requirements it was built against (the Arena's own list):
 

@@ -193,6 +193,18 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  const ev = (await withRetry(() => run('saga-executor', { real: 'testnet' }))).body?.data?.testnet;
+  check('real testnet proof: all 16 recorded Atlantic transactions re-verified on chain just now', ev?.verification?.verifiedCount === 16 && ev.verification.total === 16, `${ev?.verification?.verifiedCount}/${ev?.verification?.total}`);
+  const ledger = ev?.report?.ledger?.address;
+  const balanceOf = async (id) => BigInt((await (await fetch('https://atlantic.dplabs-internal.com', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params: [{ to: ledger, data: '0x47bb89f0' + BigInt(id).toString(16).padStart(64, '0') }, 'latest'] }) })).json()).result);
+  let same = 0; let total = 0;
+  for (const s of ev?.report?.scenarios ?? []) for (const r of s.chainReadings) { total++; if ((await balanceOf(r.id)).toString() === r.balance) same++; }
+  check('the Ledger’s balances read straight from the Atlantic RPC equal every recorded reading (old engine: 3 credits and a leftover 1; current: 1 and 0)', total === 12 && same === 12, `${same}/${total}`);
+  const read = (key, engine, i) => ev?.report?.scenarios?.find((x) => x.key === key && x.engine === engine)?.chainReadings?.[i]?.balance;
+  check('the engine fix is visible on chain: step 2 credited 3 times before, once now; a leftover credit of 1 before, 0 now', read('receipt-timeout', 'before the fix', 1) === '3' && read('receipt-timeout', 'current', 1) === '1' && read('executed-but-unverified', 'before the fix', 1) === '1' && read('executed-but-unverified', 'current', 1) === '0');
+});
+
+await guard(async () => {
   sec('7 Arbitrage Scanner');
   const rec = (await run('arbitrage-scanner', { source: 'fork-recorded' })).body?.data?.recorded;
   check('recorded fork run is served: two scenarios with honesty notes', rec?.scenarios?.length === 2 && rec.honesty?.length >= 3);

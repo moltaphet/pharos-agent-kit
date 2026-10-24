@@ -11,7 +11,7 @@ Some workflows cannot be left half-done. “Approve USDC, deposit it into a vaul
 
 ## What is real
 
-Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo).
+Click to run a three-step vault saga as real EVM transactions on a mainnet fork (success, retry, forced failure with full undo, stuck undo). The retry and undo rules are also proved on the real Atlantic testnet: a step whose receipt times out is not sent twice, and a step that executed but failed its check is undone (the chain’s own ledger shows 1 instead of 3, and 0 instead of 1).
 
 ## Requirements and how each is met
 
@@ -63,11 +63,14 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 - [lib/tasks/saga-executor.js](../../lib/tasks/saga-executor.js)
 - [lib/saga-sandbox.js](../../lib/saga-sandbox.js)
+- [scripts/testnet-saga.mjs](../../scripts/testnet-saga.mjs)
 - [public/js/tasks/saga-executor.js](../../public/js/tasks/saga-executor.js) (page in the web hub)
 
 ## Recorded data, contracts and config it uses
 
 - [reports/saga-runs.json](../../reports/saga-runs.json)
+- [reports/testnet-saga.json](../../reports/testnet-saga.json)
+- [contracts/Ledger.sol](../../contracts/Ledger.sol)
 - [config/saga-snapshot.json](../../config/saga-snapshot.json)
 - [scripts/build-saga-snapshot.mjs](../../scripts/build-saga-snapshot.mjs)
 
@@ -75,16 +78,16 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 Found by following the imports from this folder and the files above, so the list cannot go stale.
 
-**Only this task uses:** [lib/saga-scenario.js](../../lib/saga-scenario.js), [lib/saga-sim.js](../../lib/saga-sim.js), [lib/saga.js](../../lib/saga.js)
+**Only this task uses:** [lib/saga-scenario.js](../../lib/saga-scenario.js), [lib/saga-sim.js](../../lib/saga-sim.js), [lib/saga.js](../../lib/saga.js), [scripts/support/saga-before-fix.js](../../scripts/support/saga-before-fix.js)
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 7, 8, 10, 11, 12, 13, 14, 15), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 7, 8, 10, 11, 15), [lib/sandbox-run.js](../../lib/sandbox-run.js) (also task 7), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/keccak.js](../../lib/keccak.js) (also tasks 13, 14, 15), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 5, 8, 10, 11, 12), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 7, 8, 10, 11, 12, 13, 14, 15), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 7, 8, 10, 11, 15), [lib/sandbox-run.js](../../lib/sandbox-run.js) (also task 7), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/testnet-contracts.js](../../lib/testnet-contracts.js) (also tasks 8, 10), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 5, 8, 10, 11, 12), [lib/testnet-signer.js](../../lib/testnet-signer.js) (also tasks 5, 8, 10, 11), [lib/trace.js](../../lib/trace.js) (all tasks)
 
 ## Tests
 
-5 test files cover this task (run all of them with `npm test`):
+6 test files cover this task (run all of them with `npm test`):
 
 ```bash
-node --test test/saga.test.js test/saga-fidelity.test.js test/saga-fork.test.js test/saga-sandbox.test.js test/start-fork.test.js
+node --test test/saga.test.js test/saga-fidelity.test.js test/saga-fork.test.js test/saga-sandbox.test.js test/start-fork.test.js test/saga-testnet.test.js
 ```
 
 ## Verify it yourself

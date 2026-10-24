@@ -108,6 +108,28 @@ function gatekeeperView(rec, ver, extra) {
     <details><summary>Show the ${audit.count} entries</summary><pre class="plain">${esc(rec.auditLog.entries.map((e) => `${String(e.seq).padStart(2)}  ${e.kind.padEnd(9)} ${e.kind === 'decision' ? `${e.body.decision.toUpperCase().padEnd(5)} ${e.body.rule.id}` : `${e.body.status}`}  hash ${e.hash.slice(0, 12)}… prev ${e.prev.slice(0, 12)}…`).join('\n'))}</pre></details>`;
 }
 
+function sagaView(rec, ver) {
+  const pairs = {};
+  for (const s of rec.scenarios) (pairs[s.key] ??= {})[s.engine === 'current' ? 'now' : 'before'] = s;
+  const tx = (s) => s.transactions.map((t) => `${esc(t.tag)}: ${txLink(t.hash, ver)}`).join('<br>');
+  const readings = (s) => s.chainReadings.map((x) => `${esc(x.step)} = <b>${esc(x.balance)}</b>`).join(' · ');
+  const col = (s, label, tone) => `
+    <div class="card" style="margin:0">
+      <h4 class="list-h">${label} ${pill(s.status, tone)}</h4>
+      <p class="muted">Transactions, in the order they were sent (${s.transactions.length}):</p>
+      <p>${tx(s)}</p>
+      <p>What the chain’s ledger says afterwards: ${readings(s)}</p>
+      ${s.checks.map((c) => `<p class="check ${c.ok ? 'ok' : 'bad'}">${c.ok ? '✓' : '✗'} ${esc(c.what)}</p>`).join('')}
+    </div>`;
+  return `
+    <p class="muted">A tiny <a href="${EXPLORER}/address/${esc(rec.ledger.address)}" target="_blank" rel="noopener"><code>Ledger</code></a> contract counts how many times each step ran: the step is <code>credit(id)</code>, its undo is <code>debit(id)</code>. Everything below was sent and mined on Atlantic. The only thing injected is the network trouble (a receipt lookup that times out after the transaction is already mined). Each case ran twice: with the engine as it was before the fix, and with the current one.</p>
+    <p class="check ${rec.summary.passed === rec.summary.checks ? 'ok' : 'bad'}">${rec.summary.passed === rec.summary.checks ? '✓' : '✗'} <b>${rec.summary.passed} of ${rec.summary.checks} checks passed</b> on ${rec.transactions.length} real transactions.</p>
+    ${Object.values(pairs).map((p) => `
+      <h4 class="list-h">${esc(p.now.title)}</h4>
+      <div class="two-col">${col(p.before, 'Before the fix', 'bad')}${col(p.now, 'Now', 'ok')}</div>`).join('')}
+    <p class="muted">Check it yourself: <code>cast call ${esc(rec.ledger.address)} "balance(uint256)(uint256)" &lt;id&gt; --rpc-url ${esc(rec.network.rpc)}</code>. The ids are in <a href="https://github.com/moltaphet/pharos-agent-kit/blob/main/reports/testnet-saga.json" target="_blank" rel="noopener">reports/testnet-saga.json</a>.</p>`;
+}
+
 export function mountTestnet(el, { slug, kind }) {
   el.innerHTML = '<section class="card tn"><h3>Real transactions on Pharos Atlantic testnet</h3><div class="idle" data-role="body">Reading every recorded transaction back from the chain…</div></section>';
   const body = el.querySelector('[data-role=body]');
@@ -116,8 +138,8 @@ export function mountTestnet(el, { slug, kind }) {
       const { report: rec, verification: ver } = data.testnet;
       const extra = data.testnet;
       body.classList.remove('idle');
-      const script = kind === 'guardian' ? 'testnet-guardian' : kind === 'gatekeeper' ? 'testnet-gatekeeper' : 'testnet-run';
-      body.innerHTML = header(rec, ver) + (kind === 'batch' ? batchView(rec, ver) : kind === 'guardian' ? guardianView(rec, ver) : kind === 'gatekeeper' ? gatekeeperView(rec, ver, extra) : dryRunView(rec, ver)) + `<p class="muted">Re-run it yourself with your own funded testnet key: <code>node scripts/${script}.mjs --live</code> (a rehearsal on a free local fork is the default).</p>`;
+      const script = kind === 'guardian' ? 'testnet-guardian' : kind === 'gatekeeper' ? 'testnet-gatekeeper' : kind === 'saga' ? 'testnet-saga' : 'testnet-run';
+      body.innerHTML = header(rec, ver) + (kind === 'saga' ? sagaView(rec, ver) : kind === 'batch' ? batchView(rec, ver) : kind === 'guardian' ? guardianView(rec, ver) : kind === 'gatekeeper' ? gatekeeperView(rec, ver, extra) : dryRunView(rec, ver)) + `<p class="muted">Re-run it yourself with your own funded testnet key: <code>node scripts/${script}.mjs --live</code> (a rehearsal on a free local fork is the default).</p>`;
     })
     .catch((err) => {
       body.classList.remove('idle');

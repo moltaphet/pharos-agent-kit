@@ -160,3 +160,14 @@ test('the comparison says whether the batch is cheaper, so "ready" is never mist
   const cheap = await planBatch({ chain: chain({ gas: { solo: 80_000, batch: 200_000 } }) }, { from: FROM, actions: four });
   assert.equal(cheap.comparison.cheaper, true);
 });
+
+test('the refusal of sender-dependent calls rests on a real fork run: a batched WPROS deposit credited Multicall3, not the sender', async () => {
+  const { readFileSync } = await import('node:fs');
+  const rec = JSON.parse(readFileSync(new URL('../reports/batch-sender-proof.json', import.meta.url), 'utf8'));
+  assert.equal(rec.status, 'success', 'the transaction itself succeeded, so a simulation would have said "ready"');
+  assert.equal(rec.wprosBefore.sender, '0');
+  assert.equal(rec.wprosAfter.sender, '0', 'the sender received nothing');
+  assert.equal(rec.wprosAfter.multicall3, (10n ** 18n).toString(), 'Multicall3 holds the deposit');
+  assert.equal(rec.contracts.multicall3, MULTICALL3);
+  assert.throws(() => parseActions([{ to: rec.contracts.wpros, data: '0xd0e30db0', amountPros: '1' }, { to: A(1) }, { to: A(2) }]), /wrapped-token deposit/);
+});

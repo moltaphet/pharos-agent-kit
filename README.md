@@ -15,7 +15,7 @@ Per-task proof links, repo links and the requirements each task was built agains
 | 3 | Docs MCP Onboarding | `node agents/docs-mcp-onboarding/pharos-onboard.js` | Docs MCP + mainnet + Atlantic checks | read-only |
 | 4 | Doc-Search CLI | `node agents/doc-search-cli/pharos-docs.js "how do I deploy a contract?"` | Docs MCP | read-only |
 | 5 | Threshold Guardian (Skill) | `skills/pharos-threshold-guardian/` | Pharos mainnet | decides only; shown acting for real on Atlantic testnet (FIRE sends a transaction, HOLD sends nothing) |
-| 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts on a mainnet fork | real EVM transactions on a fork, on demand (fake funds) |
+| 6 | Saga Executor (Skill) | `skills/pharos-saga-executor/` | real contracts on a mainnet fork | real EVM transactions on a fork, on demand (fake funds); its retry and undo rules are also proved with 16 real transactions on Atlantic testnet |
 | 7 | Arbitrage Scanner (Skill) | `skills/pharos-arbitrage-scanner/` | FaroSwap V2 and V3 pools | live scan decides (nothing sent); the act path runs for real on a fork, on demand (`scripts/arb-fork-run.mjs`) |
 | 8 | Dry-Run Executor (Skill) | `skills/pharos-dry-run-executor/` | Pharos mainnet | simulates only; its predictions are checked against real Atlantic testnet transactions |
 | 9 | Trend Watcher (Skill) | `skills/pharos-trend-watcher/` | Pharos mainnet history | read-only (+ state file) |
