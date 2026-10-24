@@ -114,6 +114,7 @@ function servers({ rpcMode = 'mirror', answer = FEED_ANSWER, decimals = 18, time
           return { result: '0x' + word(decimals) };
         }
         if (d === '0x8205bf6a') return { result: '0x' + word(timestamp) };
+        if (d === '0x7284e416') return { result: '0x' + word(0x20) + word(8) + Buffer.from('BTC feed').toString('hex').padEnd(64, '0') }; // description()
         if (callFails) throw callFails;
         return { result: '0x' + word(balance) };
       }
@@ -367,4 +368,50 @@ test('if the public RPC cannot answer, the read stands and is marked unconfirmed
   assert.equal(r.call.integrity, 'inconclusive');
   assert.equal(r.integrity.inconclusive, 3);
   assert.match(r.interpretation.checks.find((c) => /public RPC/.test(c.name)).detail, /3 could not be checked/);
+});
+
+// ---- found by running the agent on twelve real functions ------------------------------------------------------------------------------------
+test('decimals() is a count, not an amount: it is shown as it is, never divided by the token’s decimals', async () => {
+  const ans = '`decimals()` returns how many decimal places the token has. USDC amounts use **6 decimal places**, so divide the raw result by `1,000,000`. See the [Token Registry](/getting-started/token-registry).\n\n# Sources\n\n- [Token Registry](https://docs.pharos.xyz/getting-started/token-registry)';
+  const s = servers({ answer: ans, decimals: 6 });
+  const r = await run(s, { contract: USDC, signature: 'decimals()(uint8)' });
+  assert.equal(r.explanation.kind, 'documented');
+  assert.equal(r.interpretation.value, null);
+  assert.match(r.interpretation.summary, /decimals\(\) returned 6 \(a count or a time, not an amount/);
+  assert.equal(r.followUps.length, 0, 'it does not ask decimals() to explain decimals()');
+});
+
+test('a timestamp function is not scaled, and does not follow itself for freshness', async () => {
+  const ans = '`latestTimestamp()` returns when the price was observed. Check freshness against the block time: divide nothing, it is seconds. The feed uses **18 decimals** for prices. See [Chainlink Push Engine Feeds](/tooling-and-infrastructure/oracles/chainlink-pe).\n\n# Sources\n\n- [Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe)';
+  const s = servers({ answer: ans, timestamp: MON - 100 });
+  const r = await run(s, { signature: 'latestTimestamp()(uint256)' });
+  assert.equal(r.explanation.kind, 'documented');
+  assert.equal(r.interpretation.value, null);
+  assert.equal(r.followUps.some((f) => f.fn === 'latestTimestamp()'), false);
+  assert.match(r.call.values[0].text, /^\d+$/);
+});
+
+test('a function that returns text gets no scale and no decimals() check, even if the explanation talks about decimals', async () => {
+  const ans = '`description()` returns the feed’s name. The feed uses **18 decimals**, so divide values by `10^18`. Check freshness with `latestTimestamp()`. See [Chainlink Push Engine Feeds](/tooling-and-infrastructure/oracles/chainlink-pe).\n\n# Sources\n\n- [Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe)';
+  const s = servers({ answer: ans });
+  const r = await run(s, { signature: 'description()(string)' });
+  assert.equal(r.explanation.kind, 'documented');
+  assert.equal(r.followUps.some((f) => f.fn === 'decimals()'), false);
+  assert.equal(r.interpretation.checks.some((c) => /decimals/.test(c.name)), false);
+  assert.equal(r.interpretation.value, null);
+  assert.equal(s.calls.filter((c) => c.server === 'chain' && c.name === 'eth_call' && c.args.transaction.data === '0x313ce567').length, 0, 'decimals() was not even called');
+});
+
+test('an amount from a function with arguments is still scaled, and the summary names the full signature', async () => {
+  const s = servers({ answer: BALANCE_ANSWER, decimals: 6, balance: 1148117681249n });
+  const r = await run(s, { contract: USDC, signature: 'balanceOf(address)(uint256)', args: [PAIR] });
+  assert.equal(r.interpretation.value.scaled, '1,148,117.681249');
+  assert.match(r.interpretation.summary, /^balanceOf\(address\) returned 1148117681249/);
+});
+
+test('a signature with no declared return type still calls the function and shows the raw bytes', async () => {
+  const r = await run(servers({ answer: BALANCE_ANSWER, balance: 9n }), { contract: USDC, signature: 'balanceOf(address)', args: [PAIR] });
+  assert.equal(r.verdict.stage, 'interpreted');
+  assert.equal(r.interpretation.value, null);
+  assert.match(r.interpretation.summary, /balanceOf\(address\) returned 0x/);
 });
