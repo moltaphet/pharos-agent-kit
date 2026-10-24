@@ -19,6 +19,8 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 11 | Policy Gatekeeper | [demo](https://pharos-agent-kit.vercel.app/#/policy-gatekeeper/try) | [skills/pharos-policy-gatekeeper](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-policy-gatekeeper) | [11-policy-gatekeeper.md](11-policy-gatekeeper.md) |
 | 12 | Skill + Chain MCP Flow | [demo](https://pharos-agent-kit.vercel.app/#/skill-chain-mcp-flow/try) | [skills/pharos-transfer-preflight](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-transfer-preflight) | [12-skill-chain-mcp-flow.md](12-skill-chain-mcp-flow.md) |
 | 13 | Docs MCP + Chain MCP Agent | [demo](https://pharos-agent-kit.vercel.app/#/docs-chain-mcp-agent/try) | [agents/docs-chain-mcp-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/docs-chain-mcp-agent) | [13-docs-chain-mcp-agent.md](13-docs-chain-mcp-agent.md) |
+| 14 | Portfolio Assistant | [demo](https://pharos-agent-kit.vercel.app/#/portfolio-assistant/try) | [skills/pharos-portfolio-assistant](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-portfolio-assistant) | [14-portfolio-assistant.md](14-portfolio-assistant.md) |
+| 15 | Yield Optimizer | [demo](https://pharos-agent-kit.vercel.app/#/yield-optimizer/try) | [skills/pharos-yield-optimizer](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-yield-optimizer) | [15-yield-optimizer.md](15-yield-optimizer.md) |
 
 ## Tests of the shared platform
 

@@ -1,0 +1,79 @@
+{
+ "recordedAt": "2026-10-24T11:34:54.106Z",
+ "network": "local anvil fork of Pharos mainnet (chain 1672)",
+ "forkBlock": 21116004,
+ "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+ "amountUsdc": "1000000000",
+ "vaults": {
+  "r25-weekly": {
+   "id": "r25-weekly",
+   "name": "R25 VRPC Weekly",
+   "address": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+   "deposit": {
+    "status": "success",
+    "gasUsed": 171204,
+    "approveGasUsed": 55437,
+    "sharesReceived": "976356755",
+    "predictedShares": "976356755",
+    "usdcSpent": "1000000000"
+   },
+   "redeem": {
+    "status": "success",
+    "gasUsed": 184003,
+    "shares": "976357503",
+    "usdcReceived": "1000000765",
+    "predictedUsdc": "1000000765"
+   }
+  },
+  "r25-quarterly": {
+   "id": "r25-quarterly",
+   "name": "R25 VRPC Quarterly",
+   "address": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+   "deposit": {
+    "status": "reverted",
+    "reason": "0xe19a2672",
+    "approveGasUsed": 55437
+   },
+   "redeem": {
+    "status": "reverted",
+    "reason": "0xa0387940",
+    "shares": "939304933",
+    "previewable": false
+   }
+  },
+  "r25-semi-yearly": {
+   "id": "r25-semi-yearly",
+   "name": "R25 VRPC Semi-yearly",
+   "address": "0xee26bb0989691735c997dfdc49a4a607f75e190b",
+   "deposit": {
+    "status": "reverted",
+    "reason": "0xdb0692da",
+    "approveGasUsed": 55437
+   },
+   "redeem": {
+    "status": "not-tried",
+    "reason": "the wallet holds no shares of this vault (the deposit above did not put any in)"
+   }
+  },
+  "rockaway-usdc": {
+   "id": "rockaway-usdc",
+   "name": "RockawayX USDC (Morpho Vault V2)",
+   "address": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+   "deposit": {
+    "status": "success",
+    "gasUsed": 301187,
+    "approveGasUsed": 55437,
+    "sharesReceived": "992829441277202627786",
+    "predictedShares": "992829474962638722279",
+    "usdcSpent": "1000000000"
+   },
+   "redeem": {
+    "status": "success",
+    "gasUsed": 273262,
+    "shares": "992829441277202627786",
+    "usdcReceived": "1000000001",
+    "predictedUsdc": "999999999"
+   }
+  }
+ }
+}

@@ -19,6 +19,8 @@ export const TASK_FOLDERS = {
   'policy-gatekeeper': 'skills/pharos-policy-gatekeeper',
   'skill-chain-mcp-flow': 'skills/pharos-transfer-preflight',
   'docs-chain-mcp-agent': 'agents/docs-chain-mcp-agent',
+  'portfolio-assistant': 'skills/pharos-portfolio-assistant',
+  'yield-optimizer': 'skills/pharos-yield-optimizer',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

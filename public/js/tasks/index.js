@@ -13,6 +13,8 @@ import * as batchExecutor from './batch-executor.js';
 import * as policyGatekeeper from './policy-gatekeeper.js';
 import * as skillChainMcpFlow from './skill-chain-mcp-flow.js';
 import * as docsChainMcpAgent from './docs-chain-mcp-agent.js';
+import * as portfolioAssistant from './portfolio-assistant.js';
+import * as yieldOptimizer from './yield-optimizer.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -25,4 +27,6 @@ export const TASK_MODULES = {
   'policy-gatekeeper': policyGatekeeper,
   'skill-chain-mcp-flow': skillChainMcpFlow,
   'docs-chain-mcp-agent': docsChainMcpAgent,
+  'portfolio-assistant': portfolioAssistant,
+  'yield-optimizer': yieldOptimizer,
 };

@@ -1,0 +1,13 @@
+[
+  { "id": "total", "wallet": "r25-wallet", "question": "What is my total balance?" },
+  { "id": "holdings", "wallet": "r25-wallet", "question": "What do I hold?" },
+  { "id": "where-usdc", "wallet": "r25-wallet", "question": "Where is my USDC?" },
+  { "id": "biggest", "wallet": "r25-wallet", "question": "What's my biggest position?" },
+  { "id": "position-quarterly", "wallet": "r25-wallet", "question": "How much do I have in R25 Quarterly?" },
+  { "id": "protocols", "wallet": "r25-wallet", "question": "Which protocols am I using?" },
+  { "id": "earning", "wallet": "r25-wallet", "question": "What am I earning?" },
+  { "id": "token-value", "wallet": "rockaway-wallet", "question": "How much is my PROS worth?" },
+  { "id": "rockaway-position", "wallet": "rockaway-wallet", "question": "How much do I have in Rockaway?" },
+  { "id": "earned", "wallet": "r25-wallet", "question": "How much have I earned so far?" },
+  { "id": "aave", "wallet": "r25-wallet", "question": "How much do I have on Aave?" }
+]

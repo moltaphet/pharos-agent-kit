@@ -412,11 +412,131 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  sec('14 Portfolio Assistant');
+  const SLUG = 'portfolio-assistant';
+  const W = '0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f';
+  const WEEKLY = '0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268';
+  const rpcCall = async (to, data, block) => (await (await fetch('https://rpc.pharos.xyz', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params: [{ to, data }, '0x' + block.toString(16)] }) })).json()).result;
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('eleven example questions and two example wallets are served', ex?.questions?.length === 11 && ex.wallets?.length === 2);
+  const rec = (await run(SLUG, { recorded: '1' })).body?.data?.demo;
+  check('recorded demo: eleven questions all pinned to one block, two real wallets', rec?.cases?.length === 11 && new Set(rec.cases.map((c) => c.block)).size === 1 && new Set(rec.cases.map((c) => c.wallet)).size === 2);
+  const ask = async (question, wallet = W, extra = {}) => (await withRetry(() => run(SLUG, { wallet, question, ...extra }))).body?.data?.portfolio;
+  const total = await ask('What is my total balance?');
+  check('total: the sum of the positions in exact dollars, three holdings, every figure sourced', total?.answer?.intent === 'total' && BigInt(total.totalUsd) === total.positions.reduce((s, p) => s + BigInt(p.usd), 0n) && total.positions.length === 3 && total.answer.figures.every((f) => f.sources?.length >= 1), total?.answer?.text);
+  const usdcPos = total?.positions?.find((p) => p.symbol === 'USDC');
+  check('the USDC balance equals the public RPC at the same pinned block (independent read)', usdcPos && BigInt(await rpcCall(USDC, '0x70a08231' + W.slice(2).padStart(64, '0'), total.block.number)).toString() === usdcPos.amountRaw, usdcPos?.amountRaw);
+  const weekly = total?.positions?.find((p) => p.id === 'r25-weekly');
+  const sharesRaw = BigInt(await rpcCall(WEEKLY, '0x70a08231' + W.slice(2).padStart(64, '0'), total.block.number));
+  const assetsRaw = BigInt(await rpcCall(WEEKLY, '0x07a2d13a' + sharesRaw.toString(16).padStart(64, '0'), total.block.number));
+  check('the weekly-vault position equals the public RPC (shares held, then convertToAssets of them)', weekly && weekly.shares === sharesRaw.toString() && weekly.amountRaw === assetsRaw.toString(), weekly?.amountRaw);
+  check('integrity: every batch confirmed on the public RPC, none unconfirmed, read at a block behind the head', total?.integrity?.inconclusive === 0 && total.integrity.confirmed + total.integrity.resolved === total.integrity.batches && total.block.number < total.block.head && total.chainCalls > 0 && total.rpcCalls > 0, JSON.stringify(total?.integrity));
+  const where = await ask('Where is my USDC?');
+  check('where is my USDC: three places, from the wallet and two vaults', where?.answer?.intent === 'where_token' && /3 places/.test(where.answer.text) && where.answer.figures.length === 3);
+  const big = await ask('What is my biggest position?');
+  check('biggest position: the quarterly vault, with its share of the portfolio', big?.answer?.intent === 'biggest' && /R25 VRPC Quarterly/.test(big.answer.text) && /%/.test(big.answer.text));
+  const tvRec = rec?.cases?.find((c) => c.id === 'token-value');
+  const tv = await ask('How much is my PROS worth?', tvRec?.wallet, { block: tvRec?.block });
+  check('token value: native PROS valued at the PROS/USD feed (this wallet, pinned to the recorded block, gives the recorded answer)', tv?.answer?.intent === 'token_value' && tv.answer.text === tvRec.result.answer.text && /PROS, worth \$/.test(tv.answer.text), tv?.answer?.text);
+  const prot = await ask('Which protocols am I using?');
+  check('protocols: counted by protocol, not token (R25, two vaults)', prot?.answer?.intent === 'protocols' && /R25 \(2 vaults\)/.test(prot.answer.text));
+  const rk = await ask('How much do I have in Rockaway?', ex?.wallets?.[1]?.wallet);
+  check('a position in a named vault on the other wallet: the RockawayX vault', rk?.answer?.intent === 'position_in' && /RockawayX/.test(rk.answer.text) && rk.positions.some((x) => x.id === 'rockaway-usdc'), rk?.answer?.text);
+  const earn = await ask('What am I earning?');
+  check('earning: a measured rate per vault from share prices at three blocks, with a caveat that it is from the past', earn?.answer?.intent === 'earning' && /about \d+\.\d\d% a year/.test(earn.answer.text) && earn.answer.caveats?.some((c) => /paid|past|recent/i.test(c)) && earn.integrity.inconclusive === 0, earn?.answer?.text?.slice(0, 120));
+  const earned = await ask('How much have I earned so far?');
+  check('"earned so far" is refused and reads nothing from the chain', earned?.answer?.intent === 'earned' && earned.chainCalls === 0 && earned.rpcCalls === 0 && earned.answer.figures.length === 0);
+  const aave = await ask('How much do I have on Aave?');
+  check('another protocol is refused by name and reads nothing', aave?.answer?.intent === 'unsupported' && /Aave/.test(aave.answer.text) && aave.chainCalls === 0 && aave.answer.figures.length === 0);
+  const unk = await ask('Should I buy more PROS?');
+  check('an unknown question lists what can be answered and reads nothing', unk?.answer?.intent === 'unknown' && unk.chainCalls === 0);
+  const empty = await ask('What do I hold?', '0x00000000000000000000000000000000000000a1');
+  check('a wallet with nothing says so, without inventing positions', empty && /holds nothing/i.test(empty.answer.text) && empty.positions.length === 0, empty?.answer?.text);
+  const pinned = await ask('What do I hold?', W, { block: rec?.cases?.[0]?.block });
+  check('?block pins the read: the same block, the same amounts as the recording', pinned?.block?.number === rec?.cases?.[0]?.block && pinned.positions.every((x) => rec.cases[0].result.positions.find((y) => y.id === x.id)?.amountRaw === x.amountRaw));
+  for (const id of ['total', 'earning']) {
+    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const c = rp?.comparison;
+    check(`replay "${id}": same block, every figure and every raw amount identical to the recording`, c?.sameBlock === true && c.sameText === true && c.figures.identical === c.figures.compared && c.positions.identical === c.positions.compared && c.positions.compared >= 1, `${c?.figures?.identical}/${c?.figures?.compared} figures, ${c?.positions?.identical}/${c?.positions?.compared} positions`);
+  }
+  check('bad wallet rejected with 400', is400(await run(SLUG, { wallet: '0x12', question: 'What do I hold?' })));
+  check('missing question rejected with 400', is400(await run(SLUG, { wallet: W })));
+  check('oversized question rejected with 400', is400(await run(SLUG, { wallet: W, question: 'x'.repeat(400) })));
+  check('block beyond the head rejected with 400', is400(await run(SLUG, { wallet: W, question: 'What do I hold?', block: 999999999 })));
+  check('non-numeric block rejected with 400', is400(await run(SLUG, { wallet: W, question: 'What do I hold?', block: 'abc' })));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+  check('GET without a wallet rejected with 400', is400(await run(SLUG)));
+});
+
+await guard(async () => {
+  sec('15 Yield Optimizer');
+  const SLUG = 'yield-optimizer';
+  const W = '0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f';
+  const WEEKLY = '0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268';
+  const QUARTERLY = '0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86';
+  const { usdcStateDiff } = await import('../lib/defi.js');
+  const rpc = async (params) => (await (await fetch('https://rpc.pharos.xyz', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params }) })).json());
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('five example cases and the defaults (30 days, $10) are served', ex?.cases?.length === 5 && ex.defaults?.minHoldDays === 30 && ex.defaults?.minNetGainUsd === 10);
+  const recd = (await run(SLUG, { recorded: '1' })).body?.data;
+  check('recorded demo: five decisions at one block, plus the fork evidence', recd?.demo?.cases?.length === 5 && new Set(recd.demo.cases.map((c) => c.block)).size === 1 && recd.fork?.vaults && Object.keys(recd.fork.vaults).length === 4);
+  check('fork evidence: weekly and Rockaway really succeeded (approve, deposit, redeem), the quarterly vault really reverted', recd?.fork?.vaults?.['r25-weekly']?.deposit?.status === 'success' && recd.fork.vaults['rockaway-usdc'].redeem.status === 'success' && recd.fork.vaults['r25-quarterly'].deposit.status === 'reverted');
+  const opt = async (o) => (await withRetry(() => run(SLUG, { wallet: W, ...o }))).body?.data?.optimizer;
+  const idle = await opt({ from: 'idle' });
+  const cand = (r, id) => r?.candidates?.find((x) => x.id === id);
+  check('idle USDC: MOVE to the weekly vault, not the highest-paying (quarterly) one', idle?.recommendation?.action === 'move' && idle.recommendation.to === 'r25-weekly' && cand(idle, 'r25-quarterly')?.apy > cand(idle, 'r25-weekly')?.apy, idle?.recommendation?.headline);
+  check('the quarterly vault is rejected: not let in, cannot be redeemed, no invented explanation', cand(idle, 'r25-quarterly')?.viable === false && cand(idle, 'r25-quarterly').enter.eligible === false && cand(idle, 'r25-quarterly').rejected.some((r) => /0xe19a2672/.test(r)) && !cand(idle, 'r25-quarterly').rejected.some((r) => /whitelist|KYC|permissioned/i.test(r)));
+  check('the semi-yearly vault is rejected because its deposit cap is below the amount', cand(idle, 'r25-semi-yearly')?.viable === false && cand(idle, 'r25-semi-yearly').rejected.some((r) => /caps this wallet's deposit/.test(r)));
+  const rec = idle?.recommendation;
+  check('net = extra yield − gas − fees; the gas comes from the fork run; the plan is unsigned approve then deposit', rec && Math.abs(rec.grossGainUsd - rec.gasUsd - rec.feesUsd - rec.netGainUsd) < 0.01 && idle.prepared?.transactions?.map((t) => t.step).join() === 'approve,deposit' && idle.prepared.transactions.every((t) => t.gasLimit === Math.ceil(t.gasUnits * 1.3)) && idle.prepared.transactions[1].gasUnits === recd?.fork?.vaults?.['r25-weekly']?.deposit?.gasUsed && /Unsigned/.test(idle.prepared.note), JSON.stringify(idle?.prepared?.transactions?.map((t) => t.gasLimit)));
+  check('integrity: every batch confirmed on the public RPC, none unconfirmed', idle?.integrity?.inconclusive === 0 && idle.integrity.confirmed + idle.integrity.resolved === idle.integrity.batches && idle.rpcCalls > 0, JSON.stringify(idle?.integrity));
+  // the weekly rate, recomputed from the public RPC alone at the recorded window
+  const head = idle?.block?.number;
+  const price = async (b) => BigInt((await rpc([{ to: WEEKLY, data: '0x07a2d13a' + (10n ** 12n).toString(16).padStart(64, '0') }, '0x' + b.toString(16)])).result);
+  const blk = async (b) => parseInt((await (await fetch('https://rpc.pharos.xyz', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_getBlockByNumber', params: ['0x' + b.toString(16), false] }) })).json()).result.timestamp, 16);
+  const [p0, p1, t0, t1] = await Promise.all([price(head - 400000), price(head), blk(head - 400000), blk(head)]);
+  const apy = (1 + Number(p1 * 10n ** 12n / p0) / 1e12 - 1) ** (31557600 / (t1 - t0)) - 1;
+  check('the weekly vault’s yearly rate equals one recomputed from the public RPC alone (within 0.01 points)', Math.abs(apy - cand(idle, 'r25-weekly')?.apy) < 0.0001, `${(apy * 100).toFixed(3)}% vs ${(cand(idle, 'r25-weekly')?.apy * 100).toFixed(3)}%`);
+  // the refusal reproduced independently: a deposit from the wallet into the quarterly vault with the allowance in place
+  const dep = '0x6e553f65' + (10n ** 6n).toString(16).padStart(64, '0') + W.slice(2).padStart(64, '0');
+  const refusal = await rpc([{ from: W, to: QUARTERLY, data: dep }, 'latest', usdcStateDiff({ owner: W, spender: QUARTERLY, allowance: 10n ** 12n })]);
+  check('independent check: the public RPC makes the quarterly vault refuse this wallet’s deposit with 0xe19a2672 even with the allowance in place', JSON.stringify(refusal.error ?? {}).includes('e19a2672'), JSON.stringify(refusal.error ?? refusal.result).slice(0, 100));
+  const okDep = await rpc([{ from: W, to: WEEKLY, data: dep }, 'latest', usdcStateDiff({ owner: W, spender: WEEKLY, allowance: 10n ** 12n })]);
+  check('independent check: the same deposit into the weekly vault succeeds', typeof okDep.result === 'string' && okDep.result.startsWith('0x') && !okDep.error, JSON.stringify(okDep.error ?? '').slice(0, 100));
+  const stuck = await opt({ from: 'r25-quarterly' });
+  check('money in the quarterly vault: STAY PUT because it cannot be redeemed, nothing to sign', stuck?.recommendation?.action === 'stay' && /cannot be redeemed/.test(stuck.recommendation.reason) && stuck.prepared === null, stuck?.recommendation?.reason?.slice(0, 100));
+  const wk = await opt({ from: 'r25-weekly' });
+  check('money in the weekly vault: STAY PUT with a reason for every other vault', wk?.recommendation?.action === 'stay' && /^No vault is worth moving/.test(wk.recommendation.reason) && wk.candidates.every((c) => c.viable === false));
+  const strict = await opt({ from: 'idle', minNetGainUsd: 1e9 });
+  check('a minimum net gain nothing can reach: STAY PUT (the threshold is respected)', strict?.recommendation?.action === 'stay' && strict.prepared === null);
+  const part = await opt({ from: 'idle', amount: '10000' });
+  check('only 10,000 USDC: MOVE of exactly that amount, a smaller net gain', part?.recommendation?.action === 'move' && /^MOVE 10,000 USDC/.test(part.recommendation.headline) && part.recommendation.netGainUsd < rec.netGainUsd / 50);
+  const rk = await run(SLUG, { wallet: ex?.cases?.[4]?.wallet, from: 'auto' });
+  const rko = rk.body?.data?.optimizer;
+  check('a wallet with its money in the Rockaway vault: auto picks that bucket and the plan starts with a redeem', rko?.source?.id === 'rockaway-usdc' && rko.recommendation.action === 'move' && rko.prepared.transactions.map((t) => t.step).join() === 'redeem,approve,deposit', rko?.recommendation?.headline);
+  const pinned = await opt({ from: 'idle', block: recd?.demo?.cases?.[0]?.block });
+  check('?block pins the read: the same block, the same decision and the same rates as the recording', pinned?.block?.number === recd?.demo?.cases?.[0]?.block && pinned.recommendation.action === recd.demo.cases[0].result.recommendation.action && pinned.candidates.every((c) => c.apy === recd.demo.cases[0].result.candidates.find((x) => x.id === c.id)?.apy));
+  for (const id of ['idle-to-best', 'quarterly-stuck']) {
+    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const c = rp?.comparison;
+    check(`replay "${id}": same action, eligibility, redeemability and rates as the recording`, c?.sameAction === true && c.candidates.identical === c.candidates.compared && c.candidates.compared >= 3, `${c?.candidates?.identical}/${c?.candidates?.compared}`);
+  }
+  check('amount larger than the bucket rejected with 400', is400(await run(SLUG, { wallet: W, from: 'idle', amount: '999999999999' })));
+  check('unknown source rejected with 400', is400(await run(SLUG, { wallet: W, from: 'nowhere' })));
+  check('holding period out of range rejected with 400', is400(await run(SLUG, { wallet: W, from: 'idle', minHoldDays: 9999 })));
+  check('non-numeric minimum gain rejected with 400', is400(await run(SLUG, { wallet: W, from: 'idle', minNetGainUsd: 'lots' })));
+  check('bad wallet rejected with 400', is400(await run(SLUG, { wallet: '0x12', from: 'idle' })));
+  check('block beyond the head rejected with 400', is400(await run(SLUG, { wallet: W, from: 'idle', block: 999999999 })));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+  check('GET without a wallet rejected with 400', is400(await run(SLUG)));
+});
+
+await guard(async () => {
   sec('Cross-cutting');
   check('unknown task slug rejected with 400', is400(await run('nope')));
   check('prototype-pollution slug rejected with 400', is400(await run('__proto__')) && is400(await run('constructor')));
   check('missing slug rejected with 400', is400(await get('/api/run')));
-  check('skill files served for all 8 skills', (await Promise.all(['threshold-guardian', 'saga-executor', 'arbitrage-scanner', 'dry-run-executor', 'trend-watcher', 'batch-executor', 'policy-gatekeeper', 'skill-chain-mcp-flow'].map((t) => get('/api/run' + q({ slug: '_skill', task: t }))))).every((r) => r.body?.ok && r.body.data.files.some((f) => f.path === 'SKILL.md')));
+  check('skill files served for all 10 skills', (await Promise.all(['threshold-guardian', 'saga-executor', 'arbitrage-scanner', 'dry-run-executor', 'trend-watcher', 'batch-executor', 'policy-gatekeeper', 'skill-chain-mcp-flow', 'portfolio-assistant', 'yield-optimizer'].map((t) => get('/api/run' + q({ slug: '_skill', task: t }))))).every((r) => r.body?.ok && r.body.data.files.some((f) => f.path === 'SKILL.md')));
   check('skill request for a non-skill task rejected with 400', is400(await get('/api/run' + q({ slug: '_skill', task: 'doc-search-cli' }))));
   check('path traversal in skill task rejected', [400].includes((await get('/api/run' + q({ slug: '_skill', task: '../../etc/passwd' }))).status));
   const h = await get('/api/health');

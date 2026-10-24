@@ -197,6 +197,35 @@ Requirements it was built against (the Arena's own list):
 3. Interprets the result in the context of the explanation.
 4. Works for at least 2 different functions or contracts.
 
+## 14. Portfolio Assistant
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/portfolio-assistant/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/portfolio-assistant
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-portfolio-assistant
+- **What the proof shows:** Answers eight kinds of plain-English question about a wallet from native PROS, USDC, WPROS and the four R25 / RockawayX vaults at one pinned block; every figure carries its contract, call and block, every read is repeated on the public RPC, and what it cannot know (other protocols, earnings since depositing) is refused. Recorded real wallets pinned to a block, replayable.
+
+Requirements it was built against (the Arena's own list):
+
+1. Reads positions from at least 2 protocols or vaults, plus wallet token balances.
+2. Answers at least 5 different natural-language question types correctly.
+3. Shows numbers with sources: which contract and block each figure came from.
+4. Says clearly when it doesn't know or can't read a protocol, rather than guessing.
+5. Read-only: never initiates transactions.
+
+## 15. Yield Optimizer
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/yield-optimizer/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/yield-optimizer
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-yield-optimizer
+- **What the proof shows:** Compares the four USDC vaults on measured yield, tests with simulations whether the wallet can get in and out, counts gas measured by really executing the steps on a mainnet fork plus fees, and answers MOVE (with unsigned transactions) or STAY PUT with the reason. Recorded decisions pinned to a block, replayable.
+
+Requirements it was built against (the Arena's own list):
+
+1. Compares at least 3 yield sources using live on-chain data.
+2. Accounts for gas, entry/exit fees, and a minimum holding period before recommending a move.
+3. Outputs a clear recommendation with expected net gain, or "stay put" with the reason.
+4. If executing: prepares transactions for user signature only. The agent never holds keys.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

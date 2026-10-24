@@ -45,6 +45,10 @@ export const TASK_MAP = [
     tests: ['flow.test.js', 'flow-task.test.js'] },
   { n: 13, slug: 'docs-chain-mcp-agent', folder: TASK_FOLDERS['docs-chain-mcp-agent'], entries: ['lib/docs-chain.js', 'lib/tasks/docs-chain-mcp-agent.js', 'scripts/docs-chain-demo.mjs'], data: ['reports/docs-chain-demo.json'], page: ['public/js/tasks/docs-chain-mcp-agent.js'],
     tests: ['abi-call.test.js', 'docs-chain.test.js', 'docs-chain-task.test.js'] },
+  { n: 14, slug: 'portfolio-assistant', folder: TASK_FOLDERS['portfolio-assistant'], entries: ['lib/portfolio.js', 'lib/tasks/portfolio-assistant.js', 'scripts/portfolio-demo.mjs'], data: ['reports/portfolio-demo.json'], page: ['public/js/tasks/portfolio-assistant.js'],
+    tests: ['portfolio.test.js', 'portfolio-task.test.js'] },
+  { n: 15, slug: 'yield-optimizer', folder: TASK_FOLDERS['yield-optimizer'], entries: ['lib/yield-optimizer.js', 'lib/tasks/yield-optimizer.js', 'scripts/yield-fork-run.mjs', 'scripts/yield-demo.mjs'], data: ['reports/yield-fork-run.json', 'reports/yield-demo.json'], page: ['public/js/tasks/yield-optimizer.js'],
+    tests: ['yield-optimizer.test.js', 'yield-optimizer-task.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

@@ -1,0 +1,4 @@
+{
+  "mainnet": { "name": "Pharos Pacific Mainnet", "chainId": 1672, "rpc": "https://rpc.pharos.xyz", "mcp": "https://mcp.pharos.xyz/mcp", "explorer": "https://www.pharosscan.xyz", "symbol": "PROS" },
+  "testnet": { "name": "Pharos Atlantic Testnet", "chainId": 688689, "rpc": "https://atlantic.dplabs-internal.com", "explorer": "https://atlantic.pharosscan.xyz", "symbol": "PHRS" }
+}

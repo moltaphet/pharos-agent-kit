@@ -1,0 +1,7 @@
+[
+  { "id": "idle-to-best", "label": "942,942 USDC sitting idle in the wallet: is there somewhere better?", "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f", "from": "idle", "amount": null },
+  { "id": "weekly-stay", "label": "Money in the weekly vault: would any other vault be worth moving to?", "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f", "from": "r25-weekly", "amount": null },
+  { "id": "quarterly-stuck", "label": "Money in the quarterly vault (the best rate): can it even be taken out?", "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f", "from": "r25-quarterly", "amount": null },
+  { "id": "part-of-idle", "label": "Only 10,000 USDC of the idle money", "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f", "from": "idle", "amount": "10000" },
+  { "id": "rockaway-holder", "label": "A different wallet, with its money in the RockawayX vault", "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673", "from": "auto", "amount": null }
+]

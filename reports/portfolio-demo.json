@@ -1,0 +1,3516 @@
+{
+ "recordedAt": "2026-10-24T12:13:27.386Z",
+ "network": {
+  "name": "Pharos Pacific Mainnet",
+  "chainId": 1672
+ },
+ "note": "Every case is pinned to one mainnet block, so replaying it asks Chain MCP the same questions at the same block.",
+ "cases": [
+  {
+   "id": "total",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "What is my total balance?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": {
+     "number": 21115337,
+     "head": 21118337,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "USDC",
+      "kind": "token",
+      "protocol": null,
+      "symbol": "USDC",
+      "label": "USD Coin",
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6,
+      "underlying": null,
+      "amountRaw": "942942429833",
+      "units": "942,942.429833 USDC",
+      "usd": "942785574101",
+      "usdText": "$942,785.57",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "decimals",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "decimals()",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "r25-weekly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Weekly",
+      "label": "R25 VRPC Weekly",
+      "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "1736877466879",
+      "units": "1,736,877.466879 USDC",
+      "usd": "1736588542362",
+      "usdText": "$1,736,588.54",
+      "shares": "1695812048240",
+      "sharesText": "1,695,812.04824",
+      "liquidity": "instant",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     },
+     {
+      "id": "r25-quarterly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Quarterly",
+      "label": "R25 VRPC Quarterly",
+      "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "2402278047197",
+      "units": "2,402,278.047197 USDC",
+      "usd": "2401878435228",
+      "usdText": "$2,401,878.44",
+      "shares": "2256470494457",
+      "sharesText": "2,256,470.494457",
+      "liquidity": "not-previewable",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "PROS",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "5081252551691",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 27
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "What is my total balance?",
+     "intent": "total",
+     "entities": {
+      "tokens": [],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "Your total is $5,081,252.55 across 3 holdings, at block 21,115,337.",
+     "figures": [
+      {
+       "label": "USD Coin",
+       "value": "$942,785.57",
+       "sources": [
+        1,
+        2
+       ],
+       "usd": "942785574101"
+      },
+      {
+       "label": "R25 VRPC Weekly",
+       "value": "$1,736,588.54",
+       "sources": [
+        3,
+        2
+       ],
+       "usd": "1736588542362"
+      },
+      {
+       "label": "R25 VRPC Quarterly",
+       "value": "$2,401,878.44",
+       "sources": [
+        4,
+        2
+       ],
+       "usd": "2401878435228"
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0xc879c018db60520f4355c26ed1a6d572cdac1815"
+      },
+      {
+       "n": 2,
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d"
+      },
+      {
+       "n": 3,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 4,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: R25 VRPC Quarterly (the vault will not preview a redemption, so exits may be restricted)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118337\",\"blockNumberHex\":\"0x1423d81\"}",
+      "ms": 278
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 312
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x8ecdf4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 463
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 1780
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 408
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 491
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“What is my total balance?” is a total question.",
+      "uses": [],
+      "output": {
+       "intent": "total"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "Your total is $5,081,252.55 across 3 holdings, at block 21,115,337.",
+      "uses": [
+       4,
+       6
+      ],
+      "output": {
+       "figures": 3
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$5,081,252.55"
+   }
+  },
+  {
+   "id": "holdings",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "What do I hold?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": {
+     "number": 21115337,
+     "head": 21118342,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "USDC",
+      "kind": "token",
+      "protocol": null,
+      "symbol": "USDC",
+      "label": "USD Coin",
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6,
+      "underlying": null,
+      "amountRaw": "942942429833",
+      "units": "942,942.429833 USDC",
+      "usd": "942785574101",
+      "usdText": "$942,785.57",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "decimals",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "decimals()",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "r25-weekly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Weekly",
+      "label": "R25 VRPC Weekly",
+      "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "1736877466879",
+      "units": "1,736,877.466879 USDC",
+      "usd": "1736588542362",
+      "usdText": "$1,736,588.54",
+      "shares": "1695812048240",
+      "sharesText": "1,695,812.04824",
+      "liquidity": "instant",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     },
+     {
+      "id": "r25-quarterly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Quarterly",
+      "label": "R25 VRPC Quarterly",
+      "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "2402278047197",
+      "units": "2,402,278.047197 USDC",
+      "usd": "2401878435228",
+      "usdText": "$2,401,878.44",
+      "shares": "2256470494457",
+      "sharesText": "2,256,470.494457",
+      "liquidity": "not-previewable",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "PROS",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "5081252551691",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 27
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "What do I hold?",
+     "intent": "holdings",
+     "entities": {
+      "tokens": [],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "You hold 942,942.429833 USDC, 1,736,877.466879 USDC in R25 VRPC Weekly, 2,402,278.047197 USDC in R25 VRPC Quarterly.",
+     "figures": [
+      {
+       "label": "USD Coin",
+       "value": "942,942.429833 USDC",
+       "sources": [
+        1
+       ],
+       "usd": "942785574101"
+      },
+      {
+       "label": "R25 VRPC Weekly",
+       "value": "1,736,877.466879 USDC",
+       "sources": [
+        2
+       ],
+       "usd": "1736588542362"
+      },
+      {
+       "label": "R25 VRPC Quarterly",
+       "value": "2,402,278.047197 USDC",
+       "sources": [
+        3
+       ],
+       "usd": "2401878435228"
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0xc879c018db60520f4355c26ed1a6d572cdac1815"
+      },
+      {
+       "n": 2,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 3,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: R25 VRPC Quarterly (the vault will not preview a redemption, so exits may be restricted)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118342\",\"blockNumberHex\":\"0x1423d86\"}",
+      "ms": 289
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 311
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x8ecdf4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 647
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 594
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 692
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 497
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“What do I hold?” is a holdings question.",
+      "uses": [],
+      "output": {
+       "intent": "holdings"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "You hold 942,942.429833 USDC, 1,736,877.466879 USDC in R25 VRPC Weekly, 2,402,278.047197 USDC in R25 VRPC Quarterly.",
+      "uses": [
+       4,
+       6
+      ],
+      "output": {
+       "figures": 3
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$5,081,252.55"
+   }
+  },
+  {
+   "id": "where-usdc",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "Where is my USDC?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": {
+     "number": 21115337,
+     "head": 21118345,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "USDC",
+      "kind": "token",
+      "protocol": null,
+      "symbol": "USDC",
+      "label": "USD Coin",
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6,
+      "underlying": null,
+      "amountRaw": "942942429833",
+      "units": "942,942.429833 USDC",
+      "usd": "942785574101",
+      "usdText": "$942,785.57",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "decimals",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "decimals()",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "r25-weekly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Weekly",
+      "label": "R25 VRPC Weekly",
+      "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "1736877466879",
+      "units": "1,736,877.466879 USDC",
+      "usd": "1736588542362",
+      "usdText": "$1,736,588.54",
+      "shares": "1695812048240",
+      "sharesText": "1,695,812.04824",
+      "liquidity": "instant",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     },
+     {
+      "id": "r25-quarterly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Quarterly",
+      "label": "R25 VRPC Quarterly",
+      "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "2402278047197",
+      "units": "2,402,278.047197 USDC",
+      "usd": "2401878435228",
+      "usdText": "$2,401,878.44",
+      "shares": "2256470494457",
+      "sharesText": "2,256,470.494457",
+      "liquidity": "not-previewable",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "PROS",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "5081252551691",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 27
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "Where is my USDC?",
+     "intent": "where_token",
+     "entities": {
+      "tokens": [
+       "USDC"
+      ],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "Your USDC is in 3 places: 942,942.429833 USDC in the wallet; 1,736,877.466879 USDC in R25 VRPC Weekly; 2,402,278.047197 USDC in R25 VRPC Quarterly.",
+     "figures": [
+      {
+       "label": "USD Coin in the wallet",
+       "value": "942,942.429833 USDC",
+       "sources": [
+        1
+       ],
+       "usd": "942785574101"
+      },
+      {
+       "label": "R25 VRPC Weekly (R25)",
+       "value": "1,736,877.466879 USDC",
+       "sources": [
+        2
+       ],
+       "usd": "1736588542362"
+      },
+      {
+       "label": "R25 VRPC Quarterly (R25)",
+       "value": "2,402,278.047197 USDC",
+       "sources": [
+        3
+       ],
+       "usd": "2401878435228"
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0xc879c018db60520f4355c26ed1a6d572cdac1815"
+      },
+      {
+       "n": 2,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 3,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: R25 VRPC Quarterly (the vault will not preview a redemption, so exits may be restricted)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118345\",\"blockNumberHex\":\"0x1423d89\"}",
+      "ms": 316
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 343
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x8ecdf4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 546
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 766
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 492
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 511
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“Where is my USDC?” is a where token question about USDC.",
+      "uses": [],
+      "output": {
+       "intent": "where_token"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "Your USDC is in 3 places: 942,942.429833 USDC in the wallet; 1,736,877.466879 USDC in R25 VRPC Weekly; 2,402,278.047197 USDC in R25 VRPC Quarterly.",
+      "uses": [
+       4,
+       6
+      ],
+      "output": {
+       "figures": 3
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$5,081,252.55"
+   }
+  },
+  {
+   "id": "biggest",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "What's my biggest position?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": {
+     "number": 21115337,
+     "head": 21118349,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "USDC",
+      "kind": "token",
+      "protocol": null,
+      "symbol": "USDC",
+      "label": "USD Coin",
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6,
+      "underlying": null,
+      "amountRaw": "942942429833",
+      "units": "942,942.429833 USDC",
+      "usd": "942785574101",
+      "usdText": "$942,785.57",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "decimals",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "decimals()",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "r25-weekly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Weekly",
+      "label": "R25 VRPC Weekly",
+      "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "1736877466879",
+      "units": "1,736,877.466879 USDC",
+      "usd": "1736588542362",
+      "usdText": "$1,736,588.54",
+      "shares": "1695812048240",
+      "sharesText": "1,695,812.04824",
+      "liquidity": "instant",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     },
+     {
+      "id": "r25-quarterly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Quarterly",
+      "label": "R25 VRPC Quarterly",
+      "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "2402278047197",
+      "units": "2,402,278.047197 USDC",
+      "usd": "2401878435228",
+      "usdText": "$2,401,878.44",
+      "shares": "2256470494457",
+      "sharesText": "2,256,470.494457",
+      "liquidity": "not-previewable",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "PROS",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "5081252551691",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 27
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "What's my biggest position?",
+     "intent": "biggest",
+     "entities": {
+      "tokens": [],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "Your biggest position is R25 VRPC Quarterly (R25): 2,402,278.047197 USDC, $2,401,878.44, 47.3% of your portfolio.",
+     "figures": [
+      {
+       "label": "R25 VRPC Quarterly",
+       "value": "$2,401,878.44",
+       "sources": [
+        1,
+        2
+       ],
+       "usd": "2401878435228"
+      },
+      {
+       "label": "R25 VRPC Weekly",
+       "value": "$1,736,588.54",
+       "sources": [
+        3,
+        2
+       ],
+       "usd": "1736588542362"
+      },
+      {
+       "label": "USD Coin",
+       "value": "$942,785.57",
+       "sources": [
+        4,
+        2
+       ],
+       "usd": "942785574101"
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      },
+      {
+       "n": 2,
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d"
+      },
+      {
+       "n": 3,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 4,
+       "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0xc879c018db60520f4355c26ed1a6d572cdac1815"
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: R25 VRPC Quarterly (the vault will not preview a redemption, so exits may be restricted)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118349\",\"blockNumberHex\":\"0x1423d8d\"}",
+      "ms": 324
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 305
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x8ecdf4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 1010
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 632
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 1229
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 606
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“What's my biggest position?” is a biggest question.",
+      "uses": [],
+      "output": {
+       "intent": "biggest"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "Your biggest position is R25 VRPC Quarterly (R25): 2,402,278.047197 USDC, $2,401,878.44, 47.3% of your portfolio.",
+      "uses": [
+       4,
+       6
+      ],
+      "output": {
+       "figures": 3
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$5,081,252.55"
+   }
+  },
+  {
+   "id": "position-quarterly",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "How much do I have in R25 Quarterly?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": {
+     "number": 21115337,
+     "head": 21118353,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "USDC",
+      "kind": "token",
+      "protocol": null,
+      "symbol": "USDC",
+      "label": "USD Coin",
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6,
+      "underlying": null,
+      "amountRaw": "942942429833",
+      "units": "942,942.429833 USDC",
+      "usd": "942785574101",
+      "usdText": "$942,785.57",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "decimals",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "decimals()",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "r25-weekly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Weekly",
+      "label": "R25 VRPC Weekly",
+      "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "1736877466879",
+      "units": "1,736,877.466879 USDC",
+      "usd": "1736588542362",
+      "usdText": "$1,736,588.54",
+      "shares": "1695812048240",
+      "sharesText": "1,695,812.04824",
+      "liquidity": "instant",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     },
+     {
+      "id": "r25-quarterly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Quarterly",
+      "label": "R25 VRPC Quarterly",
+      "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "2402278047197",
+      "units": "2,402,278.047197 USDC",
+      "usd": "2401878435228",
+      "usdText": "$2,401,878.44",
+      "shares": "2256470494457",
+      "sharesText": "2,256,470.494457",
+      "liquidity": "not-previewable",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "PROS",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "5081252551691",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 27
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "How much do I have in R25 Quarterly?",
+     "intent": "position_in",
+     "entities": {
+      "tokens": [],
+      "vaults": [
+       "r25-quarterly"
+      ],
+      "protocols": [
+       "R25"
+      ],
+      "unsupported": []
+     },
+     "text": "R25 VRPC Quarterly: 2,256,470.494457 shares, worth 2,402,278.047197 USDC ($2,401,878.44).",
+     "figures": [
+      {
+       "label": "R25 VRPC Quarterly",
+       "value": "2,402,278.047197 USDC",
+       "sources": [
+        1,
+        2
+       ],
+       "usd": "2401878435228"
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      },
+      {
+       "n": 2,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: R25 VRPC Quarterly (the vault will not preview a redemption, so exits may be restricted)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118353\",\"blockNumberHex\":\"0x1423d91\"}",
+      "ms": 302
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 334
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x8ecdf4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 446
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 590
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 691
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 424
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“How much do I have in R25 Quarterly?” is a position in question about r25-quarterly.",
+      "uses": [],
+      "output": {
+       "intent": "position_in"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "R25 VRPC Quarterly: 2,256,470.494457 shares, worth 2,402,278.047197 USDC ($2,401,878.44).",
+      "uses": [
+       4,
+       6
+      ],
+      "output": {
+       "figures": 1
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$5,081,252.55"
+   }
+  },
+  {
+   "id": "protocols",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "Which protocols am I using?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": {
+     "number": 21115337,
+     "head": 21118357,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "USDC",
+      "kind": "token",
+      "protocol": null,
+      "symbol": "USDC",
+      "label": "USD Coin",
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6,
+      "underlying": null,
+      "amountRaw": "942942429833",
+      "units": "942,942.429833 USDC",
+      "usd": "942785574101",
+      "usdText": "$942,785.57",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "decimals",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "decimals()",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "r25-weekly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Weekly",
+      "label": "R25 VRPC Weekly",
+      "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "1736877466879",
+      "units": "1,736,877.466879 USDC",
+      "usd": "1736588542362",
+      "usdText": "$1,736,588.54",
+      "shares": "1695812048240",
+      "sharesText": "1,695,812.04824",
+      "liquidity": "instant",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     },
+     {
+      "id": "r25-quarterly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Quarterly",
+      "label": "R25 VRPC Quarterly",
+      "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "2402278047197",
+      "units": "2,402,278.047197 USDC",
+      "usd": "2401878435228",
+      "usdText": "$2,401,878.44",
+      "shares": "2256470494457",
+      "sharesText": "2,256,470.494457",
+      "liquidity": "not-previewable",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "PROS",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "5081252551691",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 27
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "Which protocols am I using?",
+     "intent": "protocols",
+     "entities": {
+      "tokens": [],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "You are using 1 protocol: R25 (2 vaults). Tokens in your wallet are not a protocol.",
+     "figures": [
+      {
+       "label": "R25",
+       "value": "R25 VRPC Weekly: 1,736,877.466879 USDC; R25 VRPC Quarterly: 2,402,278.047197 USDC",
+       "sources": [
+        1,
+        2,
+        3,
+        4
+       ]
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 2,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 3,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      },
+      {
+       "n": 4,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: R25 VRPC Quarterly (the vault will not preview a redemption, so exits may be restricted)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118357\",\"blockNumberHex\":\"0x1423d95\"}",
+      "ms": 301
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 293
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x8ecdf4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 892
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 553
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 599
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 722
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“Which protocols am I using?” is a protocols question.",
+      "uses": [],
+      "output": {
+       "intent": "protocols"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "You are using 1 protocol: R25 (2 vaults). Tokens in your wallet are not a protocol.",
+      "uses": [
+       4,
+       6
+      ],
+      "output": {
+       "figures": 1
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$5,081,252.55"
+   }
+  },
+  {
+   "id": "earning",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "What am I earning?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": {
+     "number": 21115337,
+     "head": 21118361,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "USDC",
+      "kind": "token",
+      "protocol": null,
+      "symbol": "USDC",
+      "label": "USD Coin",
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6,
+      "underlying": null,
+      "amountRaw": "942942429833",
+      "units": "942,942.429833 USDC",
+      "usd": "942785574101",
+      "usdText": "$942,785.57",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "decimals",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "call": "decimals()",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "r25-weekly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Weekly",
+      "label": "R25 VRPC Weekly",
+      "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "1736877466879",
+      "units": "1,736,877.466879 USDC",
+      "usd": "1736588542362",
+      "usdText": "$1,736,588.54",
+      "shares": "1695812048240",
+      "sharesText": "1,695,812.04824",
+      "liquidity": "instant",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     },
+     {
+      "id": "r25-quarterly",
+      "kind": "vault",
+      "protocol": "R25",
+      "symbol": "R25 VRPC Quarterly",
+      "label": "R25 VRPC Quarterly",
+      "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "2402278047197",
+      "units": "2,402,278.047197 USDC",
+      "usd": "2401878435228",
+      "usdText": "$2,401,878.44",
+      "shares": "2256470494457",
+      "sharesText": "2,256,470.494457",
+      "liquidity": "not-previewable",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "PROS",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "5081252551691",
+    "integrity": {
+     "batches": 5,
+     "confirmed": 5,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 33
+    },
+    "lookback": 400000,
+    "yields": {
+     "r25-weekly": {
+      "ok": true,
+      "apy": 0.05823941275383149,
+      "apyEarly": 0.07589492533616404,
+      "apyLate": 0.039864241901333974,
+      "steady": true,
+      "days": 4.312534722222222,
+      "growth": 0.00066858181399998
+     },
+     "r25-quarterly": {
+      "ok": true,
+      "apy": 0.15234329531976365,
+      "apyEarly": 0.17991758899873478,
+      "apyLate": 0.12385399467638858,
+      "steady": true,
+      "days": 4.312534722222222,
+      "growth": 0.001675616425000026
+     }
+    },
+    "answer": {
+     "question": "What am I earning?",
+     "intent": "earning",
+     "entities": {
+      "tokens": [],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "R25 VRPC Weekly: about 5.82% a year, roughly $277.09 a day. R25 VRPC Quarterly: about 15.23% a year, roughly $1,002.49 a day. 942,942.429833 USDC sitting in the wallet earns nothing. Together that is about $1,279.58 a day, $467,047.97 a year, if the recent rate held.",
+     "figures": [
+      {
+       "label": "R25 VRPC Weekly: rate over the last 4.3 days",
+       "value": "5.82% a year, about $277.09 a day",
+       "sources": [
+        1,
+        2,
+        3
+       ],
+       "apy": 0.05823941275383149
+      },
+      {
+       "label": "R25 VRPC Quarterly: rate over the last 4.3 days",
+       "value": "15.23% a year, about $1,002.49 a day",
+       "sources": [
+        4,
+        5,
+        6
+       ],
+       "apy": 0.15234329531976365
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(1000000000000): value of a million shares",
+       "block": 20715337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 11,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 2,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(1000000000000): value of a million shares",
+       "block": 20915337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 13,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 3,
+       "contract": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+       "call": "convertToAssets(1000000000000): value of a million shares",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 15,
+       "explorer": "https://www.pharosscan.xyz/address/0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268"
+      },
+      {
+       "n": 4,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(1000000000000): value of a million shares",
+       "block": 20715337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 11,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      },
+      {
+       "n": 5,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(1000000000000): value of a million shares",
+       "block": 20915337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 13,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      },
+      {
+       "n": 6,
+       "contract": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+       "call": "convertToAssets(1000000000000): value of a million shares",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 15,
+       "explorer": "https://www.pharosscan.xyz/address/0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86"
+      }
+     ],
+     "caveats": [
+      "These rates come from how much each vault’s share price grew over the last few days. They describe what it paid, not what it will pay, and the vault’s own fees are already inside them.",
+      "Not all of this can be taken out at will: R25 VRPC Quarterly (the vault will not preview a redemption, so exits may be restricted)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118361\",\"blockNumberHex\":\"0x1423d99\"}",
+      "ms": 319
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 294
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x8ecdf4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 577
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 561
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 497
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 595
+     },
+     {
+      "n": 8,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "Block header: the time between two share-price readings",
+      "input": "{\"block\":20715337}",
+      "output": "{\"number\":\"0x13c1749\",\"hash\":\"0x5f4e34bcc085d2ce527b95606f3ba017ae224f971596f023aff77d59d4340660\",\"timestamp\":\"0x6ad6e5f2\",\"…\":\"rest of the header omitted\"}",
+      "ms": 336
+     },
+     {
+      "n": 9,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "Block header: the time between two share-price readings",
+      "input": "{\"block\":20915337}",
+      "output": "{\"number\":\"0x13f2489\",\"hash\":\"0xd4d58184414307c84908084ee31992a683f5e276e8cd5bf1d04dc3f5d813f5a8\",\"timestamp\":\"0x6ad9d26a\",\"…\":\"rest of the header omitted\"}",
+      "ms": 361
+     },
+     {
+      "n": 10,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "Block header: the time between two share-price readings",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 371
+     },
+     {
+      "n": 11,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Share price of 2 vaults at block 20,715,337 (2 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000…",
+      "ms": 695
+     },
+     {
+      "n": 12,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000…",
+      "ms": 636
+     },
+     {
+      "n": 13,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Share price of 2 vaults at block 20,915,337 (2 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000…",
+      "ms": 634
+     },
+     {
+      "n": 14,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000…",
+      "ms": 677
+     },
+     {
+      "n": 15,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Share price of 2 vaults at block 21,115,337 (2 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000…",
+      "ms": 530
+     },
+     {
+      "n": 16,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000…",
+      "ms": 572
+     },
+     {
+      "n": 17,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“What am I earning?” is a earning question.",
+      "uses": [],
+      "output": {
+       "intent": "earning"
+      }
+     },
+     {
+      "n": 18,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "R25 VRPC Weekly: about 5.82% a year, roughly $277.09 a day. R25 VRPC Quarterly: about 15.23% a year, roughly $1,002.49 a day. 942,942.429833 USDC sitting in the wallet earns nothing. Together that is about $1,279.58 a day, $467,047.97 a year, if the recent rate held.",
+      "uses": [
+       11,
+       13,
+       15
+      ],
+      "output": {
+       "figures": 2
+      }
+     }
+    ],
+    "chainCalls": 10,
+    "rpcCalls": 5,
+    "totalUsdText": "$5,081,252.55"
+   }
+  },
+  {
+   "id": "token-value",
+   "walletId": "rockaway-wallet",
+   "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673",
+   "walletLabel": "A wallet with a position in the RockawayX (Morpho) vault and some PROS",
+   "question": "How much is my PROS worth?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673",
+    "block": {
+     "number": 21115337,
+     "head": 21118369,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "native",
+      "kind": "native",
+      "protocol": null,
+      "symbol": "PROS",
+      "label": "PROS (native)",
+      "contract": null,
+      "decimals": 18,
+      "underlying": null,
+      "amountRaw": "443016140605618707",
+      "units": "0.443016 PROS",
+      "usd": "285925",
+      "usdText": "$0.29",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "PROS/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xcA11bde05977b3631167028862bE2a173976CA11",
+        "call": "getEthBalance(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "rockaway-usdc",
+      "kind": "vault",
+      "protocol": "Morpho (RockawayX vault)",
+      "symbol": "RockawayX USDC (Morpho Vault V2)",
+      "label": "RockawayX USDC (Morpho Vault V2)",
+      "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "19469063859",
+      "units": "19,469.063859 USDC",
+      "usd": "19465825236",
+      "usdText": "$19,465.83",
+      "shares": "19329483983960707748291",
+      "sharesText": "19,329.483983",
+      "liquidity": "partial",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "USDC",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "19466111161",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 24
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "How much is my PROS worth?",
+     "intent": "token_value",
+     "entities": {
+      "tokens": [
+       "PROS"
+      ],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "You have 0.443016 PROS, worth $0.29.",
+     "figures": [
+      {
+       "label": "PROS (native) in the wallet",
+       "value": "0.443016 PROS",
+       "sources": [
+        1
+       ],
+       "usd": "285925"
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0xcA11bde05977b3631167028862bE2a173976CA11",
+       "call": "getEthBalance(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": null
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: RockawayX USDC (Morpho Vault V2) (only part of the shares can be redeemed right now)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x62a0e4b7fd967fab5be1a733c09b22ebc4510673 on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118369\",\"blockNumberHex\":\"0x1423da1\"}",
+      "ms": 357
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 359
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x62a0e4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 671
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 1039
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 480
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 900
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“How much is my PROS worth?” is a token value question about PROS.",
+      "uses": [],
+      "output": {
+       "intent": "token_value"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "You have 0.443016 PROS, worth $0.29.",
+      "uses": [
+       4
+      ],
+      "output": {
+       "figures": 1
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$19,466.11"
+   }
+  },
+  {
+   "id": "rockaway-position",
+   "walletId": "rockaway-wallet",
+   "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673",
+   "walletLabel": "A wallet with a position in the RockawayX (Morpho) vault and some PROS",
+   "question": "How much do I have in Rockaway?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673",
+    "block": {
+     "number": 21115337,
+     "head": 21118372,
+     "historical": true,
+     "timestamp": 1792841069,
+     "iso": "sat 2026-10-24 11:24:29 UTC"
+    },
+    "positions": [
+     {
+      "id": "native",
+      "kind": "native",
+      "protocol": null,
+      "symbol": "PROS",
+      "label": "PROS (native)",
+      "contract": null,
+      "decimals": 18,
+      "underlying": null,
+      "amountRaw": "443016140605618707",
+      "units": "0.443016 PROS",
+      "usd": "285925",
+      "usdText": "$0.29",
+      "shares": null,
+      "sharesText": null,
+      "liquidity": null,
+      "note": null,
+      "priceFeed": "PROS/USD",
+      "sources": [
+       {
+        "figure": "balance",
+        "contract": "0xcA11bde05977b3631167028862bE2a173976CA11",
+        "call": "getEthBalance(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       }
+      ]
+     },
+     {
+      "id": "rockaway-usdc",
+      "kind": "vault",
+      "protocol": "Morpho (RockawayX vault)",
+      "symbol": "RockawayX USDC (Morpho Vault V2)",
+      "label": "RockawayX USDC (Morpho Vault V2)",
+      "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+      "decimals": 6,
+      "underlying": "USDC",
+      "amountRaw": "19469063859",
+      "units": "19,469.063859 USDC",
+      "usd": "19465825236",
+      "usdText": "$19,465.83",
+      "shares": "19329483983960707748291",
+      "sharesText": "19,329.483983",
+      "liquidity": "partial",
+      "note": null,
+      "priceFeed": "USDC/USD",
+      "sources": [
+       {
+        "figure": "shares held",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "balanceOf(address)",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 4
+       },
+       {
+        "figure": "value in USDC",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "convertToAssets(uint256): what these shares are worth",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redemption preview",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "previewRedeem(uint256): what redeeming them would pay",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       },
+       {
+        "figure": "redeemable shares",
+        "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "call": "maxRedeem(address): how many shares can be redeemed",
+        "block": 21115337,
+        "tool": "Chain MCP eth_call via Multicall3",
+        "integrity": "confirmed",
+        "step": 6
+       }
+      ]
+     }
+    ],
+    "empty": [
+     "USDC",
+     "WPROS"
+    ],
+    "prices": {
+     "PROS/USD": {
+      "price": 0.6454066276063706,
+      "timestamp": 1792837775,
+      "ageSec": 3294,
+      "source": {
+       "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     },
+     "USDC/USD": {
+      "price": 0.9998336529074732,
+      "timestamp": 1792840835,
+      "ageSec": 234,
+      "source": {
+       "contract": "0x3f882c4f2836b1e5c5278ff2b9fcce2502a35c5d",
+       "call": "latestAnswer()",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4
+      }
+     }
+    },
+    "unreadable": [],
+    "totalUsd": "19466111161",
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 24
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "How much do I have in Rockaway?",
+     "intent": "position_in",
+     "entities": {
+      "tokens": [],
+      "vaults": [
+       "rockaway-usdc"
+      ],
+      "protocols": [
+       "Morpho (RockawayX vault)"
+      ],
+      "unsupported": []
+     },
+     "text": "RockawayX USDC (Morpho Vault V2): 19,329.483983 shares, worth 19,469.063859 USDC ($19,465.83).",
+     "figures": [
+      {
+       "label": "RockawayX USDC (Morpho Vault V2)",
+       "value": "19,469.063859 USDC",
+       "sources": [
+        1,
+        2
+       ],
+       "usd": "19465825236"
+      }
+     ],
+     "sources": [
+      {
+       "n": 1,
+       "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+       "call": "balanceOf(address)",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 4,
+       "explorer": "https://www.pharosscan.xyz/address/0x047cd0a91e9b92ed979189a6c8a120bf280f02e5"
+      },
+      {
+       "n": 2,
+       "contract": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+       "call": "convertToAssets(uint256): what these shares are worth",
+       "block": 21115337,
+       "tool": "Chain MCP eth_call via Multicall3",
+       "integrity": "confirmed",
+       "step": 6,
+       "explorer": "https://www.pharosscan.xyz/address/0x047cd0a91e9b92ed979189a6c8a120bf280f02e5"
+      }
+     ],
+     "caveats": [
+      "Not all of this can be taken out at will: RockawayX USDC (Morpho Vault V2) (only part of the shares can be redeemed right now)."
+     ],
+     "known": true
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse-request",
+      "summary": "Read the portfolio of 0x62a0e4b7fd967fab5be1a733c09b22ebc4510673 on Pharos mainnet.",
+      "uses": [],
+      "output": {
+       "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "get_block_number",
+      "why": "The latest block, so everything can be read at one block behind it",
+      "input": "{}",
+      "output": "{\"blockNumber\":\"21118372\",\"blockNumberHex\":\"0x1423da4\"}",
+      "ms": 323
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "get_block",
+      "why": "The block header: its time is \"now\" for the age of every figure",
+      "input": "{\"block\":21115337}",
+      "output": "{\"number\":\"0x14231c9\",\"hash\":\"0xe2d3938ccaa1afc8758024c3bf027235468d72d06d58da356ed03c8545f5eab1\",\"timestamp\":\"0x6adc956d\",\"…\":\"rest of the header omitted\"}",
+      "ms": 313
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Balances, share balances, decimals and prices for 0x62a0e4… (21 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 723
+     },
+     {
+      "n": 5,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001500000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000…",
+      "ms": 549
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "What the vault shares are worth and whether they can be redeemed (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 536
+     },
+     {
+      "n": 7,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 487
+     },
+     {
+      "n": 8,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“How much do I have in Rockaway?” is a position in question about rockaway-usdc.",
+      "uses": [],
+      "output": {
+       "intent": "position_in"
+      }
+     },
+     {
+      "n": 9,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "RockawayX USDC (Morpho Vault V2): 19,329.483983 shares, worth 19,469.063859 USDC ($19,465.83).",
+      "uses": [
+       4,
+       6
+      ],
+      "output": {
+       "figures": 1
+      }
+     }
+    ],
+    "chainCalls": 4,
+    "rpcCalls": 2,
+    "totalUsdText": "$19,466.11"
+   }
+  },
+  {
+   "id": "earned",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "How much have I earned so far?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": null,
+    "positions": [],
+    "empty": [],
+    "prices": {},
+    "unreadable": [],
+    "totalUsd": "0",
+    "integrity": {
+     "batches": 0,
+     "confirmed": 0,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 0
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "How much have I earned so far?",
+     "intent": "earned",
+     "entities": {
+      "tokens": [],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": []
+     },
+     "text": "I cannot tell what you have earned so far. That needs the price you paid for each position (your deposit history), which I do not read, and a balance on its own does not contain it. What I can tell you is what your vault positions are earning at the current rate: ask “what am I earning?”.",
+     "figures": [],
+     "sources": [],
+     "caveats": [],
+     "known": false
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“How much have I earned so far?” is a earned question.",
+      "uses": [],
+      "output": {
+       "intent": "earned"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "I cannot tell what you have earned so far. That needs the price you paid for each position (your deposit history), which I do not read, and a balance on its own does not contain it. What I can tell you is what your vault positions are earning at the current rate: ask “what am I earning?”.",
+      "uses": [],
+      "output": {
+       "figures": 0
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "totalUsdText": "$0.00"
+   }
+  },
+  {
+   "id": "aave",
+   "walletId": "r25-wallet",
+   "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "walletLabel": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults",
+   "question": "How much do I have on Aave?",
+   "block": 21115337,
+   "result": {
+    "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "block": null,
+    "positions": [],
+    "empty": [],
+    "prices": {},
+    "unreadable": [],
+    "totalUsd": "0",
+    "integrity": {
+     "batches": 0,
+     "confirmed": 0,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 0
+    },
+    "lookback": 400000,
+    "yields": null,
+    "answer": {
+     "question": "How much do I have on Aave?",
+     "intent": "unsupported",
+     "entities": {
+      "tokens": [],
+      "vaults": [],
+      "protocols": [],
+      "unsupported": [
+       "aave"
+      ]
+     },
+     "text": "I do not read Aave positions, so I cannot tell you anything about them and I will not guess. I read native PROS, USDC, WPROS and the 4 vaults of R25 and Morpho (RockawayX vault).",
+     "figures": [],
+     "sources": [],
+     "caveats": [],
+     "known": false
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "classify-question",
+      "summary": "“How much do I have on Aave?” is a unsupported question.",
+      "uses": [],
+      "output": {
+       "intent": "unsupported"
+      }
+     },
+     {
+      "n": 2,
+      "actor": "agent",
+      "name": "answer",
+      "summary": "I do not read Aave positions, so I cannot tell you anything about them and I will not guess. I read native PROS, USDC, WPROS and the 4 vaults of R25 and Morpho (RockawayX vault).",
+      "uses": [],
+      "output": {
+       "figures": 0
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "totalUsdText": "$0.00"
+   }
+  }
+ ]
+}

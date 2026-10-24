@@ -1,0 +1,4 @@
+[
+  { "id": "r25-wallet", "label": "A smart-contract wallet with USDC idle in the wallet and positions in two R25 vaults", "wallet": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f" },
+  { "id": "rockaway-wallet", "label": "A wallet with a position in the RockawayX (Morpho) vault and some PROS", "wallet": "0x62a0e4b7fd967fab5be1a733c09b22ebc4510673" }
+]
