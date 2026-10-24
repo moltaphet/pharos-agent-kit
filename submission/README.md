@@ -31,6 +31,7 @@ These cover code every task stands on (MCP client, rate limiting, request tracin
 - [test/submission.test.js](../test/submission.test.js)
 - [test/testnet-report.test.js](../test/testnet-report.test.js)
 - [test/trace.test.js](../test/trace.test.js)
+- [test/ui-css.test.js](../test/ui-css.test.js)
 - [test/ui-forms.test.js](../test/ui-forms.test.js)
 
 Run everything with `npm test`.

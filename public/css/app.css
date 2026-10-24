@@ -332,10 +332,15 @@ input, select { padding: 9px 11px; border: 1px solid var(--border-2); border-rad
 .verdict.ok { background: var(--ok-bg); color: var(--ok); } .verdict.warn { background: var(--warn-bg); color: var(--warn); } .verdict.bad { background: var(--bad-bg); color: var(--bad); } .verdict.info { background: var(--accent-bg); color: var(--accent); }
 .verdict small { font-weight: 500; opacity: .9; }
 .steps-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-.steps-list li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 11px; background: var(--bg); }
-.steps-list .si { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; background: var(--surface-2); color: var(--muted); }
-.steps-list .si.ok { background: var(--ok); color: var(--bg); } .steps-list .si.bad { background: var(--bad); color: var(--bg); } .steps-list .si.warn { background: var(--warn); color: var(--bg); }
-.steps-list p { margin: 2px 0 0; color: var(--muted); font-size: 13.5px; overflow-wrap: anywhere; }
+.steps-list > li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 11px; background: var(--bg); }
+.steps-list > li > .si { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; background: var(--surface-2); color: var(--muted); }
+.steps-list > li > .si.ok { background: var(--ok); color: var(--bg); } .steps-list > li > .si.bad { background: var(--bad); color: var(--bg); } .steps-list > li > .si.warn { background: var(--warn); color: var(--bg); }
+.steps-list > li > div > p { margin: 2px 0 0; color: var(--muted); font-size: 13.5px; overflow-wrap: anywhere; }
+/* An answer pasted into a step is ordinary prose: its bullets are not steps, so they must not inherit the step grid. */
+.steps-list .answer { margin: 8px 0 12px; color: var(--text); font-size: 14px; }
+.steps-list .answer p, .steps-list .answer li { color: var(--text); font-size: 14px; margin: 0 0 8px; }
+.steps-list .answer ul { margin: 0 0 10px; padding-left: 20px; }
+.steps-list .answer li { display: list-item; padding: 0; border: 0; background: none; }
 .num { font-variant-numeric: tabular-nums; }
 .gauge { height: 10px; border-radius: 99px; background: var(--surface-2); overflow: hidden; margin: 8px 0 4px; }
 .gauge i { display: block; height: 100%; border-radius: 99px; background: var(--ok); }

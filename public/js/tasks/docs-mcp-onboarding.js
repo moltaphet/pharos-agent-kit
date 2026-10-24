@@ -52,7 +52,9 @@ export const content = {
   ],
 };
 
-const ICON = { pending: '·', running: '…', ok: '✓', gap: '✗', error: '!' };
+// A "gap" is a FINDING (the docs and the live network disagree, which is what this task looks for), not a failure of the tool:
+// it is amber and marked ≠. Only a question that could not be asked at all is an error (red, !).
+const ICON = { pending: '·', running: '…', ok: '✓', gap: '≠', error: '!' };
 
 export function mount(root, { slug }) {
   root.innerHTML = `
@@ -67,10 +69,10 @@ export function mount(root, { slug }) {
 
   const stepHtml = (s, st) => {
     const r = st.result;
-    return `<li><span class="si ${st.state === 'ok' ? 'ok' : st.state === 'gap' ? 'bad' : st.state === 'error' ? 'warn' : ''}">${ICON[st.state]}</span>
-      <div><b>${esc(s.goal)}</b> ${st.state === 'gap' ? '<span class="tpill bad">gap</span>' : st.state === 'ok' ? '<span class="tpill ok">checks pass</span>' : st.state === 'running' ? '<span class="tpill info">asking…</span>' : st.state === 'error' ? '<span class="tpill warn">error</span>' : ''}
+    return `<li><span class="si ${st.state === 'ok' ? 'ok' : st.state === 'gap' ? 'warn' : st.state === 'error' ? 'bad' : ''}">${ICON[st.state]}</span>
+      <div><b>${esc(s.goal)}</b> ${st.state === 'gap' ? '<span class="tpill warn">docs gap found</span>' : st.state === 'ok' ? '<span class="tpill ok">checks pass</span>' : st.state === 'running' ? '<span class="tpill info">asking…</span>' : st.state === 'error' ? '<span class="tpill bad">could not be asked</span>' : ''}
       <p><i>${esc(s.question)}</i></p>
-      ${r ? `<details><summary>Answer and checks</summary><div class="answer">${md(r.answer)}</div><ul class="steps-list">${r.checks.map((c) => `<li><span class="si ${c.ok === true ? 'ok' : c.ok === false ? 'bad' : ''}">${c.ok === true ? '✓' : c.ok === false ? '✗' : '·'}</span><div>${esc(c.name)}<p>${esc(c.detail)}</p></div></li>`).join('')}</ul></details>` : ''}
+      ${r ? `<details><summary>Answer and checks</summary><div class="answer">${md(r.answer)}</div><ul class="steps-list">${r.checks.map((c) => `<li><span class="si ${c.ok === true ? 'ok' : c.ok === false ? 'warn' : ''}">${c.ok === true ? '✓' : c.ok === false ? '≠' : '·'}</span><div>${esc(c.name)}<p>${esc(c.detail)}</p></div></li>`).join('')}</ul></details>` : ''}
       ${st.error ? `<p class="bad">${esc(st.error)}</p>` : ''}</div></li>`;
   };
 
@@ -151,7 +153,8 @@ export function mount(root, { slug }) {
       rep.end({ status: 'ok', summary: `${res.data.markdown.split('\n').length} lines` });
 
       const gaps = results.filter((r) => r.gap);
-      const summary = `<div class="verdict ${gaps.length ? 'warn' : 'ok'}">${results.length} questions asked · ${gaps.length} documentation gap${gaps.length === 1 ? '' : 's'} found<small>each backed by a check against the live network</small></div>`;
+      const failed = state.filter((s) => s.state === 'error').length;
+      const summary = `<div class="verdict ${failed ? 'bad' : gaps.length ? 'warn' : 'ok'}">${results.length} questions asked · ${gaps.length} documentation gap${gaps.length === 1 ? '' : 's'} found${failed ? ` · ${failed} could not be asked` : ''}<small>${failed ? `A gap is a finding, backed by a check against the live network. ${failed === 1 ? 'One question' : `${failed} questions`} got no answer from Docs MCP (slow or unavailable) and ${failed === 1 ? 'is' : 'are'} not in this count: press Run again.` : 'A gap is a finding, not an error: the docs and the live network disagree, and each one is backed by a check against the network.'}</small></div>`;
       paint(summary);
       out.insertAdjacentHTML(
         'beforeend',
