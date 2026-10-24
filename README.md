@@ -1,6 +1,6 @@
 # pharos-agent-kit
 
-Twelve working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
+Thirteen working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
 **Season of AI** tasks, plus a site where each one can be tested and inspected:
 **https://pharos-agent-kit.vercel.app**
 
@@ -22,6 +22,7 @@ Per-task proof links, repo links and the requirements each task was built agains
 | 10 | Batch Executor (Skill) | `skills/pharos-batch-executor/` | Pharos mainnet | prepared, unsigned; its plan is checked against real Atlantic testnet transactions |
 | 11 | Policy Gatekeeper (Skill) | `skills/pharos-policy-gatekeeper/` | Chain MCP for the clock; Atlantic testnet for the real run | decides and logs only; in front of a real testnet wallet it allowed 2 requests (sent) and denied 6 (never sent), and the chain confirms it |
 | 12 | Skill + Chain MCP Flow (Skill) | `skills/pharos-transfer-preflight/` | Pharos mainnet through Chain MCP | prepares an unsigned transfer after the Policy Gatekeeper and Dry-Run Executor Skills agree; sends nothing; five recorded runs pinned to mainnet blocks can be replayed |
+| 13 | Docs MCP + Chain MCP Agent | `agents/docs-chain-mcp-agent/` | Developer Docs MCP + Pharos mainnet through Chain MCP | read-only: explains a function from the docs, calls it with eth_call, reads the value the way the docs say; sends nothing |
 
 **Safety.** The skills in `skills/` never take a key: they read, simulate, or prepare unsigned transactions. Nothing in
 this repository sends a transaction to Pharos **mainnet**. Real execution happens in two places, and neither involves real money:

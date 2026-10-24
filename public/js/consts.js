@@ -18,6 +18,7 @@ export const TASK_FOLDERS = {
   'batch-executor': 'skills/pharos-batch-executor',
   'policy-gatekeeper': 'skills/pharos-policy-gatekeeper',
   'skill-chain-mcp-flow': 'skills/pharos-transfer-preflight',
+  'docs-chain-mcp-agent': 'agents/docs-chain-mcp-agent',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

@@ -12,6 +12,7 @@ import * as trendWatcher from './trend-watcher.js';
 import * as batchExecutor from './batch-executor.js';
 import * as policyGatekeeper from './policy-gatekeeper.js';
 import * as skillChainMcpFlow from './skill-chain-mcp-flow.js';
+import * as docsChainMcpAgent from './docs-chain-mcp-agent.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -23,4 +24,5 @@ export const TASK_MODULES = {
   'batch-executor': batchExecutor,
   'policy-gatekeeper': policyGatekeeper,
   'skill-chain-mcp-flow': skillChainMcpFlow,
+  'docs-chain-mcp-agent': docsChainMcpAgent,
 };

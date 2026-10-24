@@ -39,6 +39,7 @@ const PROOF = {
   'trend-watcher': { how: 'Persistent multi-observation trend rule on real chain history; restarts lose nothing and duplicate nothing.' },
   'batch-executor': { how: 'Plans a Multicall3 batch with a gas comparison; real Atlantic testnet transactions show the plan against reality.', tx: () => testnet.batch.calls.batched.transaction },
   'skill-chain-mcp-flow': { how: 'One sentence runs Chain MCP and two Skills end to end on Pharos mainnet; the same request is READY at a Thursday block and STOP at a Saturday block because the chain’s clock decides. Five recorded runs pinned to blocks, replayable.' },
+  'docs-chain-mcp-agent': { how: 'Explains a contract function from Developer Docs MCP (with sources), calls it on Pharos mainnet through Chain MCP, reads the value the way the docs say, cross-checked against decimals(), and confirms every read on the public RPC. Five recorded real cases pinned to a block, replayable.' },
   'policy-gatekeeper': { how: 'Policy (spend limit, allowlist, time window) in front of a real wallet: 2 requests allowed and sent on Atlantic, 6 denied by named rules and never sent; the chain confirms it. Hash-chained audit log, re-verified on load.', tx: () => gatekeeper.transactions[0] },
 };
 

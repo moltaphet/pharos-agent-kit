@@ -370,6 +370,48 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  sec('13 Docs MCP + Chain MCP Agent');
+  const SLUG = 'docs-chain-mcp-agent';
+  const ex = (await run(SLUG, { example: '1' })).body?.data?.cases;
+  check('five example cases are served', ex?.length === 5);
+  const agent = (c, extra = {}) => run(SLUG, { contract: c.contract, function: c.function, args: (c.args ?? []).join(','), block: c.block, ...extra }).then((r) => r.body?.data?.agent);
+  const publicCall = async (to, data, block) => (await (await fetch('https://rpc.pharos.xyz', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params: [{ to, data }, '0x' + block.toString(16)] }) })).json()).result;
+  const btc = ex.find((c) => c.id === 'btc-feed');
+  const a = await agent(btc);
+  const rpcRaw = BigInt(await publicCall(btc.contract, '0x50d25bcd', btc.block)).toString();
+  check('BTC/USD feed: EXPLAINED, the docs are cited, and the raw value equals the public RPC at the same block', a?.verdict?.status === 'explained' && a.explanation?.sources?.some((x) => x.cited) && a.call?.values?.[0]?.text === rpcRaw, `${a?.call?.values?.[0]?.text} vs ${rpcRaw}`);
+  check('BTC/USD feed: read the way the docs say (18 decimals, BTC/USD), confirmed by decimals(), freshness asked for by the explanation', a?.interpretation?.value?.scaled === '80,683.130407' && a.interpretation.value.unit === 'BTC/USD' && a.interpretation.checks.every((c) => c.ok) && a.followUps?.some((f) => f.fn === 'decimals()' && f.value === '18'), JSON.stringify(a?.interpretation?.value));
+  check('the explanation came before the call and decided the follow-ups: docs step < call < follow-ups, steps numbered 1..n', a?.steps?.every((s, i) => s.n === i + 1) && a.steps.findIndex((s) => s.actor === 'docs-mcp') < a.steps.findIndex((s) => s.actor === 'chain-mcp' && s.name === 'eth_call') && a.steps.findIndex((s) => s.name === 'eth_call') < a.steps.findIndex((s) => /^follow-up/.test(s.name)));
+  check('every read was repeated on the public RPC and confirmed at the same block', a?.integrity?.checked >= 2 && a.integrity.inconclusive === 0 && a.integrity.confirmed + a.integrity.resolved === a.integrity.checked, JSON.stringify(a?.integrity));
+  const pros = await agent(ex.find((c) => c.id === 'pros-feed'));
+  check('the SAME function on another contract (PROS/USD) is explained too', pros?.verdict?.status === 'explained' && pros.interpretation?.value?.scaled === '0.65401925' && pros.request.contract !== a.request.contract);
+  const usdc = await agent(ex.find((c) => c.id === 'usdc-supply'));
+  check('a DIFFERENT function (USDC totalSupply) is explained, the scale confirmed by decimals() = 6', usdc?.verdict?.status === 'explained' && usdc.interpretation?.value?.scaled === '25,285,059.533609' && usdc.followUps?.some((f) => f.fn === 'decimals()' && f.value === '6'));
+  const wp = await agent(ex.find((c) => c.id === 'wpros-balance'));
+  check('a function with an argument (WPROS balanceOf(pair)) is encoded and called', wp?.verdict?.status === 'explained' && wp.call?.values?.[0]?.text === '67631379885632' && wp.request.args.length === 1);
+  const t0 = await agent(ex.find((c) => c.id === 'pair-token0'));
+  check('a function the docs do not cover is shown raw, with no meaning invented', ['unexplained', 'general-only'].includes(t0?.verdict?.status) && t0.interpretation?.value === null && t0.call?.values?.[0]?.text === '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0', t0?.verdict?.status);
+  const rec = (await run(SLUG, { recorded: '1' })).body?.data?.demo;
+  check('recorded demo: five cases pinned to block 21,100,000', rec?.cases?.length === 5 && rec.cases.every((c) => c.block === 21100000));
+  for (const id of ['btc-feed', 'wpros-balance']) {
+    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const c = rp?.comparison;
+    check(`replay "${id}": same raw value, every chain answer both runs made identical to the recording`, c?.sameRawValue === true && c.chainAnswers.compared >= 3 && c.chainAnswers.identical === c.chainAnswers.compared, `${c?.chainAnswers?.identical}/${c?.chainAnswers?.compared}`);
+  }
+  const noCode = await agent({ contract: '0x0000000000000000000000000000000000000001', function: 'latestAnswer()(int256)', args: [] });
+  check('an address with no contract: STOP before the docs are asked', noCode?.verdict?.stage === 'contract' && noCode.docsCalls === 0);
+  check('a function the contract does not have: STOP at the call (the explanation was still fetched)', (await agent({ contract: btc.contract, function: 'nothingHere()(uint256)', args: [], block: btc.block }))?.verdict?.status === 'stop');
+  check('bad address rejected with 400', is400(await run(SLUG, { contract: '0x12', function: 'latestAnswer()(int256)' })));
+  check('bad signature rejected with 400', is400(await run(SLUG, { contract: btc.contract, function: 'latestAnswer(' })));
+  check('unsupported type rejected with 400', is400(await run(SLUG, { contract: btc.contract, function: 'f(uint256[])(uint256)' })));
+  check('wrong number of arguments rejected with 400', is400(await run(SLUG, { contract: btc.contract, function: 'balanceOf(address)(uint256)' })));
+  check('block beyond the head rejected with 400', is400(await run(SLUG, { contract: btc.contract, function: 'latestAnswer()(int256)', block: 999999999 })));
+  check('non-numeric block rejected with 400', is400(await run(SLUG, { contract: btc.contract, function: 'latestAnswer()(int256)', block: 'abc' })));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+  check('GET without a contract rejected with 400', is400(await run(SLUG)));
+});
+
+await guard(async () => {
   sec('Cross-cutting');
   check('unknown task slug rejected with 400', is400(await run('nope')));
   check('prototype-pollution slug rejected with 400', is400(await run('__proto__')) && is400(await run('constructor')));

@@ -178,3 +178,29 @@ test('sources say whether the answer itself cites them or they are only related'
   assert.equal(bySlug['validator-node-deployment'], false); // only in the server's own list
   assert.ok(r.sources[0].cited, 'cited pages come first');
 });
+
+// buildResult with `mentions`: for a question about one specific function or address, the answer itself must name it and link a docs page.
+test('mentions: an answer that names the function and links a docs page is an explanation, even if the search snippets never contain the name', () => {
+  const askText = '`latestAnswer()` returns the price. See [Feeds](/tooling-and-infrastructure/oracles/chainlink-pe).\n\n# Sources\n\n- [Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe)';
+  const searchText = 'Title: Unrelated\nLink: https://docs.pharos.xyz/x\nContent: nothing about it';
+  const r = buildResult({ question: 'What does latestAnswer() do on 0xabc?', askText, searchText, mentions: ['latestAnswer', '0xabc'] });
+  assert.equal(r.found, true);
+  assert.equal(r.sources[0].cited, true);
+});
+
+test('mentions: an answer that names neither, or links no docs page, is not shown as the explanation', () => {
+  const other = buildResult({ question: 'q', askText: 'Pharos is a Layer 1. See [About](/introduction/readme).', searchText: '', mentions: ['latestAnswer'] });
+  assert.equal(other.found, false);
+  assert.match(other.reason, /mentions none of/);
+  const unlinked = buildResult({ question: 'q', askText: '`latestAnswer()` returns a price.', searchText: 'Title: T\nLink: https://docs.pharos.xyz/x\nContent: y', mentions: ['latestAnswer'] });
+  assert.equal(unlinked.found, false);
+  assert.match(unlinked.reason, /links no docs page/);
+  const refused = buildResult({ question: 'q', askText: 'I cannot find latestAnswer in the docs. See [About](/introduction/readme).', searchText: '', mentions: ['latestAnswer'] });
+  assert.equal(refused.found, false);
+  assert.equal(refused.partial !== null, true, 'the honest partial answer is kept');
+});
+
+test('without mentions buildResult behaves exactly as before', () => {
+  const r = buildResult({ question: 'how do I deploy a contract', askText: 'Use forge. See [Deploy](/deploy).', searchText: 'Title: Deploy\nLink: https://docs.pharos.xyz/deploy\nContent: how to deploy a contract' });
+  assert.equal(r.found, true);
+});

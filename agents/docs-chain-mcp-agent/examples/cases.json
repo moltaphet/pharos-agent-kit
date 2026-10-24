@@ -1,0 +1,7 @@
+[
+  { "id": "btc-feed", "label": "BTC/USD price feed: latestAnswer()", "contract": "0x8b5db228fbccf588f08b073c235254acb6791d36", "function": "latestAnswer()(int256)", "args": [], "block": 21100000 },
+  { "id": "pros-feed", "label": "PROS/USD price feed: the same function on another contract", "contract": "0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466", "function": "latestAnswer()(int256)", "args": [], "block": 21100000 },
+  { "id": "usdc-supply", "label": "USDC: totalSupply()", "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815", "function": "totalSupply()(uint256)", "args": [], "block": 21100000 },
+  { "id": "wpros-balance", "label": "WPROS: balanceOf(address), a function with an argument (the FaroSwap V2 pair)", "contract": "0x52c48d4213107b20bc583832b0d951fb9ca8f0b0", "function": "balanceOf(address)(uint256)", "args": ["0xb7d5d299c671e4a4c7c0c5a33b812185182fc417"], "block": 21100000 },
+  { "id": "pair-token0", "label": "A FaroSwap V2 pair: token0(), which the docs do not cover", "contract": "0xb7d5d299c671e4a4c7c0c5a33b812185182fc417", "function": "token0()(address)", "args": [], "block": 21100000 }
+]

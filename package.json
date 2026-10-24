@@ -1,7 +1,7 @@
 {
   "name": "pharos-agent-kit",
   "version": "0.1.0",
-  "description": "Twelve agents and Skills for Pharos (Chain MCP, Docs MCP, real testnet and fork runs), one folder per task, plus the site that tests them.",
+  "description": "Thirteen agents and Skills for Pharos (Chain MCP, Docs MCP, real testnet and fork runs), one folder per task, plus the site that tests them.",
   "type": "module",
   "license": "MIT",
   "engines": {

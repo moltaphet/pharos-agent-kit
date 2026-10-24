@@ -183,6 +183,20 @@ Requirements it was built against (the Arena's own list):
 3. A diagram or short write-up of the flow: what calls what, and in what order.
 4. A demo run showing real data moving through both tools.
 
+## 13. Docs MCP + Chain MCP Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/docs-chain-mcp-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/docs-chain-mcp-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/docs-chain-mcp-agent
+- **What the proof shows:** Explains a contract function from Developer Docs MCP (with sources), calls it on Pharos mainnet through Chain MCP, reads the value the way the docs say, cross-checked against decimals(), and confirms every read on the public RPC. Five recorded real cases pinned to a block, replayable.
+
+Requirements it was built against (the Arena's own list):
+
+1. The explanation comes from Docs MCP, with sources referenced.
+2. The agent then calls the same function on chain via Chain MCP.
+3. Interprets the result in the context of the explanation.
+4. Works for at least 2 different functions or contracts.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.
