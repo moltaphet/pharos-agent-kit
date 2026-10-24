@@ -1,5 +1,5 @@
 {
- "recordedAt": "2026-10-24T11:08:42.717Z",
+ "recordedAt": "2026-10-24T11:12:45.560Z",
  "network": {
   "name": "Pharos Pacific Mainnet",
   "chainId": 1672
@@ -25,7 +25,7 @@
     },
     "block": {
      "number": 21100000,
-     "head": 21114160,
+     "head": 21114421,
      "historical": true,
      "timestamp": 1792826792,
      "iso": "sat 2026-10-24 07:26:32 UTC"
@@ -34,11 +34,11 @@
      "status": "explained",
      "stage": "interpreted",
      "headline": "EXPLAINED AND CALLED: the docs’ explanation was applied to the live value",
-     "reason": "latestAnswer() returned 80683130407437730000000. Read the way the docs say (docs and chain agree), that is 80,683.130407 (BTC/USD)."
+     "reason": "latestAnswer() returned 80683130407437730000000. Read the way the docs say (docs and chain agree), that is 80,683.130407 (BTC/USD), last updated 46 min before this block."
     },
     "integrity": {
-     "checked": 2,
-     "confirmed": 2,
+     "checked": 3,
+     "confirmed": 3,
      "resolved": 0,
      "inconclusive": 0
     },
@@ -61,8 +61,8 @@
       "name": "get_block_number",
       "why": "The latest block, so the agent can pin everything to one block behind it",
       "input": "{}",
-      "output": "{\"blockNumber\":\"21114160\",\"blockNumberHex\":\"0x1422d30\"}",
-      "ms": 3872
+      "output": "{\"blockNumber\":\"21114421\",\"blockNumberHex\":\"0x1422e35\"}",
+      "ms": 2151
      },
      {
       "n": 3,
@@ -71,7 +71,7 @@
       "why": "The block header: its timestamp is \"now\" for any age the agent reports",
       "input": "{\"block\":21100000}",
       "output": "{\"number\":\"0x141f5e0\",\"hash\":\"0x0ba76720bd3f427269e0ae9f5295d3b30e055e635a75c73d2c3cfbc6c73a1262\",\"timestamp\":\"0x6adc5da8\",\"…\":\"rest of the header omitted\"}",
-      "ms": 408
+      "ms": 321
      },
      {
       "n": 4,
@@ -98,23 +98,23 @@
       "name": "askQuestion",
       "why": "Explain latestAnswer() on 0x8b5db228fbccf588f08b073c235254acb6791d36",
       "input": "{\"question\":\"What does latestAnswer() do on the Pharos contract 0x8b5db228fbccf588f08b073c235254acb6791d36? Explain what it returns, its units, and anything to check before using the value.\",\"goal\":\"Build on Pharos as a developer. Answer concisely: at most abo…",
-      "output": "`latestAnswer()` on `0x8b5d…1d36` returns the cached **BTC/USD price** as an `int256`. The feed uses **18 decimals**, so divide the raw integer by `10^18` to get USD per BTC.\n\nBefore using it, check freshness: the feed updates on deviation or heartbeat thresho…",
-      "ms": 13314
+      "output": "`latestAnswer()` on `0x8b5d…91d36` returns the latest **BTC/USD** price as an `int256`. The feed uses **18 decimals**, so divide the raw integer by `10^18` to get USD per BTC.\n\nBefore using it, check freshness: the feed’s timestamp is the report’s **observatio…",
+      "ms": 13307
      },
      {
       "n": 7,
       "actor": "docs-mcp",
       "name": "searchDocumentation",
-      "why": "Does the documentation mention this function or contract at all?",
-      "input": "{\"query\":\"latestAnswer 0x8b5db228fbccf588f08b073c235254acb6791d36\"}",
-      "output": "Title: Chainlink Push Engine Feeds\nLink: https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe\nContent: /// @notice Get the latest answer\nfunction latestAnswer() external view returns (int256);\n/// @notice Get the latest answer\nfunction lates…",
-      "ms": 2377
+      "why": "Does any page of the documentation list this contract address?",
+      "input": "{\"query\":\"0x8b5db228fbccf588f08b073c235254acb6791d36\"}",
+      "output": "Title: Chainlink Push Engine Feeds\nLink: https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe\nContent: SelfManagedFeedsCache\nAll feeds\n0xd9F00c86ced2De92F6B7152b0492cb28edc4B5a8\nPROS/USD\n0x0003f73a1abb2eec1ecdde915c659cbb8f0cbb030156b75dd401…",
+      "ms": 2429
      },
      {
       "n": 8,
       "actor": "agent",
       "name": "read-explanation",
-      "summary": "The docs explain latestAnswer() (1 cited page). Scale stated: 10^18; unit: BTC/USD; follow-up calls it asks for: decimals.",
+      "summary": "The docs explain latestAnswer() (1 cited page). Scale stated: 10^18; unit: BTC/USD; follow-up calls it asks for: decimals, latestTimestamp.",
       "uses": [
        6,
        7
@@ -124,7 +124,8 @@
        "scale": 18,
        "unit": "BTC/USD",
        "followUps": [
-        "decimals()(uint8)"
+        "decimals()(uint8)",
+        "latestTimestamp()(uint256)"
        ]
       }
      },
@@ -135,7 +136,7 @@
       "why": "Call latestAnswer() on the chain at block 21,100,000",
       "input": "{\"transaction\":{\"to\":\"0x8b5db228fbccf588f08b073c235254acb6791d36\",\"data\":\"0x50d25bcd\"},\"block\":21100000}",
       "output": "{\"result\":\"0x000000000000000000000000000000000000000000001115d75d0c04d3c32c80\"}",
-      "ms": 2201
+      "ms": 2115
      },
      {
       "n": 10,
@@ -144,7 +145,7 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0x8b5db228fbccf588f08b073c235254acb6791d36\",\"data\":\"0x50d25bcd\"},\"block\":21100000}",
       "output": "{\"result\":\"0x000000000000000000000000000000000000000000001115d75d0c04d3c32c80\"}",
-      "ms": 1728
+      "ms": 1946
      },
      {
       "n": 11,
@@ -165,7 +166,7 @@
       "why": "Follow-up asked for by the explanation: decimals()",
       "input": "{\"transaction\":{\"to\":\"0x8b5db228fbccf588f08b073c235254acb6791d36\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000012\"}",
-      "ms": 558
+      "ms": 559
      },
      {
       "n": 13,
@@ -174,7 +175,7 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0x8b5db228fbccf588f08b073c235254acb6791d36\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000012\"}",
-      "ms": 460
+      "ms": 607
      },
      {
       "n": 14,
@@ -189,14 +190,45 @@
      },
      {
       "n": 15,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Follow-up asked for by the explanation: latestTimestamp()",
+      "input": "{\"transaction\":{\"to\":\"0x8b5db228fbccf588f08b073c235254acb6791d36\",\"data\":\"0x8205bf6a\"},\"block\":21100000}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000006adc52e3\"}",
+      "ms": 623
+     },
+     {
+      "n": 16,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same call on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0x8b5db228fbccf588f08b073c235254acb6791d36\",\"data\":\"0x8205bf6a\"},\"block\":21100000}",
+      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000000006adc52e3\"}",
+      "ms": 731
+     },
+     {
+      "n": 17,
+      "actor": "agent",
+      "name": "follow-up latestTimestamp",
+      "summary": "the explanation says to check freshness with latestTimestamp(), so the agent calls it. latestTimestamp() = 1792824035.",
+      "uses": [
+       8,
+       15
+      ],
+      "output": null
+     },
+     {
+      "n": 18,
       "actor": "agent",
       "name": "interpret",
-      "summary": "latestAnswer() returned 80683130407437730000000. Read the way the docs say (docs and chain agree), that is 80,683.130407 (BTC/USD).",
+      "summary": "latestAnswer() returned 80683130407437730000000. Read the way the docs say (docs and chain agree), that is 80,683.130407 (BTC/USD), last updated 46 min before this block.",
       "uses": [
        8,
        9,
        12,
-       14
+       14,
+       15,
+       17
       ],
       "output": {
        "raw": "80683130407437730000000",
@@ -206,13 +238,13 @@
       }
      }
     ],
-    "chainCalls": 5,
+    "chainCalls": 6,
     "docsCalls": 2,
-    "rpcCalls": 2,
+    "rpcCalls": 3,
     "explanation": {
      "kind": "documented",
      "found": true,
-     "text": "`latestAnswer()` on `0x8b5d…1d36` returns the cached **BTC/USD price** as an `int256`. The feed uses **18 decimals**, so divide the raw integer by `10^18` to get USD per BTC.\n\nBefore using it, check freshness: the feed updates on deviation or heartbeat thresholds, and the stored timestamp is the observation time—not the transaction’s on-chain time. Read the timestamp alongside the answer and compare it with the current block timestamp against your maximum staleness limit. This pull-based feed has no aggregation rounds; `roundId` and `answeredInRound` are always `0`.\n\nSee [Chainlink Push Engine Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe) for the feed details and timestamp methods.",
+     "text": "`latestAnswer()` on `0x8b5d…91d36` returns the latest **BTC/USD** price as an `int256`. The feed uses **18 decimals**, so divide the raw integer by `10^18` to get USD per BTC.\n\nBefore using it, check freshness: the feed’s timestamp is the report’s **observation time**, not its on-chain transaction time. Compare it with the current block timestamp and enforce a staleness limit suited to your application. Read `latestTimestamp()` alongside the answer. This Pacific Mainnet feed is pull-based; `roundId` and `answeredInRound` are always `0`.\n\nSee [Chainlink Push Engine Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe).",
      "sources": [
       {
        "title": "Chainlink Push Engine Feeds",
@@ -225,11 +257,6 @@
        "cited": false
       },
       {
-       "title": "Why Pharos",
-       "url": "https://docs.pharos.xyz/introduction/why-pharos",
-       "cited": false
-      },
-      {
        "title": "Pharos Network Snapshots",
        "url": "https://docs.pharos.xyz/node-and-validator-guide/pharos-network-snapshots",
        "cited": false
@@ -238,10 +265,21 @@
        "title": "Alchemy RPC",
        "url": "https://docs.pharos.xyz/tooling-and-infrastructure/rpc/alchemy",
        "cited": false
+      },
+      {
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "cited": false
       }
      ],
      "related": [],
-     "reason": "The answer does not refuse, the keyword search matched 1 page(s) and the answer links 1 docs page(s)."
+     "reason": "The answer does not refuse, the keyword search matched 1 page(s) and the answer links 1 docs page(s).",
+     "listedIn": [
+      {
+       "title": "Chainlink Push Engine Feeds",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe"
+      }
+     ]
     },
     "analysis": {
      "scale": {
@@ -257,6 +295,11 @@
        "fn": "decimals()(uint8)",
        "why": "the explanation states a scale (18 decimals), so the contract's own decimals() is asked to confirm it",
        "quote": "The feed uses 18 decimals, so divide the raw integer by 10^18 to get USD per BTC."
+      },
+      {
+       "fn": "latestTimestamp()(uint256)",
+       "why": "the explanation says to check freshness with latestTimestamp(), so the agent calls it",
+       "quote": "Before using it, check freshness: the feed’s timestamp is the report’s observation time, not its on-chain transaction time."
       }
      ]
     },
@@ -280,6 +323,15 @@
       "step": 12,
       "agentStep": 14,
       "error": null
+     },
+     {
+      "fn": "latestTimestamp()",
+      "why": "the explanation says to check freshness with latestTimestamp(), so the agent calls it",
+      "quote": "Before using it, check freshness: the feed’s timestamp is the report’s observation time, not its on-chain transaction time.",
+      "value": "1792824035",
+      "step": 15,
+      "agentStep": 17,
+      "error": null
      }
     ],
     "interpretation": {
@@ -290,7 +342,12 @@
       "unit": "BTC/USD"
      },
      "scaleSource": "docs and chain agree",
-     "freshness": null,
+     "freshness": {
+      "timestamp": 1792824035,
+      "iso": "sat 2026-10-24 06:40:35 UTC",
+      "ageSec": 2757,
+      "text": "46 min"
+     },
      "checks": [
       {
        "name": "the documented scale matches the contract’s decimals()",
@@ -300,10 +357,15 @@
       {
        "name": "Chain MCP’s answers match the public RPC",
        "ok": true,
-       "detail": "2 of 2 reads confirmed by the public RPC at the same block"
+       "detail": "3 of 3 reads confirmed by the public RPC at the same block"
+      },
+      {
+       "name": "freshness, as the explanation asks",
+       "ok": true,
+       "detail": "latestTimestamp() is sat 2026-10-24 06:40:35 UTC, 46 min before the block it was read at; the docs name no staleness limit, so this is reported, not judged"
       }
      ],
-     "summary": "latestAnswer() returned 80683130407437730000000. Read the way the docs say (docs and chain agree), that is 80,683.130407 (BTC/USD)."
+     "summary": "latestAnswer() returned 80683130407437730000000. Read the way the docs say (docs and chain agree), that is 80,683.130407 (BTC/USD), last updated 46 min before this block."
     }
    }
   },
@@ -326,7 +388,7 @@
     },
     "block": {
      "number": 21100000,
-     "head": 21114182,
+     "head": 21114444,
      "historical": true,
      "timestamp": 1792826792,
      "iso": "sat 2026-10-24 07:26:32 UTC"
@@ -339,8 +401,8 @@
     },
     "integrity": {
      "checked": 2,
-     "confirmed": 1,
-     "resolved": 1,
+     "confirmed": 2,
+     "resolved": 0,
      "inconclusive": 0
     },
     "steps": [
@@ -362,8 +424,8 @@
       "name": "get_block_number",
       "why": "The latest block, so the agent can pin everything to one block behind it",
       "input": "{}",
-      "output": "{\"blockNumber\":\"21114182\",\"blockNumberHex\":\"0x1422d46\"}",
-      "ms": 313
+      "output": "{\"blockNumber\":\"21114444\",\"blockNumberHex\":\"0x1422e4c\"}",
+      "ms": 314
      },
      {
       "n": 3,
@@ -372,7 +434,7 @@
       "why": "The block header: its timestamp is \"now\" for any age the agent reports",
       "input": "{\"block\":21100000}",
       "output": "{\"number\":\"0x141f5e0\",\"hash\":\"0x0ba76720bd3f427269e0ae9f5295d3b30e055e635a75c73d2c3cfbc6c73a1262\",\"timestamp\":\"0x6adc5da8\",\"…\":\"rest of the header omitted\"}",
-      "ms": 319
+      "ms": 298
      },
      {
       "n": 4,
@@ -381,7 +443,7 @@
       "why": "Is there a contract at this address? (the agent asks the docs only about contracts)",
       "input": "{\"address\":\"0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\",\"block\":21100000}",
       "output": "{\"code\":\"0x608060405234801561000f575f80fd5b5060043610610111575f3560e01c80638da5cb5b1161009e578063b5ab58dc1161006e578063b5ab58dc14610280578063b633620c14610280578063e4e7a78214610293578063f2fde38b146102a6578063feaf968c146102b9575f80fd5b80638da5cb5b1461020b5780639…",
-      "ms": 338
+      "ms": 464
      },
      {
       "n": 5,
@@ -399,17 +461,17 @@
       "name": "askQuestion",
       "why": "Explain latestAnswer() on 0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
       "input": "{\"question\":\"What does latestAnswer() do on the Pharos contract 0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466? Explain what it returns, its units, and anything to check before using the value.\",\"goal\":\"Build on Pharos as a developer. Answer concisely: at most abo…",
-      "output": "`latestAnswer()` on `0x371e…f5466` returns the latest **PROS/USD price** as an `int256`. The feed uses **18 decimals**, so divide the raw value by `10^18` to get USD per PROS.\n\nBefore relying on it, check freshness: compare the feed’s observation timestamp—ava…",
-      "ms": 14267
+      "output": "`latestAnswer()` reads the latest **PROS/USD** price from this Pacific Mainnet feed and returns it as an `int256`. The feed uses **18 decimals**: divide the raw value by `10^18` to get USD per PROS.\n\nBefore using it:\n\n* Confirm you’re on **Pacific Mainnet** an…",
+      "ms": 11735
      },
      {
       "n": 7,
       "actor": "docs-mcp",
       "name": "searchDocumentation",
-      "why": "Does the documentation mention this function or contract at all?",
-      "input": "{\"query\":\"latestAnswer 0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\"}",
-      "output": "Title: Chainlink Push Engine Feeds\nLink: https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe\nContent: /// @notice Get the latest answer\nfunction latestAnswer() external view returns (int256);\n/// @notice Get the latest answer\nfunction lates…",
-      "ms": 1308
+      "why": "Does any page of the documentation list this contract address?",
+      "input": "{\"query\":\"0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\"}",
+      "output": "Title: Chainlink Push Engine Feeds\nLink: https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe\nContent: SelfManagedFeedsCache\nAll feeds\n0xd9F00c86ced2De92F6B7152b0492cb28edc4B5a8\nPROS/USD\n0x0003f73a1abb2eec1ecdde915c659cbb8f0cbb030156b75dd401…",
+      "ms": 4632
      },
      {
       "n": 8,
@@ -435,8 +497,8 @@
       "name": "eth_call",
       "why": "Call latestAnswer() on the chain at block 21,100,000",
       "input": "{\"transaction\":{\"to\":\"0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\",\"data\":\"0x50d25bcd\"},\"block\":21100000}",
-      "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000061e2ba13a7eba00\"}",
-      "ms": 2170
+      "output": "{\"result\":\"0x00000000000000000000000000000000000000000000000009138b0af0847400\"}",
+      "ms": 2566
      },
      {
       "n": 10,
@@ -445,79 +507,59 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\",\"data\":\"0x50d25bcd\"},\"block\":21100000}",
       "output": "{\"result\":\"0x00000000000000000000000000000000000000000000000009138b0af0847400\"}",
-      "ms": 1712
+      "ms": 2849
      },
      {
       "n": 11,
-      "actor": "chain-mcp",
-      "name": "eth_call",
-      "why": "The first answer differs from the public RPC: ask Chain MCP once more",
-      "input": "{\"transaction\":{\"to\":\"0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\",\"data\":\"0x50d25bcd\"},\"block\":21100000}",
-      "output": "{\"result\":\"0x00000000000000000000000000000000000000000000000009138b0af0847400\"}",
-      "ms": 629
-     },
-     {
-      "n": 12,
-      "actor": "agent",
-      "name": "read-resolved",
-      "summary": "Chain MCP's first answer differed from the public RPC; its second answer agrees with the RPC, so the first was a backend inconsistency and is discarded.",
-      "uses": [
-       9,
-       11
-      ],
-      "output": null
-     },
-     {
-      "n": 13,
       "actor": "agent",
       "name": "call-result",
       "summary": "latestAnswer() returned 654019250000000000.",
       "uses": [
-       11
+       9
       ],
       "output": {
        "raw": "0x00000000000000000000000000000000000000000000000009138b0af0847400"
       }
      },
      {
-      "n": 14,
+      "n": 12,
       "actor": "chain-mcp",
       "name": "eth_call",
       "why": "Follow-up asked for by the explanation: decimals()",
       "input": "{\"transaction\":{\"to\":\"0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000012\"}",
-      "ms": 404
+      "ms": 663
      },
      {
-      "n": 15,
+      "n": 13,
       "actor": "public-rpc",
       "name": "eth_call",
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000012\"}",
-      "ms": 495
+      "ms": 672
      },
      {
-      "n": 16,
+      "n": 14,
       "actor": "agent",
       "name": "follow-up decimals",
       "summary": "the explanation states a scale (18 decimals), so the contract's own decimals() is asked to confirm it. decimals() = 18.",
       "uses": [
        8,
-       14
+       12
       ],
       "output": null
      },
      {
-      "n": 17,
+      "n": 15,
       "actor": "agent",
       "name": "interpret",
       "summary": "latestAnswer() returned 654019250000000000. Read the way the docs say (docs and chain agree), that is 0.65401925 (PROS/USD).",
       "uses": [
        8,
-       11,
-       14,
-       16
+       9,
+       12,
+       14
       ],
       "output": {
        "raw": "654019250000000000",
@@ -527,13 +569,13 @@
       }
      }
     ],
-    "chainCalls": 6,
+    "chainCalls": 5,
     "docsCalls": 2,
     "rpcCalls": 2,
     "explanation": {
      "kind": "documented",
      "found": true,
-     "text": "`latestAnswer()` on `0x371e…f5466` returns the latest **PROS/USD price** as an `int256`. The feed uses **18 decimals**, so divide the raw value by `10^18` to get USD per PROS.\n\nBefore relying on it, check freshness: compare the feed’s observation timestamp—available through `latestAnswerTimestamp()`—with the current block timestamp, and enforce a staleness limit suitable for your use case. The timestamp reflects when the price was observed, not when it was written on-chain. This feed is on Pacific Mainnet; `roundId` and `answeredInRound` are always `0`.\n\nSee [Chainlink Push Engine Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe).",
+     "text": "`latestAnswer()` reads the latest **PROS/USD** price from this Pacific Mainnet feed and returns it as an `int256`. The feed uses **18 decimals**: divide the raw value by `10^18` to get USD per PROS.\n\nBefore using it:\n\n* Confirm you’re on **Pacific Mainnet** and the address matches the PROS/USD feed.\n* Check freshness with `latestAnswerTimestamp()` or `latestReportTimestamp()`. The timestamp is when the price was observed, not when it was written on-chain; compare it with the current block timestamp and enforce an application-appropriate staleness limit.\n* Don’t rely on round IDs for freshness: this feed is pull-based, and `roundId` and `answeredInRound` are always `0`.\n\nSee [Chainlink Push Engine Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe) for the interface and feed details.",
      "sources": [
       {
        "title": "Chainlink Push Engine Feeds",
@@ -551,23 +593,29 @@
        "cited": false
       },
       {
-       "title": "About Pharos",
-       "url": "https://docs.pharos.xyz/introduction/readme",
+       "title": "Write Your First dApp",
+       "url": "https://docs.pharos.xyz/developer-guide/foundry/write-your-first-dapp",
        "cited": false
       },
       {
-       "title": "Hemera SocialScan",
-       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/block-explorer/hemera-socialscan",
+       "title": "Write Your First dApp",
+       "url": "https://docs.pharos.xyz/developer-guide/hardhat/write-your-first-dapp",
        "cited": false
       }
      ],
      "related": [],
-     "reason": "The answer does not refuse, the keyword search matched 1 page(s) and the answer links 1 docs page(s)."
+     "reason": "The answer does not refuse, the keyword search matched 1 page(s) and the answer links 1 docs page(s).",
+     "listedIn": [
+      {
+       "title": "Chainlink Push Engine Feeds",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe"
+      }
+     ]
     },
     "analysis": {
      "scale": {
       "exp": 18,
-      "quote": "The feed uses 18 decimals, so divide the raw value by 10^18 to get USD per PROS."
+      "quote": "The feed uses 18 decimals: divide the raw value by 10^18 to get USD per PROS."
      },
      "scaleConflict": null,
      "pair": "PROS/USD",
@@ -577,14 +625,14 @@
       {
        "fn": "decimals()(uint8)",
        "why": "the explanation states a scale (18 decimals), so the contract's own decimals() is asked to confirm it",
-       "quote": "The feed uses 18 decimals, so divide the raw value by 10^18 to get USD per PROS."
+       "quote": "The feed uses 18 decimals: divide the raw value by 10^18 to get USD per PROS."
       }
      ]
     },
     "call": {
      "calldata": "0x50d25bcd",
      "raw": "0x00000000000000000000000000000000000000000000000009138b0af0847400",
-     "integrity": "resolved",
+     "integrity": "confirmed",
      "values": [
       {
        "type": "int256",
@@ -596,10 +644,10 @@
      {
       "fn": "decimals()",
       "why": "the explanation states a scale (18 decimals), so the contract's own decimals() is asked to confirm it",
-      "quote": "The feed uses 18 decimals, so divide the raw value by 10^18 to get USD per PROS.",
+      "quote": "The feed uses 18 decimals: divide the raw value by 10^18 to get USD per PROS.",
       "value": "18",
-      "step": 14,
-      "agentStep": 16,
+      "step": 12,
+      "agentStep": 14,
       "error": null
      }
     ],
@@ -621,7 +669,7 @@
       {
        "name": "Chain MCP’s answers match the public RPC",
        "ok": true,
-       "detail": "2 of 2 reads confirmed by the public RPC at the same block (1 needed a second read after a disagreement)"
+       "detail": "2 of 2 reads confirmed by the public RPC at the same block"
       }
      ],
      "summary": "latestAnswer() returned 654019250000000000. Read the way the docs say (docs and chain agree), that is 0.65401925 (PROS/USD)."
@@ -647,7 +695,7 @@
     },
     "block": {
      "number": 21100000,
-     "head": 21114207,
+     "head": 21114462,
      "historical": true,
      "timestamp": 1792826792,
      "iso": "sat 2026-10-24 07:26:32 UTC"
@@ -683,8 +731,8 @@
       "name": "get_block_number",
       "why": "The latest block, so the agent can pin everything to one block behind it",
       "input": "{}",
-      "output": "{\"blockNumber\":\"21114207\",\"blockNumberHex\":\"0x1422d5f\"}",
-      "ms": 321
+      "output": "{\"blockNumber\":\"21114462\",\"blockNumberHex\":\"0x1422e5e\"}",
+      "ms": 540
      },
      {
       "n": 3,
@@ -702,7 +750,7 @@
       "why": "Is there a contract at this address? (the agent asks the docs only about contracts)",
       "input": "{\"address\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"block\":21100000}",
       "output": "{\"code\":\"0x60806040526004361061005a5760003560e01c80635c60da1b116100435780635c60da1b146101315780638f2839701461016f578063f851a440146101af5761005a565b80633659cfe6146100645780634f1ef286146100a4575b6100626101c4565b005b34801561007057600080fd5b50610062600480360360208…",
-      "ms": 332
+      "ms": 337
      },
      {
       "n": 5,
@@ -720,17 +768,17 @@
       "name": "askQuestion",
       "why": "Explain totalSupply() on 0xc879c018db60520f4355c26ed1a6d572cdac1815",
       "input": "{\"question\":\"What does totalSupply() do on the Pharos contract 0xc879c018db60520f4355c26ed1a6d572cdac1815? Explain what it returns, its units, and anything to check before using the value.\",\"goal\":\"Build on Pharos as a developer. Answer concisely: at most abou…",
-      "output": "`totalSupply()` is a read-only ERC-20 call that returns the token’s total supply as a `uint256`. For `0xc879…1815`, the [Token Registry](/getting-started/token-registry) identifies it as Circle-deployed USDC on Pacific Mainnet.\n\nThe result is in **base units**…",
-      "ms": 11196
+      "output": "`totalSupply()` returns the contract’s current aggregate USDC supply as a `uint256`, in **raw base units**—not a human-readable USDC amount. The address is listed as Circle-deployed USDC on Pacific Mainnet in the [Token Registry](/getting-started/token-registr…",
+      "ms": 17352
      },
      {
       "n": 7,
       "actor": "docs-mcp",
       "name": "searchDocumentation",
-      "why": "Does the documentation mention this function or contract at all?",
-      "input": "{\"query\":\"totalSupply 0xc879c018db60520f4355c26ed1a6d572cdac1815\"}",
+      "why": "Does any page of the documentation list this contract address?",
+      "input": "{\"query\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\"}",
       "output": "Title: Token Registry\nLink: https://docs.pharos.xyz/getting-started/token-registry\nContent: WPROS\nWrapped PROS\n0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\n0xB197E02499e6502733C6bCE2eb39013C39A03147\n0x8B7DdE054BE9D180c1Be7FaE0874697374A49832\nUSDC (Circle Deploye…",
-      "ms": 1161
+      "ms": 1528
      },
      {
       "n": 8,
@@ -757,7 +805,7 @@
       "why": "Call totalSupply() on the chain at block 21,100,000",
       "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x18160ddd\"},\"block\":21100000}",
       "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000016ff22fddb29\"}",
-      "ms": 1696
+      "ms": 2587
      },
      {
       "n": 10,
@@ -766,7 +814,7 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x18160ddd\"},\"block\":21100000}",
       "output": "{\"result\":\"0x000000000000000000000000000000000000000000000000000016ff22fddb29\"}",
-      "ms": 1717
+      "ms": 2165
      },
      {
       "n": 11,
@@ -787,7 +835,7 @@
       "why": "Follow-up asked for by the explanation: decimals()",
       "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
-      "ms": 632
+      "ms": 664
      },
      {
       "n": 13,
@@ -796,7 +844,7 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0xc879c018db60520f4355c26ed1a6d572cdac1815\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000006\"}",
-      "ms": 586
+      "ms": 561
      },
      {
       "n": 14,
@@ -834,7 +882,7 @@
     "explanation": {
      "kind": "documented",
      "found": true,
-     "text": "`totalSupply()` is a read-only ERC-20 call that returns the token’s total supply as a `uint256`. For `0xc879…1815`, the [Token Registry](https://docs.pharos.xyz/getting-started/token-registry) identifies it as Circle-deployed USDC on Pacific Mainnet.\n\nThe result is in **base units**, not human-readable USDC. Check the contract’s `decimals()` value and divide by `10^decimals` to display tokens. The registry doesn’t list decimals for this mainnet entry, so query them rather than assuming.\n\nBefore relying on the result, confirm you’re querying Pacific Mainnet and the intended contract address. The [Rust](https://docs.pharos.xyz/developer-guide/rust) shows `totalSupply()` as a `view` call returning `uint256`.",
+     "text": "`totalSupply()` returns the contract’s current aggregate USDC supply as a `uint256`, in **raw base units**—not a human-readable USDC amount. The address is listed as Circle-deployed USDC on Pacific Mainnet in the [Token Registry](https://docs.pharos.xyz/getting-started/token-registry).\n\nBefore using it, call `decimals()` on this **same contract and network**. Convert the result to display units by dividing by `10^decimals`. The registry does not specify decimals for this mainnet address, so don’t assume them. Also confirm the network and contract address; the [Pharos Skill Engine](https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide) shows how to make read-only contract calls.",
      "sources": [
       {
        "title": "Token Registry",
@@ -842,8 +890,8 @@
        "cited": true
       },
       {
-       "title": "Rust",
-       "url": "https://docs.pharos.xyz/developer-guide/rust",
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
        "cited": true
       },
       {
@@ -853,18 +901,28 @@
        "cited": false
       },
       {
-       "title": "JSON-RPC API Methods",
-       "url": "https://docs.pharos.xyz/api-and-sdk/json-rpc-methods",
+       "title": "About Pharos",
+       "url": "https://docs.pharos.xyz/introduction/readme",
        "cited": false
       },
       {
-       "title": "Pharos Skill Engine",
-       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "title": "Why Pharos",
+       "url": "https://docs.pharos.xyz/introduction/why-pharos",
        "cited": false
       }
      ],
      "related": [],
-     "reason": "The answer does not refuse, the keyword search matched 2 page(s) and the answer links 2 docs page(s)."
+     "reason": "The answer does not refuse, the keyword search matched 2 page(s) and the answer links 2 docs page(s).",
+     "listedIn": [
+      {
+       "title": "Token Registry",
+       "url": "https://docs.pharos.xyz/getting-started/token-registry"
+      },
+      {
+       "title": "x402 Pacific Mainnet",
+       "url": "https://docs.pharos.xyz/developer-guide/x402/x402-pacific-mainnet"
+      }
+     ]
     },
     "analysis": {
      "scale": null,
@@ -876,7 +934,7 @@
       {
        "fn": "decimals()(uint8)",
        "why": "the explanation says to call decimals() before reading the value, so the agent does",
-       "quote": "Check the contract’s decimals() value and divide by 10^decimals to display tokens."
+       "quote": "Before using it, call decimals() on this same contract and network."
       }
      ]
     },
@@ -895,7 +953,7 @@
      {
       "fn": "decimals()",
       "why": "the explanation says to call decimals() before reading the value, so the agent does",
-      "quote": "Check the contract’s decimals() value and divide by 10^decimals to display tokens.",
+      "quote": "Before using it, call decimals() on this same contract and network.",
       "value": "6",
       "step": 12,
       "agentStep": 14,
@@ -945,7 +1003,7 @@
     },
     "block": {
      "number": 21100000,
-     "head": 21114221,
+     "head": 21114491,
      "historical": true,
      "timestamp": 1792826792,
      "iso": "sat 2026-10-24 07:26:32 UTC"
@@ -981,8 +1039,8 @@
       "name": "get_block_number",
       "why": "The latest block, so the agent can pin everything to one block behind it",
       "input": "{}",
-      "output": "{\"blockNumber\":\"21114221\",\"blockNumberHex\":\"0x1422d6d\"}",
-      "ms": 298
+      "output": "{\"blockNumber\":\"21114491\",\"blockNumberHex\":\"0x1422e7b\"}",
+      "ms": 323
      },
      {
       "n": 3,
@@ -991,7 +1049,7 @@
       "why": "The block header: its timestamp is \"now\" for any age the agent reports",
       "input": "{\"block\":21100000}",
       "output": "{\"number\":\"0x141f5e0\",\"hash\":\"0x0ba76720bd3f427269e0ae9f5295d3b30e055e635a75c73d2c3cfbc6c73a1262\",\"timestamp\":\"0x6adc5da8\",\"…\":\"rest of the header omitted\"}",
-      "ms": 314
+      "ms": 309
      },
      {
       "n": 4,
@@ -1000,7 +1058,7 @@
       "why": "Is there a contract at this address? (the agent asks the docs only about contracts)",
       "input": "{\"address\":\"0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\",\"block\":21100000}",
       "output": "{\"code\":\"0x60806040526004361061009c5760003560e01c8063313ce56711610064578063313ce567146102a257806370a08231146102d357806395d89b4114610338578063a9059cbb146103c8578063d0e30db01461043b578063dd62ed3e146104455761009c565b806306fdde03146100a6578063095ea7b31461013657806…",
-      "ms": 338
+      "ms": 325
      },
      {
       "n": 5,
@@ -1018,23 +1076,23 @@
       "name": "askQuestion",
       "why": "Explain balanceOf() on 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0",
       "input": "{\"question\":\"What does balanceOf(address) do on the Pharos contract 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0? Explain what it returns, its units, and anything to check before using the value.\",\"goal\":\"Build on Pharos as a developer. Answer concisely: at most…",
-      "output": "`balanceOf(address)` reads the WPROS balance for the supplied address and returns a `uint256`. The registry identifies this contract as **Wrapped PROS** on Pacific Mainnet.\n\nThe return value is in the token’s smallest units, not necessarily whole WPROS. Check …",
-      "ms": 12714
+      "output": "`0x52c4…f0b0` is listed as **WPROS**, Pharos’s wrapped PROS token. Its `balanceOf(address)` returns that account’s token balance as a raw `uint256` in the token’s smallest units—not a formatted PROS amount. See the [Token Registry](/getting-started/token-regis…",
+      "ms": 17934
      },
      {
       "n": 7,
       "actor": "docs-mcp",
       "name": "searchDocumentation",
-      "why": "Does the documentation mention this function or contract at all?",
-      "input": "{\"query\":\"balanceOf 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\"}",
+      "why": "Does any page of the documentation list this contract address?",
+      "input": "{\"query\":\"0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\"}",
       "output": "Title: Token Registry\nLink: https://docs.pharos.xyz/getting-started/token-registry\nContent: WPROS\nWrapped PROS\n0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\n0xB197E02499e6502733C6bCE2eb39013C39A03147\n0x8B7DdE054BE9D180c1Be7FaE0874697374A49832\nUSDC (Circle Deploye…",
-      "ms": 1228
+      "ms": 1265
      },
      {
       "n": 8,
       "actor": "agent",
       "name": "read-explanation",
-      "summary": "The docs explain balanceOf() (2 cited pages). Scale stated: none; unit: none; follow-up calls it asks for: decimals.",
+      "summary": "The docs explain balanceOf() (1 cited page). Scale stated: none; unit: none; follow-up calls it asks for: decimals.",
       "uses": [
        6,
        7
@@ -1055,7 +1113,7 @@
       "why": "Call balanceOf(address) on the chain at block 21,100,000",
       "input": "{\"transaction\":{\"to\":\"0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\",\"data\":\"0x70a08231000000000000000000000000b7d5d299c671e4a4c7c0c5a33b812185182fc417\"},\"block\":21100000}",
       "output": "{\"result\":\"0x00000000000000000000000000000000000000000000000000003d82a85fae40\"}",
-      "ms": 1696
+      "ms": 1547
      },
      {
       "n": 10,
@@ -1064,7 +1122,7 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\",\"data\":\"0x70a08231000000000000000000000000b7d5d299c671e4a4c7c0c5a33b812185182fc417\"},\"block\":21100000}",
       "output": "{\"result\":\"0x00000000000000000000000000000000000000000000000000003d82a85fae40\"}",
-      "ms": 1707
+      "ms": 2536
      },
      {
       "n": 11,
@@ -1085,7 +1143,7 @@
       "why": "Follow-up asked for by the explanation: decimals()",
       "input": "{\"transaction\":{\"to\":\"0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000012\"}",
-      "ms": 420
+      "ms": 484
      },
      {
       "n": 13,
@@ -1094,7 +1152,7 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0x52c48d4213107b20bc583832b0d951fb9ca8f0b0\",\"data\":\"0x313ce567\"},\"block\":21100000}",
       "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000012\"}",
-      "ms": 402
+      "ms": 549
      },
      {
       "n": 14,
@@ -1132,7 +1190,7 @@
     "explanation": {
      "kind": "documented",
      "found": true,
-     "text": "`balanceOf(address)` reads the WPROS balance for the supplied address and returns a `uint256`. The registry identifies this contract as **Wrapped PROS** on Pacific Mainnet.\n\nThe return value is in the token’s smallest units, not necessarily whole WPROS. Check this contract’s `decimals()` before converting or comparing balances; the registry does not list WPROS decimals. Also confirm you’re querying Pacific Mainnet (chain ID `1672`) and using the intended wallet address.\n\nRead more: [Token Registry](https://docs.pharos.xyz/getting-started/token-registry) and [Write Your First Token](https://docs.pharos.xyz/developer-guide/foundry/write-your-first-token).",
+     "text": "`0x52c4…f0b0` is listed as **WPROS**, Pharos’s wrapped PROS token. Its `balanceOf(address)` returns that account’s token balance as a raw `uint256` in the token’s smallest units—not a formatted PROS amount. See the [Token Registry](https://docs.pharos.xyz/getting-started/token-registry).\n\nBefore interpreting it, confirm you’re querying **Pacific Mainnet** and check the contract’s `decimals()` value. The Pacific registry entry doesn’t specify WPROS decimals, so don’t assume a scale. Divide the raw result by `10^decimals` for the human-readable amount.",
      "sources": [
       {
        "title": "Token Registry",
@@ -1140,31 +1198,34 @@
        "cited": true
       },
       {
-       "title": "Write Your First Token",
-       "url": "https://docs.pharos.xyz/developer-guide/foundry/write-your-first-token",
-       "cited": true
-      },
-      {
-       "title": "Pharos Skill Engine",
-       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
-       "content": "# Native PHRS balance\ncast balance $DEPLOYER --rpc-url $RPC --ether\n# ERC20 token balance (e.g. USDC on testnet)\ncast call 0xE0BE08c77f415F577A1B3A9aD7a1Df1479564ec8 \"balanceOf(address)(uint256)\" \\\n  $DEPLOYER --rpc-url $RPC\n# Transaction status\ncast tx 0xYOUR_TX_HASH --rpc-url $RPC\ncast receipt 0xYOUR_TX_HASH --rpc-url $RPC\n# Read any contract method\ncast call <contract> \"<method()(<returnType>)>\" --rpc-url $RPC\n",
+       "title": "About Pharos",
+       "url": "https://docs.pharos.xyz/introduction/readme",
        "cited": false
       },
       {
-       "title": "Write Your First NFT",
-       "url": "https://docs.pharos.xyz/developer-guide/foundry/write-your-first-nft",
-       "content": "Open script/InteractToken.s.sol and add the following code:\n\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.13;\nimport {Script, console} from \"forge-std/Script.sol\";\nimport {Token} from \"../src/Token.sol\";\ncontract InteractToken is Script {\n    function run() external {\n        uint256 deployerPrivateKey = vm.envUint(\"PRIVATE_KEY\");\n        vm.startBroadcast(deployerPrivateKey);\n        Token token = Token(address(0x00)); // Replace with your token contract address\n        // Check balance\n        uint256 balance = token.balanceOf(msg.sender);\n        console.log(\"Balance:\", balance);\n        // Transfer tokens\n        token.transfer(address(0x00), 100); // Replace with recipient address and amount\n        console.log(\"Tokens transferred\");\n        vm.stopBroadcast();\n    }\n}\n\nExecute the script using forge:\n\nforge script script/InteractToken.s.sol --rpc-url <PHAROS_RPC_URL> --broadcast\n",
+       "title": "Write Your First Uniswap Contract",
+       "url": "https://docs.pharos.xyz/developer-guide/hardhat/write-your-first-uniswap-contract",
        "cited": false
       },
       {
-       "title": "Rust",
-       "url": "https://docs.pharos.xyz/developer-guide/rust",
-       "content": "Open scripts/main.py and replace your deployed contract address to the variable CONTRACT_ADDRESS:\n\nfrom web3 import Web3\n# Replace Pharos RPC URL\nRPC_URL = \"<Pharos RPC URL>\"\n# Note: Replace this address to your contract address\nCONTRACT_ADDRESS = Web3.to_checksum_address(\"0x8ca06d75562be39f645b3b1ead98b15ddfd8c06f\")\nPRIVATE_KEY = \"Replace your private key\"\ncontract_abi = [\n    {\n        \"inputs\": [],\n        \"name\": \"name\",\n        \"outputs\": [{\"internalType\": \"string\", \"name\": \"\", \"type\": \"string\"}],\n        \"stateMutability\": \"pure\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [],\n        \"name\": \"symbol\",\n        \"outputs\": [{\"internalType\": \"string\", \"name\": \"\", \"type\": \"string\"}],\n        \"stateMutability\": \"pure\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [],\n        \"name\": \"decimals\",\n        \"outputs\": [{\"internalType\": \"uint8\", \"name\": \"\", \"type\": \"uint8\"}],\n        \"stateMutability\": \"pure\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [],\n        \"name\": \"totalSupply\",\n        \"outputs\": [{\"internalType\": \"uint256\", \"name\": \"\", \"type\": \"uint256\"}],\n        \"stateMutability\": \"view\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"address\", \"name\": \"owner\", \"type\": \"address\"}],\n        \"name\": \"balanceOf\",\n        \"outputs\": [{\"internalType\": \"uint256\", \"name\": \"\", \"type\": \"uint256\"}],\n        \"stateMutability\": \"view\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"address\", \"name\": \"to\", \"type\": \"address\"}, {\"internalType\": \"uint256\", \"name\": \"value\", \"type\": \"uint256\"}],\n        \"name\": \"transfer\",\n        \"outputs\": [{\"internalType\": \"bool\", \"name\": \"\", \"type\": \"bool\"}],\n        \"stateMutability\": \"nonpayable\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"address\", \"name\": \"from\", \"type\": \"address\"}, {\"internalType\": \"address\", \"name\": \"to\", \"type\": \"address\"}, {\"internalType\": \"uint256\", \"name\": \"value\", \"type\": \"uint256\"}],\n        \"name\": \"transferFrom\",\n        \"outputs\": [{\"internalType\": \"bool\", \"name\": \"\", \"type\": \"bool\"}],\n        \"stateMutability\": \"nonpayable\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"address\", \"name\": \"spender\", \"type\": \"address\"}, {\"internalType\": \"uint256\", \"name\": \"value\", \"type\": \"uint256\"}],\n        \"name\": \"approve\",\n        \"outputs\": [{\"internalType\": \"bool\", \"name\": \"\", \"type\": \"bool\"}],\n        \"stateMutability\": \"nonpayable\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"address\", \"name\": \"owner\", \"type\": \"address\"}, {\"internalType\": \"address\", \"name\": \"spender\", \"type\": \"address\"}],\n        \"name\": \"allowance\",\n        \"outputs\": [{\"internalType\": \"uint256\", \"name\": \"\", \"type\": \"uint256\"}],\n        \"stateMutability\": \"view\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"uint256\", \"name\": \"value\", \"type\": \"uint256\"}],\n        \"name\": \"mint\",\n        \"outputs\": [],\n        \"stateMutability\": \"nonpayable\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"address\", \"name\": \"to\", \"type\": \"address\"}, {\"internalType\": \"uint256\", \"name\": \"value\", \"type\": \"uint256\"}],\n        \"name\": \"mintTo\",\n        \"outputs\": [],\n        \"stateMutability\": \"nonpayable\",\n        \"type\": \"function\",\n    },\n    {\n        \"inputs\": [{\"internalType\": \"uint256\", \"name\": \"value\", \"type\": \"uint256\"}],\n        \"name\": \"burn\",\n        \"outputs\": [],\n        \"stateMutability\": \"nonpayable\",\n        \"type\": \"function\",\n    },\n]\nw3 = Web3(Web3.HTTPProvider(RPC_URL))\nprint(f\"Connected to Ethereum: {w3.is_connected()}\")\ncontract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=contract_abi)\nyour_address = w3.eth.account.from_key(PRIVATE_KEY).address\nprint(f\"Your Address: {your_address}\")\nprint(f\"Your Balance: {contract.functions.balanceOf(your_address).call()}\")\n\nExecute the script using python:\n\npython3 -m pip install web3 && python3 scripts/main.py",
+       "title": "Call EVM From WASM",
+       "url": "https://docs.pharos.xyz/developer-guide/interoperability/call-evm-from-wasm",
+       "cited": false
+      },
+      {
+       "title": "Hemera SocialScan",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/block-explorer/hemera-socialscan",
        "cited": false
       }
      ],
      "related": [],
-     "reason": "The answer does not refuse, the keyword search matched 5 page(s) and the answer links 2 docs page(s)."
+     "reason": "The answer does not refuse, the keyword search matched 1 page(s) and the answer links 1 docs page(s).",
+     "listedIn": [
+      {
+       "title": "Token Registry",
+       "url": "https://docs.pharos.xyz/getting-started/token-registry"
+      }
+     ]
     },
     "analysis": {
      "scale": null,
@@ -1176,7 +1237,7 @@
       {
        "fn": "decimals()(uint8)",
        "why": "the explanation says to call decimals() before reading the value, so the agent does",
-       "quote": "Check this contract’s decimals() before converting or comparing balances; the registry does not list WPROS decimals."
+       "quote": "Before interpreting it, confirm you’re querying Pacific Mainnet and check the contract’s decimals() value."
       }
      ]
     },
@@ -1195,7 +1256,7 @@
      {
       "fn": "decimals()",
       "why": "the explanation says to call decimals() before reading the value, so the agent does",
-      "quote": "Check this contract’s decimals() before converting or comparing balances; the registry does not list WPROS decimals.",
+      "quote": "Before interpreting it, confirm you’re querying Pacific Mainnet and check the contract’s decimals() value.",
       "value": "18",
       "step": 12,
       "agentStep": 14,
@@ -1241,16 +1302,16 @@
     },
     "block": {
      "number": 21100000,
-     "head": 21114241,
+     "head": 21114516,
      "historical": true,
      "timestamp": 1792826792,
      "iso": "sat 2026-10-24 07:26:32 UTC"
     },
     "verdict": {
-     "status": "explained",
+     "status": "general-only",
      "stage": "interpreted",
-     "headline": "EXPLAINED AND CALLED: the docs’ explanation was applied to the live value",
-     "reason": "token0() returned 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0."
+     "headline": "CALLED, BUT THE DOCS DO NOT COVER THIS CONTRACT: only a general description exists, and it was not applied",
+     "reason": "token0() returned 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0. With no applicable explanation from the docs, the agent shows the value as the contract returned it and does not interpret it."
     },
     "integrity": {
      "checked": 1,
@@ -1277,8 +1338,8 @@
       "name": "get_block_number",
       "why": "The latest block, so the agent can pin everything to one block behind it",
       "input": "{}",
-      "output": "{\"blockNumber\":\"21114241\",\"blockNumberHex\":\"0x1422d81\"}",
-      "ms": 317
+      "output": "{\"blockNumber\":\"21114516\",\"blockNumberHex\":\"0x1422e94\"}",
+      "ms": 298
      },
      {
       "n": 3,
@@ -1287,7 +1348,7 @@
       "why": "The block header: its timestamp is \"now\" for any age the agent reports",
       "input": "{\"block\":21100000}",
       "output": "{\"number\":\"0x141f5e0\",\"hash\":\"0x0ba76720bd3f427269e0ae9f5295d3b30e055e635a75c73d2c3cfbc6c73a1262\",\"timestamp\":\"0x6adc5da8\",\"…\":\"rest of the header omitted\"}",
-      "ms": 312
+      "ms": 342
      },
      {
       "n": 4,
@@ -1296,7 +1357,7 @@
       "why": "Is there a contract at this address? (the agent asks the docs only about contracts)",
       "input": "{\"address\":\"0xb7d5d299c671e4a4c7c0c5a33b812185182fc417\",\"block\":21100000}",
       "output": "{\"code\":\"0x608060405234801561001057600080fd5b50600436106101e55760003560e01c806370a082311161010f578063a9059cbb116100a2578063d21220a711610071578063d21220a7146105ba578063d505accf146105c2578063dd62ed3e14610613578063fff6cae914610641576101e5565b8063a9059cbb146105585…",
-      "ms": 949
+      "ms": 478
      },
      {
       "n": 5,
@@ -1314,29 +1375,29 @@
       "name": "askQuestion",
       "why": "Explain token0() on 0xb7d5d299c671e4a4c7c0c5a33b812185182fc417",
       "input": "{\"question\":\"What does token0() do on the Pharos contract 0xb7d5d299c671e4a4c7c0c5a33b812185182fc417? Explain what it returns, its units, and anything to check before using the value.\",\"goal\":\"Build on Pharos as a developer. Answer concisely: at most about 120…",
-      "output": "`token0()` is typically a pair contract’s getter for the address of one underlying token—not a token amount. Its return value is an **address**, so it has no token units. The Pharos docs don’t verify this contract’s implementation, so confirm its ABI or verifi…",
-      "ms": 21506
+      "output": "For a standard AMM pair, `token0()` returns the **address of the pair’s first token**, not a token amount. It has no units; it’s an address. The docs don’t identify `0xb7d5…c417` or confirm its contract type, so I can’t verify that this specific call follows t…",
+      "ms": 17981
      },
      {
       "n": 7,
       "actor": "docs-mcp",
       "name": "searchDocumentation",
-      "why": "Does the documentation mention this function or contract at all?",
-      "input": "{\"query\":\"token0 0xb7d5d299c671e4a4c7c0c5a33b812185182fc417\"}",
+      "why": "Does any page of the documentation list this contract address?",
+      "input": "{\"query\":\"0xb7d5d299c671e4a4c7c0c5a33b812185182fc417\"}",
       "output": "",
-      "ms": 1043
+      "ms": 1280
      },
      {
       "n": 8,
       "actor": "agent",
       "name": "read-explanation",
-      "summary": "The docs explain token0() (2 cited pages). Scale stated: none; unit: none; follow-up calls it asks for: none.",
+      "summary": "The docs do not list this contract (searching them for its address finds nothing), so the answer is a general description. The agent keeps the text but applies nothing from it, and shows the raw value.",
       "uses": [
        6,
        7
       ],
       "output": {
-       "kind": "documented",
+       "kind": "general",
        "scale": null,
        "unit": null,
        "followUps": []
@@ -1349,7 +1410,7 @@
       "why": "Call token0() on the chain at block 21,100,000",
       "input": "{\"transaction\":{\"to\":\"0xb7d5d299c671e4a4c7c0c5a33b812185182fc417\",\"data\":\"0x0dfe1681\"},\"block\":21100000}",
       "output": "{\"result\":\"0x00000000000000000000000052c48d4213107b20bc583832b0d951fb9ca8f0b0\"}",
-      "ms": 1669
+      "ms": 2286
      },
      {
       "n": 10,
@@ -1358,7 +1419,7 @@
       "why": "Independent check: the same call on the public RPC",
       "input": "{\"transaction\":{\"to\":\"0xb7d5d299c671e4a4c7c0c5a33b812185182fc417\",\"data\":\"0x0dfe1681\"},\"block\":21100000}",
       "output": "{\"result\":\"0x00000000000000000000000052c48d4213107b20bc583832b0d951fb9ca8f0b0\"}",
-      "ms": 1764
+      "ms": 1806
      },
      {
       "n": 11,
@@ -1376,7 +1437,7 @@
       "n": 12,
       "actor": "agent",
       "name": "interpret",
-      "summary": "token0() returned 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0.",
+      "summary": "token0() returned 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0. With no applicable explanation from the docs, the agent shows the value as the contract returned it and does not interpret it.",
       "uses": [
        8,
        9
@@ -1390,9 +1451,9 @@
     "docsCalls": 2,
     "rpcCalls": 1,
     "explanation": {
-     "kind": "documented",
+     "kind": "general",
      "found": true,
-     "text": "`token0()` is typically a pair contract’s getter for the address of one underlying token—not a token amount. Its return value is an **address**, so it has no token units. The Pharos docs don’t verify this contract’s implementation, so confirm its ABI or verified source before relying on that interpretation.\n\nBefore using the address, check you’re querying the intended Pharos network and contract. Then confirm the returned address is the expected token and read its `decimals()` before interpreting any related balances or reserves; raw ERC-20 amounts use that token’s own precision.\n\nFor read calls, see [JSON-RPC API Methods](https://docs.pharos.xyz/api-and-sdk/json-rpc-methods); the [Write Your First Uniswap Contract](https://docs.pharos.xyz/developer-guide/foundry/write-your-first-uniswap-contract) is only an example implementation, not documentation for this address.",
+     "text": "For a standard AMM pair, `token0()` returns the **address of the pair’s first token**, not a token amount. It has no units; it’s an address. The docs don’t identify `0xb7d5…c417` or confirm its contract type, so I can’t verify that this specific call follows that convention.\n\nBefore using the result, confirm the network and contract code, then check the returned address’s token identity and `decimals()`—don’t assume `token0()` indicates a human-readable amount or token symbol. Pharos supports read-only calls through [JSON-RPC API Methods](https://docs.pharos.xyz/api-and-sdk/json-rpc-methods); the [Token Registry](https://docs.pharos.xyz/getting-started/token-registry) lists some known tokens and their decimals.",
      "sources": [
       {
        "title": "JSON-RPC API Methods",
@@ -1400,14 +1461,9 @@
        "cited": true
       },
       {
-       "title": "Write Your First Uniswap Contract",
-       "url": "https://docs.pharos.xyz/developer-guide/foundry/write-your-first-uniswap-contract",
+       "title": "Token Registry",
+       "url": "https://docs.pharos.xyz/getting-started/token-registry",
        "cited": true
-      },
-      {
-       "title": "Write Your First Token",
-       "url": "https://docs.pharos.xyz/developer-guide/hardhat/write-your-first-token",
-       "cited": false
       },
       {
        "title": "Rust",
@@ -1418,10 +1474,16 @@
        "title": "Canonical Contracts",
        "url": "https://docs.pharos.xyz/getting-started/canonical-contracts",
        "cited": false
+      },
+      {
+       "title": "Write Your First Token",
+       "url": "https://docs.pharos.xyz/developer-guide/hardhat/write-your-first-token",
+       "cited": false
       }
      ],
      "related": [],
-     "reason": "The answer does not refuse, the keyword search matched 0 page(s) and the answer links 2 docs page(s)."
+     "reason": "No page of the documentation lists this contract address (a search for it finds nothing), so the answer can only be a general description of such a function and nothing in it is applied to the value.",
+     "listedIn": []
     },
     "analysis": {
      "scale": null,
@@ -1454,7 +1516,7 @@
        "detail": "1 of 1 read confirmed by the public RPC at the same block"
       }
      ],
-     "summary": "token0() returned 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0."
+     "summary": "token0() returned 0x52c48d4213107b20bc583832b0d951fb9ca8f0b0. With no applicable explanation from the docs, the agent shows the value as the contract returned it and does not interpret it."
     }
    }
   }

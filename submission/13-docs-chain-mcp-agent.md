@@ -8,7 +8,7 @@
 ## Requirements it was built against (the Arena’s own list)
 
 1. The explanation comes from Docs MCP, with sources referenced.
-   - Met by: The explanation comes from Developer Docs MCP (askQuestion, plus a searchDocumentation check) and is shown in full with its sources marked cited or related; an answer that names neither the function nor the address, links no docs page, or says it cannot confirm the contract is not presented as documentation.
+   - Met by: The explanation comes from Developer Docs MCP (askQuestion) and is shown in full with its sources marked cited or related; it counts as documentation only if a documentation search for the contract’s address finds a page that lists it, and the answer names the function and links a docs page.
 2. The agent then calls the same function on chain via Chain MCP.
    - Met by: The agent then calls the same function on chain through Chain MCP (eth_call at one pinned block, repeated on the public RPC to confirm it), built from the signature you give, and decodes the result by its declared type.
 3. Interprets the result in the context of the explanation.

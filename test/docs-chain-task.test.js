@@ -34,6 +34,8 @@ test('requirement 1: the explanation is from Docs MCP, with sources, and is only
   // the function the docs do not cover is shown raw, with no meaning invented for it
   const t0 = byId('pair-token0').result;
   assert.ok(['unexplained', 'general-only'].includes(t0.verdict.status));
+  assert.equal(t0.explanation.listedIn?.length ?? 0, 0, 'no documentation page lists the pair’s address');
+  for (const id of ['btc-feed', 'pros-feed', 'usdc-supply', 'wpros-balance']) assert.ok(byId(id).result.explanation.listedIn.length >= 1, `${id}: a docs page lists the address`);
   assert.equal(t0.interpretation.value, null);
   assert.equal(t0.followUps.length, 0);
   assert.equal(t0.call.values[0].text, '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0');
@@ -55,13 +57,12 @@ test('requirement 3: the value is read the way the explanation says, and checked
   assert.equal(btc.interpretation.value.scaled, '80,683.130407');
   assert.equal(btc.interpretation.value.unit, 'BTC/USD');
   assert.equal(btc.interpretation.scaleSource, 'docs and chain agree');
-  // The explanation is generated, so one recording may ask for a freshness check and another not; across the five, the explanation drove at least one.
-  const fresh = demo.cases.filter((c) => c.result.followUps.some((f) => f.fn === 'latestTimestamp()' && f.value != null));
-  assert.ok(fresh.length >= 1, 'at least one explanation asked for the freshness check');
-  for (const c of fresh) {
+  // The explanation is generated, so one recording may ask for a freshness check and another not; where it did, the check is there and says why it was made.
+  for (const c of demo.cases.filter((x) => x.result.followUps.some((f) => f.fn === 'latestTimestamp()' && f.value != null))) {
     assert.ok(c.result.interpretation.freshness.ageSec >= 0, c.id);
     assert.ok(c.result.interpretation.checks.some((x) => /freshness/.test(x.name)), c.id);
   }
+  for (const c of demo.cases) for (const f of c.result.followUps) assert.ok(f.why.length > 20 && f.quote, `${c.id}: every follow-up call says what in the explanation asked for it`);
   assert.equal(byId('pros-feed').result.interpretation.value.scaled, '0.65401925');
   assert.equal(byId('usdc-supply').result.interpretation.value.scaled, '25,285,059.533609');
   assert.equal(byId('wpros-balance').result.interpretation.value.scaled, '0.0000676313');
@@ -149,7 +150,7 @@ const chainStub = (calls = []) => ({
   },
 });
 const rpcStub = async () => '0x' + hex(42);
-const docsStub = (text) => ({ callTool: async (name) => (name === 'askQuestion' ? text : 'Title: X\nLink: https://docs.pharos.xyz/x\nContent: y') });
+const docsStub = (text) => ({ callTool: async (name, args) => (name === 'askQuestion' ? text : `Title: X\nLink: https://docs.pharos.xyz/x\nContent: lists ${args.query}`) });
 
 test('?example and ?recorded are served; bad input is a UserError before any server is asked', async () => {
   assert.equal((await run({ q: { example: '1' }, body: null })).cases.length, 5);

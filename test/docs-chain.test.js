@@ -98,7 +98,7 @@ test('an answer that cannot confirm the contract is general knowledge, but "the 
 });
 
 // ---- the agent, end to end, on scripted servers ----------------------------------------------------------------------------------
-function servers({ rpcMode = 'mirror', answer = FEED_ANSWER, decimals = 18, timestamp = MON - 1500, balance = 80456378420027975000000n, hasDecimals = true, code = '0x6080', callFails = null, docsFails = false } = {}) {
+function servers({ listed = true, rpcMode = 'mirror', answer = FEED_ANSWER, decimals = 18, timestamp = MON - 1500, balance = 80456378420027975000000n, hasDecimals = true, code = '0x6080', callFails = null, docsFails = false } = {}) {
   const calls = [];
   const chain = {
     calls,
@@ -135,7 +135,7 @@ function servers({ rpcMode = 'mirror', answer = FEED_ANSWER, decimals = 18, time
       calls.push({ server: 'docs', name, args });
       if (docsFails) throw new Error('Docs MCP timed out');
       if (name === 'askQuestion') return answer;
-      if (name === 'searchDocumentation') return 'Title: Chainlink Push Engine Feeds\nLink: https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe\nContent: feeds';
+      if (name === 'searchDocumentation') return `Title: Chainlink Push Engine Feeds\nLink: https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe\nContent: ${listed ? `lists ${args.query}` : 'nothing relevant here'}`;
       throw new Error(`unexpected docs tool ${name}`);
     },
   };
@@ -414,4 +414,26 @@ test('a signature with no declared return type still calls the function and show
   assert.equal(r.verdict.stage, 'interpreted');
   assert.equal(r.interpretation.value, null);
   assert.match(r.interpretation.summary, /balanceOf\(address\) returned 0x/);
+});
+
+test('the docs cover a contract only if a search for its ADDRESS finds a page that lists it: a confident-sounding answer about an unlisted contract is general', async () => {
+  // the real token0() wording that fooled the phrase-based hedge detector: no "I can't confirm", but not documentation either
+  const confident = '`token0()` is typically a pair contract’s getter for the address of one underlying token. The Pharos docs don’t verify this contract’s implementation. See [JSON-RPC API Methods](/api-and-sdk/json-rpc-methods).\n\n# Sources\n\n- [JSON-RPC](https://docs.pharos.xyz/api-and-sdk/json-rpc-methods)';
+  const unlisted = await run(servers({ listed: false, answer: confident, balance: 5n }), { contract: PAIR, signature: 'token0()(uint256)' });
+  assert.equal(unlisted.explanation.kind, 'general');
+  assert.match(unlisted.explanation.reason, /No page of the documentation lists this contract address/);
+  assert.equal(unlisted.explanation.listedIn.length, 0);
+  assert.equal(unlisted.followUps.length, 0);
+  assert.equal(unlisted.interpretation.value, null);
+  // the same text, but the docs do list the address: it stands as documentation (the phrase test alone would not have caught the other case)
+  const listed = await run(servers({ listed: true, answer: confident.replace('typically ', ''), balance: 5n }), { contract: PAIR, signature: 'token0()(uint256)' });
+  assert.equal(listed.explanation.kind, 'documented');
+  assert.equal(listed.explanation.listedIn[0].title, 'Chainlink Push Engine Feeds');
+});
+
+test('the search is for the address, so what the agent asks the docs search is exactly that', async () => {
+  const s = servers();
+  await run(s);
+  const q = s.calls.find((c) => c.server === 'docs' && c.name === 'searchDocumentation');
+  assert.equal(q.args.query, FEED);
 });

@@ -379,7 +379,7 @@ await guard(async () => {
   const btc = ex.find((c) => c.id === 'btc-feed');
   const a = await agent(btc);
   const rpcRaw = BigInt(await publicCall(btc.contract, '0x50d25bcd', btc.block)).toString();
-  check('BTC/USD feed: EXPLAINED, the docs are cited, and the raw value equals the public RPC at the same block', a?.verdict?.status === 'explained' && a.explanation?.sources?.some((x) => x.cited) && a.call?.values?.[0]?.text === rpcRaw, `${a?.call?.values?.[0]?.text} vs ${rpcRaw}`);
+  check('BTC/USD feed: EXPLAINED, the docs are cited, and the raw value equals the public RPC at the same block', a?.verdict?.status === 'explained' && a.explanation?.sources?.some((x) => x.cited) && a.explanation.listedIn?.length >= 1 && a.call?.values?.[0]?.text === rpcRaw, `${a?.call?.values?.[0]?.text} vs ${rpcRaw}`);
   check('BTC/USD feed: read the way the docs say (18 decimals, BTC/USD), confirmed by decimals(), freshness asked for by the explanation', a?.interpretation?.value?.scaled === '80,683.130407' && a.interpretation.value.unit === 'BTC/USD' && a.interpretation.checks.every((c) => c.ok) && a.followUps?.some((f) => f.fn === 'decimals()' && f.value === '18'), JSON.stringify(a?.interpretation?.value));
   check('the explanation came before the call and decided the follow-ups: docs step < call < follow-ups, steps numbered 1..n', a?.steps?.every((s, i) => s.n === i + 1) && a.steps.findIndex((s) => s.actor === 'docs-mcp') < a.steps.findIndex((s) => s.actor === 'chain-mcp' && s.name === 'eth_call') && a.steps.findIndex((s) => s.name === 'eth_call') < a.steps.findIndex((s) => /^follow-up/.test(s.name)));
   check('every read was repeated on the public RPC and confirmed at the same block', a?.integrity?.checked >= 2 && a.integrity.inconclusive === 0 && a.integrity.confirmed + a.integrity.resolved === a.integrity.checked, JSON.stringify(a?.integrity));
@@ -390,7 +390,7 @@ await guard(async () => {
   const wp = await agent(ex.find((c) => c.id === 'wpros-balance'));
   check('a function with an argument (WPROS balanceOf(pair)) is encoded and called', wp?.verdict?.status === 'explained' && wp.call?.values?.[0]?.text === '67631379885632' && wp.request.args.length === 1);
   const t0 = await agent(ex.find((c) => c.id === 'pair-token0'));
-  check('a function the docs do not specifically cover shows its raw value and invents no number (the generated explanation may be general or absent)', t0?.verdict?.status !== 'stop' && t0.interpretation?.value === null && t0.call?.values?.[0]?.text === '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0', t0?.verdict?.status);
+  check('a function the docs do not specifically cover shows its raw value and invents no number (the generated explanation may be general or absent)', t0?.verdict?.status !== 'stop' && t0.interpretation?.value === null && t0.explanation?.listedIn?.length === 0 && t0.call?.values?.[0]?.text === '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0', t0?.verdict?.status);
   const rec = (await run(SLUG, { recorded: '1' })).body?.data?.demo;
   check('recorded demo: five cases pinned to block 21,100,000', rec?.cases?.length === 5 && rec.cases.every((c) => c.block === 21100000));
   for (const id of ['btc-feed', 'wpros-balance']) {
