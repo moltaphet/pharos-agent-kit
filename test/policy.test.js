@@ -55,7 +55,7 @@ test('a valid policy parses and gets a stable hash that changes when the policy 
 test('a policy needs all three rule types (the requirement), unless explicitly relaxed', () => {
   const two = policySource();
   two.rules = two.rules.filter((r) => r.type !== 'time-window');
-  assert.throws(() => parsePolicy(two), /needs all three rule types/);
+  assert.throws(() => parsePolicy(two), (e) => /needs all three rule types \(spend-limit, allowlist, time-window\); this one is missing time-window$/.test(e.message) && !/allowFew/.test(e.message), 'says what is missing, and offers no override a visitor cannot use');
   assert.equal(parsePolicy(two, { allowFewRuleTypes: true }).rules.length, 5);
 });
 

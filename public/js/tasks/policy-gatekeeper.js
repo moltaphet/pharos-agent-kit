@@ -102,7 +102,7 @@ const livePanel = makePanel({
   examples: [
     { label: 'The 8-request demo (one deny per rule type)', values: { policy: json(EXAMPLE_POLICY), requests: json(EXAMPLE_REQUESTS), tamper: '' } },
     { label: 'Same, then tamper with entry 2', values: { policy: json(EXAMPLE_POLICY), requests: json(EXAMPLE_REQUESTS), tamper: '2' } },
-    { label: 'Policy without a time window (rejected)', values: { policy: json(TWO_RULES), requests: json(EXAMPLE_REQUESTS), tamper: '' } },
+    { label: 'Policy without a time window (rejected)', rejected: true, values: { policy: json(TWO_RULES), requests: json(EXAMPLE_REQUESTS), tamper: '' } },
   ],
   title: () => 'Run requests through the gate',
   call: (v) => {

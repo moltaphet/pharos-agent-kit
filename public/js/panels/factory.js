@@ -52,13 +52,16 @@ export function makePanel(cfg) {
     const setValues = (v) => cfg.fields.forEach((f) => (el(f.name).value = v[f.name] ?? f.value ?? ''));
     setValues({ ...Object.fromEntries(cfg.fields.map((f) => [f.name, params[f.name]]).filter(([, v]) => v !== undefined)) });
     let last = null;
+    let expectRejected = false; // the visitor pressed an example that is meant to be refused: the refusal is the result, not a failure
 
     root.addEventListener('click', (e) => {
       const c = e.target.closest('[data-copy]');
       if (c && !c.closest('.log')) copyText(c.dataset.copy);
       const ex = e.target.closest('[data-ex]');
       if (ex) {
-        setValues(cfg.examples[Number(ex.dataset.ex)].values);
+        const example = cfg.examples[Number(ex.dataset.ex)];
+        setValues(example.values);
+        expectRejected = example.rejected === true;
         run();
       }
     });
@@ -73,6 +76,8 @@ export function makePanel(cfg) {
     async function run() {
       const v = values();
       last = Object.fromEntries(Object.entries(v).filter(([, x]) => x !== ''));
+      const refusalExpected = expectRejected;
+      expectRejected = false;
       const r = log.run(cfg.title ? cfg.title(v) : `Run ${slug}`);
       r.add({ kind: 'ui', title: 'You ran the task', request: v });
       out.innerHTML = '<div class="idle">Working…</div>';
@@ -93,6 +98,13 @@ export function makePanel(cfg) {
         r.end({ status: cfg.verdict?.(res.data) ?? 'ok', summary: `${cfg.summary?.(res.data) ?? 'done'} · ${calls} server call${calls === 1 ? '' : 's'}` });
       } catch (err) {
         if (err.trace) r.addTrace(err.trace, sent);
+        if (refusalExpected && err.status === 400) {
+          // Not an error: this example exists to show the refusal the task asks for.
+          r.add({ kind: 'decision', ok: false, title: `Refused, as it should be: ${err.message}`, at: sent + (err.ms ?? 0) });
+          r.end({ status: 'ok', summary: 'refused, as the task requires' });
+          out.innerHTML = `<div class="verdict ok">REFUSED, AS IT SHOULD BE<small>This example is deliberately invalid</small></div><p>${esc(err.message)}</p><p class="muted">Nothing was run: the input was refused before any request was evaluated. Edit the input and run again.</p>`;
+          return;
+        }
         r.add({ kind: 'error', title: err.message, error: err.detail ?? err.message, at: sent + (err.ms ?? 0) });
         r.end({ status: 'error', summary: err.message });
         out.innerHTML = `<p class="error">${esc(err.message)}</p>`;

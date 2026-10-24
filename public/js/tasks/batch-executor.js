@@ -76,7 +76,7 @@ const livePanel = makePanel({
     { label: 'Sync 3 pools + 1 failing action', values: { from: FROM, onFailure: 'exclude', actions: SYNC } },
     { label: 'Same, but abort on failure', values: { from: FROM, onFailure: 'abort', actions: SYNC } },
     { label: 'Three plain PROS transfers (batch costs more)', values: { from: FROM, onFailure: 'exclude', actions: NATIVE } },
-    { label: 'Include an ERC-20 transfer (refused)', values: { from: FROM, onFailure: 'exclude', actions: ERC20 } },
+    { label: 'Include an ERC-20 transfer (refused)', rejected: true, values: { from: FROM, onFailure: 'exclude', actions: ERC20 } },
   ],
   title: (v) => `Plan batch (${v.onFailure})`,
   call: (v) => ({ params: { from: v.from, onFailure: v.onFailure, actions: v.actions } }),

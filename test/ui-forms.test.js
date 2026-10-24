@@ -29,3 +29,12 @@ test('the check can fail: a default that breaks its step is caught', () => {
   const q = (Number(get('value')) - Number(get('min'))) / Number(get('step'));
   assert.ok(Math.abs(q - Math.round(q)) > 1e-9);
 });
+
+test('examples that are meant to be refused say so (rejected: true), so the page shows the refusal as the result rather than as a red error', async () => {
+  const { readFileSync } = await import('node:fs');
+  for (const f of ['policy-gatekeeper', 'batch-executor']) {
+    const src = readFileSync(new URL(`../public/js/tasks/${f}.js`, import.meta.url), 'utf8');
+    for (const m of src.matchAll(/\{ label: '([^']*\((?:rejected|refused)\))',([^\n]*)/g)) assert.match(m[2], /rejected: true/, `${f}: "${m[1]}"`);
+  }
+  assert.match(readFileSync(new URL('../public/js/panels/factory.js', import.meta.url), 'utf8'), /refusalExpected && err\.status === 400/);
+});
