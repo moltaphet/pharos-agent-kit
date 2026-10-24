@@ -402,7 +402,7 @@ await guard(async () => {
   const rec = (await run(SLUG, { recorded: '1' })).body?.data?.demo;
   check('recorded demo: five cases pinned to mainnet blocks', rec?.cases?.length === 5 && rec.cases.every((c) => Number.isInteger(c.block)));
   for (const id of ['ready', 'weekend']) {
-    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const rp = (await withRetry(() => run(SLUG, { replay: id }))).body?.data;
     const c = rp?.comparison;
     check(`replay "${id}": same verdict, and every pinned Chain MCP answer identical to the recording`, c?.sameVerdict === true && c.chainAnswers.compared >= 3 && c.chainAnswers.identical === c.chainAnswers.compared && c.sameStepCount, `${c?.chainAnswers?.identical}/${c?.chainAnswers?.compared}`);
   }
@@ -441,7 +441,7 @@ await guard(async () => {
   const rec = (await run(SLUG, { recorded: '1' })).body?.data?.demo;
   check('recorded demo: five cases pinned to block 21,100,000', rec?.cases?.length === 5 && rec.cases.every((c) => c.block === 21100000));
   for (const id of ['btc-feed', 'wpros-balance']) {
-    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const rp = (await withRetry(() => run(SLUG, { replay: id }))).body?.data;
     const c = rp?.comparison;
     check(`replay "${id}": same raw value, every chain answer both runs made identical to the recording`, c?.sameRawValue === true && c.chainAnswers.compared >= 3 && c.chainAnswers.identical === c.chainAnswers.compared, `${c?.chainAnswers?.identical}/${c?.chainAnswers?.compared}`);
   }
@@ -502,7 +502,7 @@ await guard(async () => {
   const pinned = await ask('What do I hold?', W, { block: rec?.cases?.[0]?.block });
   check('?block pins the read: the same block, the same amounts as the recording', pinned?.block?.number === rec?.cases?.[0]?.block && pinned.positions.every((x) => rec.cases[0].result.positions.find((y) => y.id === x.id)?.amountRaw === x.amountRaw));
   for (const id of ['total', 'earning']) {
-    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const rp = (await withRetry(() => run(SLUG, { replay: id }))).body?.data;
     const c = rp?.comparison;
     check(`replay "${id}": same block, every figure and every raw amount identical to the recording`, c?.sameBlock === true && c.sameText === true && c.figures.identical === c.figures.compared && c.positions.identical === c.positions.compared && c.positions.compared >= 1, `${c?.figures?.identical}/${c?.figures?.compared} figures, ${c?.positions?.identical}/${c?.positions?.compared} positions`);
   }
@@ -564,7 +564,7 @@ await guard(async () => {
   const pinned = await opt({ from: 'idle', block: recd?.demo?.cases?.[0]?.block });
   check('?block pins the read: the same block, the same decision and the same rates as the recording', pinned?.block?.number === recd?.demo?.cases?.[0]?.block && pinned.recommendation.action === recd.demo.cases[0].result.recommendation.action && pinned.candidates.every((c) => c.apy === recd.demo.cases[0].result.candidates.find((x) => x.id === c.id)?.apy));
   for (const id of ['idle-to-best', 'quarterly-stuck']) {
-    const rp = (await run(SLUG, { replay: id })).body?.data;
+    const rp = (await withRetry(() => run(SLUG, { replay: id }))).body?.data;
     const c = rp?.comparison;
     check(`replay "${id}": same action, eligibility, redeemability and rates as the recording`, c?.sameAction === true && c.candidates.identical === c.candidates.compared && c.candidates.compared >= 3, `${c?.candidates?.identical}/${c?.candidates?.compared}`);
   }

@@ -256,3 +256,11 @@ test('every candidate shows its sources and the plan shows the rates it rests on
   assert.ok(r.yields['r25-weekly'].apy > 0);
   assert.ok(r.gasTable.forkBlock > 0);
 });
+
+test('a bad source or amount is refused before the chain is asked at all', async () => {
+  const never = { callTool: async () => { throw new Error('the chain must not be asked'); } };
+  const rpc = async () => { throw new Error('the RPC must not be asked'); };
+  await assert.rejects(optimize({ chain: never, rpc, wallet: WALLET, gas: GAS, from: 'nowhere' }), (e) => e instanceof UserError && /from must be "auto", "idle" or one of/.test(e.message));
+  await assert.rejects(optimize({ chain: never, rpc, wallet: WALLET, gas: GAS, amount: '0' }), (e) => e instanceof UserError && /amount must be more than zero/.test(e.message));
+  await assert.rejects(optimize({ chain: never, rpc, wallet: WALLET, gas: GAS, amount: '1e3' }), UserError);
+});
