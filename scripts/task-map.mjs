@@ -49,10 +49,20 @@ export const TASK_MAP = [
     tests: ['portfolio.test.js', 'portfolio-task.test.js'] },
   { n: 15, slug: 'yield-optimizer', folder: TASK_FOLDERS['yield-optimizer'], entries: ['lib/yield-optimizer.js', 'lib/tasks/yield-optimizer.js', 'scripts/yield-fork-run.mjs', 'scripts/yield-demo.mjs'], data: ['reports/yield-fork-run.json', 'reports/yield-demo.json'], page: ['public/js/tasks/yield-optimizer.js'],
     tests: ['yield-optimizer.test.js', 'yield-optimizer-task.test.js'] },
+  { n: 16, slug: 'liquidation-watchdog', folder: TASK_FOLDERS['liquidation-watchdog'], entries: ['lib/liquidation.js', 'lib/tasks/liquidation-watchdog.js', 'agents/liquidation-watchdog/pharos-watchdog.js', 'scripts/liquidation-demo.mjs', 'scripts/liquidation-fork-run.mjs'], data: ['reports/liquidation-demo.json', 'reports/liquidation-fork-run.json'], page: ['public/js/tasks/liquidation-watchdog.js'],
+    tests: ['liquidation.test.js', 'liquidation-task.test.js'] },
+  { n: 17, slug: 'natural-language-payment-agent', folder: TASK_FOLDERS['natural-language-payment-agent'], entries: ['lib/payments.js', 'lib/tasks/natural-language-payment-agent.js', 'agents/natural-language-payment-agent/pharos-pay.js', 'scripts/payments-demo.mjs', 'scripts/payments-fork-run.mjs'], data: ['reports/payments-demo.json', 'reports/payments-fork-run.json'], page: ['public/js/tasks/natural-language-payment-agent.js'],
+    tests: ['payments.test.js', 'payments-task.test.js'] },
+  { n: 18, slug: 'recurring-payment-agent', folder: TASK_FOLDERS['recurring-payment-agent'], entries: ['lib/recurring.js', 'lib/tasks/recurring-payment-agent.js', 'agents/recurring-payment-agent/pharos-recurring.js', 'scripts/payments-demo.mjs', 'scripts/recurring-fork-run.mjs'], data: ['reports/recurring-demo.json', 'reports/recurring-fork-run.json'], page: ['public/js/tasks/recurring-payment-agent.js'],
+    tests: ['recurring.test.js', 'recurring-task.test.js'] },
+  { n: 19, slug: 'invoice-to-payment-agent', folder: TASK_FOLDERS['invoice-to-payment-agent'], entries: ['lib/invoice.js', 'lib/tasks/invoice-to-payment-agent.js', 'agents/invoice-to-payment-agent/pharos-invoice.js', 'scripts/payments-demo.mjs', 'scripts/payments-fork-run.mjs'], data: ['reports/payments-demo.json', 'reports/payments-fork-run.json'], page: ['public/js/tasks/invoice-to-payment-agent.js'],
+    tests: ['invoice.test.js', 'invoice-task.test.js'] },
+  { n: 20, slug: 'x402-paywalled-api', folder: TASK_FOLDERS['x402-paywalled-api'], entries: ['lib/x402.js', 'lib/tasks/x402-paywalled-api.js', 'api/x402.js', 'agents/x402-paywalled-api/server.js', 'agents/x402-paywalled-api/facilitator.js', 'agents/x402-paywalled-api/client.js', 'scripts/x402-setup.mjs', 'scripts/x402-run.mjs'], data: ['reports/x402-run.json', 'reports/x402-token-check.json', 'config/x402.json', 'contracts/TestUSDC.sol'], page: ['public/js/tasks/x402-paywalled-api.js'],
+    tests: ['x402.test.js', 'x402-task.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.
-export const SHARED_TESTS = ['abi.test.js', 'limit.test.js', 'mcp-timeout.test.js', 'md.test.js', 'rpc-chain.test.js', 'server.test.js', 'submission.test.js', 'testnet-report.test.js', 'trace.test.js', 'ui-css.test.js', 'ui-forms.test.js'];
+export const SHARED_TESTS = ['abi.test.js', 'limit.test.js', 'mcp-timeout.test.js', 'md.test.js', 'rpc-chain.test.js', 'server.test.js', 'submission.test.js', 'testnet-report.test.js', 'trace.test.js', 'ui-css.test.js', 'ui-forms.test.js', 'crypto.test.js'];
 
 // ---- import closure ----------------------------------------------------------------------------------------------------------
 const IMPORT = /(?:\bfrom\s+|\bimport\s*\(\s*|\bimport\s+)['"](\.{1,2}\/[^'"]+)['"]/g;

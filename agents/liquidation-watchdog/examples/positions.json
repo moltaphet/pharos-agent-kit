@@ -1,0 +1,46 @@
+[
+  {
+    "id": "largest-near-liquidation",
+    "label": "A $1.5M USDC loan against syzUSD, a hair above liquidation",
+    "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+    "borrower": "0xa4a57dcf7b15456b7053f10a377bdb437c073dcc"
+  },
+  {
+    "id": "second-near-liquidation",
+    "label": "Another $1.3M syzUSD loan, also critical",
+    "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+    "borrower": "0xe6a4771284342462f4d2bfbfb86db12c8f19fe7c"
+  },
+  {
+    "id": "apt-usdc",
+    "label": "A loan in a different market: APT collateral, USDC debt",
+    "marketId": "0xd834016ed49b76ffcbeb8402733e2d69b1f77d30b28d6f21c826931214ae5aea",
+    "borrower": "0x966b9dce3d091c0214ada42cedf51400df4fb257"
+  },
+  {
+    "id": "comfortable",
+    "label": "A comfortable loan (health factor about 1.5)",
+    "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+    "borrower": "0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127"
+  },
+  {
+    "id": "comfortable-strict",
+    "label": "The same loan with stricter thresholds (warn at 1.6, critical at 1.5)",
+    "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+    "borrower": "0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127",
+    "warn": 1.6,
+    "critical": 1.5
+  },
+  {
+    "id": "sample-borrower",
+    "label": "The first borrower we found in this market",
+    "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+    "borrower": "0x743d7b30661d65b41960bf6b5d1bb93cf7972a73"
+  },
+  {
+    "id": "nothing-borrowed",
+    "label": "An address with no position in the market",
+    "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+    "borrower": "0x00000000000000000000000000000000000000a1"
+  }
+]

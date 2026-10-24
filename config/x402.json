@@ -1,0 +1,13 @@
+{
+  "network": "eip155:688689",
+  "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+  "name": "USDC",
+  "version": "2",
+  "decimals": 6,
+  "payTo": "0x262927e3f2e3AD7824aa708CdF39106084988B13",
+  "payer": "0x581A4ffEd2ca1C7A1211dF2273DFf5e2AbA73fb7",
+  "deployedAtBlock": 31837182,
+  "deployTx": "0x98bfc23e932dd21e1326c1291e0facca4f5bbe82c276b92d8c8b10f9b27e1a93",
+  "mintTx": "0x34d715373a02ef97aae8445d58607197b5f277ee4dd1a43f326f450a8cdd82e1",
+  "note": "asset is a test USDC deployed for this demo (contracts/TestUSDC.sol): it is not an official token and has no value. payTo receives the payments; payer is the demo client."
+}

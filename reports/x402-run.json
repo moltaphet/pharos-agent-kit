@@ -1,0 +1,970 @@
+{
+ "recordedAt": "2026-10-24T21:27:11.011Z",
+ "network": {
+  "name": "Pharos Atlantic Testnet",
+  "chainId": 688689,
+  "caip2": "eip155:688689",
+  "rpc": "https://atlantic.dplabs-internal.com",
+  "explorer": "https://atlantic.pharosscan.xyz"
+ },
+ "token": {
+  "address": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+  "explorer": "https://atlantic.pharosscan.xyz/address/0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+  "note": "asset is a test USDC deployed for this demo (contracts/TestUSDC.sol): it is not an official token and has no value. payTo receives the payments; payer is the demo client."
+ },
+ "payTo": "0x262927e3f2e3AD7824aa708CdF39106084988B13",
+ "payer": "0x581A4ffEd2ca1C7A1211dF2273DFf5e2AbA73fb7",
+ "facilitator": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+ "routes": [
+  {
+   "route": "GET /health",
+   "price": null
+  },
+  {
+   "route": "GET /api/info",
+   "price": "0.005 USDC",
+   "amount": "5000"
+  },
+  {
+   "route": "GET /data",
+   "price": "0.01 USDC",
+   "amount": "10000"
+  }
+ ],
+ "processes": {
+  "facilitator": "x402 facilitator on http://localhost:4122 (eip155:688689, settles from 0x0ec197b8a30543c93e521a6c3f2db5d110e60850)",
+  "server": "x402 server on http://localhost:4121: GET /health (free), GET /api/info ($0.005), GET /data ($0.01); header PAYMENT-SIGNATURE",
+  "keys": "the facilitator read its key from the file named by FACILITATOR_PRIVATE_KEY_FILE; the client read the payer key from .wallet/ (EVM_PRIVATE_KEY_FILE style); no key is in code, in a command line, or in this report"
+ },
+ "challenge": {
+  "x402Version": 2,
+  "error": "PAYMENT-SIGNATURE header is required",
+  "resource": {
+   "url": "http://localhost:4121/data",
+   "description": "Paid data endpoint",
+   "mimeType": "application/json"
+  },
+  "accepts": [
+   {
+    "scheme": "exact",
+    "network": "eip155:688689",
+    "amount": "10000",
+    "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+    "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+    "maxTimeoutSeconds": 300,
+    "extra": {
+     "name": "USDC",
+     "version": "2"
+    }
+   }
+  ]
+ },
+ "settlements": [
+  {
+   "path": "/data",
+   "hash": "0x9eb8e6a214bc3dfd6a4ca5b6bc9e4b4d2cac5be84589350d305dc89f9a7694b1",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x9eb8e6a214bc3dfd6a4ca5b6bc9e4b4d2cac5be84589350d305dc89f9a7694b1",
+   "status": "success",
+   "blockNumber": 31837271,
+   "gasUsed": 65049,
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+   "value": "0",
+   "gasPaidBy": "the facilitator (the transaction’s sender)",
+   "transferFrom": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+   "transferTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+   "transferValue": "10000",
+   "payerIsNotSender": true
+  },
+  {
+   "path": "/api/info",
+   "hash": "0x897f9fb3f4807fac61c9d52bc34e35381b6b5fd4e2104cc6d389d7e6144d9fcd",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x897f9fb3f4807fac61c9d52bc34e35381b6b5fd4e2104cc6d389d7e6144d9fcd",
+   "status": "success",
+   "blockNumber": 31837277,
+   "gasUsed": 65037,
+   "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+   "to": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+   "value": "0",
+   "gasPaidBy": "the facilitator (the transaction’s sender)",
+   "transferFrom": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+   "transferTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+   "transferValue": "5000",
+   "payerIsNotSender": true
+  }
+ ],
+ "balances": {
+  "before": {
+   "payer": "1985000",
+   "payTo": "15000"
+  },
+  "afterPaid": {
+   "payer": "1970000",
+   "payTo": "30000"
+  },
+  "afterCheats": {
+   "payer": "1970000",
+   "payTo": "30000"
+  },
+  "afterVerifyOnly": {
+   "payer": "1970000",
+   "payTo": "30000"
+  }
+ },
+ "cheats": [
+  {
+   "label": "underpaid: signed for 0.005, the price is 0.01",
+   "status": 402,
+   "reason": "invalid_exact_evm_payload_authorization_value: underpaid: 5000 base units were signed but the price is 10000"
+  },
+  {
+   "label": "wrong recipient",
+   "status": 402,
+   "reason": "invalid_exact_evm_payload_recipient_mismatch: the payment goes to 0x000000000000000000000000000000000000dEaD, not to 0x262927e3f2e3ad7824aa708cdf39106084988b13"
+  },
+  {
+   "label": "expired authorization",
+   "status": 402,
+   "reason": "invalid_exact_evm_payload_authorization_valid_before: the authorization has expired (or expires in the next few seconds)"
+  },
+  {
+   "label": "forged signature: signed by another key, claiming to be the payer",
+   "status": 402,
+   "reason": "invalid_exact_evm_payload_signature: the signature was not made by authorization.from for these exact terms"
+  },
+  {
+   "label": "tampered signature",
+   "status": 402,
+   "reason": "invalid_exact_evm_payload_signature: the signature was not made by authorization.from for these exact terms"
+  },
+  {
+   "label": "no funds: a new key that holds no tokens",
+   "status": 402,
+   "reason": "invalid_exact_evm_insufficient_balance: 0xdff512d74161fca1030d091c99738d076bc4bb48 holds 0 base units, less than the 10000 to pay"
+  },
+  {
+   "label": "replay: the payment that was already settled, sent again",
+   "status": 402,
+   "reason": "invalid_exact_evm_nonce_already_used: this authorization (its nonce) was already used"
+  },
+  {
+   "label": "garbage in the payment header",
+   "status": 402,
+   "reason": "PAYMENT-SIGNATURE is not base64 JSON"
+  },
+  {
+   "label": "a payment for the cheaper route sent to the dearer one",
+   "status": 402,
+   "reason": "invalid_payment_requirements: the payment was made for a different amount than the one required"
+  }
+ ],
+ "facilitatorRoutes": {
+  "supported": {
+   "kinds": [
+    {
+     "x402Version": 2,
+     "scheme": "exact",
+     "network": "eip155:688689"
+    }
+   ],
+   "extensions": [],
+   "signers": {
+    "eip155:*": [
+     "0x0ec197b8a30543c93e521a6c3f2db5d110e60850"
+    ]
+   },
+   "assets": [
+    {
+     "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+     "name": "USDC",
+     "version": "2",
+     "decimals": 6
+    }
+   ],
+   "settles": true
+  },
+  "verifyValid": {
+   "isValid": true,
+   "payer": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7"
+  },
+  "verifyUnderpaid": {
+   "isValid": false,
+   "invalidReason": "invalid_exact_evm_payload_authorization_value",
+   "invalidMessage": "underpaid: 1 base units were signed but the price is 10000",
+   "payer": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7"
+  }
+ },
+ "requests": [
+  {
+   "label": "GET /health (free)",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/health",
+    "headers": {}
+   },
+   "response": {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "body": {
+     "status": "ok"
+    }
+   },
+   "note": null
+  },
+  {
+   "label": "GET /data with no payment",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {}
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQQVlNRU5ULVNJR05BVFVSRSBoZWFkZXIgaXMgcmVxdWlyZWQiLCJyZXNvdXJjZSI6eyJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjQxMjEvZGF0YSIsImRlc2NyaXB0aW9uIjoiUGFpZCBkYXRhIGVuZHBvaW50IiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo2ODg2ODkiLCJhbW91bnQiOiIxMDAwMCIsImFzc2V0IjoiMHhhOTUyZDdmM2RjMTdkYTg3YTcxZDFlMzM5NTgxMzliY2Q1NTY1ZWVmIiwicGF5VG8iOiIweDI2MjkyN2UzZjJlM2FkNzgyNGFhNzA4Y2RmMzkxMDYwODQ5ODhiMTMiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEQyIsInZlcnNpb24iOiIyIn19XX0="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "PAYMENT-SIGNATURE header is required",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "PAYMENT-SIGNATURE header is required",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": null
+  },
+  {
+   "label": "GET /data, paid by the client",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "steps": [
+     "GET → 402 with PAYMENT-REQUIRED",
+     "sign an EIP-3009 authorization for exactly the price",
+     "GET again with PAYMENT-SIGNATURE"
+    ]
+   },
+   "response": {
+    "status": 200,
+    "body": {
+     "message": "Hello, paid user!",
+     "timestamp": 1792877216937
+    },
+    "paymentResponse": {
+     "success": true,
+     "payer": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+     "transaction": "0x9eb8e6a214bc3dfd6a4ca5b6bc9e4b4d2cac5be84589350d305dc89f9a7694b1",
+     "network": "eip155:688689",
+     "blockNumber": 31837271,
+     "gasUsed": 65049
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "PAYMENT-SIGNATURE header is required",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "label": "GET /api/info, paid by the client",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/api/info",
+    "steps": [
+     "GET → 402 with PAYMENT-REQUIRED",
+     "sign an EIP-3009 authorization for exactly the price",
+     "GET again with PAYMENT-SIGNATURE"
+    ]
+   },
+   "response": {
+    "status": 200,
+    "body": {
+     "name": "Pharos x402 demo",
+     "network": "Pharos Atlantic Testnet",
+     "chainId": 688689,
+     "timestamp": 1792877222413
+    },
+    "paymentResponse": {
+     "success": true,
+     "payer": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+     "transaction": "0x897f9fb3f4807fac61c9d52bc34e35381b6b5fd4e2104cc6d389d7e6144d9fcd",
+     "network": "eip155:688689",
+     "blockNumber": 31837277,
+     "gasUsed": 65037
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "PAYMENT-SIGNATURE header is required",
+     "resource": {
+      "url": "http://localhost:4121/api/info",
+      "description": "Low-cost info endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "5000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "label": "underpaid: signed for 0.005, the price is 0.01",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0ZWQiOnsi… (912 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX2V4YWN0X2V2bV9wYXlsb2FkX2F1dGhvcml6YXRpb25fdmFsdWU6IHVuZGVycGFpZDogNTAwMCBiYXNlIHVuaXRzIHdlcmUgc2lnbmVkIGJ1dCB0aGUgcHJpY2UgaXMgMTAwMDAiLCJyZXNvdXJjZSI6eyJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjQxMjEvZGF0YSIsImRlc2NyaXB0aW9uIjoiUGFpZCBkYXRhIGVuZHBvaW50IiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo2ODg2ODkiLCJhbW91bnQiOiIxMDAwMCIsImFzc2V0IjoiMHhhOTUyZDdmM2RjMTdkYTg3YTcxZDFlMzM5NTgxMzliY2Q1NTY1ZWVmIiwicGF5VG8iOiIweDI2MjkyN2UzZjJlM2FkNzgyNGFhNzA4Y2RmMzkxMDYwODQ5ODhiMTMiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEQyIsInZlcnNpb24iOiIyIn19XX0="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_authorization_value: underpaid: 5000 base units were signed but the price is 10000",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_authorization_value: underpaid: 5000 base units were signed but the price is 10000",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "a correctly signed authorization for half the price"
+  },
+  {
+   "label": "wrong recipient",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0ZWQiOnsi… (912 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX2V4YWN0X2V2bV9wYXlsb2FkX3JlY2lwaWVudF9taXNtYXRjaDogdGhlIHBheW1lbnQgZ29lcyB0byAweDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMGRFYUQsIG5vdCB0byAweDI2MjkyN2UzZjJlM2FkNzgyNGFhNzA4Y2RmMzkxMDYwODQ5ODhiMTMiLCJyZXNvdXJjZSI6eyJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjQxMjEvZGF0YSIsImRlc2NyaXB0aW9uIjoiUGFpZCBkYXRhIGVuZHBvaW50IiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo2ODg2ODkiLCJhbW91bnQiOiIxMDAwMCIsImFzc2V0IjoiMHhhOTUyZDdmM2RjMTdkYTg3YTcxZDFlMzM5NTgxMzliY2Q1NTY1ZWVmIiwicGF5VG8iOiIweDI2MjkyN2UzZjJlM2FkNzgyNGFhNzA4Y2RmMzkxMDYwODQ5ODhiMTMiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEQyIsInZlcnNpb24iOiIyIn19XX0="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_recipient_mismatch: the payment goes to 0x000000000000000000000000000000000000dEaD, not to 0x262927e3f2e3ad7824aa708cdf39106084988b13",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_recipient_mismatch: the payment goes to 0x000000000000000000000000000000000000dEaD, not to 0x262927e3f2e3ad7824aa708cdf39106084988b13",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "a correctly signed authorization that pays someone else"
+  },
+  {
+   "label": "expired authorization",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0ZWQiOnsi… (912 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX2V4YWN0X2V2bV9wYXlsb2FkX2F1dGhvcml6YXRpb25fdmFsaWRfYmVmb3JlOiB0aGUgYXV0aG9yaXphdGlvbiBoYXMgZXhwaXJlZCAob3IgZXhwaXJlcyBpbiB0aGUgbmV4dCBmZXcgc2Vjb25kcykiLCJyZXNvdXJjZSI6eyJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjQxMjEvZGF0YSIsImRlc2NyaXB0aW9uIjoiUGFpZCBkYXRhIGVuZHBvaW50IiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo2ODg2ODkiLCJhbW91bnQiOiIxMDAwMCIsImFzc2V0IjoiMHhhOTUyZDdmM2RjMTdkYTg3YTcxZDFlMzM5NTgxMzliY2Q1NTY1ZWVmIiwicGF5VG8iOiIweDI2MjkyN2UzZjJlM2FkNzgyNGFhNzA4Y2RmMzkxMDYwODQ5ODhiMTMiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEQyIsInZlcnNpb24iOiIyIn19XX0="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_authorization_valid_before: the authorization has expired (or expires in the next few seconds)",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_authorization_valid_before: the authorization has expired (or expires in the next few seconds)",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "valid until ten seconds ago"
+  },
+  {
+   "label": "forged signature: signed by another key, claiming to be the payer",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0ZWQiOnsi… (912 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX2V4YWN0X2V2bV9wYXlsb2FkX3NpZ25hdHVyZTogdGhlIHNpZ25hdHVyZSB3YXMgbm90IG1hZGUgYnkgYXV0aG9yaXphdGlvbi5mcm9tIGZvciB0aGVzZSBleGFjdCB0ZXJtcyIsInJlc291cmNlIjp7InVybCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDEyMS9kYXRhIiwiZGVzY3JpcHRpb24iOiJQYWlkIGRhdGEgZW5kcG9pbnQiLCJtaW1lVHlwZSI6ImFwcGxpY2F0aW9uL2pzb24ifSwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiZWlwMTU1OjY4ODY4OSIsImFtb3VudCI6IjEwMDAwIiwiYXNzZXQiOiIweGE5NTJkN2YzZGMxN2RhODdhNzFkMWUzMzk1ODEzOWJjZDU1NjVlZWYiLCJwYXlUbyI6IjB4MjYyOTI3ZTNmMmUzYWQ3ODI0YWE3MDhjZGYzOTEwNjA4NDk4OGIxMyIsIm1heFRpbWVvdXRTZWNvbmRzIjozMDAsImV4dHJhIjp7Im5hbWUiOiJVU0RDIiwidmVyc2lvbiI6IjIifX1dfQ=="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_signature: the signature was not made by authorization.from for these exact terms",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_signature: the signature was not made by authorization.from for these exact terms",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "authorization.from is the payer; the signature is not the payer’s"
+  },
+  {
+   "label": "tampered signature",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0ZWQiOnsi… (912 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX2V4YWN0X2V2bV9wYXlsb2FkX3NpZ25hdHVyZTogdGhlIHNpZ25hdHVyZSB3YXMgbm90IG1hZGUgYnkgYXV0aG9yaXphdGlvbi5mcm9tIGZvciB0aGVzZSBleGFjdCB0ZXJtcyIsInJlc291cmNlIjp7InVybCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDEyMS9kYXRhIiwiZGVzY3JpcHRpb24iOiJQYWlkIGRhdGEgZW5kcG9pbnQiLCJtaW1lVHlwZSI6ImFwcGxpY2F0aW9uL2pzb24ifSwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiZWlwMTU1OjY4ODY4OSIsImFtb3VudCI6IjEwMDAwIiwiYXNzZXQiOiIweGE5NTJkN2YzZGMxN2RhODdhNzFkMWUzMzk1ODEzOWJjZDU1NjVlZWYiLCJwYXlUbyI6IjB4MjYyOTI3ZTNmMmUzYWQ3ODI0YWE3MDhjZGYzOTEwNjA4NDk4OGIxMyIsIm1heFRpbWVvdXRTZWNvbmRzIjozMDAsImV4dHJhIjp7Im5hbWUiOiJVU0RDIiwidmVyc2lvbiI6IjIifX1dfQ=="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_signature: the signature was not made by authorization.from for these exact terms",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_payload_signature: the signature was not made by authorization.from for these exact terms",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "the last bytes of a good signature changed"
+  },
+  {
+   "label": "no funds: a new key that holds no tokens",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0ZWQiOnsi… (912 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX2V4YWN0X2V2bV9pbnN1ZmZpY2llbnRfYmFsYW5jZTogMHhkZmY1MTJkNzQxNjFmY2ExMDMwZDA5MWM5OTczOGQwNzZiYzRiYjQ4IGhvbGRzIDAgYmFzZSB1bml0cywgbGVzcyB0aGFuIHRoZSAxMDAwMCB0byBwYXkiLCJyZXNvdXJjZSI6eyJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjQxMjEvZGF0YSIsImRlc2NyaXB0aW9uIjoiUGFpZCBkYXRhIGVuZHBvaW50IiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo2ODg2ODkiLCJhbW91bnQiOiIxMDAwMCIsImFzc2V0IjoiMHhhOTUyZDdmM2RjMTdkYTg3YTcxZDFlMzM5NTgxMzliY2Q1NTY1ZWVmIiwicGF5VG8iOiIweDI2MjkyN2UzZjJlM2FkNzgyNGFhNzA4Y2RmMzkxMDYwODQ5ODhiMTMiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEQyIsInZlcnNpb24iOiIyIn19XX0="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_insufficient_balance: 0xdff512d74161fca1030d091c99738d076bc4bb48 holds 0 base units, less than the 10000 to pay",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_insufficient_balance: 0xdff512d74161fca1030d091c99738d076bc4bb48 holds 0 base units, less than the 10000 to pay",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "a correctly signed payment from an account with no USDC"
+  },
+  {
+   "label": "replay: the payment that was already settled, sent again",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwicmVzb3VyY2UiOnsi… (1064 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX2V4YWN0X2V2bV9ub25jZV9hbHJlYWR5X3VzZWQ6IHRoaXMgYXV0aG9yaXphdGlvbiAoaXRzIG5vbmNlKSB3YXMgYWxyZWFkeSB1c2VkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cDovL2xvY2FsaG9zdDo0MTIxL2RhdGEiLCJkZXNjcmlwdGlvbiI6IlBhaWQgZGF0YSBlbmRwb2ludCIsIm1pbWVUeXBlIjoiYXBwbGljYXRpb24vanNvbiJ9LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6Njg4Njg5IiwiYW1vdW50IjoiMTAwMDAiLCJhc3NldCI6IjB4YTk1MmQ3ZjNkYzE3ZGE4N2E3MWQxZTMzOTU4MTM5YmNkNTU2NWVlZiIsInBheVRvIjoiMHgyNjI5MjdlM2YyZTNhZDc4MjRhYTcwOGNkZjM5MTA2MDg0OTg4YjEzIiwibWF4VGltZW91dFNlY29uZHMiOjMwMCwiZXh0cmEiOnsibmFtZSI6IlVTREMiLCJ2ZXJzaW9uIjoiMiJ9fV19"
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_nonce_already_used: this authorization (its nonce) was already used",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_exact_evm_nonce_already_used: this authorization (its nonce) was already used",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "the same PAYMENT-SIGNATURE as the successful /data call"
+  },
+  {
+   "label": "garbage in the payment header",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "not-base64-json!!… (17 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQQVlNRU5ULVNJR05BVFVSRSBpcyBub3QgYmFzZTY0IEpTT04iLCJyZXNvdXJjZSI6eyJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjQxMjEvZGF0YSIsImRlc2NyaXB0aW9uIjoiUGFpZCBkYXRhIGVuZHBvaW50IiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIn0sImFjY2VwdHMiOlt7InNjaGVtZSI6ImV4YWN0IiwibmV0d29yayI6ImVpcDE1NTo2ODg2ODkiLCJhbW91bnQiOiIxMDAwMCIsImFzc2V0IjoiMHhhOTUyZDdmM2RjMTdkYTg3YTcxZDFlMzM5NTgxMzliY2Q1NTY1ZWVmIiwicGF5VG8iOiIweDI2MjkyN2UzZjJlM2FkNzgyNGFhNzA4Y2RmMzkxMDYwODQ5ODhiMTMiLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiVVNEQyIsInZlcnNpb24iOiIyIn19XX0="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "PAYMENT-SIGNATURE is not base64 JSON",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "PAYMENT-SIGNATURE is not base64 JSON",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "not a payment at all"
+  },
+  {
+   "label": "a payment for the cheaper route sent to the dearer one",
+   "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:4121/data",
+    "headers": {
+     "PAYMENT-SIGNATURE": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0ZWQiOnsi… (908 chars)"
+    }
+   },
+   "response": {
+    "status": 402,
+    "headers": {
+     "content-type": "application/json",
+     "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJpbnZhbGlkX3BheW1lbnRfcmVxdWlyZW1lbnRzOiB0aGUgcGF5bWVudCB3YXMgbWFkZSBmb3IgYSBkaWZmZXJlbnQgYW1vdW50IHRoYW4gdGhlIG9uZSByZXF1aXJlZCIsInJlc291cmNlIjp7InVybCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDEyMS9kYXRhIiwiZGVzY3JpcHRpb24iOiJQYWlkIGRhdGEgZW5kcG9pbnQiLCJtaW1lVHlwZSI6ImFwcGxpY2F0aW9uL2pzb24ifSwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoiZWlwMTU1OjY4ODY4OSIsImFtb3VudCI6IjEwMDAwIiwiYXNzZXQiOiIweGE5NTJkN2YzZGMxN2RhODdhNzFkMWUzMzk1ODEzOWJjZDU1NjVlZWYiLCJwYXlUbyI6IjB4MjYyOTI3ZTNmMmUzYWQ3ODI0YWE3MDhjZGYzOTEwNjA4NDk4OGIxMyIsIm1heFRpbWVvdXRTZWNvbmRzIjozMDAsImV4dHJhIjp7Im5hbWUiOiJVU0RDIiwidmVyc2lvbiI6IjIifX1dfQ=="
+    },
+    "body": {
+     "x402Version": 2,
+     "error": "invalid_payment_requirements: the payment was made for a different amount than the one required",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    },
+    "paymentRequired": {
+     "x402Version": 2,
+     "error": "invalid_payment_requirements: the payment was made for a different amount than the one required",
+     "resource": {
+      "url": "http://localhost:4121/data",
+      "description": "Paid data endpoint",
+      "mimeType": "application/json"
+     },
+     "accepts": [
+      {
+       "scheme": "exact",
+       "network": "eip155:688689",
+       "amount": "10000",
+       "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "payTo": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+       "maxTimeoutSeconds": 300,
+       "extra": {
+        "name": "USDC",
+        "version": "2"
+       }
+      }
+     ]
+    }
+   },
+   "note": "the requirements it names (0.005) are not this route’s (0.01)"
+  }
+ ],
+ "summary": {
+  "paidRoutes": 2,
+  "freeRoutes": 1,
+  "settlements": 2,
+  "settledOnChain": 2,
+  "payToReceived": "15000",
+  "expectedPayTo": "15000",
+  "cheatsAttempted": 9,
+  "cheatsRejectedWith402": 9,
+  "tokensMovedByCheats": "0",
+  "tokensMovedByVerify": "0",
+  "payerPaidNoGas": true
+ }
+}

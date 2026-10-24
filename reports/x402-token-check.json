@@ -1,0 +1,35 @@
+{
+ "checkedAt": "2026-10-24T21:26:44.914Z",
+ "network": "Pharos Atlantic testnet (688689)",
+ "why": "The exact x402 scheme needs EIP-3009 transferWithAuthorization. The Pharos x402 guide names a test token; this checks whether it can be used.",
+ "docsToken": {
+  "token": "0xE0BE08c77f415F577A1B3A9aD7a1Df1479564ec8",
+  "codeBytes": 6005,
+  "transferWithAuthorization": false,
+  "authorizationState": false,
+  "DOMAIN_SEPARATOR": false,
+  "permit": false,
+  "mint": true,
+  "mintAttempt": "a plain caller cannot mint: reverted with 0xe2517d3f (AccessControlUnauthorizedAccount)"
+ },
+ "registryToken": {
+  "token": "0xcfC8330f4BCAB529c625D12781b1C19466A9Fc8B",
+  "codeBytes": 1798,
+  "transferWithAuthorization": false,
+  "authorizationState": false,
+  "DOMAIN_SEPARATOR": false,
+  "permit": false,
+  "mint": false,
+  "mintAttempt": "a plain caller cannot mint: reverted with 0x08c379a0"
+ },
+ "ourToken": {
+  "token": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+  "codeBytes": 2986,
+  "transferWithAuthorization": true,
+  "authorizationState": true,
+  "DOMAIN_SEPARATOR": true,
+  "permit": false,
+  "mint": true,
+  "mintAttempt": "a caller with no special role could mint"
+ }
+}

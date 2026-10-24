@@ -21,6 +21,11 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 13 | Docs MCP + Chain MCP Agent | [demo](https://pharos-agent-kit.vercel.app/#/docs-chain-mcp-agent/try) | [agents/docs-chain-mcp-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/docs-chain-mcp-agent) | [13-docs-chain-mcp-agent.md](13-docs-chain-mcp-agent.md) |
 | 14 | Portfolio Assistant | [demo](https://pharos-agent-kit.vercel.app/#/portfolio-assistant/try) | [skills/pharos-portfolio-assistant](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-portfolio-assistant) | [14-portfolio-assistant.md](14-portfolio-assistant.md) |
 | 15 | Yield Optimizer | [demo](https://pharos-agent-kit.vercel.app/#/yield-optimizer/try) | [skills/pharos-yield-optimizer](https://github.com/moltaphet/pharos-agent-kit/tree/main/skills/pharos-yield-optimizer) | [15-yield-optimizer.md](15-yield-optimizer.md) |
+| 16 | Liquidation Watchdog | [demo](https://pharos-agent-kit.vercel.app/#/liquidation-watchdog/try) | [agents/liquidation-watchdog](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/liquidation-watchdog) | [16-liquidation-watchdog.md](16-liquidation-watchdog.md) |
+| 17 | Natural-Language Payment Agent | [demo](https://pharos-agent-kit.vercel.app/#/natural-language-payment-agent/try) | [agents/natural-language-payment-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/natural-language-payment-agent) | [17-natural-language-payment-agent.md](17-natural-language-payment-agent.md) |
+| 18 | Recurring Payment Agent | [demo](https://pharos-agent-kit.vercel.app/#/recurring-payment-agent/try) | [agents/recurring-payment-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/recurring-payment-agent) | [18-recurring-payment-agent.md](18-recurring-payment-agent.md) |
+| 19 | Invoice-to-Payment Agent | [demo](https://pharos-agent-kit.vercel.app/#/invoice-to-payment-agent/try) | [agents/invoice-to-payment-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/invoice-to-payment-agent) | [19-invoice-to-payment-agent.md](19-invoice-to-payment-agent.md) |
+| 20 | x402 Paywalled API | [demo](https://pharos-agent-kit.vercel.app/#/x402-paywalled-api/try) | [agents/x402-paywalled-api](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-paywalled-api) | [20-x402-paywalled-api.md](20-x402-paywalled-api.md) |
 
 ## Tests of the shared platform
 
@@ -37,6 +42,7 @@ These cover code every task stands on (MCP client, rate limiting, request tracin
 - [test/trace.test.js](../test/trace.test.js)
 - [test/ui-css.test.js](../test/ui-css.test.js)
 - [test/ui-forms.test.js](../test/ui-forms.test.js)
+- [test/crypto.test.js](../test/crypto.test.js)
 
 Run everything with `npm test`.
 

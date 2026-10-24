@@ -1,0 +1,95 @@
+[
+  {
+    "id": "usdc",
+    "label": "Send 100 USDC to an address",
+    "text": "send 100 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "thousand",
+    "label": "Amounts like 1.5k work",
+    "text": "pay 1.5k usdc to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "sender-in-text",
+    "label": "The paying wallet written in the sentence",
+    "text": "transfer 25 USDC from 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A"
+  },
+  {
+    "id": "no-link",
+    "label": "More LINK than the wallet holds",
+    "text": "send 25 LINK to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "no-pros",
+    "label": "PROS from a wallet that holds none",
+    "text": "send 0.5 PROS to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "name",
+    "label": "A name instead of an address (asks)",
+    "text": "send 50 to bob",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "name-answered",
+    "label": "…and the answers to its questions",
+    "text": "send 50 to bob",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "answers": {
+      "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+      "token": "USDC"
+    }
+  },
+  {
+    "id": "dollars",
+    "label": "\"Dollars\" is not a token (asks)",
+    "text": "send 100 dollars to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "short-address",
+    "label": "An address with too few characters (asks)",
+    "text": "send 5 USDC to 0x12abc",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "all",
+    "label": "\"All my USDC\" (asks for an exact amount)",
+    "text": "send all my USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "two-amounts",
+    "label": "Two amounts in one sentence (asks)",
+    "text": "send 100 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A in 2 installments of 50 and 50",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "typo",
+    "label": "A mistyped character in the address (refused)",
+    "text": "send 100 USDC to 0x5A5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "to-token",
+    "label": "Sending USDC to the USDC contract itself (refused)",
+    "text": "send 100 USDC to 0xc879c018db60520f4355c26ed1a6d572cdac1815",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "too-precise",
+    "label": "More decimals than USDC has (refused)",
+    "text": "send 1.1234567 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  },
+  {
+    "id": "not-a-payment",
+    "label": "Not a payment at all",
+    "text": "what is the price of USDC?",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+  }
+]

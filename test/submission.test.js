@@ -8,10 +8,10 @@ import { REPO, buildAll } from '../scripts/make-submission.mjs';
 
 const files = buildAll();
 
-test('there is a folder for each of the 15 built tasks, each with its own README', () => {
-  assert.equal(TASK_MAP.length, 15);
-  assert.deepEqual(TASK_MAP.map((t) => t.n), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
-  assert.equal(new Set(TASK_MAP.map((t) => t.folder)).size, 15, 'no two tasks share a folder');
+test('there is a folder for each of the 20 built tasks, each with its own README', () => {
+  assert.equal(TASK_MAP.length, 20);
+  assert.deepEqual(TASK_MAP.map((t) => t.n), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+  assert.equal(new Set(TASK_MAP.map((t) => t.folder)).size, 20, 'no two tasks share a folder');
   for (const t of TASK_MAP) {
     assert.ok(existsSync(ROOT + t.folder), t.folder);
     assert.ok(scriptsOf(t).length >= 1, `${t.folder} has no script of its own`);
@@ -79,7 +79,7 @@ test('every folder link a reviewer is given opens a folder that holds the taskâ€
     assert.ok(page.includes(`${REPO}/tree/main/${t.folder}`), t.slug);
     assert.ok(existsSync(ROOT + t.folder + '/README.md'));
   }
-  assert.ok(files.get('SUBMISSION.md').split(`${REPO}/tree/main/`).length - 1 >= 15);
+  assert.ok(files.get('SUBMISSION.md').split(`${REPO}/tree/main/`).length - 1 >= 20);
 });
 
 test('dependencies are found, not hand-written: a task folder README lists the lib files it really imports', () => {

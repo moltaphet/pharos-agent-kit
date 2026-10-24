@@ -1,0 +1,1405 @@
+{
+ "recordedAt": "2026-10-24T21:50:21.913Z",
+ "network": "local anvil fork of Pharos mainnet (chain 1672): the live USDC contract, fake funds; the payer is impersonated, no key is read",
+ "schedule": {
+  "id": "rent-demo",
+  "label": "Rent, every week",
+  "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+  "payee": "0x000000000000000000000000000000000000b0b0",
+  "token": "USDC",
+  "amount": "25",
+  "frequency": "weekly",
+  "start": "2026-10-09T21:50"
+ },
+ "amountPerPeriod": "25",
+ "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+ "payee": "0x000000000000000000000000000000000000b0b0",
+ "timeline": [
+  {
+   "label": "1. first look: three periods are due",
+   "block": {
+    "number": 21155705,
+    "head": 21155707,
+    "timestamp": 1792878613,
+    "iso": "2026-10-24T21:50:13Z"
+   },
+   "clock": "2026-10-24T21:50:13Z",
+   "counts": {
+    "paid": 0,
+    "pending": 3,
+    "submitted": 0,
+    "failed": 0,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": {
+    "period": 0,
+    "kind": "prepared",
+    "reason": null,
+    "reference": "rp:rent-demo:0",
+    "retry": null,
+    "summary": [
+     "Send 25 USDC from 0x8ecdf4…24ab9f to 0x000000…00b0b0 on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x000000…00b0b0, 25000000).",
+     "Reference \"rp:rent-demo:0\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.000226 PROS (62,667 gas at 3.014172383 gwei).",
+     "Balance after: 942,917.429833 USDC."
+    ],
+    "transaction": {
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a30",
+     "gas": 75201,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a30",
+        "value": "0x0",
+        "gas": "0x125c1",
+        "chainId": "0x688"
+       }
+      ]
+     }
+    }
+   },
+   "notices": [],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518387,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155705,
+    "to": 21155705,
+    "complete": true,
+    "found": 0
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    }
+   ],
+   "chainCalls": 1,
+   "rpcCalls": 1
+  },
+  {
+   "label": "2. the signed payment is reported",
+   "block": {
+    "number": 21155712,
+    "head": 21155714,
+    "timestamp": 1792878617,
+    "iso": "2026-10-24T21:50:17Z"
+   },
+   "clock": "2026-10-24T21:50:17Z",
+   "counts": {
+    "paid": 1,
+    "pending": 2,
+    "submitted": 0,
+    "failed": 0,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "paid",
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": {
+    "period": 1,
+    "kind": "prepared",
+    "reason": null,
+    "reference": "rp:rent-demo:1",
+    "retry": null,
+    "summary": [
+     "Send 25 USDC from 0x8ecdf4…24ab9f to 0x000000…00b0b0 on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x000000…00b0b0, 25000000).",
+     "Reference \"rp:rent-demo:1\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.000097 PROS (45,296 gas at 1.790971298 gwei).",
+     "Balance after: 942,892.429833 USDC."
+    ],
+    "transaction": {
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a31",
+     "gas": 54356,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a31",
+        "value": "0x0",
+        "gas": "0xd454",
+        "chainId": "0x688"
+       }
+      ]
+     }
+    }
+   },
+   "notices": [
+    "Reported 0x66e9ec…6e7176 for period 0; the chain is read below."
+   ],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518383,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155706,
+    "to": 21155712,
+    "complete": true,
+    "found": 1
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "submitted",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "paid",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "confirmed on chain from the reported hash"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1"
+    }
+   ],
+   "chainCalls": 1,
+   "rpcCalls": 1
+  },
+  {
+   "label": "3. a payment fails on chain and is reported",
+   "block": {
+    "number": 21155719,
+    "head": 21155721,
+    "timestamp": 1792878617,
+    "iso": "2026-10-24T21:50:17Z"
+   },
+   "clock": "2026-10-24T21:50:17Z",
+   "counts": {
+    "paid": 1,
+    "pending": 1,
+    "submitted": 0,
+    "failed": 1,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "paid",
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "failed",
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+     "how": null,
+     "reason": "the transaction was mined and reverted: nothing was moved",
+     "attempts": 1
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": {
+    "period": 1,
+    "kind": "prepared",
+    "reason": null,
+    "reference": "rp:rent-demo:1",
+    "retry": "attempt 2 of 3",
+    "summary": [
+     "Send 25 USDC from 0x8ecdf4…24ab9f to 0x000000…00b0b0 on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x000000…00b0b0, 25000000).",
+     "Reference \"rp:rent-demo:1\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.000071 PROS (45,296 gas at 1.310613854 gwei).",
+     "Balance after: 942,892.429833 USDC."
+    ],
+    "transaction": {
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a31",
+     "gas": 54356,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a31",
+        "value": "0x0",
+        "gas": "0xd454",
+        "chainId": "0x688"
+       }
+      ]
+     }
+    }
+   },
+   "notices": [
+    "Reported 0x144174…011622 for period 1; the chain is read below."
+   ],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518383,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155713,
+    "to": 21155719,
+    "complete": true,
+    "found": 0
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "submitted",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "paid",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "confirmed on chain from the reported hash"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "submitted",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "failed",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+     "reason": "the transaction was mined and reverted: nothing was moved"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1",
+     "retry": true
+    }
+   ],
+   "chainCalls": 1,
+   "rpcCalls": 1
+  },
+  {
+   "label": "4. the retry landed; nobody reported it",
+   "block": {
+    "number": 21155726,
+    "head": 21155728,
+    "timestamp": 1792878617,
+    "iso": "2026-10-24T21:50:17Z"
+   },
+   "clock": "2026-10-24T21:50:17Z",
+   "counts": {
+    "paid": 2,
+    "pending": 1,
+    "submitted": 0,
+    "failed": 0,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "paid",
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "paid",
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found-on-chain",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": {
+    "period": 2,
+    "kind": "prepared",
+    "reason": null,
+    "reference": "rp:rent-demo:2",
+    "retry": null,
+    "summary": [
+     "Send 25 USDC from 0x8ecdf4…24ab9f to 0x000000…00b0b0 on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x000000…00b0b0, 25000000).",
+     "Reference \"rp:rent-demo:2\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.00006 PROS (45,296 gas at 1.121978361 gwei).",
+     "Balance after: 942,867.429833 USDC."
+    ],
+    "transaction": {
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a32",
+     "gas": 54356,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a32",
+        "value": "0x0",
+        "gas": "0xd454",
+        "chainId": "0x688"
+       }
+      ]
+     }
+    }
+   },
+   "notices": [],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518383,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155720,
+    "to": 21155726,
+    "complete": true,
+    "found": 1
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "submitted",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "paid",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "confirmed on chain from the reported hash"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "submitted",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "failed",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+     "reason": "the transaction was mined and reverted: nothing was moved"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1",
+     "retry": true
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "paid",
+     "period": 1,
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found on chain: it was not reported"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "prepared",
+     "period": 2,
+     "reference": "rp:rent-demo:2"
+    }
+   ],
+   "chainCalls": 1,
+   "rpcCalls": 1
+  },
+  {
+   "label": "5. the payer’s balance is below the amount",
+   "block": {
+    "number": 21155729,
+    "head": 21155731,
+    "timestamp": 1792878617,
+    "iso": "2026-10-24T21:50:17Z"
+   },
+   "clock": "2026-10-24T21:50:17Z",
+   "counts": {
+    "paid": 2,
+    "pending": 1,
+    "submitted": 0,
+    "failed": 0,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "paid",
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "paid",
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found-on-chain",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": {
+    "period": 2,
+    "kind": "blocked-insufficient-balance",
+    "reason": "holds 0.00001 USDC but 25 USDC was asked: 24.99999 USDC short",
+    "reference": null,
+    "retry": null,
+    "summary": null
+   },
+   "notices": [],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518383,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155727,
+    "to": 21155729,
+    "complete": true,
+    "found": 0
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "submitted",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "paid",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "confirmed on chain from the reported hash"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "submitted",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "failed",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+     "reason": "the transaction was mined and reverted: nothing was moved"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1",
+     "retry": true
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "paid",
+     "period": 1,
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found on chain: it was not reported"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "prepared",
+     "period": 2,
+     "reference": "rp:rent-demo:2"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155729,
+     "type": "blocked",
+     "period": 2,
+     "reason": "holds 0.00001 USDC but 25 USDC was asked: 24.99999 USDC short"
+    }
+   ],
+   "chainCalls": 1,
+   "rpcCalls": 1
+  },
+  {
+   "label": "6. the balance is restored",
+   "block": {
+    "number": 21155732,
+    "head": 21155734,
+    "timestamp": 1792878617,
+    "iso": "2026-10-24T21:50:17Z"
+   },
+   "clock": "2026-10-24T21:50:17Z",
+   "counts": {
+    "paid": 2,
+    "pending": 1,
+    "submitted": 0,
+    "failed": 0,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "paid",
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "paid",
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found-on-chain",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "pending",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": {
+    "period": 2,
+    "kind": "already-prepared",
+    "reason": null,
+    "reference": "rp:rent-demo:2",
+    "retry": null,
+    "summary": [
+     "Send 25 USDC from 0x8ecdf4…24ab9f to 0x000000…00b0b0 on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x000000…00b0b0, 25000000).",
+     "Reference \"rp:rent-demo:2\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.000057 PROS (45,296 gas at 1.054743319 gwei).",
+     "Balance after: 475 USDC."
+    ],
+    "transaction": {
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a32",
+     "gas": 54356,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000000b0b000000000000000000000000000000000000000000000000000000000017d784072703a72656e742d64656d6f3a32",
+        "value": "0x0",
+        "gas": "0xd454",
+        "chainId": "0x688"
+       }
+      ]
+     }
+    }
+   },
+   "notices": [
+    "Period 2 already has a prepared transaction: here it is again, unchanged. Sign it once."
+   ],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518383,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155730,
+    "to": 21155732,
+    "complete": true,
+    "found": 0
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "submitted",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "paid",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "confirmed on chain from the reported hash"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "submitted",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "failed",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+     "reason": "the transaction was mined and reverted: nothing was moved"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1",
+     "retry": true
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "paid",
+     "period": 1,
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found on chain: it was not reported"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "prepared",
+     "period": 2,
+     "reference": "rp:rent-demo:2"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155729,
+     "type": "blocked",
+     "period": 2,
+     "reason": "holds 0.00001 USDC but 25 USDC was asked: 24.99999 USDC short"
+    }
+   ],
+   "chainCalls": 1,
+   "rpcCalls": 1
+  },
+  {
+   "label": "7. the last payment is signed and reported",
+   "block": {
+    "number": 21155739,
+    "head": 21155741,
+    "timestamp": 1792878617,
+    "iso": "2026-10-24T21:50:17Z"
+   },
+   "clock": "2026-10-24T21:50:17Z",
+   "counts": {
+    "paid": 3,
+    "pending": 0,
+    "submitted": 0,
+    "failed": 0,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "paid",
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "paid",
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found-on-chain",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "paid",
+     "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": null,
+   "notices": [
+    "Reported 0xa9d6e8…bfafc7 for period 2; the chain is read below."
+   ],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518383,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155733,
+    "to": 21155739,
+    "complete": true,
+    "found": 1
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "submitted",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "paid",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "confirmed on chain from the reported hash"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "submitted",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "failed",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+     "reason": "the transaction was mined and reverted: nothing was moved"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1",
+     "retry": true
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "paid",
+     "period": 1,
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found on chain: it was not reported"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "prepared",
+     "period": 2,
+     "reference": "rp:rent-demo:2"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155729,
+     "type": "blocked",
+     "period": 2,
+     "reason": "holds 0.00001 USDC but 25 USDC was asked: 24.99999 USDC short"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155739,
+     "type": "submitted",
+     "period": 2,
+     "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155739,
+     "type": "paid",
+     "period": 2,
+     "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7",
+     "how": "confirmed on chain from the reported hash"
+    }
+   ],
+   "chainCalls": 0,
+   "rpcCalls": 0
+  },
+  {
+   "label": "8. a look after everything is paid",
+   "block": {
+    "number": 21155742,
+    "head": 21155744,
+    "timestamp": 1792878617,
+    "iso": "2026-10-24T21:50:17Z"
+   },
+   "clock": "2026-10-24T21:50:17Z",
+   "counts": {
+    "paid": 3,
+    "pending": 0,
+    "submitted": 0,
+    "failed": 0,
+    "upcoming": 2
+   },
+   "periods": [
+    {
+     "period": 0,
+     "dueIso": "2026-10-09T21:50:00Z",
+     "status": "paid",
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 1,
+     "dueIso": "2026-10-16T21:50:00Z",
+     "status": "paid",
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found-on-chain",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 2,
+     "dueIso": "2026-10-23T21:50:00Z",
+     "status": "paid",
+     "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7",
+     "how": "reported",
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 3,
+     "dueIso": "2026-10-30T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    },
+    {
+     "period": 4,
+     "dueIso": "2026-11-06T21:50:00Z",
+     "status": "upcoming",
+     "hash": null,
+     "how": null,
+     "reason": null,
+     "attempts": null
+    }
+   ],
+   "action": null,
+   "notices": [],
+   "next": {
+    "period": 3,
+    "due": 1793397000,
+    "dueIso": "2026-10-30T21:50:00Z",
+    "inSeconds": 518383,
+    "text": "25 USDC on 2026-10-30T21:50:00Z"
+   },
+   "scan": {
+    "from": 21155740,
+    "to": 21155742,
+    "complete": true,
+    "found": 0
+   },
+   "history": [
+    {
+     "at": "2026-10-24T21:50:13Z",
+     "block": 21155705,
+     "type": "prepared",
+     "period": 0,
+     "reference": "rp:rent-demo:0"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "submitted",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "paid",
+     "period": 0,
+     "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+     "how": "confirmed on chain from the reported hash"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155712,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "submitted",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "failed",
+     "period": 1,
+     "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+     "reason": "the transaction was mined and reverted: nothing was moved"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155719,
+     "type": "prepared",
+     "period": 1,
+     "reference": "rp:rent-demo:1",
+     "retry": true
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "paid",
+     "period": 1,
+     "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+     "how": "found on chain: it was not reported"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155726,
+     "type": "prepared",
+     "period": 2,
+     "reference": "rp:rent-demo:2"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155729,
+     "type": "blocked",
+     "period": 2,
+     "reason": "holds 0.00001 USDC but 25 USDC was asked: 24.99999 USDC short"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155739,
+     "type": "submitted",
+     "period": 2,
+     "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7"
+    },
+    {
+     "at": "2026-10-24T21:50:17Z",
+     "block": 21155739,
+     "type": "paid",
+     "period": 2,
+     "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7",
+     "how": "confirmed on chain from the reported hash"
+    }
+   ],
+   "chainCalls": 0,
+   "rpcCalls": 0
+  }
+ ],
+ "guards": [
+  {
+   "what": "report a second transaction for a period that is already paid, using a hash that was already used",
+   "refused": true,
+   "message": "that transaction was already reported for period 0: one transaction pays one period"
+  },
+  {
+   "what": "report the retry’s hash for a different period",
+   "refused": true,
+   "message": "that transaction was already reported for period 1: one transaction pays one period"
+  },
+  {
+   "what": "report a malformed hash",
+   "refused": true,
+   "message": "the transaction hash must be 0x followed by 64 hex characters"
+  }
+ ],
+ "proof": {
+  "payeeBalances": {
+   "afterFirstPayment": "25000000",
+   "whileOneTransferHadFailed": "25000000",
+   "afterFailureReported": "25000000",
+   "whilePayerWasPoor": "50000000",
+   "final": "75000000"
+  },
+  "expectedFinal": "75000000",
+  "transfersOnChain": [
+   {
+    "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+    "amount": "25000000",
+    "reference": "rp:rent-demo:0"
+   },
+   {
+    "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+    "amount": "25000000",
+    "reference": "rp:rent-demo:1"
+   },
+   {
+    "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7",
+    "amount": "25000000",
+    "reference": "rp:rent-demo:2"
+   }
+  ],
+  "transfersPerReference": {
+   "rp:rent-demo:0": 1,
+   "rp:rent-demo:1": 1,
+   "rp:rent-demo:2": 1
+  },
+  "exactlyOncePerPeriod": true,
+  "failedTransaction": {
+   "hash": "0x1441742cf3070139f9c268eb4cc716b4d4d7c5881a08acb27895721239011622",
+   "status": "reverted",
+   "gasUsed": 30000
+  },
+  "firstTransaction": {
+   "hash": "0x66e9eca50cb3d838442d3de5e4370039de68d5d94321873be2044be4b46e7176",
+   "status": "success",
+   "gasUsed": 62179
+  },
+  "retryTransaction": {
+   "hash": "0x33e722fb827c522cada34d6e2082de5a3124133edc0f8f40a8442829fee1972b",
+   "status": "success",
+   "gasUsed": 45079
+  },
+  "lastTransaction": {
+   "hash": "0xa9d6e894626d504c854d1312fb64ab5ae898dfba364fab0d9ca04b89fcbfafc7",
+   "status": "success",
+   "gasUsed": 45079
+  },
+  "periodsPaid": 3
+ }
+}

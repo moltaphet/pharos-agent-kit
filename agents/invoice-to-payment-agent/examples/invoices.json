@@ -1,0 +1,63 @@
+[
+  {
+    "id": "text-usdc",
+    "label": "A plain-text invoice in USDC",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "INVOICE #INV-2026-0042\nDate: 2026-10-20\nDue: 2027-11-19\nFrom: Harbor Studio Ltd\nPay to: 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\n\nBrand sprint \u2013 2 x 100.00 USDC\nDomain and hosting \u2013 40.00 USDC\nSubtotal: 240.00 USDC\nTax: 10.00 USDC\nTotal due: 250.00 USDC"
+  },
+  {
+    "id": "json-usdc",
+    "label": "The same kind of invoice as JSON",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "{\n  \"invoice\": {\n    \"id\": \"2026-117\",\n    \"issued\": \"2026-10-21\",\n    \"due\": \"2027-12-01\",\n    \"payee\": {\n      \"name\": \"Nova Audio\",\n      \"address\": \"0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01\"\n    },\n    \"currency\": \"USDC\",\n    \"items\": [\n      {\n        \"description\": \"Mixing, 3 tracks\",\n        \"quantity\": 3,\n        \"unitPrice\": \"300.00\"\n      },\n      {\n        \"description\": \"Mastering\",\n        \"quantity\": 1,\n        \"unitPrice\": \"300.50\"\n      }\n    ],\n    \"total\": \"1200.50\"\n  },\n  \"payment\": {\n    \"chainId\": 1672,\n    \"token\": \"0xc879c018db60520f4355c26ed1a6d572cdac1815\"\n  }\n}"
+  },
+  {
+    "id": "link-usdc",
+    "label": "An ethereum: payment link (EIP-681)",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C&uint256=75000000&ref=ORD-88123"
+  },
+  {
+    "id": "wrong-total",
+    "label": "An invoice that does not add up",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "INVOICE #INV-2026-0043\nDue: 2027-11-19\nFrom: Harbor Studio Ltd\nPay to: 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\n\nBrand sprint \u2013 2 x 100.00 USDC\nDomain and hosting \u2013 40.00 USDC\nSubtotal: 240.00 USDC\nTax: 10.00 USDC\nTotal due: 205.00 USDC"
+  },
+  {
+    "id": "no-address",
+    "label": "An invoice with no wallet address",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "INVOICE #INV-2026-0044\nDue: 2027-11-19\nFrom: Harbor Studio Ltd\nPay to: Harbor Studio, account 4471 0902\nTotal due: 90.00 USDC"
+  },
+  {
+    "id": "fake-usdc",
+    "label": "An invoice that names a look-alike USDC contract",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "{\"invoice\":{\"id\":\"INV-9001\",\"payee\":{\"name\":\"Quick Supplies\",\"address\":\"0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C\"},\"currency\":\"USDC\",\"total\":\"500.00\"},\"payment\":{\"chainId\":1672,\"token\":\"0xdEDEDEDEdEdEdEDedEDeDedEdEdeDedEdEDedEdE\"}}"
+  },
+  {
+    "id": "usd-no-token",
+    "label": "An invoice in US dollars, no token chosen",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "Invoice number: BX-5521\nDue: 2027-12-15\nFrom: Blue Ox Consulting\nWallet: 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01\nTotal due: $1,250.00"
+  },
+  {
+    "id": "usd-in-usdc",
+    "label": "The same invoice, paying in USDC",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "payIn": "USDC",
+    "text": "Invoice number: BX-5521\nDue: 2027-12-15\nFrom: Blue Ox Consulting\nWallet: 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01\nTotal due: $1,250.00"
+  },
+  {
+    "id": "euro",
+    "label": "An invoice in euros",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "INVOICE EU-2210\nDue: 2027-12-15\nPay to: 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\nTotal due: 480.00 EUR"
+  },
+  {
+    "id": "typo-address",
+    "label": "An invoice whose address has a mistyped character",
+    "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "text": "INVOICE #INV-2026-0045\nDue: 2027-11-19\nPay to: 0x5A5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\nTotal due: 60.00 USDC"
+  }
+]

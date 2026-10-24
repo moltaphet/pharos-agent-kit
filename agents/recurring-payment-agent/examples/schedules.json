@@ -1,0 +1,44 @@
+[
+  {
+    "id": "weekly-rent",
+    "label": "Rent: 25 USDC every week",
+    "schedule": {
+      "id": "rent-weekly",
+      "label": "Rent",
+      "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+      "payee": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+      "token": "USDC",
+      "amount": "25",
+      "frequency": "weekly",
+      "start": "2026-10-05T09:00"
+    }
+  },
+  {
+    "id": "monthly-subscription",
+    "label": "A subscription: 12.5 USDC on the 31st of every month",
+    "schedule": {
+      "id": "sub-monthly",
+      "label": "Subscription",
+      "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+      "payee": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+      "token": "USDC",
+      "amount": "12.5",
+      "frequency": "monthly",
+      "start": "2026-08-31T00:00"
+    }
+  },
+  {
+    "id": "payer-with-nothing",
+    "label": "A payer that holds no USDC",
+    "schedule": {
+      "id": "poor-payer",
+      "label": "Allowance",
+      "payer": "0x00000000000000000000000000000000000000a1",
+      "payee": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+      "token": "USDC",
+      "amount": "10",
+      "frequency": "weekly",
+      "start": "2026-10-12T00:00"
+    }
+  }
+]

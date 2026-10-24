@@ -6,5 +6,15 @@
       "maxDuration": 60,
       "includeFiles": "{skills,reports,lib,config,contracts,scripts}/**"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/x402/:path*",
+      "destination": "/api/x402?scope=resource&path=:path*"
+    },
+    {
+      "source": "/x402-facilitator/:path*",
+      "destination": "/api/x402?scope=facilitator&path=:path*"
+    }
+  ]
 }

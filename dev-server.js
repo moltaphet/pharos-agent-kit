@@ -12,6 +12,9 @@ const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/cs
 createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   try {
+    // the same two rewrites as vercel.json: /x402/* is the paywalled API, /x402-facilitator/* its facilitator
+    const x402 = url.pathname.match(/^\/x402(-facilitator)?(\/.*)?$/);
+    if (x402) { url.searchParams.set('scope', x402[1] ? 'facilitator' : 'resource'); url.searchParams.set('path', x402[2] ?? '/'); req.url = `/api/x402?${url.searchParams}`; url.pathname = '/api/x402'; }
     if (url.pathname.startsWith('/api/')) {
       const name = url.pathname.slice(5).replace(/[^a-z0-9-]/gi, '');
       const { default: handler } = await import(pathToFileURL(join(root, 'api', `${name}.js`)));

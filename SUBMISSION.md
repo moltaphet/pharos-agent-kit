@@ -226,6 +226,79 @@ Requirements it was built against (the Arena's own list):
 3. Outputs a clear recommendation with expected net gain, or "stay put" with the reason.
 4. If executing: prepares transactions for user signature only. The agent never holds keys.
 
+## 16. Liquidation Watchdog
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/liquidation-watchdog/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/liquidation-watchdog
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/liquidation-watchdog
+- **What the proof shows:** Watches a real borrower in Morpho Blue on Pharos mainnet (three of the four recent borrowers are within 3.5% of liquidation), grades it against warn and critical thresholds, alerts to the console with a timestamp (and Discord or Telegram if configured) with the exact amount to repay or add. The real Morpho contract, asked to liquidate on a fork, agrees with the health factor on both sides of 1.
+
+Requirements it was built against (the Arena's own list):
+
+1. Reads the position's collateral, debt and health factor (or equivalent) from chain.
+2. Configurable warning thresholds, e.g. warn at 1.3 and critical at 1.1.
+3. Sends alerts through at least one channel: Telegram, Discord, email, or a console with timestamps.
+4. Suggests a concrete action in each alert, e.g. "repay X or add Y collateral".
+
+## 17. Natural-Language Payment Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/natural-language-payment-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/natural-language-payment-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/natural-language-payment-agent
+- **What the proof shows:** Turns a sentence into questions, a refusal, or a checked summary and an unsigned transaction on Pharos mainnet (token, balance, checksum, simulation as the sender). Fifteen real requests pinned to a block, replayable; the output signed with a throwaway key on a mainnet fork moves the exact amount.
+
+Requirements it was built against (the Arena's own list):
+
+1. Parses amount, token and recipient from free text, and asks a follow-up when anything is ambiguous.
+2. Validates the request: recipient format, token contract, sufficient balance.
+3. Shows a human-readable summary before producing the unsigned transaction.
+4. Never signs or sends on its own. Output is an unsigned transaction or a wallet signing request.
+
+## 18. Recurring Payment Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/recurring-payment-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/recurring-payment-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/recurring-payment-agent
+- **What the proof shows:** A weekly or monthly schedule on Pharos mainnet: every period is upcoming, pending, submitted, paid or failed from the chain’s own receipts and Transfer logs, the next payment and the history are shown, and the whole lifecycle (sign, fail, retry, unreported payment found on chain, short balance) ran on a mainnet fork with exactly one payment per period.
+
+Requirements it was built against (the Arena's own list):
+
+1. Supports a schedule (weekly or monthly) with amount, token and recipient.
+2. Prepares each payment on time and tracks paid, pending and failed status.
+3. Handles insufficient balance or a failed transaction without double-paying.
+4. Shows a payment history and the next scheduled payment.
+
+## 19. Invoice-to-Payment Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/invoice-to-payment-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/invoice-to-payment-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/invoice-to-payment-agent
+- **What the proof shows:** Reads an invoice (plain text, JSON or an ethereum: link), flags instead of guessing (missing reference, checksum, second address, totals that do not add up, look-alike token, no conversion), and prepares an unsigned payment carrying the invoice reference; ten sample invoices on real mainnet state, three paid on a fork with the reference read back from the chain.
+
+Requirements it was built against (the Arena's own list):
+
+1. Extracts payee, amount, token or currency, and reference from at least 2 invoice formats.
+2. Flags mismatches or missing fields instead of guessing.
+3. Produces a payment summary and an unsigned transaction that includes the invoice reference.
+4. Includes a demo with sample invoices.
+
+## 20. x402 Paywalled API
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/x402-paywalled-api/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/x402-paywalled-api
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-paywalled-api
+- **Explorer proof (real testnet transaction):** https://atlantic.pharosscan.xyz/tx/0x9eb8e6a214bc3dfd6a4ca5b6bc9e4b4d2cac5be84589350d305dc89f9a7694b1
+- **What the proof shows:** x402 on Pharos Atlantic testnet built from the protocol: two paid routes and one free, its own facilitator (/verify, /settle, /supported), a client that pays; the real run shows 402, a signed payment, 200 with PAYMENT-RESPONSE and the settlement on the explorer, and nine cheats all refused with 402.
+
+Requirements it was built against (the Arena's own list):
+
+1. Runs on Atlantic Testnet (eip155:688689), priced in test USDC.
+2. Has at least 2 paid routes at different prices and 1 free route, such as /health.
+3. Runs its own facilitator with /verify, /settle and /supported.
+4. Shows the full flow in the demo: a 402, then a signed payment, then a 200 with a PAYMENT-RESPONSE header and its tx hash, linked on the explorer.
+5. Rejects a bad or underpaid payment with another 402.
+6. Keeps private keys in env vars or a file, never in code or prompts.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

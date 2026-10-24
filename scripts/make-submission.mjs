@@ -22,6 +22,7 @@ const tasks = registry.tasks ?? registry;
 const testnet = json('reports/testnet-runs.json');
 const guardian = json('reports/testnet-guardian.json');
 const gatekeeper = json('reports/testnet-gatekeeper.json');
+const x402run = json('reports/x402-run.json');
 
 // content.js imports browser modules; they only touch the DOM inside functions, so Node can load them.
 const { liveOf } = await import('../public/js/content.js');
@@ -42,6 +43,11 @@ const PROOF = {
   'docs-chain-mcp-agent': { how: 'Explains a contract function from Developer Docs MCP (with sources), calls it on Pharos mainnet through Chain MCP, reads the value the way the docs say, cross-checked against decimals(), and confirms every read on the public RPC. Five recorded real cases pinned to a block, replayable.' },
   'portfolio-assistant': { how: 'Answers eight kinds of plain-English question about a wallet from native PROS, USDC, WPROS and the four R25 / RockawayX vaults at one pinned block; every figure carries its contract, call and block, every read is repeated on the public RPC, and what it cannot know (other protocols, earnings since depositing) is refused. Recorded real wallets pinned to a block, replayable.' },
   'yield-optimizer': { how: 'Compares the four USDC vaults on measured yield, tests with simulations whether the wallet can get in and out, counts gas measured by really executing the steps on a mainnet fork plus fees, and answers MOVE (with unsigned transactions) or STAY PUT with the reason. Recorded decisions pinned to a block, replayable.' },
+  'liquidation-watchdog': { how: 'Watches a real borrower in Morpho Blue on Pharos mainnet (three of the four recent borrowers are within 3.5% of liquidation), grades it against warn and critical thresholds, alerts to the console with a timestamp (and Discord or Telegram if configured) with the exact amount to repay or add. The real Morpho contract, asked to liquidate on a fork, agrees with the health factor on both sides of 1.' },
+  'natural-language-payment-agent': { how: 'Turns a sentence into questions, a refusal, or a checked summary and an unsigned transaction on Pharos mainnet (token, balance, checksum, simulation as the sender). Fifteen real requests pinned to a block, replayable; the output signed with a throwaway key on a mainnet fork moves the exact amount.' },
+  'recurring-payment-agent': { how: 'A weekly or monthly schedule on Pharos mainnet: every period is upcoming, pending, submitted, paid or failed from the chain’s own receipts and Transfer logs, the next payment and the history are shown, and the whole lifecycle (sign, fail, retry, unreported payment found on chain, short balance) ran on a mainnet fork with exactly one payment per period.' },
+  'invoice-to-payment-agent': { how: 'Reads an invoice (plain text, JSON or an ethereum: link), flags instead of guessing (missing reference, checksum, second address, totals that do not add up, look-alike token, no conversion), and prepares an unsigned payment carrying the invoice reference; ten sample invoices on real mainnet state, three paid on a fork with the reference read back from the chain.' },
+  'x402-paywalled-api': { how: 'x402 on Pharos Atlantic testnet built from the protocol: two paid routes and one free, its own facilitator (/verify, /settle, /supported), a client that pays; the real run shows 402, a signed payment, 200 with PAYMENT-RESPONSE and the settlement on the explorer, and nine cheats all refused with 402.', tx: () => x402run.settlements[0] },
   'policy-gatekeeper': { how: 'Policy (spend limit, allowlist, time window) in front of a real wallet: 2 requests allowed and sent on Atlantic, 6 denied by named rules and never sent; the chain confirms it. Hash-chained audit log, re-verified on load.', tx: () => gatekeeper.transactions[0] },
 };
 

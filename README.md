@@ -1,6 +1,6 @@
 # pharos-agent-kit
 
-Fifteen working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
+Twenty working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
 **Season of AI** tasks, plus a site where each one can be tested and inspected:
 **https://pharos-agent-kit.vercel.app**
 
@@ -25,6 +25,11 @@ Per-task proof links, repo links and the requirements each task was built agains
 | 13 | Docs MCP + Chain MCP Agent | `agents/docs-chain-mcp-agent/` | Developer Docs MCP + Pharos mainnet through Chain MCP | read-only: explains a function from the docs, calls it with eth_call, reads the value the way the docs say; sends nothing |
 | 14 | Portfolio Assistant (Skill) | `skills/pharos-portfolio-assistant/` | Pharos mainnet through Chain MCP, every read repeated on the public RPC | read-only: answers eight kinds of question about a wallet (PROS, USDC, WPROS and four vaults) with each figure's contract, call and block; refuses what it cannot know |
 | 15 | Yield Optimizer (Skill) | `skills/pharos-yield-optimizer/` | Pharos mainnet; gas measured on a mainnet fork | read-only: measures the four vaults' real yield, tests entry and exit by simulation, counts gas and fees, answers MOVE (unsigned transactions) or STAY PUT with the reason |
+| 16 | Liquidation Watchdog | `agents/liquidation-watchdog/` | Morpho Blue on Pharos mainnet through Chain MCP, every read repeated on the public RPC | read-only: health factor the way Morpho decides it, warn and critical alerts with the amount to repay or add; checked against the real Morpho on a fork |
+| 17 | Natural-Language Payment Agent | `agents/natural-language-payment-agent/` | Pharos mainnet through Chain MCP | prepares an unsigned transaction from a sentence, or asks; never signs or sends |
+| 18 | Recurring Payment Agent | `agents/recurring-payment-agent/` | Pharos mainnet; the whole lifecycle on a mainnet fork | prepares each due payment unsigned; paid, pending and failed come from the chain; never twice |
+| 19 | Invoice-to-Payment Agent | `agents/invoice-to-payment-agent/` | Pharos mainnet through Chain MCP | flags instead of guessing; prepares an unsigned payment carrying the invoice reference |
+| 20 | x402 Paywalled API | `agents/x402-paywalled-api/` | Pharos Atlantic testnet (eip155:688689), real HTTP and real settlements | two paid routes and one free, its own facilitator and client; the settlements are real Atlantic transactions |
 
 **Safety.** The skills in `skills/` never take a key: they read, simulate, or prepare unsigned transactions. Nothing in
 this repository sends a transaction to Pharos **mainnet**. Real execution happens in two places, and neither involves real money:

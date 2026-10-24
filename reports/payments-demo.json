@@ -1,0 +1,2758 @@
+{
+ "recordedAt": "2026-10-24T21:35:57.314Z",
+ "network": {
+  "name": "Pharos Pacific Mainnet",
+  "chainId": 1672
+ },
+ "note": "Every case is pinned to one mainnet block, so replaying it asks Chain MCP the same questions and must reach the same verdict, checks and transaction. Nothing is signed or sent.",
+ "payments": [
+  {
+   "id": "usdc",
+   "label": "Send 100 USDC to an address",
+   "text": "send 100 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 100 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "100",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 100 USDC to 0x5a5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 801
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 2363
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,786 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "100 USDC = 100000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 942,842.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000957 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,786 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154644,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "100 USDC",
+    "gas": {
+     "units": 79786,
+     "limit": 95744,
+     "feeText": "0.000957 PROS"
+    },
+    "summary": [
+     "Send 100 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 100000000).",
+     "Network fee: about 0.000957 PROS (79,786 gas at 10 gwei).",
+     "Balance after: 942,842.429833 USDC."
+    ],
+    "summaryText": "Send 100 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 100000000).\nNetwork fee: about 0.000957 PROS (79,786 gas at 10 gwei).\nBalance after: 942,842.429833 USDC.",
+    "status": "ready",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000005f5e100",
+     "gas": 95744,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000005f5e100",
+        "value": "0x0",
+        "gas": "0x17600",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf86c018502540be4008301760094c879c018db60520f4355c26ed1a6d572cdac181580b844a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000005f5e1008206888080",
+      "signingHash": "0xd8ae61b27e9cd61baef9c35c8831266dc2b6ed712af283790206c3e90ac79180"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A&uint256=100000000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "thousand",
+   "label": "Amounts like 1.5k work",
+   "text": "pay 1.5k usdc to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "pay 1.5k usdc to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "1500",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 1500 USDC to 0x5a5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 881
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 763
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,786 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "1,500 USDC = 1500000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 941,442.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000957 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,786 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154655,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "1,500 USDC",
+    "gas": {
+     "units": 79786,
+     "limit": 95744,
+     "feeText": "0.000957 PROS"
+    },
+    "summary": [
+     "Send 1,500 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 1500000000).",
+     "Network fee: about 0.000957 PROS (79,786 gas at 10 gwei).",
+     "Balance after: 941,442.429833 USDC."
+    ],
+    "summaryText": "Send 1,500 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 1500000000).\nNetwork fee: about 0.000957 PROS (79,786 gas at 10 gwei).\nBalance after: 941,442.429833 USDC.",
+    "status": "ready",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000059682f00",
+     "gas": 95744,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000059682f00",
+        "value": "0x0",
+        "gas": "0x17600",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf86c018502540be4008301760094c879c018db60520f4355c26ed1a6d572cdac181580b844a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000059682f008206888080",
+      "signingHash": "0x932a2f1454d3ce3006301d3eef12b98230fc0074eee6753b1f5eeaf20900a845"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A&uint256=1500000000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "sender-in-text",
+   "label": "The paying wallet written in the sentence",
+   "text": "transfer 25 USDC from 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": null,
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "transfer 25 USDC from 0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "25",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 25 USDC to 0x5a5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 616
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 681
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,801 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "25 USDC = 25000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 942,917.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000957 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,801 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154665,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "25 USDC",
+    "gas": {
+     "units": 79801,
+     "limit": 95762,
+     "feeText": "0.000957 PROS"
+    },
+    "summary": [
+     "Send 25 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 25000000).",
+     "Network fee: about 0.000957 PROS (79,801 gas at 10 gwei).",
+     "Balance after: 942,917.429833 USDC."
+    ],
+    "summaryText": "Send 25 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 25000000).\nNetwork fee: about 0.000957 PROS (79,801 gas at 10 gwei).\nBalance after: 942,917.429833 USDC.",
+    "status": "ready",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000000000000000000000000000017d7840",
+     "gas": 95762,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000000000000000000000000000017d7840",
+        "value": "0x0",
+        "gas": "0x17612",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf86c018502540be4008301761294c879c018db60520f4355c26ed1a6d572cdac181580b844a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000000000000000000000000000017d78408206888080",
+      "signingHash": "0x69928872fa5d92bceb6aa30c24ba3b6a3df88537b20fbcf96cc36c05d4cb9143"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A&uint256=25000000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "no-link",
+   "label": "More LINK than the wallet holds",
+   "text": "send 25 LINK to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 25 LINK to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "25",
+     "token": {
+      "symbol": "LINK",
+      "address": "0x51e2a24742db77604b881d6781ee16b5b8fcbe29",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 25 LINK to 0x5a5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 620
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 721
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would fail: ERC20: transfer amount exceeds balance",
+      "uses": [],
+      "output": {
+       "verdict": "blocked"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0x51e2a24742db77604b881d6781ee16b5b8fcbe29 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "LINK with 18 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "25 LINK = 25000000000000000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough LINK",
+      "ok": false,
+      "level": "fail",
+      "detail": "holds 0 LINK but 25 LINK was asked: 25 LINK short"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.0012 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": false,
+      "level": "fail",
+      "detail": "it would fail: ERC20: transfer amount exceeds balance"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154672,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "LINK",
+     "decimals": 18,
+     "native": false,
+     "address": "0x51e2a24742db77604b881d6781ee16b5b8fcbe29"
+    },
+    "amountText": "25 LINK",
+    "gas": {
+     "units": 100000,
+     "limit": 120000,
+     "feeText": "0.0012 PROS"
+    },
+    "summary": [
+     "Send 25 LINK from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+     "It is a call to the LINK contract (0x51e2a2…fcbe29): transfer(0x5a5A5a…5A5A5A, 25000000000000000000).",
+     "Network fee: about 0.0012 PROS (100,000 gas at 10 gwei).",
+     "Balance after: not possible, the sender does not hold enough LINK."
+    ],
+    "summaryText": "Send 25 LINK from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.\nIt is a call to the LINK contract (0x51e2a2…fcbe29): transfer(0x5a5A5a…5A5A5A, 25000000000000000000).\nNetwork fee: about 0.0012 PROS (100,000 gas at 10 gwei).\nBalance after: not possible, the sender does not hold enough LINK.",
+    "status": "blocked",
+    "reason": "holds 0 LINK but 25 LINK was asked: 25 LINK short"
+   }
+  },
+  {
+   "id": "no-pros",
+   "label": "PROS from a wallet that holds none",
+   "text": "send 0.5 PROS to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 0.5 PROS to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "0.5",
+     "token": {
+      "symbol": "PROS",
+      "address": null,
+      "native": true
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 0.5 PROS to 0x5a5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance (1 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000…",
+      "ms": 496
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000…",
+      "ms": 2350
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would fail: The caller does not have enough funds for value transfer.",
+      "uses": [],
+      "output": {
+       "verdict": "blocked"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "0.5 PROS = 500000000000000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender can cover the payment and its gas",
+      "ok": false,
+      "level": "fail",
+      "detail": "holds 0 PROS but needs 0.5012 PROS (0.5 PROS plus about 0.0012 PROS of gas)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": false,
+      "level": "fail",
+      "detail": "it would fail: The caller does not have enough funds for value transfer."
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154681,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "PROS",
+     "decimals": 18,
+     "native": true,
+     "address": null
+    },
+    "amountText": "0.5 PROS",
+    "gas": {
+     "units": 100000,
+     "limit": 120000,
+     "feeText": "0.0012 PROS"
+    },
+    "summary": [
+     "Send 0.5 PROS from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+     "This is a plain PROS transfer.",
+     "Network fee: about 0.0012 PROS (100,000 gas at 10 gwei).",
+     "Balance after: not possible, the sender does not hold enough PROS."
+    ],
+    "summaryText": "Send 0.5 PROS from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.\nThis is a plain PROS transfer.\nNetwork fee: about 0.0012 PROS (100,000 gas at 10 gwei).\nBalance after: not possible, the sender does not hold enough PROS.",
+    "status": "blocked",
+    "reason": "holds 0 PROS but needs 0.5012 PROS (0.5 PROS plus about 0.0012 PROS of gas)"
+   }
+  },
+  {
+   "id": "name",
+   "label": "A name instead of an address (asks)",
+   "text": "send 50 to bob",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 50 to bob",
+    "notes": [],
+    "understood": {
+     "amount": "50",
+     "token": null,
+     "recipient": null,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 50 ? to ?, 2 things to ask.",
+      "uses": [],
+      "output": {
+       "questions": [
+        "recipient",
+        "token"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "needs-info",
+    "questions": [
+     {
+      "field": "recipient",
+      "problem": "name",
+      "question": "I need a 0x address for \"bob\": names are not addresses, and I will not guess one."
+     },
+     {
+      "field": "token",
+      "problem": "missing",
+      "question": "Which token? One of PROS, WPROS, USDC, LINK, WETH, or a token contract address.",
+      "options": [
+       "PROS",
+       "WPROS",
+       "USDC",
+       "LINK",
+       "WETH"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "name-answered",
+   "label": "…and the answers to its questions",
+   "text": "send 50 to bob",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": {
+    "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "token": "USDC"
+   },
+   "block": 21151643,
+   "result": {
+    "text": "send 50 to bob",
+    "notes": [],
+    "understood": {
+     "amount": "50",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 50 USDC to 0x5a5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 989
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 595
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,801 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "50 USDC = 50000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 942,892.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000957 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,801 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154688,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "50 USDC",
+    "gas": {
+     "units": 79801,
+     "limit": 95762,
+     "feeText": "0.000957 PROS"
+    },
+    "summary": [
+     "Send 50 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 50000000).",
+     "Network fee: about 0.000957 PROS (79,801 gas at 10 gwei).",
+     "Balance after: 942,892.429833 USDC."
+    ],
+    "summaryText": "Send 50 USDC from 0x8ecdf4…24ab9f to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 50000000).\nNetwork fee: about 0.000957 PROS (79,801 gas at 10 gwei).\nBalance after: 942,892.429833 USDC.",
+    "status": "ready",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000002faf080",
+     "gas": 95762,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000002faf080",
+        "value": "0x0",
+        "gas": "0x17612",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf86c018502540be4008301761294c879c018db60520f4355c26ed1a6d572cdac181580b844a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000002faf0808206888080",
+      "signingHash": "0x3d921c7f62efaf8a442674161bcb131975375218ade0c58ce2d1fda3eb1ce776"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A&uint256=50000000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "dollars",
+   "label": "\"Dollars\" is not a token (asks)",
+   "text": "send 100 dollars to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 100 dollars to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "100",
+     "token": null,
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 100 ? to 0x5a5A5a…5A5A5A, 1 thing to ask.",
+      "uses": [],
+      "output": {
+       "questions": [
+        "token"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "needs-info",
+    "questions": [
+     {
+      "field": "token",
+      "problem": "dollars",
+      "question": "\"Dollars\" is not a token. Which one: USDC (Circle’s dollar token on Pharos)?",
+      "options": [
+       "USDC"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "short-address",
+   "label": "An address with too few characters (asks)",
+   "text": "send 5 USDC to 0x12abc",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 5 USDC to 0x12abc",
+    "notes": [],
+    "understood": {
+     "amount": "5",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": null,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 5 USDC to ?, 1 thing to ask.",
+      "uses": [],
+      "output": {
+       "questions": [
+        "recipient"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "needs-info",
+    "questions": [
+     {
+      "field": "recipient",
+      "problem": "bad-address",
+      "question": "\"0x12abc\" looks like an address but has 5 hex characters, and an address has exactly 40. Please give the full 0x address."
+     }
+    ]
+   }
+  },
+  {
+   "id": "all",
+   "label": "\"All my USDC\" (asks for an exact amount)",
+   "text": "send all my USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send all my USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": null,
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: ? USDC to 0x5a5A5a…5A5A5A, 1 thing to ask.",
+      "uses": [],
+      "output": {
+       "questions": [
+        "amount"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "needs-info",
+    "questions": [
+     {
+      "field": "amount",
+      "problem": "all",
+      "question": "\"All\" depends on the balance at the moment you sign. Give the exact amount to send."
+     }
+    ]
+   }
+  },
+  {
+   "id": "two-amounts",
+   "label": "Two amounts in one sentence (asks)",
+   "text": "send 100 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A in 2 installments of 50 and 50",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 100 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A in 2 installments of 50 and 50",
+    "notes": [],
+    "understood": {
+     "amount": null,
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: ? USDC to 0x5a5A5a…5A5A5A, 1 thing to ask.",
+      "uses": [],
+      "output": {
+       "questions": [
+        "amount"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "needs-info",
+    "questions": [
+     {
+      "field": "amount",
+      "problem": "several-payments",
+      "question": "I found 100 and 2 and 50. This sounds like more than one payment, and I prepare one payment at a time: which is the amount of THIS payment?",
+      "options": [
+       "100",
+       "2",
+       "50"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "typo",
+   "label": "A mistyped character in the address (refused)",
+   "text": "send 100 USDC to 0x5A5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 100 USDC to 0x5A5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "100",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5A5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 100 USDC to 0x5A5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 629
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 479
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,786 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": false,
+      "level": "fail",
+      "detail": "it is mixed-case but the checksum does not match: a character is probably mistyped (it should read 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A)"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "100 USDC = 100000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 942,842.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000957 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,786 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154698,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "100 USDC",
+    "gas": {
+     "units": 79786,
+     "limit": 95744,
+     "feeText": "0.000957 PROS"
+    },
+    "summary": [
+     "Send 100 USDC from 0x8ecdf4…24ab9f to 0x5A5A5a…5A5A5A on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5A5A5a…5A5A5A, 100000000).",
+     "Network fee: about 0.000957 PROS (79,786 gas at 10 gwei).",
+     "Balance after: 942,842.429833 USDC."
+    ],
+    "summaryText": "Send 100 USDC from 0x8ecdf4…24ab9f to 0x5A5A5a…5A5A5A on Pharos Pacific Mainnet.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5A5A5a…5A5A5A, 100000000).\nNetwork fee: about 0.000957 PROS (79,786 gas at 10 gwei).\nBalance after: 942,842.429833 USDC.",
+    "status": "blocked",
+    "reason": "it is mixed-case but the checksum does not match: a character is probably mistyped (it should read 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A)"
+   }
+  },
+  {
+   "id": "to-token",
+   "label": "Sending USDC to the USDC contract itself (refused)",
+   "text": "send 100 USDC to 0xc879c018db60520f4355c26ed1a6d572cdac1815",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 100 USDC to 0xc879c018db60520f4355c26ed1a6d572cdac1815",
+    "notes": [],
+    "understood": {
+     "amount": "100",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 100 USDC to 0xc879c0…ac1815.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 651
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 1870
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would fail: Blacklistable: account is blacklisted",
+      "uses": [],
+      "output": {
+       "verdict": "blocked"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "note",
+      "detail": "all one case, so it carries no checksum to verify: check it against the source"
+     },
+     {
+      "id": "recipient-token",
+      "name": "The recipient is not the token contract itself",
+      "ok": false,
+      "level": "fail",
+      "detail": "tokens sent to their own contract are usually lost"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "100 USDC = 100000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 942,842.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.0012 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": false,
+      "level": "fail",
+      "detail": "it would fail: Blacklistable: account is blacklisted"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154709,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "100 USDC",
+    "gas": {
+     "units": 100000,
+     "limit": 120000,
+     "feeText": "0.0012 PROS"
+    },
+    "summary": [
+     "Send 100 USDC from 0x8ecdf4…24ab9f to 0xc879c0…ac1815 on Pharos Pacific Mainnet.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0xc879c0…ac1815, 100000000).",
+     "Network fee: about 0.0012 PROS (100,000 gas at 10 gwei).",
+     "Balance after: 942,842.429833 USDC."
+    ],
+    "summaryText": "Send 100 USDC from 0x8ecdf4…24ab9f to 0xc879c0…ac1815 on Pharos Pacific Mainnet.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0xc879c0…ac1815, 100000000).\nNetwork fee: about 0.0012 PROS (100,000 gas at 10 gwei).\nBalance after: 942,842.429833 USDC.",
+    "status": "blocked",
+    "reason": "tokens sent to their own contract are usually lost"
+   }
+  },
+  {
+   "id": "too-precise",
+   "label": "More decimals than USDC has (refused)",
+   "text": "send 1.1234567 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "send 1.1234567 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "notes": [],
+    "understood": {
+     "amount": "1.1234567",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false
+     },
+     "recipient": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "Read: 1.1234567 USDC to 0x5a5A5a…5A5A5A.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 543
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 2265
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "status": "blocked",
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is exact for this token",
+      "ok": false,
+      "level": "fail",
+      "detail": "amount 1.1234567 has 7 decimals but this token only has 6"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154716,
+     "timestamp": 1792874946
+    },
+    "reason": "amount 1.1234567 has 7 decimals but this token only has 6"
+   }
+  },
+  {
+   "id": "not-a-payment",
+   "label": "Not a payment at all",
+   "text": "what is the price of USDC?",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "answers": null,
+   "block": 21151643,
+   "result": {
+    "text": "what is the price of USDC?",
+    "notes": [],
+    "understood": {
+     "amount": null,
+     "token": null,
+     "recipient": null,
+     "from": null
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "parse",
+      "summary": "This is not a payment request.",
+      "uses": [],
+      "output": {
+       "questions": []
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "refused",
+    "reason": "I prepare payments: tell me an amount, a token and who gets it, for example \"send 100 USDC to 0x…\". I did not find a payment in this."
+   }
+  }
+ ],
+ "invoices": [
+  {
+   "id": "text-usdc",
+   "label": "A plain-text invoice in USDC",
+   "text": "INVOICE #INV-2026-0042\nDate: 2026-10-20\nDue: 2027-11-19\nFrom: Harbor Studio Ltd\nPay to: 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\n\nBrand sprint – 2 x 100.00 USDC\nDomain and hosting – 40.00 USDC\nSubtotal: 240.00 USDC\nTax: 10.00 USDC\nTotal due: 250.00 USDC",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "text",
+    "invoice": {
+     "format": "text",
+     "reference": "INV-2026-0042",
+     "payee": {
+      "name": "Harbor Studio Ltd",
+      "address": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A"
+     },
+     "amount": {
+      "text": "250.00"
+     },
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false,
+      "custom": false
+     },
+     "currency": "USDC",
+     "due": "2027-11-19",
+     "issued": "2026-10-20",
+     "items": [
+      {
+       "description": "Brand sprint –",
+       "quantity": "2",
+       "unit": "100.00",
+       "amount": "200"
+      },
+      {
+       "description": "Domain and hosting",
+       "quantity": "1",
+       "unit": "40.00",
+       "amount": "40.00"
+      }
+     ],
+     "chainId": null
+    },
+    "flags": [],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a text invoice (INV-2026-0042): 0 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 549
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 602
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 80,059 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "250 USDC = 250000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 942,692.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.00096 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 80,059 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154721,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "250 USDC",
+    "summary": [
+     "Pay invoice INV-2026-0042 from Harbor Studio Ltd: 250 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A, due 2027-11-19.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 250000000).",
+     "Reference \"INV-2026-0042\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.00096 PROS (80,059 gas at 10 gwei).",
+     "Balance after: 942,692.429833 USDC."
+    ],
+    "summaryText": "Pay invoice INV-2026-0042 from Harbor Studio Ltd: 250 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A, due 2027-11-19.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 250000000).\nReference \"INV-2026-0042\" is written into the transaction data after the transfer, so it can be read on chain.\nNetwork fee: about 0.00096 PROS (80,059 gas at 10 gwei).\nBalance after: 942,692.429833 USDC.",
+    "status": "ready",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a000000000000000000000000000000000000000000000000000000000ee6b280494e562d323032362d30303432",
+     "gas": 96071,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a000000000000000000000000000000000000000000000000000000000ee6b280494e562d323032362d30303432",
+        "value": "0x0",
+        "gas": "0x17747",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf879018502540be4008301774794c879c018db60520f4355c26ed1a6d572cdac181580b851a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a000000000000000000000000000000000000000000000000000000000ee6b280494e562d323032362d303034328206888080",
+      "signingHash": "0xc27b44226e72d1709bb5d494b739ec5635aaabbc7c37c8b63a579797209d7e70"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A&uint256=250000000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "json-usdc",
+   "label": "The same kind of invoice as JSON",
+   "text": "{\n  \"invoice\": {\n    \"id\": \"2026-117\",\n    \"issued\": \"2026-10-21\",\n    \"due\": \"2027-12-01\",\n    \"payee\": {\n      \"name\": \"Nova Audio\",\n      \"address\": \"0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01\"\n    },\n    \"currency\": \"USDC\",\n    \"items\": [\n      {\n        \"description\": \"Mixing, 3 tracks\",\n        \"quantity\": 3,\n        \"unitPrice\": \"300.00\"\n      },\n      {\n        \"description\": \"Mastering\",\n        \"quantity\": 1,\n        \"unitPrice\": \"300.50\"\n      }\n    ],\n    \"total\": \"1200.50\"\n  },\n  \"payment\": {\n    \"chainId\": 1672,\n    \"token\": \"0xc879c018db60520f4355c26ed1a6d572cdac1815\"\n  }\n}",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "json",
+    "invoice": {
+     "format": "json",
+     "reference": "2026-117",
+     "payee": {
+      "name": "Nova Audio",
+      "address": "0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01"
+     },
+     "amount": {
+      "text": "1200.50"
+     },
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false,
+      "custom": false
+     },
+     "currency": "USDC",
+     "due": "2027-12-01",
+     "issued": "2026-10-21",
+     "items": [
+      {
+       "description": "Mixing, 3 tracks",
+       "quantity": "3",
+       "unit": "300.00",
+       "amount": "900"
+      },
+      {
+       "description": "Mastering",
+       "quantity": "1",
+       "unit": "300.50",
+       "amount": "300.5"
+      }
+     ],
+     "chainId": 1672
+    },
+    "flags": [],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a json invoice (2026-117): 0 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 573
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 594
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,960 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "1,200.5 USDC = 1200500000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 941,741.929833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000959 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,960 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154728,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "1,200.5 USDC",
+    "summary": [
+     "Pay invoice 2026-117 from Nova Audio: 1,200.5 USDC to 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01, due 2027-12-01.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x7B7b7b…7B7B01, 1200500000).",
+     "Reference \"2026-117\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.000959 PROS (79,960 gas at 10 gwei).",
+     "Balance after: 941,741.929833 USDC."
+    ],
+    "summaryText": "Pay invoice 2026-117 from Nova Audio: 1,200.5 USDC to 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01, due 2027-12-01.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x7B7b7b…7B7B01, 1200500000).\nReference \"2026-117\" is written into the transaction data after the transfer, so it can be read on chain.\nNetwork fee: about 0.000959 PROS (79,960 gas at 10 gwei).\nBalance after: 941,741.929833 USDC.",
+    "status": "ready",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b0100000000000000000000000000000000000000000000000000000000478e2d20323032362d313137",
+     "gas": 95952,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b0100000000000000000000000000000000000000000000000000000000478e2d20323032362d313137",
+        "value": "0x0",
+        "gas": "0x176d0",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf874018502540be400830176d094c879c018db60520f4355c26ed1a6d572cdac181580b84ca9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b0100000000000000000000000000000000000000000000000000000000478e2d20323032362d3131378206888080",
+      "signingHash": "0x5a7cf15d6ba1cdce445ffe4b6e40ff810391fa2816b834741bdb92e8108059dc"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01&uint256=1200500000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "link-usdc",
+   "label": "An ethereum: payment link (EIP-681)",
+   "text": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C&uint256=75000000&ref=ORD-88123",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "link",
+    "invoice": {
+     "format": "link",
+     "reference": "ORD-88123",
+     "payee": {
+      "name": null,
+      "address": "0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C"
+     },
+     "amount": {
+      "text": "75000000",
+      "raw": "75000000",
+      "base": true
+     },
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false,
+      "custom": false
+     },
+     "currency": "BASE",
+     "due": null,
+     "issued": null,
+     "items": [],
+     "chainId": 1672
+    },
+    "flags": [
+     {
+      "severity": "info",
+      "code": "no-due",
+      "message": "The invoice has no due date.",
+      "field": "due"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a link invoice (ORD-88123): 0 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 549
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 599
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,979 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "75 USDC = 75000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 942,867.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000959 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,979 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154738,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "75 USDC",
+    "summary": [
+     "Pay invoice ORD-88123: 75 USDC to 0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x3C3C3C…3c3c3C, 75000000).",
+     "Reference \"ORD-88123\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.000959 PROS (79,979 gas at 10 gwei).",
+     "Balance after: 942,867.429833 USDC."
+    ],
+    "summaryText": "Pay invoice ORD-88123: 75 USDC to 0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x3C3C3C…3c3c3C, 75000000).\nReference \"ORD-88123\" is written into the transaction data after the transfer, so it can be read on chain.\nNetwork fee: about 0.000959 PROS (79,979 gas at 10 gwei).\nBalance after: 942,867.429833 USDC.",
+    "status": "ready",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000003c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c00000000000000000000000000000000000000000000000000000000047868c04f52442d3838313233",
+     "gas": 95975,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000003c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c00000000000000000000000000000000000000000000000000000000047868c04f52442d3838313233",
+        "value": "0x0",
+        "gas": "0x176e7",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf875018502540be400830176e794c879c018db60520f4355c26ed1a6d572cdac181580b84da9059cbb0000000000000000000000003c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c00000000000000000000000000000000000000000000000000000000047868c04f52442d38383132338206888080",
+      "signingHash": "0x3ae0cbcf934d34040859ee56bea36167d73d95a2714e1f447b665be9a85c33d7"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C&uint256=75000000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "wrong-total",
+   "label": "An invoice that does not add up",
+   "text": "INVOICE #INV-2026-0043\nDue: 2027-11-19\nFrom: Harbor Studio Ltd\nPay to: 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\n\nBrand sprint – 2 x 100.00 USDC\nDomain and hosting – 40.00 USDC\nSubtotal: 240.00 USDC\nTax: 10.00 USDC\nTotal due: 205.00 USDC",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "text",
+    "invoice": {
+     "format": "text",
+     "reference": "INV-2026-0043",
+     "payee": {
+      "name": "Harbor Studio Ltd",
+      "address": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A"
+     },
+     "amount": {
+      "text": "205.00"
+     },
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false,
+      "custom": false
+     },
+     "currency": "USDC",
+     "due": "2027-11-19",
+     "issued": null,
+     "items": [
+      {
+       "description": "Brand sprint –",
+       "quantity": "2",
+       "unit": "100.00",
+       "amount": "200"
+      },
+      {
+       "description": "Domain and hosting",
+       "quantity": "1",
+       "unit": "40.00",
+       "amount": "40.00"
+      }
+     ],
+     "chainId": null
+    },
+    "flags": [
+     {
+      "severity": "error",
+      "code": "total-mismatch",
+      "message": "The invoice does not add up: subtotal 240.00 + tax 10.00 = 250.00, but the total says 205.00.",
+      "field": "amount"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a text invoice (INV-2026-0043): 1 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": [
+        "total-mismatch"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "blocked",
+    "reason": "The invoice does not add up: subtotal 240.00 + tax 10.00 = 250.00, but the total says 205.00.",
+    "summary": null
+   }
+  },
+  {
+   "id": "no-address",
+   "label": "An invoice with no wallet address",
+   "text": "INVOICE #INV-2026-0044\nDue: 2027-11-19\nFrom: Harbor Studio Ltd\nPay to: Harbor Studio, account 4471 0902\nTotal due: 90.00 USDC",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "text",
+    "invoice": {
+     "format": "text",
+     "reference": "INV-2026-0044",
+     "payee": {
+      "name": "Harbor Studio Ltd",
+      "address": null
+     },
+     "amount": {
+      "text": "90.00"
+     },
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false,
+      "custom": false
+     },
+     "currency": "USDC",
+     "due": "2027-11-19",
+     "issued": null,
+     "items": [],
+     "chainId": null
+    },
+    "flags": [
+     {
+      "severity": "error",
+      "code": "payee-not-address",
+      "message": "\"Harbor Studio, account 4471 0902\" is not a wallet address: a payment needs a 0x address, and a name or an account number is not one.",
+      "field": "payee"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a text invoice (INV-2026-0044): 1 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": [
+        "payee-not-address"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "blocked",
+    "reason": "\"Harbor Studio, account 4471 0902\" is not a wallet address: a payment needs a 0x address, and a name or an account number is not one.",
+    "summary": null
+   }
+  },
+  {
+   "id": "fake-usdc",
+   "label": "An invoice that names a look-alike USDC contract",
+   "text": "{\"invoice\":{\"id\":\"INV-9001\",\"payee\":{\"name\":\"Quick Supplies\",\"address\":\"0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C\"},\"currency\":\"USDC\",\"total\":\"500.00\"},\"payment\":{\"chainId\":1672,\"token\":\"0xdEDEDEDEdEdEdEDedEDeDedEdEdeDedEdEDedEdE\"}}",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "json",
+    "invoice": {
+     "format": "json",
+     "reference": "INV-9001",
+     "payee": {
+      "name": "Quick Supplies",
+      "address": "0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C"
+     },
+     "amount": {
+      "text": "500.00"
+     },
+     "token": {
+      "symbol": null,
+      "address": "0xdededededededededededededededededededede",
+      "native": false,
+      "custom": true
+     },
+     "currency": "USDC",
+     "due": null,
+     "issued": null,
+     "items": [],
+     "chainId": 1672
+    },
+    "flags": [
+     {
+      "severity": "error",
+      "code": "token-mismatch",
+      "message": "The invoice says USDC, but the contract it names (0xdEDEDE…DedEdE) is not the USDC on Pharos (0xc879c0…ac1815). A look-alike token is worth nothing: do not pay it.",
+      "field": "token"
+     },
+     {
+      "severity": "info",
+      "code": "no-due",
+      "message": "The invoice has no due date.",
+      "field": "due"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a json invoice (INV-9001): 1 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": [
+        "token-mismatch"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "blocked",
+    "reason": "The invoice says USDC, but the contract it names (0xdEDEDE…DedEdE) is not the USDC on Pharos (0xc879c0…ac1815). A look-alike token is worth nothing: do not pay it.",
+    "summary": null
+   }
+  },
+  {
+   "id": "usd-no-token",
+   "label": "An invoice in US dollars, no token chosen",
+   "text": "Invoice number: BX-5521\nDue: 2027-12-15\nFrom: Blue Ox Consulting\nWallet: 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01\nTotal due: $1,250.00",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "text",
+    "invoice": {
+     "format": "text",
+     "reference": "BX-5521",
+     "payee": {
+      "name": "Blue Ox Consulting",
+      "address": "0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01"
+     },
+     "amount": {
+      "text": "1250.00"
+     },
+     "token": null,
+     "currency": "USD",
+     "due": "2027-12-15",
+     "issued": null,
+     "items": [],
+     "chainId": null
+    },
+    "flags": [
+     {
+      "severity": "error",
+      "code": "currency-needs-token",
+      "message": "The invoice is in US dollars, not in a token. Say which token to pay in (USDC is the dollar token on Pharos); I will not choose for you.",
+      "field": "token"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a text invoice (BX-5521): 1 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": [
+        "currency-needs-token"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "blocked",
+    "reason": "The invoice is in US dollars, not in a token. Say which token to pay in (USDC is the dollar token on Pharos); I will not choose for you.",
+    "summary": null
+   }
+  },
+  {
+   "id": "usd-in-usdc",
+   "label": "The same invoice, paying in USDC",
+   "text": "Invoice number: BX-5521\nDue: 2027-12-15\nFrom: Blue Ox Consulting\nWallet: 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01\nTotal due: $1,250.00",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": "USDC",
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "text",
+    "invoice": {
+     "format": "text",
+     "reference": "BX-5521",
+     "payee": {
+      "name": "Blue Ox Consulting",
+      "address": "0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01"
+     },
+     "amount": {
+      "text": "1250.00"
+     },
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false,
+      "custom": false
+     },
+     "currency": "USD",
+     "due": "2027-12-15",
+     "issued": null,
+     "items": [],
+     "chainId": null
+    },
+    "flags": [
+     {
+      "severity": "warn",
+      "code": "usd-as-usdc",
+      "message": "The invoice is in US dollars and you chose to pay in USDC. That treats 1 USDC as 1 USD, which is how stablecoin payment usually works, but the invoice does not say it accepts USDC: confirm with the issuer.",
+      "field": "token"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a text invoice (BX-5521): 0 error(s), 1 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": []
+      }
+     },
+     {
+      "n": 2,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 597
+     },
+     {
+      "n": 3,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 579
+     },
+     {
+      "n": 4,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 79,940 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1,
+    "checks": [
+     {
+      "id": "recipient",
+      "name": "The recipient is a well-formed address",
+      "ok": true,
+      "level": "pass",
+      "detail": "mixed-case, and its EIP-55 checksum is correct"
+     },
+     {
+      "id": "token-code",
+      "name": "The token address holds a contract",
+      "ok": true,
+      "level": "pass",
+      "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+     },
+     {
+      "id": "token-erc20",
+      "name": "The contract answers like an ERC-20 token",
+      "ok": true,
+      "level": "pass",
+      "detail": "USDC with 6 decimals (matches the Token Registry)"
+     },
+     {
+      "id": "amount",
+      "name": "The amount is more than zero and exact for this token",
+      "ok": true,
+      "level": "pass",
+      "detail": "1,250 USDC = 1250000000 base units"
+     },
+     {
+      "id": "balance",
+      "name": "The sender holds enough USDC",
+      "ok": true,
+      "level": "pass",
+      "detail": "holds 942,942.429833 USDC; after the payment 941,692.429833 USDC"
+     },
+     {
+      "id": "gas-balance",
+      "name": "The sender holds enough PROS for the gas",
+      "ok": true,
+      "level": "warn",
+      "detail": "holds 0 PROS and the gas is about 0.000959 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+     },
+     {
+      "id": "simulation",
+      "name": "The transfer succeeds when simulated as the sender",
+      "ok": true,
+      "level": "pass",
+      "detail": "eth_call succeeds and estimate_gas says 79,940 gas, at block 21,151,643"
+     }
+    ],
+    "block": {
+     "number": 21151643,
+     "head": 21154747,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24 20:49:06 UTC"
+    },
+    "token": {
+     "symbol": "USDC",
+     "decimals": 6,
+     "native": false,
+     "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815"
+    },
+    "amountText": "1,250 USDC",
+    "summary": [
+     "Pay invoice BX-5521 from Blue Ox Consulting: 1,250 USDC to 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01, due 2027-12-15.",
+     "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x7B7b7b…7B7B01, 1250000000).",
+     "Reference \"BX-5521\" is written into the transaction data after the transfer, so it can be read on chain.",
+     "Network fee: about 0.000959 PROS (79,940 gas at 10 gwei).",
+     "Balance after: 941,692.429833 USDC."
+    ],
+    "summaryText": "Pay invoice BX-5521 from Blue Ox Consulting: 1,250 USDC to 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01, due 2027-12-15.\nIt is a call to the USDC contract (0xc879c0…ac1815): transfer(0x7B7b7b…7B7B01, 1250000000).\nReference \"BX-5521\" is written into the transaction data after the transfer, so it can be read on chain.\nNetwork fee: about 0.000959 PROS (79,940 gas at 10 gwei).\nBalance after: 941,692.429833 USDC.",
+    "status": "ready-with-warnings",
+    "transaction": {
+     "chainId": 1672,
+     "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+     "value": "0",
+     "data": "0xa9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b01000000000000000000000000000000000000000000000000000000004a817c8042582d35353231",
+     "gas": 95928,
+     "walletRequest": {
+      "method": "eth_sendTransaction",
+      "params": [
+       {
+        "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0xa9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b01000000000000000000000000000000000000000000000000000000004a817c8042582d35353231",
+        "value": "0x0",
+        "gas": "0x176b8",
+        "chainId": "0x688"
+       }
+      ]
+     },
+     "unsignedRaw": {
+      "nonce": 1,
+      "gasPriceWei": "10000000000",
+      "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+      "hex": "0xf873018502540be400830176b894c879c018db60520f4355c26ed1a6d572cdac181580b84ba9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b01000000000000000000000000000000000000000000000000000000004a817c8042582d353532318206888080",
+      "signingHash": "0xf6b4bae07e0aa112dee023741dac273cdc7f303d07decf35d04c245d001a731a"
+     }
+    },
+    "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01&uint256=1250000000",
+    "neverSent": "Nothing was signed or sent. This is an unsigned transaction: your wallet signs it, or you do."
+   }
+  },
+  {
+   "id": "euro",
+   "label": "An invoice in euros",
+   "text": "INVOICE EU-2210\nDue: 2027-12-15\nPay to: 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\nTotal due: 480.00 EUR",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "text",
+    "invoice": {
+     "format": "text",
+     "reference": "EU-2210",
+     "payee": {
+      "name": null,
+      "address": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A"
+     },
+     "amount": {
+      "text": "480.00"
+     },
+     "token": null,
+     "currency": "EUR",
+     "due": "2027-12-15",
+     "issued": null,
+     "items": [],
+     "chainId": null
+    },
+    "flags": [
+     {
+      "severity": "error",
+      "code": "no-conversion",
+      "message": "The invoice is in euros (EUR). I have no exchange-rate source, so I cannot say how many tokens that is: ask the issuer for an amount in a token.",
+      "field": "token"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a text invoice (EU-2210): 1 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": [
+        "no-conversion"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "blocked",
+    "reason": "The invoice is in euros (EUR). I have no exchange-rate source, so I cannot say how many tokens that is: ask the issuer for an amount in a token.",
+    "summary": null
+   }
+  },
+  {
+   "id": "typo-address",
+   "label": "An invoice whose address has a mistyped character",
+   "text": "INVOICE #INV-2026-0045\nDue: 2027-11-19\nPay to: 0x5A5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A\nTotal due: 60.00 USDC",
+   "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+   "payIn": null,
+   "block": 21151643,
+   "now": 1792886400000,
+   "result": {
+    "format": "text",
+    "invoice": {
+     "format": "text",
+     "reference": "INV-2026-0045",
+     "payee": {
+      "name": null,
+      "address": "0x5A5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A"
+     },
+     "amount": {
+      "text": "60.00"
+     },
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "native": false,
+      "custom": false
+     },
+     "currency": "USDC",
+     "due": "2027-11-19",
+     "issued": null,
+     "items": [],
+     "chainId": null
+    },
+    "flags": [
+     {
+      "severity": "error",
+      "code": "checksum",
+      "message": "The pay-to address is mixed-case but its checksum is wrong: a character is mistyped (it should read 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A). Do not pay it until the issuer confirms the address.",
+      "field": "payee"
+     }
+    ],
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "read-invoice",
+      "summary": "Read a text invoice (INV-2026-0045): 1 error(s), 0 warning(s).",
+      "uses": [],
+      "output": {
+       "errors": [
+        "checksum"
+       ]
+      }
+     }
+    ],
+    "chainCalls": 0,
+    "rpcCalls": 0,
+    "status": "blocked",
+    "reason": "The pay-to address is mixed-case but its checksum is wrong: a character is mistyped (it should read 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A). Do not pay it until the issuer confirms the address.",
+    "summary": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,173 @@
+{
+ "recordedAt": "2026-10-24T21:22:30.684Z",
+ "network": "local anvil fork of Pharos mainnet (chain 1672): the live USDC contract, fake funds; signed with anvil's public dev key #0 (0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266), worth nothing",
+ "cases": [
+  {
+   "task": 17,
+   "label": "USDC from a sentence",
+   "text": "send 100 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "status": "ready",
+   "summary": [
+    "Send 100 USDC from 0xf39fd6…b92266 to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+    "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 100000000).",
+    "Network fee: about 0.000301 PROS (62,647 gas at 4.006578015 gwei).",
+    "Balance after: 4,900 USDC."
+   ],
+   "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+   "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000005f5e100",
+   "unsignedHex": "0xf86b0484eecf875f830125a994c879c018db60520f4355c26ed1a6d572cdac181580b844a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000005f5e1008206888080",
+   "signingHash": "0x8ca1fc95da748de1fa00bba868cd1b1981bd3feb38896cea682bd79d7b442dfe",
+   "eip681": "ethereum:0xc879c018db60520f4355c26ed1a6d572cdac1815@1672/transfer?address=0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A&uint256=100000000",
+   "sent": {
+    "hash": "0x45999a5e5b051395bcaea340a174dc02ce2ee251ce59f538b49d02a09492ab34",
+    "expectedHash": "0x45999a5e5b051395bcaea340a174dc02ce2ee251ce59f538b49d02a09492ab34",
+    "status": "success",
+    "gasUsed": 62159,
+    "input": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000005f5e100",
+    "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+   },
+   "payeeBalanceChange": "100000000",
+   "expected": "100000000",
+   "exact": true,
+   "hashMatches": true,
+   "signer": true
+  },
+  {
+   "task": 17,
+   "label": "PROS from a sentence",
+   "text": "pay 1.5 PROS to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+   "status": "ready",
+   "summary": [
+    "Send 1.5 PROS from 0xf39fd6…b92266 to 0x5a5A5a…5A5A5A on Pharos Pacific Mainnet.",
+    "This is a plain PROS transfer.",
+    "Network fee: about 0.000069 PROS (21,000 gas at 2.762432135 gwei).",
+    "Balance after: 98.499681 PROS (after gas)."
+   ],
+   "to": "0x5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+   "data": "0x",
+   "unsignedHex": "0xed0584a4a75e87826270945a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a8814d1120d7b160000808206888080",
+   "signingHash": "0x2fec65284801e30bc78546819336b14a88048897b0769aea2edec770b9a6944b",
+   "eip681": "ethereum:0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A@1672?value=1500000000000000000",
+   "sent": {
+    "hash": "0x3a2c734ec1c7dd00203146a0c02eb8c4faaa78f1ed1dce714f7a948d221ec742",
+    "expectedHash": "0x3a2c734ec1c7dd00203146a0c02eb8c4faaa78f1ed1dce714f7a948d221ec742",
+    "status": "success",
+    "gasUsed": 21000,
+    "input": "0x",
+    "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+   },
+   "payeeBalanceChange": "1500000000000000000",
+   "expected": "1500000000000000000",
+   "exact": true,
+   "hashMatches": true,
+   "signer": true
+  },
+  {
+   "task": 19,
+   "label": "A plain-text invoice in USDC",
+   "invoiceId": "text-usdc",
+   "status": "ready",
+   "reference": "INV-2026-0042",
+   "summary": [
+    "Pay invoice INV-2026-0042 from Harbor Studio Ltd: 250 USDC to 0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A, due 2027-11-19.",
+    "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5A5a…5A5A5A, 250000000).",
+    "Reference \"INV-2026-0042\" is written into the transaction data after the transfer, so it can be read on chain.",
+    "Network fee: about 0.00011 PROS (45,496 gas at 2.03311156 gwei).",
+    "Balance after: 4,650 USDC."
+   ],
+   "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+   "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a000000000000000000000000000000000000000000000000000000000ee6b280494e562d323032362d30303432",
+   "unsignedHex": "0xf8770684792ed20882d54494c879c018db60520f4355c26ed1a6d572cdac181580b851a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a000000000000000000000000000000000000000000000000000000000ee6b280494e562d323032362d303034328206888080",
+   "signingHash": "0xcae3ad06b60688f18291ddb5b603c9fd54a5683793145c2b60dd99f61979df00",
+   "sent": {
+    "hash": "0x46fa561046ed2b204b92c770269d827979375bceade1bd48fae5f73f647b2113",
+    "expectedHash": "0x46fa561046ed2b204b92c770269d827979375bceade1bd48fae5f73f647b2113",
+    "status": "success",
+    "gasUsed": 45279,
+    "input": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a000000000000000000000000000000000000000000000000000000000ee6b280494e562d323032362d30303432",
+    "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+   },
+   "referenceOnChain": "INV-2026-0042",
+   "referenceMatches": true,
+   "payeeBalanceChange": "250000000",
+   "expected": "250000000",
+   "exact": true,
+   "hashMatches": true,
+   "signer": true
+  },
+  {
+   "task": 19,
+   "label": "The same kind of invoice as JSON",
+   "invoiceId": "json-usdc",
+   "status": "ready",
+   "reference": "2026-117",
+   "summary": [
+    "Pay invoice 2026-117 from Nova Audio: 1,200.5 USDC to 0x7B7b7b7b7B7B7B7b7b7b7B7B7b7b7b7B7b7B7B01, due 2027-12-01.",
+    "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x7B7b7b…7B7B01, 1200500000).",
+    "Reference \"2026-117\" is written into the transaction data after the transfer, so it can be read on chain.",
+    "Network fee: about 0.00012 PROS (62,787 gas at 1.605598865 gwei).",
+    "Balance after: 3,449.5 USDC."
+   ],
+   "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+   "data": "0xa9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b0100000000000000000000000000000000000000000000000000000000478e2d20323032362d313137",
+   "unsignedHex": "0xf87307845fb37e918301265194c879c018db60520f4355c26ed1a6d572cdac181580b84ca9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b0100000000000000000000000000000000000000000000000000000000478e2d20323032362d3131378206888080",
+   "signingHash": "0xf6d81db5cab00c4991772bfcd59489a57cca285c23a5d7f45aad046954ecf030",
+   "sent": {
+    "hash": "0x42a6d24bce037e2612a35ac6ad8624758a45005b3c39b161026b9332dccf3b75",
+    "expectedHash": "0x42a6d24bce037e2612a35ac6ad8624758a45005b3c39b161026b9332dccf3b75",
+    "status": "success",
+    "gasUsed": 62299,
+    "input": "0xa9059cbb0000000000000000000000007b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b0100000000000000000000000000000000000000000000000000000000478e2d20323032362d313137",
+    "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+   },
+   "referenceOnChain": "2026-117",
+   "referenceMatches": true,
+   "payeeBalanceChange": "1200500000",
+   "expected": "1200500000",
+   "exact": true,
+   "hashMatches": true,
+   "signer": true
+  },
+  {
+   "task": 19,
+   "label": "An ethereum: payment link (EIP-681)",
+   "invoiceId": "link-usdc",
+   "status": "ready",
+   "reference": "ORD-88123",
+   "summary": [
+    "Pay invoice ORD-88123: 75 USDC to 0x3C3C3C3C3c3C3c3C3C3C3C3C3c3c3c3c3c3c3c3C.",
+    "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x3C3C3C…3c3c3C, 75000000).",
+    "Reference \"ORD-88123\" is written into the transaction data after the transfer, so it can be read on chain.",
+    "Network fee: about 0.000102 PROS (62,803 gas at 1.354997257 gwei).",
+    "Balance after: 3,374.5 USDC."
+   ],
+   "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+   "data": "0xa9059cbb0000000000000000000000003c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c00000000000000000000000000000000000000000000000000000000047868c04f52442d3838313233",
+   "unsignedHex": "0xf874088450c39e098301266494c879c018db60520f4355c26ed1a6d572cdac181580b84da9059cbb0000000000000000000000003c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c00000000000000000000000000000000000000000000000000000000047868c04f52442d38383132338206888080",
+   "signingHash": "0x93701b7f4a5e4d017daa46eabde997666d5a62ae33cc54f6267bb34897c68b5a",
+   "sent": {
+    "hash": "0x46f2e4b13bf97a66e089745f2a03d7bfa20c80843f94ff71ec72ba6c82f7e07d",
+    "expectedHash": "0x46f2e4b13bf97a66e089745f2a03d7bfa20c80843f94ff71ec72ba6c82f7e07d",
+    "status": "success",
+    "gasUsed": 62315,
+    "input": "0xa9059cbb0000000000000000000000003c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c00000000000000000000000000000000000000000000000000000000047868c04f52442d3838313233",
+    "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+   },
+   "referenceOnChain": "ORD-88123",
+   "referenceMatches": true,
+   "payeeBalanceChange": "75000000",
+   "expected": "75000000",
+   "exact": true,
+   "hashMatches": true,
+   "signer": true
+  }
+ ],
+ "summary": {
+  "cases": 5,
+  "mined": 5,
+  "exactAmounts": 5,
+  "hashesMatch": 5,
+  "referencesRead": 3,
+  "invoiceCases": 3
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "recordedAt": "2026-10-24T21:06:50.956Z",
+ "network": "local anvil fork of Pharos mainnet (chain 1672): the live Morpho Blue, the live market, a real borrower; only the collateral price is moved, by replacing the oracle on the fork",
+ "forkBlock": 21152802,
+ "market": {
+  "id": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+  "pair": "syzUSD/USDC",
+  "lltv": "915000000000000000",
+  "oracle": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46"
+ },
+ "borrower": "0x743d7b30661d65b41960bf6b5d1bb93cf7972a73",
+ "healthFactorAtFork": 1.0200676074493154,
+ "cases": [
+  {
+   "label": "well above 1 (as it really is now)",
+   "collateralPrice": "1090631724683976620000000",
+   "predictedHealthFactor": 1.0200675922954328,
+   "predictedHealthy": true,
+   "morphoExecutedTheLiquidation": false,
+   "morphoSaid": "position is healthy",
+   "blockTimestamp": 1792875993,
+   "agrees": true
+  },
+  {
+   "label": "just above 1 (+0.0002%)",
+   "collateralPrice": "1069178076178226593806921",
+   "predictedHealthFactor": 1.0000019999854968,
+   "predictedHealthy": true,
+   "morphoExecutedTheLiquidation": false,
+   "morphoSaid": "position is healthy",
+   "blockTimestamp": 1792875993,
+   "agrees": true
+  },
+  {
+   "label": "just below 1 (−0.0002%)",
+   "collateralPrice": "1069173799474475288403157",
+   "predictedHealthFactor": 0.9999979999690728,
+   "predictedHealthy": false,
+   "morphoExecutedTheLiquidation": true,
+   "morphoSaid": "liquidation executed",
+   "blockTimestamp": 1792875993,
+   "repaidAssets": "104190988",
+   "seizedAssets": "100000000000000000000",
+   "badDebtAssets": "0",
+   "bonusPaidByMorpho": 1.0261672439462808,
+   "bonusQuotedByWatchdog": 1.0261672652642382,
+   "agrees": true
+  },
+  {
+   "label": "clearly below 1 (0.97)",
+   "collateralPrice": "1037100659691560412871888",
+   "predictedHealthFactor": 0.9699999999818278,
+   "predictedHealthy": false,
+   "morphoExecutedTheLiquidation": true,
+   "morphoSaid": "liquidation executed",
+   "blockTimestamp": 1792875993,
+   "repaidAssets": "101065461",
+   "seizedAssets": "100000000000000000000",
+   "badDebtAssets": "0",
+   "bonusPaidByMorpho": 1.0261672382813354,
+   "bonusQuotedByWatchdog": 1.0261672652642382,
+   "agrees": true
+  }
+ ],
+ "summary": {
+  "cases": 4,
+  "agree": 4,
+  "bonusMatches": true
+ }
+}

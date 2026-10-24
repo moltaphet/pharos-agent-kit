@@ -1,0 +1,824 @@
+{
+ "recordedAt": "2026-10-24T21:36:24.565Z",
+ "network": {
+  "name": "Pharos Pacific Mainnet",
+  "chainId": 1672
+ },
+ "note": "Each schedule is looked at on real mainnet at one pinned block: the chain’s clock decides what is due, the chain decides what is paid, and nothing is sent. The full lifecycle (sign, fail, retry, never twice) is in the fork run.",
+ "cases": [
+  {
+   "id": "weekly-rent",
+   "label": "Rent: 25 USDC every week",
+   "schedule": {
+    "id": "rent-weekly",
+    "label": "Rent",
+    "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "payee": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "token": "USDC",
+    "amount": "25",
+    "frequency": "weekly",
+    "start": "2026-10-05T09:00"
+   },
+   "block": 21151643,
+   "result": {
+    "block": {
+     "number": 21151643,
+     "head": 21154754,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24T20:49:06Z"
+    },
+    "clock": "2026-10-24T20:49:06Z",
+    "schedule": {
+     "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "payee": "0x5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6
+     },
+     "amount": "25",
+     "frequency": "weekly",
+     "start": "2026-10-05T09:00:00Z",
+     "count": null,
+     "label": "Rent",
+     "id": "rent-weekly"
+    },
+    "counts": {
+     "paid": 0,
+     "pending": 3,
+     "submitted": 0,
+     "failed": 0,
+     "upcoming": 2
+    },
+    "periods": [
+     {
+      "period": 0,
+      "due": 1791190800,
+      "dueIso": "2026-10-05T09:00:00Z",
+      "reference": "rp:rent-weekly:0",
+      "status": "pending",
+      "overdueSeconds": 1684146
+     },
+     {
+      "period": 1,
+      "due": 1791795600,
+      "dueIso": "2026-10-12T09:00:00Z",
+      "reference": "rp:rent-weekly:1",
+      "status": "pending",
+      "overdueSeconds": 1079346
+     },
+     {
+      "period": 2,
+      "due": 1792400400,
+      "dueIso": "2026-10-19T09:00:00Z",
+      "reference": "rp:rent-weekly:2",
+      "status": "pending",
+      "overdueSeconds": 474546
+     },
+     {
+      "period": 3,
+      "due": 1793005200,
+      "dueIso": "2026-10-26T09:00:00Z",
+      "reference": "rp:rent-weekly:3",
+      "status": "upcoming",
+      "inSeconds": 130254
+     },
+     {
+      "period": 4,
+      "due": 1793610000,
+      "dueIso": "2026-11-02T09:00:00Z",
+      "reference": "rp:rent-weekly:4",
+      "status": "upcoming",
+      "inSeconds": 735054
+     }
+    ],
+    "next": {
+     "period": 3,
+     "due": 1793005200,
+     "dueIso": "2026-10-26T09:00:00Z",
+     "inSeconds": 130254,
+     "text": "25 USDC on 2026-10-26T09:00:00Z"
+    },
+    "action": {
+     "period": 0,
+     "kind": "prepared",
+     "transaction": {
+      "chainId": 1672,
+      "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "value": "0",
+      "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000000000000000000000000000017d784072703a72656e742d7765656b6c793a30",
+      "gas": 96142,
+      "walletRequest": {
+       "method": "eth_sendTransaction",
+       "params": [
+        {
+         "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+         "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+         "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000000000000000000000000000017d784072703a72656e742d7765656b6c793a30",
+         "value": "0x0",
+         "gas": "0x1778e",
+         "chainId": "0x688"
+        }
+       ]
+      },
+      "unsignedRaw": {
+       "nonce": 1,
+       "gasPriceWei": "10000000000",
+       "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+       "hex": "0xf87c018502540be4008301778e94c879c018db60520f4355c26ed1a6d572cdac181580b854a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000000000000000000000000000017d784072703a72656e742d7765656b6c793a308206888080",
+       "signingHash": "0x7a7d554d8a47ccc28da8b2e12ceeb45751ff114c1db9a2d30e9c646e46d30fe2"
+      }
+     },
+     "summary": [
+      "Send 25 USDC from 0x8ecdf4…24ab9f to 0x5a5a5a…5a5a5a on Pharos Pacific Mainnet.",
+      "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5a5a…5a5a5a, 25000000).",
+      "Reference \"rp:rent-weekly:0\" is written into the transaction data after the transfer, so it can be read on chain.",
+      "Network fee: about 0.000961 PROS (80,118 gas at 10 gwei).",
+      "Balance after: 942,917.429833 USDC."
+     ],
+     "checks": [
+      {
+       "id": "recipient",
+       "name": "The recipient is a well-formed address",
+       "ok": true,
+       "level": "note",
+       "detail": "all one case, so it carries no checksum to verify: check it against the source"
+      },
+      {
+       "id": "token-code",
+       "name": "The token address holds a contract",
+       "ok": true,
+       "level": "pass",
+       "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+      },
+      {
+       "id": "token-erc20",
+       "name": "The contract answers like an ERC-20 token",
+       "ok": true,
+       "level": "pass",
+       "detail": "USDC with 6 decimals (matches the Token Registry)"
+      },
+      {
+       "id": "amount",
+       "name": "The amount is more than zero and exact for this token",
+       "ok": true,
+       "level": "pass",
+       "detail": "25 USDC = 25000000 base units"
+      },
+      {
+       "id": "balance",
+       "name": "The sender holds enough USDC",
+       "ok": true,
+       "level": "pass",
+       "detail": "holds 942,942.429833 USDC; after the payment 942,917.429833 USDC"
+      },
+      {
+       "id": "gas-balance",
+       "name": "The sender holds enough PROS for the gas",
+       "ok": true,
+       "level": "warn",
+       "detail": "holds 0 PROS and the gas is about 0.000961 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+      },
+      {
+       "id": "simulation",
+       "name": "The transfer succeeds when simulated as the sender",
+       "ok": true,
+       "level": "pass",
+       "detail": "eth_call succeeds and estimate_gas says 80,118 gas, at block 21,151,643"
+      }
+     ],
+     "reference": "rp:rent-weekly:0",
+     "retry": null
+    },
+    "notices": [],
+    "history": [
+     {
+      "at": "2026-10-24T20:49:06Z",
+      "block": 21151643,
+      "type": "prepared",
+      "period": 0,
+      "reference": "rp:rent-weekly:0"
+     }
+    ],
+    "scan": {
+     "from": 21151643,
+     "to": 21151643,
+     "complete": true,
+     "found": 0
+    },
+    "state": {
+     "version": 1,
+     "scheduleId": "rent-weekly",
+     "cursor": 21151644,
+     "createdBlock": 21151643,
+     "submissions": {},
+     "prepared": {
+      "0": {
+       "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000000000000000000000000000017d784072703a72656e742d7765656b6c793a30",
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "preparedAt": "2026-10-24T20:49:06Z",
+       "block": 21151643
+      }
+     },
+     "attempts": {},
+     "paid": {},
+     "history": [
+      {
+       "at": "2026-10-24T20:49:06Z",
+       "block": 21151643,
+       "type": "prepared",
+       "period": 0,
+       "reference": "rp:rent-weekly:0"
+      }
+     ]
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "schedule",
+      "summary": "weekly 25 USDC from 0x8ecdf4…24ab9f to 0x5a5a5a…5a5a5a: 3 period(s) due at block time 2026-10-24T20:49:06Z.",
+      "uses": [],
+      "output": {
+       "due": 3
+      }
+     },
+     {
+      "n": 2,
+      "actor": "agent",
+      "name": "scan-transfers",
+      "summary": "Scanned blocks 21,151,643–21,151,643 for USDC transfers from the payer to the payee: 0 found.",
+      "uses": [],
+      "output": {
+       "found": 0
+      }
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 502
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 448
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 80,118 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "prepare",
+      "summary": "Period 0: prepared (rp:rent-weekly:0).",
+      "uses": [],
+      "output": {
+       "kind": "prepared"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1
+   }
+  },
+  {
+   "id": "monthly-subscription",
+   "label": "A subscription: 12.5 USDC on the 31st of every month",
+   "schedule": {
+    "id": "sub-monthly",
+    "label": "Subscription",
+    "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+    "payee": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "token": "USDC",
+    "amount": "12.5",
+    "frequency": "monthly",
+    "start": "2026-08-31T00:00"
+   },
+   "block": 21151643,
+   "result": {
+    "block": {
+     "number": 21151643,
+     "head": 21154762,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24T20:49:06Z"
+    },
+    "clock": "2026-10-24T20:49:06Z",
+    "schedule": {
+     "payer": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+     "payee": "0x5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6
+     },
+     "amount": "12.5",
+     "frequency": "monthly",
+     "start": "2026-08-31T00:00:00Z",
+     "count": null,
+     "label": "Subscription",
+     "id": "sub-monthly"
+    },
+    "counts": {
+     "paid": 0,
+     "pending": 2,
+     "submitted": 0,
+     "failed": 0,
+     "upcoming": 2
+    },
+    "periods": [
+     {
+      "period": 0,
+      "due": 1788134400,
+      "dueIso": "2026-08-31T00:00:00Z",
+      "reference": "rp:sub-monthly:0",
+      "status": "pending",
+      "overdueSeconds": 4740546
+     },
+     {
+      "period": 1,
+      "due": 1790726400,
+      "dueIso": "2026-09-30T00:00:00Z",
+      "reference": "rp:sub-monthly:1",
+      "status": "pending",
+      "overdueSeconds": 2148546
+     },
+     {
+      "period": 2,
+      "due": 1793404800,
+      "dueIso": "2026-10-31T00:00:00Z",
+      "reference": "rp:sub-monthly:2",
+      "status": "upcoming",
+      "inSeconds": 529854
+     },
+     {
+      "period": 3,
+      "due": 1795996800,
+      "dueIso": "2026-11-30T00:00:00Z",
+      "reference": "rp:sub-monthly:3",
+      "status": "upcoming",
+      "inSeconds": 3121854
+     }
+    ],
+    "next": {
+     "period": 2,
+     "due": 1793404800,
+     "dueIso": "2026-10-31T00:00:00Z",
+     "inSeconds": 529854,
+     "text": "12.5 USDC on 2026-10-31T00:00:00Z"
+    },
+    "action": {
+     "period": 0,
+     "kind": "prepared",
+     "transaction": {
+      "chainId": 1672,
+      "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+      "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "value": "0",
+      "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000000bebc2072703a7375622d6d6f6e74686c793a30",
+      "gas": 96124,
+      "walletRequest": {
+       "method": "eth_sendTransaction",
+       "params": [
+        {
+         "from": "0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f",
+         "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+         "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000000bebc2072703a7375622d6d6f6e74686c793a30",
+         "value": "0x0",
+         "gas": "0x1777c",
+         "chainId": "0x688"
+        }
+       ]
+      },
+      "unsignedRaw": {
+       "nonce": 1,
+       "gasPriceWei": "10000000000",
+       "serialization": "rlp([nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]) (EIP-155 legacy)",
+       "hex": "0xf87c018502540be4008301777c94c879c018db60520f4355c26ed1a6d572cdac181580b854a9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000000bebc2072703a7375622d6d6f6e74686c793a308206888080",
+       "signingHash": "0x5b143b948237946f493ec81ca3488b02243e3aaee0eade5281679a2f97cedb4c"
+      }
+     },
+     "summary": [
+      "Send 12.5 USDC from 0x8ecdf4…24ab9f to 0x5a5a5a…5a5a5a on Pharos Pacific Mainnet.",
+      "It is a call to the USDC contract (0xc879c0…ac1815): transfer(0x5a5a5a…5a5a5a, 12500000).",
+      "Reference \"rp:sub-monthly:0\" is written into the transaction data after the transfer, so it can be read on chain.",
+      "Network fee: about 0.000961 PROS (80,103 gas at 10 gwei).",
+      "Balance after: 942,929.929833 USDC."
+     ],
+     "checks": [
+      {
+       "id": "recipient",
+       "name": "The recipient is a well-formed address",
+       "ok": true,
+       "level": "note",
+       "detail": "all one case, so it carries no checksum to verify: check it against the source"
+      },
+      {
+       "id": "token-code",
+       "name": "The token address holds a contract",
+       "ok": true,
+       "level": "pass",
+       "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+      },
+      {
+       "id": "token-erc20",
+       "name": "The contract answers like an ERC-20 token",
+       "ok": true,
+       "level": "pass",
+       "detail": "USDC with 6 decimals (matches the Token Registry)"
+      },
+      {
+       "id": "amount",
+       "name": "The amount is more than zero and exact for this token",
+       "ok": true,
+       "level": "pass",
+       "detail": "12.5 USDC = 12500000 base units"
+      },
+      {
+       "id": "balance",
+       "name": "The sender holds enough USDC",
+       "ok": true,
+       "level": "pass",
+       "detail": "holds 942,942.429833 USDC; after the payment 942,929.929833 USDC"
+      },
+      {
+       "id": "gas-balance",
+       "name": "The sender holds enough PROS for the gas",
+       "ok": true,
+       "level": "warn",
+       "detail": "holds 0 PROS and the gas is about 0.000961 PROS, but the sender is a smart-contract wallet: its gas may be paid by someone else (a bundler or paymaster)"
+      },
+      {
+       "id": "simulation",
+       "name": "The transfer succeeds when simulated as the sender",
+       "ok": true,
+       "level": "pass",
+       "detail": "eth_call succeeds and estimate_gas says 80,103 gas, at block 21,151,643"
+      }
+     ],
+     "reference": "rp:sub-monthly:0",
+     "retry": null
+    },
+    "notices": [],
+    "history": [
+     {
+      "at": "2026-10-24T20:49:06Z",
+      "block": 21151643,
+      "type": "prepared",
+      "period": 0,
+      "reference": "rp:sub-monthly:0"
+     }
+    ],
+    "scan": {
+     "from": 21151643,
+     "to": 21151643,
+     "complete": true,
+     "found": 0
+    },
+    "state": {
+     "version": 1,
+     "scheduleId": "sub-monthly",
+     "cursor": 21151644,
+     "createdBlock": 21151643,
+     "submissions": {},
+     "prepared": {
+      "0": {
+       "data": "0xa9059cbb0000000000000000000000005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a0000000000000000000000000000000000000000000000000000000000bebc2072703a7375622d6d6f6e74686c793a30",
+       "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+       "preparedAt": "2026-10-24T20:49:06Z",
+       "block": 21151643
+      }
+     },
+     "attempts": {},
+     "paid": {},
+     "history": [
+      {
+       "at": "2026-10-24T20:49:06Z",
+       "block": 21151643,
+       "type": "prepared",
+       "period": 0,
+       "reference": "rp:sub-monthly:0"
+      }
+     ]
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "schedule",
+      "summary": "monthly 12.5 USDC from 0x8ecdf4…24ab9f to 0x5a5a5a…5a5a5a: 2 period(s) due at block time 2026-10-24T20:49:06Z.",
+      "uses": [],
+      "output": {
+       "due": 2
+      }
+     },
+     {
+      "n": 2,
+      "actor": "agent",
+      "name": "scan-transfers",
+      "summary": "Scanned blocks 21,151,643–21,151,643 for USDC transfers from the payer to the payee: 0 found.",
+      "uses": [],
+      "output": {
+       "found": 0
+      }
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 545
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 643
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would succeed: 80,103 gas.",
+      "uses": [],
+      "output": {
+       "verdict": "go"
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "prepare",
+      "summary": "Period 0: prepared (rp:sub-monthly:0).",
+      "uses": [],
+      "output": {
+       "kind": "prepared"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1
+   }
+  },
+  {
+   "id": "payer-with-nothing",
+   "label": "A payer that holds no USDC",
+   "schedule": {
+    "id": "poor-payer",
+    "label": "Allowance",
+    "payer": "0x00000000000000000000000000000000000000a1",
+    "payee": "0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A",
+    "token": "USDC",
+    "amount": "10",
+    "frequency": "weekly",
+    "start": "2026-10-12T00:00"
+   },
+   "block": 21151643,
+   "result": {
+    "block": {
+     "number": 21151643,
+     "head": 21154770,
+     "timestamp": 1792874946,
+     "iso": "2026-10-24T20:49:06Z"
+    },
+    "clock": "2026-10-24T20:49:06Z",
+    "schedule": {
+     "payer": "0x00000000000000000000000000000000000000a1",
+     "payee": "0x5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+     "token": {
+      "symbol": "USDC",
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "decimals": 6
+     },
+     "amount": "10",
+     "frequency": "weekly",
+     "start": "2026-10-12T00:00:00Z",
+     "count": null,
+     "label": "Allowance",
+     "id": "poor-payer"
+    },
+    "counts": {
+     "paid": 0,
+     "pending": 2,
+     "submitted": 0,
+     "failed": 0,
+     "upcoming": 2
+    },
+    "periods": [
+     {
+      "period": 0,
+      "due": 1791763200,
+      "dueIso": "2026-10-12T00:00:00Z",
+      "reference": "rp:poor-payer:0",
+      "status": "pending",
+      "overdueSeconds": 1111746
+     },
+     {
+      "period": 1,
+      "due": 1792368000,
+      "dueIso": "2026-10-19T00:00:00Z",
+      "reference": "rp:poor-payer:1",
+      "status": "pending",
+      "overdueSeconds": 506946
+     },
+     {
+      "period": 2,
+      "due": 1792972800,
+      "dueIso": "2026-10-26T00:00:00Z",
+      "reference": "rp:poor-payer:2",
+      "status": "upcoming",
+      "inSeconds": 97854
+     },
+     {
+      "period": 3,
+      "due": 1793577600,
+      "dueIso": "2026-11-02T00:00:00Z",
+      "reference": "rp:poor-payer:3",
+      "status": "upcoming",
+      "inSeconds": 702654
+     }
+    ],
+    "next": {
+     "period": 2,
+     "due": 1792972800,
+     "dueIso": "2026-10-26T00:00:00Z",
+     "inSeconds": 97854,
+     "text": "10 USDC on 2026-10-26T00:00:00Z"
+    },
+    "action": {
+     "period": 0,
+     "kind": "blocked-insufficient-balance",
+     "reason": "holds 0 USDC but 10 USDC was asked: 10 USDC short",
+     "checks": [
+      {
+       "id": "recipient",
+       "name": "The recipient is a well-formed address",
+       "ok": true,
+       "level": "note",
+       "detail": "all one case, so it carries no checksum to verify: check it against the source"
+      },
+      {
+       "id": "token-code",
+       "name": "The token address holds a contract",
+       "ok": true,
+       "level": "pass",
+       "detail": "0xc879c018db60520f4355c26ed1a6d572cdac1815 has contract code"
+      },
+      {
+       "id": "token-erc20",
+       "name": "The contract answers like an ERC-20 token",
+       "ok": true,
+       "level": "pass",
+       "detail": "USDC with 6 decimals (matches the Token Registry)"
+      },
+      {
+       "id": "amount",
+       "name": "The amount is more than zero and exact for this token",
+       "ok": true,
+       "level": "pass",
+       "detail": "10 USDC = 10000000 base units"
+      },
+      {
+       "id": "balance",
+       "name": "The sender holds enough USDC",
+       "ok": false,
+       "level": "fail",
+       "detail": "holds 0 USDC but 10 USDC was asked: 10 USDC short"
+      },
+      {
+       "id": "gas-balance",
+       "name": "The sender holds enough PROS for the gas",
+       "ok": false,
+       "level": "fail",
+       "detail": "holds 0 PROS but the gas is about 0.0012 PROS: an ordinary account with no PROS cannot send anything"
+      },
+      {
+       "id": "simulation",
+       "name": "The transfer succeeds when simulated as the sender",
+       "ok": false,
+       "level": "fail",
+       "detail": "it would fail: ERC20: transfer amount exceeds balance"
+      }
+     ]
+    },
+    "notices": [],
+    "history": [
+     {
+      "at": "2026-10-24T20:49:06Z",
+      "block": 21151643,
+      "type": "blocked",
+      "period": 0,
+      "reason": "holds 0 USDC but 10 USDC was asked: 10 USDC short"
+     }
+    ],
+    "scan": {
+     "from": 21151643,
+     "to": 21151643,
+     "complete": true,
+     "found": 0
+    },
+    "state": {
+     "version": 1,
+     "scheduleId": "poor-payer",
+     "cursor": 21151644,
+     "createdBlock": 21151643,
+     "submissions": {},
+     "prepared": {},
+     "attempts": {},
+     "paid": {},
+     "history": [
+      {
+       "at": "2026-10-24T20:49:06Z",
+       "block": 21151643,
+       "type": "blocked",
+       "period": 0,
+       "reason": "holds 0 USDC but 10 USDC was asked: 10 USDC short"
+      }
+     ]
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "agent",
+      "name": "schedule",
+      "summary": "weekly 10 USDC from 0x000000…0000a1 to 0x5a5a5a…5a5a5a: 2 period(s) due at block time 2026-10-24T20:49:06Z.",
+      "uses": [],
+      "output": {
+       "due": 2
+      }
+     },
+     {
+      "n": 2,
+      "actor": "agent",
+      "name": "scan-transfers",
+      "summary": "Scanned blocks 21,151,643–21,151,643 for USDC transfers from the payer to the payee: 0 found.",
+      "uses": [],
+      "output": {
+       "found": 0
+      }
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The sender's PROS balance and the token (4 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 659
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000…",
+      "ms": 390
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "simulate",
+      "summary": "The transfer would fail: ERC20: transfer amount exceeds balance",
+      "uses": [],
+      "output": {
+       "verdict": "blocked"
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "prepare",
+      "summary": "Period 0: not prepared: holds 0 USDC but 10 USDC was asked: 10 USDC short",
+      "uses": [],
+      "output": {
+       "kind": "blocked-insufficient-balance"
+      }
+     }
+    ],
+    "chainCalls": 1,
+    "rpcCalls": 1
+   }
+  }
+ ]
+}

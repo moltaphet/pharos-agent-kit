@@ -1,0 +1,1732 @@
+{
+ "recordedAt": "2026-10-24T21:09:46.338Z",
+ "network": {
+  "name": "Pharos Pacific Mainnet",
+  "chainId": 1672
+ },
+ "note": "Every case is pinned to one mainnet block, so replaying it asks Chain MCP the same questions and must get the same position, health factor and alert. Nothing is sent to anyone but the console.",
+ "cases": [
+  {
+   "id": "largest-near-liquidation",
+   "label": "A $1.5M USDC loan against syzUSD, a hair above liquidation",
+   "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+   "borrower": "0xa4a57dcf7b15456b7053f10a377bdb437c073dcc",
+   "thresholds": {
+    "warn": 1.3,
+    "critical": 1.1
+   },
+   "block": 21149998,
+   "result": {
+    "block": {
+     "number": 21149998,
+     "head": 21152998,
+     "timestamp": 1792873364,
+     "iso": "2026-10-24 20:22:44 UTC",
+     "historical": true
+    },
+    "market": {
+     "id": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+     "pair": "syzUSD/USDC",
+     "loan": {
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "symbol": "USDC",
+      "decimals": 6
+     },
+     "collateral": {
+      "address": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "symbol": "syzUSD",
+      "decimals": 18
+     },
+     "lltv": "915000000000000000",
+     "lltvText": "91.5%",
+     "oracle": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+     "irm": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+     "totalBorrowAssetsText": "3,610,874 USDC",
+     "explorer": "https://www.pharosscan.xyz/address/0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb"
+    },
+    "borrower": {
+     "address": "0xa4a57dcf7b15456b7053f10a377bdb437c073dcc",
+     "explorer": "https://www.pharosscan.xyz/address/0xa4a57dcf7b15456b7053f10a377bdb437c073dcc"
+    },
+    "position": {
+     "collateral": "1547470901193805025792539",
+     "collateralText": "1,547,470.9011 syzUSD",
+     "borrowShares": "1507380776020124482",
+     "borrowed": "1523888082478",
+     "borrowedText": "1,523,888.0824 USDC",
+     "collateralValue": "1687707096760",
+     "collateralValueText": "1,687,707.0967 USDC",
+     "maxBorrow": "1544251993535",
+     "maxBorrowText": "1,544,251.9935 USDC",
+     "interestCarriedForward": "39028502",
+     "interestSeconds": 8641,
+     "price": "1090622832040395213000000",
+     "priceText": "1.0906 USDC per syzUSD",
+     "ltv": 0.902933977941733
+    },
+    "healthFactor": 1.0133631277067843,
+    "level": "critical",
+    "thresholds": {
+     "warn": 1.3,
+     "critical": 1.1
+    },
+    "remedies": {
+     "target": 1.3,
+     "repayToTarget": "336001933605",
+     "repayToTargetText": "336,001.9336 USDC",
+     "addCollateral": "437713004307641576320315",
+     "addCollateralText": "437,713.0043 syzUSD",
+     "liquidationPrice": "1076240887616160161331890",
+     "liquidationPriceText": "1.0762 USDC",
+     "priceDropPct": 1.3186909352822407,
+     "borrowRatePerYear": 0.0935350393622616,
+     "daysToLiquidationByInterest": 51.83681058054711
+    },
+    "liquidationIncentive": 1.0261672652642382,
+    "alert": {
+     "level": "critical",
+     "at": "2026-10-24T21:09:28.373Z",
+     "severity": "critical",
+     "headline": "CRITICAL: health factor 1.0134 (warn at 1.3, critical at 1.1)",
+     "action": "repay 336,001.9336 USDC or add 437,713.0043 syzUSD of collateral to get back to a health factor of 1.30.",
+     "lines": [
+      "Collateral 1,547,470.9011 syzUSD worth 1,687,707.0967 USDC; debt 1,523,888.0824 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 90.29%.",
+      "syzUSD would have to fall 1.32% (to 1.0762 USDC each) to reach liquidation.",
+      "Even at a flat price, interest at 9.35% a year takes about 51.8 days to get there."
+     ],
+     "healthFactor": 1.0133631277067843,
+     "repay": "336001933605",
+     "addCollateral": "437713004307641576320315",
+     "text": "[2026-10-24T21:09:28.373Z] CRITICAL: health factor 1.0134 (warn at 1.3, critical at 1.1)\n    position 0xa4a57d…073dcc in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 1,547,470.9011 syzUSD worth 1,687,707.0967 USDC; debt 1,523,888.0824 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 90.29%.\n    syzUSD would have to fall 1.32% (to 1.0762 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 51.8 days to get there.\n    → repay 336,001.9336 USDC or add 437,713.0043 syzUSD of collateral to get back to a health factor of 1.30."
+    },
+    "alertSent": true,
+    "delivered": [
+     {
+      "channel": "console",
+      "ok": true
+     }
+    ],
+    "sources": [
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "idToMarketParams(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "market(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "position(bytes32,address)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+      "call": "oracle.price()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+      "call": "irm.borrowRateView(marketParams, market)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     }
+    ],
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 9
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Morpho Blue: the market’s parameters and state, and the borrower’s position (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 698
+     },
+     {
+      "n": 2,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 2091
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The oracle price, the current borrow rate and the two tokens (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 694
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 491
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "assess",
+      "summary": "Health factor 1.0134 → critical.",
+      "uses": [
+       1,
+       3
+      ],
+      "output": {
+       "level": "critical",
+       "hf": 1.0133631277067843
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "alert",
+      "summary": "Alert raised and sent to console.",
+      "uses": [],
+      "output": {
+       "sent": true
+      }
+     }
+    ],
+    "chainCalls": 2,
+    "rpcCalls": 2
+   },
+   "consoleOutput": [
+    "[2026-10-24T21:09:28.373Z] CRITICAL: health factor 1.0134 (warn at 1.3, critical at 1.1)\n    position 0xa4a57d…073dcc in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 1,547,470.9011 syzUSD worth 1,687,707.0967 USDC; debt 1,523,888.0824 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 90.29%.\n    syzUSD would have to fall 1.32% (to 1.0762 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 51.8 days to get there.\n    → repay 336,001.9336 USDC or add 437,713.0043 syzUSD of collateral to get back to a health factor of 1.30."
+   ]
+  },
+  {
+   "id": "second-near-liquidation",
+   "label": "Another $1.3M syzUSD loan, also critical",
+   "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+   "borrower": "0xe6a4771284342462f4d2bfbfb86db12c8f19fe7c",
+   "thresholds": {
+    "warn": 1.3,
+    "critical": 1.1
+   },
+   "block": 21149998,
+   "result": {
+    "block": {
+     "number": 21149998,
+     "head": 21153004,
+     "timestamp": 1792873364,
+     "iso": "2026-10-24 20:22:44 UTC",
+     "historical": true
+    },
+    "market": {
+     "id": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+     "pair": "syzUSD/USDC",
+     "loan": {
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "symbol": "USDC",
+      "decimals": 6
+     },
+     "collateral": {
+      "address": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "symbol": "syzUSD",
+      "decimals": 18
+     },
+     "lltv": "915000000000000000",
+     "lltvText": "91.5%",
+     "oracle": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+     "irm": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+     "totalBorrowAssetsText": "3,610,874 USDC",
+     "explorer": "https://www.pharosscan.xyz/address/0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb"
+    },
+    "borrower": {
+     "address": "0xe6a4771284342462f4d2bfbfb86db12c8f19fe7c",
+     "explorer": "https://www.pharosscan.xyz/address/0xe6a4771284342462f4d2bfbfb86db12c8f19fe7c"
+    },
+    "position": {
+     "collateral": "1391416263406571443904879",
+     "collateralText": "1,391,416.2634 syzUSD",
+     "borrowShares": "1329274470174648968",
+     "borrowed": "1343831336890",
+     "borrowedText": "1,343,831.3368 USDC",
+     "collateralValue": "1517510345743",
+     "collateralValueText": "1,517,510.3457 USDC",
+     "maxBorrow": "1388521966354",
+     "maxBorrowText": "1,388,521.9663 USDC",
+     "interestCarriedForward": "34417045",
+     "interestSeconds": 8641,
+     "price": "1090622832040395213000000",
+     "priceText": "1.0906 USDC per syzUSD",
+     "ltv": 0.8855500330918905
+    },
+    "healthFactor": 1.0332561298707519,
+    "level": "critical",
+    "thresholds": {
+     "warn": 1.3,
+     "critical": 1.1
+    },
+    "remedies": {
+     "target": 1.3,
+     "repayToTarget": "275737516618",
+     "repayToTargetText": "275,737.5166 USDC",
+     "addCollateral": "359205959036762882367385",
+     "addCollateralText": "359,205.959 syzUSD",
+     "liquidationPrice": "1055520311479826064740139",
+     "liquidationPriceText": "1.0555 USDC",
+     "priceDropPct": 3.2185756183829017,
+     "borrowRatePerYear": 0.0935350393622616,
+     "daysToLiquidationByInterest": 127.75097882580306
+    },
+    "liquidationIncentive": 1.0261672652642382,
+    "alert": {
+     "level": "critical",
+     "at": "2026-10-24T21:09:31.364Z",
+     "severity": "critical",
+     "headline": "CRITICAL: health factor 1.0333 (warn at 1.3, critical at 1.1)",
+     "action": "repay 275,737.5166 USDC or add 359,205.959 syzUSD of collateral to get back to a health factor of 1.30.",
+     "lines": [
+      "Collateral 1,391,416.2634 syzUSD worth 1,517,510.3457 USDC; debt 1,343,831.3368 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 88.56%.",
+      "syzUSD would have to fall 3.22% (to 1.0555 USDC each) to reach liquidation.",
+      "Even at a flat price, interest at 9.35% a year takes about 4.3 months to get there."
+     ],
+     "healthFactor": 1.0332561298707519,
+     "repay": "275737516618",
+     "addCollateral": "359205959036762882367385",
+     "text": "[2026-10-24T21:09:31.364Z] CRITICAL: health factor 1.0333 (warn at 1.3, critical at 1.1)\n    position 0xe6a477…19fe7c in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 1,391,416.2634 syzUSD worth 1,517,510.3457 USDC; debt 1,343,831.3368 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 88.56%.\n    syzUSD would have to fall 3.22% (to 1.0555 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 4.3 months to get there.\n    → repay 275,737.5166 USDC or add 359,205.959 syzUSD of collateral to get back to a health factor of 1.30."
+    },
+    "alertSent": true,
+    "delivered": [
+     {
+      "channel": "console",
+      "ok": true
+     }
+    ],
+    "sources": [
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "idToMarketParams(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "market(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "position(bytes32,address)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+      "call": "oracle.price()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+      "call": "irm.borrowRateView(marketParams, market)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     }
+    ],
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 9
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Morpho Blue: the market’s parameters and state, and the borrower’s position (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 573
+     },
+     {
+      "n": 2,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 494
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The oracle price, the current borrow rate and the two tokens (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 669
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 592
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "assess",
+      "summary": "Health factor 1.0333 → critical.",
+      "uses": [
+       1,
+       3
+      ],
+      "output": {
+       "level": "critical",
+       "hf": 1.0332561298707519
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "alert",
+      "summary": "Alert raised and sent to console.",
+      "uses": [],
+      "output": {
+       "sent": true
+      }
+     }
+    ],
+    "chainCalls": 2,
+    "rpcCalls": 2
+   },
+   "consoleOutput": [
+    "[2026-10-24T21:09:31.364Z] CRITICAL: health factor 1.0333 (warn at 1.3, critical at 1.1)\n    position 0xe6a477…19fe7c in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 1,391,416.2634 syzUSD worth 1,517,510.3457 USDC; debt 1,343,831.3368 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 88.56%.\n    syzUSD would have to fall 3.22% (to 1.0555 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 4.3 months to get there.\n    → repay 275,737.5166 USDC or add 359,205.959 syzUSD of collateral to get back to a health factor of 1.30."
+   ]
+  },
+  {
+   "id": "apt-usdc",
+   "label": "A loan in a different market: APT collateral, USDC debt",
+   "marketId": "0xd834016ed49b76ffcbeb8402733e2d69b1f77d30b28d6f21c826931214ae5aea",
+   "borrower": "0x966b9dce3d091c0214ada42cedf51400df4fb257",
+   "thresholds": {
+    "warn": 1.3,
+    "critical": 1.1
+   },
+   "block": 21149998,
+   "result": {
+    "block": {
+     "number": 21149998,
+     "head": 21153007,
+     "timestamp": 1792873364,
+     "iso": "2026-10-24 20:22:44 UTC",
+     "historical": true
+    },
+    "market": {
+     "id": "0xd834016ed49b76ffcbeb8402733e2d69b1f77d30b28d6f21c826931214ae5aea",
+     "pair": "APT/USDC",
+     "loan": {
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "symbol": "USDC",
+      "decimals": 6
+     },
+     "collateral": {
+      "address": "0x13282289b8b241cf16eb5b8bad401c7c2fdab0f8",
+      "symbol": "APT",
+      "decimals": 18
+     },
+     "lltv": "860000000000000000",
+     "lltvText": "86.0%",
+     "oracle": "0xd7e33079d91c5fa12798c1e7b28a7877045aa7c3",
+     "irm": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+     "totalBorrowAssetsText": "970,252 USDC",
+     "explorer": "https://www.pharosscan.xyz/address/0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb"
+    },
+    "borrower": {
+     "address": "0x966b9dce3d091c0214ada42cedf51400df4fb257",
+     "explorer": "https://www.pharosscan.xyz/address/0x966b9dce3d091c0214ada42cedf51400df4fb257"
+    },
+    "position": {
+     "collateral": "83676462420000000000000",
+     "collateralText": "83,676.4624 APT",
+     "borrowShares": "69977888099148965",
+     "borrowed": "70042650726",
+     "borrowedText": "70,042.6507 USDC",
+     "collateralValue": "84298345888",
+     "collateralValueText": "84,298.3458 USDC",
+     "maxBorrow": "72496577463",
+     "maxBorrowText": "72,496.5774 USDC",
+     "interestCarriedForward": "42650725",
+     "interestSeconds": 211297,
+     "price": "1007432000000000000000000",
+     "priceText": "1.0074 USDC per APT",
+     "ltv": 0.8308899775929135
+    },
+    "healthFactor": 1.0350347497069967,
+    "level": "critical",
+    "thresholds": {
+     "warn": 1.3,
+     "critical": 1.1
+    },
+    "remedies": {
+     "target": 1.3,
+     "repayToTarget": "14276052678",
+     "repayToTargetText": "14,276.0526 USDC",
+     "addCollateral": "21420879650730332171303",
+     "addCollateralText": "21,420.8796 APT",
+     "liquidationPrice": "973331571980191272526791",
+     "liquidationPriceText": "0.9733 USDC",
+     "priceDropPct": 3.384886326800096,
+     "borrowRatePerYear": 0.0909717916372272,
+     "daysToLiquidationByInterest": 138.25586808313403
+    },
+    "liquidationIncentive": 1.04384133611691,
+    "alert": {
+     "level": "critical",
+     "at": "2026-10-24T21:09:34.475Z",
+     "severity": "critical",
+     "headline": "CRITICAL: health factor 1.0350 (warn at 1.3, critical at 1.1)",
+     "action": "repay 14,276.0526 USDC or add 21,420.8796 APT of collateral to get back to a health factor of 1.30.",
+     "lines": [
+      "Collateral 83,676.4624 APT worth 84,298.3458 USDC; debt 70,042.6507 USDC; liquidation threshold (LLTV) 86.0%; current loan-to-value 83.09%.",
+      "APT would have to fall 3.38% (to 0.9733 USDC each) to reach liquidation.",
+      "Even at a flat price, interest at 9.10% a year takes about 4.6 months to get there."
+     ],
+     "healthFactor": 1.0350347497069967,
+     "repay": "14276052678",
+     "addCollateral": "21420879650730332171303",
+     "text": "[2026-10-24T21:09:34.475Z] CRITICAL: health factor 1.0350 (warn at 1.3, critical at 1.1)\n    position 0x966b9d…4fb257 in market 0xd834016e… (APT/USDC)\n    Collateral 83,676.4624 APT worth 84,298.3458 USDC; debt 70,042.6507 USDC; liquidation threshold (LLTV) 86.0%; current loan-to-value 83.09%.\n    APT would have to fall 3.38% (to 0.9733 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.10% a year takes about 4.6 months to get there.\n    → repay 14,276.0526 USDC or add 21,420.8796 APT of collateral to get back to a health factor of 1.30."
+    },
+    "alertSent": true,
+    "delivered": [
+     {
+      "channel": "console",
+      "ok": true
+     }
+    ],
+    "sources": [
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "idToMarketParams(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "market(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "position(bytes32,address)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0xd7e33079d91c5fa12798c1e7b28a7877045aa7c3",
+      "call": "oracle.price()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+      "call": "irm.borrowRateView(marketParams, market)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x13282289b8b241cf16eb5b8bad401c7c2fdab0f8",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x13282289b8b241cf16eb5b8bad401c7c2fdab0f8",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     }
+    ],
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 9
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Morpho Blue: the market’s parameters and state, and the borrower’s position (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 598
+     },
+     {
+      "n": 2,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 776
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The oracle price, the current borrow rate and the two tokens (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 472
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 607
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "assess",
+      "summary": "Health factor 1.0350 → critical.",
+      "uses": [
+       1,
+       3
+      ],
+      "output": {
+       "level": "critical",
+       "hf": 1.0350347497069967
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "alert",
+      "summary": "Alert raised and sent to console.",
+      "uses": [],
+      "output": {
+       "sent": true
+      }
+     }
+    ],
+    "chainCalls": 2,
+    "rpcCalls": 2
+   },
+   "consoleOutput": [
+    "[2026-10-24T21:09:34.475Z] CRITICAL: health factor 1.0350 (warn at 1.3, critical at 1.1)\n    position 0x966b9d…4fb257 in market 0xd834016e… (APT/USDC)\n    Collateral 83,676.4624 APT worth 84,298.3458 USDC; debt 70,042.6507 USDC; liquidation threshold (LLTV) 86.0%; current loan-to-value 83.09%.\n    APT would have to fall 3.38% (to 0.9733 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.10% a year takes about 4.6 months to get there.\n    → repay 14,276.0526 USDC or add 21,420.8796 APT of collateral to get back to a health factor of 1.30."
+   ]
+  },
+  {
+   "id": "comfortable",
+   "label": "A comfortable loan (health factor about 1.5)",
+   "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+   "borrower": "0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127",
+   "thresholds": {
+    "warn": 1.3,
+    "critical": 1.1
+   },
+   "block": 21149998,
+   "result": {
+    "block": {
+     "number": 21149998,
+     "head": 21153011,
+     "timestamp": 1792873364,
+     "iso": "2026-10-24 20:22:44 UTC",
+     "historical": true
+    },
+    "market": {
+     "id": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+     "pair": "syzUSD/USDC",
+     "loan": {
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "symbol": "USDC",
+      "decimals": 6
+     },
+     "collateral": {
+      "address": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "symbol": "syzUSD",
+      "decimals": 18
+     },
+     "lltv": "915000000000000000",
+     "lltvText": "91.5%",
+     "oracle": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+     "irm": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+     "totalBorrowAssetsText": "3,610,874 USDC",
+     "explorer": "https://www.pharosscan.xyz/address/0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb"
+    },
+    "borrower": {
+     "address": "0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127",
+     "explorer": "https://www.pharosscan.xyz/address/0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127"
+    },
+    "position": {
+     "collateral": "137702122000000000000000",
+     "collateralText": "137,702.122 syzUSD",
+     "borrowShares": "89041602856127410",
+     "borrowed": "90016696243",
+     "borrowedText": "90,016.6962 USDC",
+     "collateralValue": "150181078273",
+     "collateralValueText": "150,181.0782 USDC",
+     "maxBorrow": "137415686619",
+     "maxBorrowText": "137,415.6866 USDC",
+     "interestCarriedForward": "2305429",
+     "interestSeconds": 8641,
+     "price": "1090622832040395213000000",
+     "priceText": "1.0906 USDC per syzUSD",
+     "ltv": 0.5993877343147527
+    },
+    "healthFactor": 1.5265577648844884,
+    "level": "ok",
+    "thresholds": {
+     "warn": 1.3,
+     "critical": 1.1
+    },
+    "remedies": {
+     "target": 1.3,
+     "repayToTarget": "0",
+     "repayToTargetText": "0 USDC",
+     "addCollateral": "0",
+     "addCollateralText": "0 syzUSD",
+     "liquidationPrice": "714432730368526928001880",
+     "liquidationPriceText": "0.7144 USDC",
+     "priceDropPct": 34.49314379088065,
+     "borrowRatePerYear": 0.0935350393622616,
+     "daysToLiquidationByInterest": 1651.8554582212773
+    },
+    "liquidationIncentive": 1.0261672652642382,
+    "alert": {
+     "level": "ok",
+     "at": "2026-10-24T21:09:37.662Z",
+     "severity": "info",
+     "headline": "OK: health factor 1.5266 (warn at 1.3, critical at 1.1)",
+     "action": "No action needed. To keep a margin above 1.3, nothing to repay.",
+     "lines": [
+      "Collateral 137,702.122 syzUSD worth 150,181.0782 USDC; debt 90,016.6962 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 59.94%.",
+      "syzUSD would have to fall 34.49% (to 0.7144 USDC each) to reach liquidation.",
+      "Even at a flat price, interest at 9.35% a year takes about 55.1 months to get there."
+     ],
+     "healthFactor": 1.5265577648844884,
+     "repay": "0",
+     "addCollateral": "0",
+     "text": "[2026-10-24T21:09:37.662Z] OK: health factor 1.5266 (warn at 1.3, critical at 1.1)\n    position 0xf8b403…78b127 in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 137,702.122 syzUSD worth 150,181.0782 USDC; debt 90,016.6962 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 59.94%.\n    syzUSD would have to fall 34.49% (to 0.7144 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 55.1 months to get there.\n    → No action needed. To keep a margin above 1.3, nothing to repay."
+    },
+    "alertSent": false,
+    "delivered": [],
+    "sources": [
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "idToMarketParams(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "market(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "position(bytes32,address)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+      "call": "oracle.price()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+      "call": "irm.borrowRateView(marketParams, market)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     }
+    ],
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 9
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Morpho Blue: the market’s parameters and state, and the borrower’s position (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 700
+     },
+     {
+      "n": 2,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 593
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The oracle price, the current borrow rate and the two tokens (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 695
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 537
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "assess",
+      "summary": "Health factor 1.5266 → ok.",
+      "uses": [
+       1,
+       3
+      ],
+      "output": {
+       "level": "ok",
+       "hf": 1.5265577648844884
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "alert",
+      "summary": "No new alert: the level is ok.",
+      "uses": [],
+      "output": {
+       "sent": false
+      }
+     }
+    ],
+    "chainCalls": 2,
+    "rpcCalls": 2
+   },
+   "consoleOutput": []
+  },
+  {
+   "id": "comfortable-strict",
+   "label": "The same loan with stricter thresholds (warn at 1.6, critical at 1.5)",
+   "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+   "borrower": "0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127",
+   "warn": 1.6,
+   "critical": 1.5,
+   "thresholds": {
+    "warn": 1.6,
+    "critical": 1.5
+   },
+   "block": 21149998,
+   "result": {
+    "block": {
+     "number": 21149998,
+     "head": 21153013,
+     "timestamp": 1792873364,
+     "iso": "2026-10-24 20:22:44 UTC",
+     "historical": true
+    },
+    "market": {
+     "id": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+     "pair": "syzUSD/USDC",
+     "loan": {
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "symbol": "USDC",
+      "decimals": 6
+     },
+     "collateral": {
+      "address": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "symbol": "syzUSD",
+      "decimals": 18
+     },
+     "lltv": "915000000000000000",
+     "lltvText": "91.5%",
+     "oracle": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+     "irm": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+     "totalBorrowAssetsText": "3,610,874 USDC",
+     "explorer": "https://www.pharosscan.xyz/address/0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb"
+    },
+    "borrower": {
+     "address": "0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127",
+     "explorer": "https://www.pharosscan.xyz/address/0xf8b4036d88dd71a7783aa97e9a4e14fbaa78b127"
+    },
+    "position": {
+     "collateral": "137702122000000000000000",
+     "collateralText": "137,702.122 syzUSD",
+     "borrowShares": "89041602856127410",
+     "borrowed": "90016696243",
+     "borrowedText": "90,016.6962 USDC",
+     "collateralValue": "150181078273",
+     "collateralValueText": "150,181.0782 USDC",
+     "maxBorrow": "137415686619",
+     "maxBorrowText": "137,415.6866 USDC",
+     "interestCarriedForward": "2305429",
+     "interestSeconds": 8641,
+     "price": "1090622832040395213000000",
+     "priceText": "1.0906 USDC per syzUSD",
+     "ltv": 0.5993877343147527
+    },
+    "healthFactor": 1.5265577648844884,
+    "level": "warning",
+    "thresholds": {
+     "warn": 1.6,
+     "critical": 1.5
+    },
+    "remedies": {
+     "target": 1.6,
+     "repayToTarget": "4131892107",
+     "repayToTargetText": "4,131.8921 USDC",
+     "addCollateral": "6624807688897144722147",
+     "addCollateralText": "6,624.8076 syzUSD",
+     "liquidationPrice": "714432730368526928001880",
+     "liquidationPriceText": "0.7144 USDC",
+     "priceDropPct": 34.49314379088065,
+     "borrowRatePerYear": 0.0935350393622616,
+     "daysToLiquidationByInterest": 1651.8554582212773
+    },
+    "liquidationIncentive": 1.0261672652642382,
+    "alert": {
+     "level": "warning",
+     "at": "2026-10-24T21:09:40.670Z",
+     "severity": "warning",
+     "headline": "WARNING: health factor 1.5266 (warn at 1.6, critical at 1.5)",
+     "action": "repay 4,131.8921 USDC or add 6,624.8076 syzUSD of collateral to get back to a health factor of 1.60.",
+     "lines": [
+      "Collateral 137,702.122 syzUSD worth 150,181.0782 USDC; debt 90,016.6962 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 59.94%.",
+      "syzUSD would have to fall 34.49% (to 0.7144 USDC each) to reach liquidation.",
+      "Even at a flat price, interest at 9.35% a year takes about 55.1 months to get there."
+     ],
+     "healthFactor": 1.5265577648844884,
+     "repay": "4131892107",
+     "addCollateral": "6624807688897144722147",
+     "text": "[2026-10-24T21:09:40.670Z] WARNING: health factor 1.5266 (warn at 1.6, critical at 1.5)\n    position 0xf8b403…78b127 in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 137,702.122 syzUSD worth 150,181.0782 USDC; debt 90,016.6962 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 59.94%.\n    syzUSD would have to fall 34.49% (to 0.7144 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 55.1 months to get there.\n    → repay 4,131.8921 USDC or add 6,624.8076 syzUSD of collateral to get back to a health factor of 1.60."
+    },
+    "alertSent": true,
+    "delivered": [
+     {
+      "channel": "console",
+      "ok": true
+     }
+    ],
+    "sources": [
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "idToMarketParams(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "market(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "position(bytes32,address)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+      "call": "oracle.price()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+      "call": "irm.borrowRateView(marketParams, market)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     }
+    ],
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 9
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Morpho Blue: the market’s parameters and state, and the borrower’s position (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 729
+     },
+     {
+      "n": 2,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 580
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The oracle price, the current borrow rate and the two tokens (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 442
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 616
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "assess",
+      "summary": "Health factor 1.5266 → warning.",
+      "uses": [
+       1,
+       3
+      ],
+      "output": {
+       "level": "warning",
+       "hf": 1.5265577648844884
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "alert",
+      "summary": "Alert raised and sent to console.",
+      "uses": [],
+      "output": {
+       "sent": true
+      }
+     }
+    ],
+    "chainCalls": 2,
+    "rpcCalls": 2
+   },
+   "consoleOutput": [
+    "[2026-10-24T21:09:40.670Z] WARNING: health factor 1.5266 (warn at 1.6, critical at 1.5)\n    position 0xf8b403…78b127 in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 137,702.122 syzUSD worth 150,181.0782 USDC; debt 90,016.6962 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 59.94%.\n    syzUSD would have to fall 34.49% (to 0.7144 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 55.1 months to get there.\n    → repay 4,131.8921 USDC or add 6,624.8076 syzUSD of collateral to get back to a health factor of 1.60."
+   ]
+  },
+  {
+   "id": "sample-borrower",
+   "label": "The first borrower we found in this market",
+   "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+   "borrower": "0x743d7b30661d65b41960bf6b5d1bb93cf7972a73",
+   "thresholds": {
+    "warn": 1.3,
+    "critical": 1.1
+   },
+   "block": 21149998,
+   "result": {
+    "block": {
+     "number": 21149998,
+     "head": 21153014,
+     "timestamp": 1792873364,
+     "iso": "2026-10-24 20:22:44 UTC",
+     "historical": true
+    },
+    "market": {
+     "id": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+     "pair": "syzUSD/USDC",
+     "loan": {
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "symbol": "USDC",
+      "decimals": 6
+     },
+     "collateral": {
+      "address": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "symbol": "syzUSD",
+      "decimals": 18
+     },
+     "lltv": "915000000000000000",
+     "lltvText": "91.5%",
+     "oracle": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+     "irm": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+     "totalBorrowAssetsText": "3,610,874 USDC",
+     "explorer": "https://www.pharosscan.xyz/address/0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb"
+    },
+    "borrower": {
+     "address": "0x743d7b30661d65b41960bf6b5d1bb93cf7972a73",
+     "explorer": "https://www.pharosscan.xyz/address/0x743d7b30661d65b41960bf6b5d1bb93cf7972a73"
+    },
+    "position": {
+     "collateral": "22500000000000000000000",
+     "collateralText": "22,500 syzUSD",
+     "borrowShares": "21773051357426307",
+     "borrowed": "22011487748",
+     "borrowedText": "22,011.4877 USDC",
+     "collateralValue": "24539013720",
+     "collateralValueText": "24,539.0137 USDC",
+     "maxBorrow": "22453197553",
+     "maxBorrowText": "22,453.1975 USDC",
+     "interestCarriedForward": "563739",
+     "interestSeconds": 8641,
+     "price": "1090622832040395213000000",
+     "priceText": "1.0906 USDC per syzUSD",
+     "ltv": 0.89699969196643
+    },
+    "healthFactor": 1.0200672398911397,
+    "level": "critical",
+    "thresholds": {
+     "warn": 1.3,
+     "critical": 1.1
+    },
+    "remedies": {
+     "target": 1.3,
+     "repayToTarget": "4739797323",
+     "repayToTargetText": "4,739.7973 USDC",
+     "addCollateral": "6174580317095070883686",
+     "addCollateralText": "6,174.5803 syzUSD",
+     "liquidationPrice": "1069167589466666666666667",
+     "liquidationPriceText": "1.0691 USDC",
+     "priceDropPct": 1.9672467826103546,
+     "borrowRatePerYear": 0.0935350393622616,
+     "daysToLiquidationByInterest": 77.58575491902457
+    },
+    "liquidationIncentive": 1.0261672652642382,
+    "alert": {
+     "level": "critical",
+     "at": "2026-10-24T21:09:43.541Z",
+     "severity": "critical",
+     "headline": "CRITICAL: health factor 1.0201 (warn at 1.3, critical at 1.1)",
+     "action": "repay 4,739.7973 USDC or add 6,174.5803 syzUSD of collateral to get back to a health factor of 1.30.",
+     "lines": [
+      "Collateral 22,500 syzUSD worth 24,539.0137 USDC; debt 22,011.4877 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 89.70%.",
+      "syzUSD would have to fall 1.97% (to 1.0691 USDC each) to reach liquidation.",
+      "Even at a flat price, interest at 9.35% a year takes about 2.6 months to get there."
+     ],
+     "healthFactor": 1.0200672398911397,
+     "repay": "4739797323",
+     "addCollateral": "6174580317095070883686",
+     "text": "[2026-10-24T21:09:43.541Z] CRITICAL: health factor 1.0201 (warn at 1.3, critical at 1.1)\n    position 0x743d7b…972a73 in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 22,500 syzUSD worth 24,539.0137 USDC; debt 22,011.4877 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 89.70%.\n    syzUSD would have to fall 1.97% (to 1.0691 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 2.6 months to get there.\n    → repay 4,739.7973 USDC or add 6,174.5803 syzUSD of collateral to get back to a health factor of 1.30."
+    },
+    "alertSent": true,
+    "delivered": [
+     {
+      "channel": "console",
+      "ok": true
+     }
+    ],
+    "sources": [
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "idToMarketParams(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "market(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "position(bytes32,address)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+      "call": "oracle.price()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+      "call": "irm.borrowRateView(marketParams, market)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     }
+    ],
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 9
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Morpho Blue: the market’s parameters and state, and the borrower’s position (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 776
+     },
+     {
+      "n": 2,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 420
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The oracle price, the current borrow rate and the two tokens (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 480
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 538
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "assess",
+      "summary": "Health factor 1.0201 → critical.",
+      "uses": [
+       1,
+       3
+      ],
+      "output": {
+       "level": "critical",
+       "hf": 1.0200672398911397
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "alert",
+      "summary": "Alert raised and sent to console.",
+      "uses": [],
+      "output": {
+       "sent": true
+      }
+     }
+    ],
+    "chainCalls": 2,
+    "rpcCalls": 2
+   },
+   "consoleOutput": [
+    "[2026-10-24T21:09:43.541Z] CRITICAL: health factor 1.0201 (warn at 1.3, critical at 1.1)\n    position 0x743d7b…972a73 in market 0xc79579a0… (syzUSD/USDC)\n    Collateral 22,500 syzUSD worth 24,539.0137 USDC; debt 22,011.4877 USDC; liquidation threshold (LLTV) 91.5%; current loan-to-value 89.70%.\n    syzUSD would have to fall 1.97% (to 1.0691 USDC each) to reach liquidation.\n    Even at a flat price, interest at 9.35% a year takes about 2.6 months to get there.\n    → repay 4,739.7973 USDC or add 6,174.5803 syzUSD of collateral to get back to a health factor of 1.30."
+   ]
+  },
+  {
+   "id": "nothing-borrowed",
+   "label": "An address with no position in the market",
+   "marketId": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+   "borrower": "0x00000000000000000000000000000000000000a1",
+   "thresholds": {
+    "warn": 1.3,
+    "critical": 1.1
+   },
+   "block": 21149998,
+   "result": {
+    "block": {
+     "number": 21149998,
+     "head": 21153015,
+     "timestamp": 1792873364,
+     "iso": "2026-10-24 20:22:44 UTC",
+     "historical": true
+    },
+    "market": {
+     "id": "0xc79579a002dbc8c535d3a87198fcbbece1a664ad82a356b0447c5bff9e16fd86",
+     "pair": "syzUSD/USDC",
+     "loan": {
+      "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "symbol": "USDC",
+      "decimals": 6
+     },
+     "collateral": {
+      "address": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "symbol": "syzUSD",
+      "decimals": 18
+     },
+     "lltv": "915000000000000000",
+     "lltvText": "91.5%",
+     "oracle": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+     "irm": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+     "totalBorrowAssetsText": "3,610,874 USDC",
+     "explorer": "https://www.pharosscan.xyz/address/0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb"
+    },
+    "borrower": {
+     "address": "0x00000000000000000000000000000000000000a1",
+     "explorer": "https://www.pharosscan.xyz/address/0x00000000000000000000000000000000000000a1"
+    },
+    "position": {
+     "collateral": "0",
+     "collateralText": "0 syzUSD",
+     "borrowShares": "0",
+     "borrowed": "0",
+     "borrowedText": "0 USDC",
+     "collateralValue": "0",
+     "collateralValueText": "0 USDC",
+     "maxBorrow": "0",
+     "maxBorrowText": "0 USDC",
+     "interestCarriedForward": "0",
+     "interestSeconds": 8641,
+     "price": "1090622832040395213000000",
+     "priceText": "1.0906 USDC per syzUSD",
+     "ltv": 0
+    },
+    "healthFactor": null,
+    "level": "no-debt",
+    "thresholds": {
+     "warn": 1.3,
+     "critical": 1.1
+    },
+    "remedies": null,
+    "liquidationIncentive": 1.0261672652642382,
+    "alert": {
+     "level": "no-debt",
+     "at": "2026-10-24T21:09:46.338Z",
+     "severity": "info",
+     "headline": "NO DEBT: 0x000000…0000a1 borrows nothing in this market.",
+     "action": null,
+     "lines": [
+      "Collateral posted: 0 syzUSD."
+     ],
+     "text": "[2026-10-24T21:09:46.338Z] NO DEBT: 0x000000…0000a1 borrows nothing in this market.\n    position 0x000000…0000a1 in market 0xc79579a0… (syzUSD/USDC)\n    Collateral posted: 0 syzUSD."
+    },
+    "alertSent": false,
+    "delivered": [],
+    "sources": [
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "idToMarketParams(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "market(bytes32)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+      "call": "position(bytes32,address)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 1
+     },
+     {
+      "contract": "0x4eefc4c6e7216aedd5e809e4fc74fb8859b3fa46",
+      "call": "oracle.price()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xd5e02889c13230458506cc842347c4e62f8cdf3a",
+      "call": "irm.borrowRateView(marketParams, market)",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "symbol()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     },
+     {
+      "contract": "0x54df79d8edf36d15cd83fbedbdd90807fc828934",
+      "call": "decimals()",
+      "block": 21149998,
+      "tool": "Chain MCP eth_call via Multicall3",
+      "integrity": "confirmed",
+      "step": 3
+     }
+    ],
+    "integrity": {
+     "batches": 2,
+     "confirmed": 2,
+     "resolved": 0,
+     "inconclusive": 0,
+     "reads": 9
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "Morpho Blue: the market’s parameters and state, and the borrower’s position (3 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 411
+     },
+     {
+      "n": 2,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000…",
+      "ms": 522
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "name": "eth_call",
+      "why": "The oracle price, the current borrow rate and the two tokens (6 reads in one Multicall3 call)",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 629
+     },
+     {
+      "n": 4,
+      "actor": "public-rpc",
+      "name": "eth_call",
+      "why": "Independent check: the same batch on the public RPC",
+      "input": "{\"transaction\":{\"to\":\"0xcA11bde05977b3631167028862bE2a173976CA11\",\"data\":\"0x82ad56cb00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000…",
+      "output": "{\"result\":\"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000…",
+      "ms": 576
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "name": "assess",
+      "summary": "Health factor none (no debt) → no-debt.",
+      "uses": [
+       1,
+       3
+      ],
+      "output": {
+       "level": "no-debt",
+       "hf": null
+      }
+     },
+     {
+      "n": 6,
+      "actor": "agent",
+      "name": "alert",
+      "summary": "No new alert: the level is no-debt.",
+      "uses": [],
+      "output": {
+       "sent": false
+      }
+     }
+    ],
+    "chainCalls": 2,
+    "rpcCalls": 2
+   },
+   "consoleOutput": []
+  }
+ ]
+}

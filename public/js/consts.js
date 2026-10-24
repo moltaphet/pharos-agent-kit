@@ -21,6 +21,11 @@ export const TASK_FOLDERS = {
   'docs-chain-mcp-agent': 'agents/docs-chain-mcp-agent',
   'portfolio-assistant': 'skills/pharos-portfolio-assistant',
   'yield-optimizer': 'skills/pharos-yield-optimizer',
+  'liquidation-watchdog': 'agents/liquidation-watchdog',
+  'natural-language-payment-agent': 'agents/natural-language-payment-agent',
+  'recurring-payment-agent': 'agents/recurring-payment-agent',
+  'invoice-to-payment-agent': 'agents/invoice-to-payment-agent',
+  'x402-paywalled-api': 'agents/x402-paywalled-api',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

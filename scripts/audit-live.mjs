@@ -36,7 +36,7 @@ const withRetry = async (call, tries = 3) => {
 };
 const docsData = async (question) => (await withRetry(() => get('/api/docs' + q({ q: question })))).body?.data;
 const is400 = (r) => r.status === 400 && r.body?.ok === false && typeof r.body.error === 'string';
-const guard = async (fn) => { try { await fn(); } catch (e) { if (!(e instanceof Skip)) check('(audit step did not crash)', false, e.message); } };
+const guard = async (fn) => { try { await fn(); } catch (e) { if (!(e instanceof Skip)) check('(audit step did not crash)', false, process.env.DEBUG_AUDIT ? e.stack : e.message); } };
 
 await guard(async () => {
   sec('1 Read Contract State');
@@ -588,6 +588,203 @@ await guard(async () => {
   check('block beyond the head rejected with 400', is400(await run(SLUG, { wallet: W, from: 'idle', block: 999999999 })));
   check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
   check('GET without a wallet rejected with 400', is400(await run(SLUG)));
+});
+
+await guard(async () => {
+  sec('16 Liquidation Watchdog');
+  const SLUG = 'liquidation-watchdog';
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('seven example positions and the default thresholds are served', ex?.positions?.length === 7 && ex.defaults?.warn === 1.3 && ex.defaults?.critical === 1.1);
+  const rec = (await run(SLUG, { recorded: '1' })).body?.data;
+  check('recorded demo: seven real positions at one block, and the fork run in which the real Morpho agreed 4 of 4', rec?.demo?.cases?.length === 7 && new Set(rec.demo.cases.map((c) => c.block)).size === 1 && rec.fork?.summary?.agree === 4 && rec.fork.summary.bonusMatches === true);
+  const rpcJson = async (method, params) => (await (await fetch('https://rpc.pharos.xyz', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) })).json()).result;
+  const MORPHO = '0x18573fA18fd17dDfD790B4a5B5b2977aad3b4Efb';
+  const pos = ex?.positions?.find((x) => x.id === 'sample-borrower');
+  const w = (await withRetry(() => run(SLUG, { marketId: pos.marketId, borrower: pos.borrower }))).body?.data?.watchdog;
+  check('a live check: the position is graded, the alert has a timestamp and an exact action, every batch was confirmed on the public RPC', w && ['ok', 'warning', 'critical', 'liquidatable'].includes(w.level) && /^\[20\d\d-/.test(w.alert.text) && (w.level === 'ok' || /repay [\d,.]+ \w+ or add/.test(w.alert.action)) && w.integrity.inconclusive === 0 && w.integrity.batches === 2, w?.alert?.headline);
+  const posRaw = await rpcJson('eth_call', [{ to: MORPHO, data: '0x93c52062' + pos.marketId.slice(2) + pos.borrower.slice(2).padStart(64, '0') }, '0x' + w.block.number.toString(16)]);
+  check('independent check: the collateral and the borrow shares equal Morpho’s position() read straight from the public RPC at the same block', BigInt('0x' + posRaw.slice(2 + 64 * 2, 2 + 64 * 3)).toString() === w.position.collateral && BigInt('0x' + posRaw.slice(2 + 64, 2 + 64 * 2)).toString() === w.position.borrowShares, JSON.stringify(w?.position?.collateral));
+  const pinned = (await withRetry(() => run(SLUG, { marketId: pos.marketId, borrower: pos.borrower, block: rec.demo.cases[0].block }))).body?.data?.watchdog;
+  check('?block pins the read: the same block gives the recorded health factor for the same position', pinned?.block?.number === rec.demo.cases[0].block && rec.demo.cases.find((c) => c.id === 'sample-borrower').result.healthFactor === (await withRetry(() => run(SLUG, { marketId: pos.marketId, borrower: pos.borrower, block: rec.demo.cases[0].block }))).body?.data?.watchdog?.healthFactor);
+  const strict = ex.positions.find((x) => x.id === 'comfortable-strict');
+  const wl = (await withRetry(() => run(SLUG, { marketId: strict.marketId, borrower: strict.borrower, warn: 1.6, critical: 1.5 }))).body?.data?.watchdog;
+  const ok = (await withRetry(() => run(SLUG, { marketId: strict.marketId, borrower: strict.borrower }))).body?.data?.watchdog;
+  check('thresholds are the caller’s: the same loan is a warning at 1.6/1.5 and OK at the defaults', wl?.level === 'warning' && ok?.level === 'ok', `${wl?.level}/${ok?.level} at ${ok?.healthFactor}`);
+  const none = (await withRetry(() => run(SLUG, { marketId: pos.marketId, borrower: '0x00000000000000000000000000000000000000a1' }))).body?.data?.watchdog;
+  check('an address with no position: NO DEBT, no alert', none?.level === 'no-debt' && none.alertSent === false);
+  for (const id of ['largest-near-liquidation', 'comfortable-strict']) {
+    const rp = (await withRetry(() => run(SLUG, { replay: id }))).body?.data;
+    const c = rp?.comparison;
+    check(`replay "${id}": collateral, debt, price, health factor, level and remedies identical to the recording`, c?.sameBlock === true && c.identical === c.compared && c.compared === 7, `${c?.identical}/${c?.compared}`);
+  }
+  const sc = (await withRetry(() => run(SLUG, { scan: '1', windows: 15 }))).body?.data?.scan;
+  check('the borrower finder reads Borrow events in windows of 1,000 blocks and grades what it finds', sc && sc.windows === 15 && Array.isArray(sc.positions) && sc.positions.every((x) => x.level || x.error), `${sc?.found} found`);
+  check('bad market id rejected with 400', is400(await run(SLUG, { marketId: '0x12', borrower: pos.borrower })));
+  check('bad borrower rejected with 400', is400(await run(SLUG, { marketId: pos.marketId, borrower: '0x12' })));
+  check('critical at or below 1 rejected with 400 (it would already be liquidatable)', is400(await run(SLUG, { marketId: pos.marketId, borrower: pos.borrower, warn: 1.3, critical: 1 })));
+  check('warn not above critical rejected with 400', is400(await run(SLUG, { marketId: pos.marketId, borrower: pos.borrower, warn: 1.1, critical: 1.2 })));
+  check('a market id Morpho does not have rejected with 400', is400(await run(SLUG, { marketId: '0x' + '12'.repeat(32), borrower: pos.borrower })));
+  check('block beyond the head rejected with 400', is400(await run(SLUG, { marketId: pos.marketId, borrower: pos.borrower, block: 999999999 })));
+  check('too many scan windows rejected with 400', is400(await run(SLUG, { scan: '1', windows: 500 })));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+  check('GET without a position rejected with 400', is400(await run(SLUG)));
+});
+
+await guard(async () => {
+  sec('17 Natural-Language Payment Agent');
+  const SLUG = 'natural-language-payment-agent';
+  const W = '0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f';
+  const R = '0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A';
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('fifteen example requests and the five tokens are served', ex?.requests?.length === 15 && ex.tokens?.map((t) => t.symbol).join() === 'PROS,WPROS,USDC,LINK,WETH');
+  const rec = (await run(SLUG, { recorded: '1' })).body?.data;
+  check('recorded demo: fifteen real requests at one block; the output signed with a throwaway key on a mainnet fork moved exact amounts', rec?.demo?.payments?.length === 15 && new Set(rec.demo.payments.map((c) => c.block)).size === 1 && rec.fork?.cases?.filter((c) => c.task === 17).every((c) => c.exact && c.hashMatches && c.sent.status === 'success'));
+  const pay = async (text, extra = {}) => (await withRetry(() => run(SLUG, { text, from: W, ...extra }))).body?.data?.payment;
+  const ready = await pay(`send 100 USDC to ${R}`);
+  check('READY: a summary, every check passing, an unsigned ERC-20 transfer to the USDC contract, the EIP-681 link and the hash to sign', ready?.status === 'ready' && ready.transaction?.to === USDC && /^0xa9059cbb/.test(ready.transaction.data) && ready.transaction.unsignedRaw?.signingHash?.length === 66 && /^ethereum:/.test(ready.eip681) && ready.checks.every((c) => c.ok || c.level !== 'fail'), ready?.reason);
+  const bal = BigInt(await (async () => (await (await fetch('https://rpc.pharos.xyz', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params: [{ to: USDC, data: '0x70a08231' + W.slice(2).padStart(64, '0') }, '0x' + ready.block.number.toString(16)] }) })).json()).result)());
+  check('independent check: the balance the checks report equals the public RPC’s at the same block', ready?.checks?.find((c) => c.id === 'balance')?.detail.includes(`holds ${(Number(bal) / 1e6).toLocaleString('en-US', { minimumFractionDigits: 6, maximumFractionDigits: 6 }).replace(/\.?0+$/, '')} USDC`), ready?.checks?.find((c) => c.id === 'balance')?.detail);
+  check('the amount 1.5k is 1,500 USDC in base units', BigInt('0x' + (await pay(`pay 1.5k usdc to ${R}`)).transaction.data.slice(-64)) === 1_500_000_000n);
+  const ask = await pay('send 50 to bob');
+  check('"send 50 to bob" asks two questions and reads nothing from the chain', ask?.status === 'needs-info' && ask.questions.map((q) => q.field).join() === 'recipient,token' && ask.chainCalls === 0);
+  check('answers to its questions complete the request', (await pay('send 50 to bob', { answers: JSON.stringify({ recipient: R, token: 'USDC' }) }))?.status === 'ready');
+  check('"dollars" is not a token (asks); "all" needs an exact amount (asks); two amounts is a question', (await pay(`send 100 dollars to ${R}`))?.questions?.[0]?.problem === 'dollars' && (await pay(`send all my USDC to ${R}`))?.questions?.[0]?.problem === 'all' && (await pay(`send 100 USDC to ${R} in 2 installments of 50 and 50`))?.questions?.[0]?.problem === 'several-payments');
+  const flip = [...R.slice(2)].findIndex((c) => /[a-f]/i.test(c)) + 2;
+  const typo = (await pay(`send 100 USDC to ${R.slice(0, flip)}${R[flip] === R[flip].toUpperCase() ? R[flip].toLowerCase() : R[flip].toUpperCase()}${R.slice(flip + 1)}`));
+  check('a mistyped address is blocked by its own EIP-55 checksum, naming the correct spelling', typo?.status === 'blocked' && typo.reason.includes(`should read ${R}`));
+  check('more LINK than the wallet holds is blocked, with no transaction', (await pay(`send 25 LINK to ${R}`))?.status === 'blocked');
+  check('USDC sent to the USDC contract itself is blocked', (await pay(`send 100 USDC to ${USDC}`))?.status === 'blocked');
+  check('more decimals than the token has is blocked, not rounded', /has 7 decimals but this token only has 6/.test((await pay(`send 1.1234567 USDC to ${R}`))?.reason ?? ''));
+  check('something that is not a payment is refused', (await pay('what is the price of USDC?'))?.status === 'refused');
+  for (const id of ['usdc', 'typo']) {
+    const rp = (await withRetry(() => run(SLUG, { replay: id }))).body?.data;
+    const c = rp?.comparison;
+    check(`replay "${id}": status, understanding, checks and the transaction identical to the recording`, c?.sameBlock === true && c.identical === c.compared, `${c?.identical}/${c?.compared}`);
+  }
+  check('bad paying wallet rejected with 400', is400(await run(SLUG, { text: `send 1 USDC to ${R}`, from: '0x12' })));
+  check('empty request rejected with 400', is400(await run(SLUG, {})));
+  check('answers that are not JSON rejected with 400', is400(await run(SLUG, { text: `send 1 USDC to ${R}`, from: W, answers: '{bad' })));
+  check('block beyond the head rejected with 400', is400(await run(SLUG, { text: `send 1 USDC to ${R}`, from: W, block: 999999999 })));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+});
+
+await guard(async () => {
+  sec('18 Recurring Payment Agent');
+  const SLUG = 'recurring-payment-agent';
+  const W = '0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f';
+  const R = '0x5a5A5a5a5A5a5a5a5a5A5a5A5A5a5a5A5A5A5A5A';
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('three example schedules are served', ex?.schedules?.length === 3);
+  const rec = (await run(SLUG, { recorded: '1' })).body?.data;
+  check('recorded fork lifecycle: eight looks, exactly one payment per period, every double-payment attempt refused', rec?.fork?.timeline?.length === 8 && rec.fork.proof.exactlyOncePerPeriod === true && rec.fork.guards.every((g) => g.refused));
+  const post = (body) => ({ method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const schedule = { id: 'audit-rent', payer: W, payee: R, token: 'USDC', amount: '25', frequency: 'weekly', start: '2026-10-05T09:00' };
+  const a = (await withRetry(() => run(SLUG, {}, post({ schedule })))).body?.data?.agent;
+  check('weekly rent: periods are pending and upcoming from the chain’s clock, the oldest is prepared with its reference in the calldata', a?.counts?.pending >= 3 && a.action?.kind === 'prepared' && a.action.period === 0 && Buffer.from(a.action.transaction.data.slice(2 + 8 + 128), 'hex').toString() === 'rp:audit-rent:0', JSON.stringify(a?.counts));
+  const b = (await withRetry(() => run(SLUG, {}, post({ schedule, state: a.state })))).body?.data?.agent;
+  check('asking again returns the same prepared transaction, unchanged', b?.action?.kind === 'already-prepared' && b.action.transaction.data === a.action.transaction.data);
+  const unknown = (await withRetry(() => run(SLUG, {}, post({ schedule, state: a.state, report: { period: 0, hash: '0x' + 'ab'.repeat(32) } })))).body?.data?.agent;
+  check('a reported hash the chain does not know is "submitted", not paid', unknown?.periods?.[0]?.status === 'submitted' && /no transaction with this hash/.test(unknown.periods[0].submitted.reason));
+  const poor = (await withRetry(() => run(SLUG, {}, post({ schedule: { ...schedule, id: 'audit-poor', payer: '0x00000000000000000000000000000000000000a1' } })))).body?.data?.agent;
+  check('a payer that holds nothing: nothing is prepared, and the reason says so', poor?.action?.kind === 'blocked-insufficient-balance' && !poor.action.transaction);
+  const monthly = (await withRetry(() => run(SLUG, {}, post({ schedule: { ...schedule, id: 'audit-monthly', frequency: 'monthly', start: '2026-08-31T00:00' } })))).body?.data?.agent;
+  check('monthly on the 31st: September takes the 30th', monthly?.periods?.slice(0, 2).map((p) => p.dueIso.slice(0, 10)).join() === '2026-08-31,2026-09-30');
+  const rp = (await withRetry(() => run(SLUG, { replay: 'weekly-rent' }))).body?.data;
+  check('replay "weekly-rent": the clock, every status and the prepared transaction identical to the recording', rp?.comparison?.identical === rp?.comparison?.compared && rp?.comparison?.sameBlock === true, `${rp?.comparison?.identical}/${rp?.comparison?.compared}`);
+  check('a bad schedule (daily) rejected with 400', is400(await run(SLUG, {}, post({ schedule: { ...schedule, frequency: 'daily' } }))));
+  check('a state that is not this schedule’s rejected with 400', is400(await run(SLUG, {}, post({ schedule, state: { version: 1, scheduleId: 'other', cursor: 1, submissions: {}, prepared: {}, attempts: {}, paid: {}, history: [] } }))));
+  check('a malformed state rejected with 400', is400(await run(SLUG, {}, post({ schedule, state: { nope: true } }))));
+  check('an impossible start date rejected with 400', is400(await run(SLUG, {}, post({ schedule: { ...schedule, start: '2026-02-30' } }))));
+  check('a malformed transaction hash rejected with 400', is400(await run(SLUG, {}, post({ schedule, state: a.state, report: { period: 0, hash: '0x12' } }))));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+  check('GET without a schedule rejected with 400', is400(await run(SLUG)));
+});
+
+await guard(async () => {
+  sec('19 Invoice-to-Payment Agent');
+  const SLUG = 'invoice-to-payment-agent';
+  const W = '0x8ecdf4245efddd2210f79517fbd9d12ff524ab9f';
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('ten sample invoices of three formats are served', ex?.invoices?.length === 10 && new Set(['text', 'json', 'link']).size === 3);
+  const rec = (await run(SLUG, { recorded: '1' })).body?.data;
+  check('recorded demo: ten invoices at one block; three paid on a fork with the reference read back from the mined transaction', rec?.demo?.invoices?.length === 10 && rec.fork?.cases?.filter((c) => c.task === 19).length === 3 && rec.fork.cases.filter((c) => c.task === 19).every((c) => c.referenceMatches && c.exact));
+  const post = (body) => ({ method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const pay = async (id) => { const e = ex.invoices.find((x) => x.id === id); return (await withRetry(() => run(SLUG, {}, post({ invoice: e.text, from: e.from, payIn: e.payIn })))).body?.data?.payment; };
+  const out = {};
+  for (const e of ex.invoices) out[e.id] = await pay(e.id);
+  check('text, JSON and link invoices are READY, each transaction carrying its own reference after the transfer', ['text-usdc', 'json-usdc', 'link-usdc'].every((id) => out[id]?.status === 'ready') && [['text-usdc', 'INV-2026-0042'], ['json-usdc', '2026-117'], ['link-usdc', 'ORD-88123']].every(([id, ref]) => Buffer.from(out[id].transaction.data.slice(2 + 8 + 128), 'hex').toString() === ref), out['text-usdc']?.reason);
+  check('an invoice that does not add up is BLOCKED naming both numbers, and no transaction is prepared', out['wrong-total']?.status === 'blocked' && /subtotal 240\.00 \+ tax 10\.00 = 250\.00, but the total says 205\.00/.test(out['wrong-total'].reason) && !out['wrong-total'].transaction);
+  check('no wallet address, a look-alike token, a mistyped address, euros and dollars-with-no-token are each refused for their own reason', ['payee-not-address', 'token-mismatch', 'checksum', 'no-conversion', 'currency-needs-token'].every((code) => Object.values(out).some((r) => r?.flags?.some((f) => f.code === code && f.severity === 'error'))));
+  check('dollars paid in USDC are READY WITH WARNINGS (1 USDC treated as 1 USD)', out['usd-in-usdc']?.status === 'ready-with-warnings' && out['usd-in-usdc'].flags.some((f) => f.code === 'usd-as-usdc'));
+  check('a refused invoice never reads the chain', ['wrong-total', 'no-address', 'euro'].every((id) => out[id].chainCalls === 0));
+  check('an invoice with no paying wallet asks for one', (await withRetry(() => run(SLUG, {}, post({ invoice: ex.invoices[0].text })))).body?.data?.payment?.status === 'needs-info');
+  for (const id of ['text-usdc', 'fake-usdc']) {
+    const rp = (await withRetry(() => run(SLUG, { replay: id }))).body?.data;
+    const c = rp?.comparison;
+    check(`replay "${id}": verdict, flags, checks and the transaction identical to the recording`, c?.sameBlock === true && c.identical === c.compared, `${c?.identical}/${c?.compared}`);
+  }
+  check('an empty invoice rejected with 400', is400(await run(SLUG, {}, post({ invoice: '' }))));
+  check('invalid JSON rejected with 400', is400(await run(SLUG, {}, post({ invoice: '{ nope', from: W }))));
+  check('a payment link that calls approve rejected with 400', is400(await run(SLUG, {}, post({ invoice: `ethereum:${USDC}@1672/approve?address=${W}`, from: W }))));
+  check('a bad paying wallet rejected with 400', is400(await run(SLUG, {}, post({ invoice: ex.invoices[0].text, from: '0x12' }))));
+  check('block beyond the head rejected with 400', is400(await run(SLUG, {}, post({ invoice: ex.invoices[0].text, from: W, block: 999999999 }))));
+  check('unknown replay case rejected with 400', is400(await run(SLUG, { replay: 'nope' })));
+});
+
+await guard(async () => {
+  sec('20 x402 Paywalled API');
+  const SLUG = 'x402-paywalled-api';
+  const ex = (await run(SLUG, { example: '1' })).body?.data;
+  check('three routes: one free and two paid at different prices, in the Atlantic network', ex?.routes?.length === 3 && ex.routes.filter((r) => r.price).map((r) => r.price).join() === '0.005,0.01' && ex.config.network === 'eip155:688689');
+  const rec = (await withRetry(() => run(SLUG, { recorded: '1' }))).body?.data;
+  check('recorded real run: every settlement transaction re-verified on the Atlantic chain just now', rec?.verification?.verifiedCount === rec?.verification?.total && rec.verification.total === 2, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  const atl = async (method, params) => (await (await fetch('https://atlantic.dplabs-internal.com', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) })).json()).result;
+  const tx = await atl('eth_getTransactionByHash', [rec.run.settlements[0].hash]);
+  const receipt = await atl('eth_getTransactionReceipt', [rec.run.settlements[0].hash]);
+  check('independent check: the first settlement is a successful transaction sent by the facilitator to the token, with a Transfer of exactly the price from the payer to the pay-to address', receipt?.status === '0x1' && tx.from.toLowerCase() === rec.run.facilitator.toLowerCase() && tx.to.toLowerCase() === ex.config.asset.toLowerCase() && BigInt(receipt.logs.find((l) => l.address.toLowerCase() === ex.config.asset.toLowerCase() && l.topics[0] === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef').data).toString() === '10000');
+  check('9 of 9 cheats were answered 402 in the recorded run, and none moved a token', rec.run.summary.cheatsRejectedWith402 === 9 && rec.run.summary.tokensMovedByCheats === '0');
+  check('the token named in the Pharos x402 guide has no transferWithAuthorization, ours does', rec.tokenCheck.docsToken.transferWithAuthorization === false && rec.tokenCheck.ourToken.transferWithAuthorization === true);
+  const docsToken = await atl('eth_call', [{ to: '0xE0BE08c77f415F577A1B3A9aD7a1Df1479564ec8', data: '0xe94a0102' + '00'.repeat(12) + '00'.repeat(19) + '01' + '00'.repeat(31) + '01' }, 'latest']).catch(() => null);
+  check('independent check: calling authorizationState on the docs’ token returns nothing (it has no such function)', docsToken == null || docsToken === '0x');
+  // the paywall hosted on this site
+  const base = BASE + '/x402';
+  const health = await fetch(`${base}/health`);
+  check('hosted: GET /x402/health (free) answers 200', health.status === 200 && (await health.json()).status === 'ok');
+  const unpaid = await fetch(`${base}/data`);
+  const required = JSON.parse(Buffer.from(unpaid.headers.get('payment-required') ?? '', 'base64').toString() || 'null');
+  check('hosted: GET /x402/data answers 402 with a PAYMENT-REQUIRED header (exact, eip155:688689, 10000 base units of the demo token)', unpaid.status === 402 && required?.accepts?.[0]?.scheme === 'exact' && required.accepts[0].network === 'eip155:688689' && required.accepts[0].amount === '10000' && required.accepts[0].asset === ex.config.asset);
+  const info = await fetch(`${base}/api/info`);
+  check('hosted: the other paid route costs half as much (5000 base units)', info.status === 402 && JSON.parse(Buffer.from(info.headers.get('payment-required'), 'base64').toString()).accepts[0].amount === '5000');
+  check('hosted: an unknown route is a 404 listing the routes', (await fetch(`${base}/nothing`)).status === 404);
+  const sup = await (await fetch(`${BASE}/x402-facilitator/supported`)).json();
+  check('hosted: the facilitator’s /supported names exact on eip155:688689', sup.kinds?.[0]?.scheme === 'exact' && sup.kinds[0].network === 'eip155:688689');
+  const post = (path, body) => fetch(`${BASE}${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const { createPayment } = await import('../lib/x402.js');
+  const { randomBytes } = await import('node:crypto');
+  const reqs = required.accepts[0];
+  const stranger = createPayment({ requirements: reqs, privateKey: '0x' + randomBytes(32).toString('hex') });
+  const v1 = await (await post('/x402-facilitator/verify', { paymentPayload: stranger, paymentRequirements: reqs })).json();
+  check('hosted: /verify checks a real payment against the chain: a stranger with no tokens is refused (insufficient balance)', v1.isValid === false && v1.invalidReason === 'invalid_exact_evm_insufficient_balance', v1.invalidReason);
+  const under = createPayment({ requirements: { ...reqs, amount: '5000' }, privateKey: '0x' + randomBytes(32).toString('hex') });
+  under.accepted = reqs;
+  const v2 = await (await post('/x402-facilitator/verify', { paymentPayload: under, paymentRequirements: reqs })).json();
+  check('hosted: an underpaid payment is refused with the exact reason', v2.invalidReason === 'invalid_exact_evm_payload_authorization_value' && /underpaid/.test(v2.invalidMessage), v2.invalidReason);
+  const bad = await fetch(`${base}/data`, { headers: { 'PAYMENT-SIGNATURE': 'not-base64-json!!' } });
+  check('hosted: garbage in PAYMENT-SIGNATURE is another 402', bad.status === 402);
+  const wrongRoute = await fetch(`${base}/data`, { headers: { 'PAYMENT-SIGNATURE': Buffer.from(JSON.stringify(createPayment({ requirements: { ...reqs, amount: '5000' }, privateKey: '0x' + randomBytes(32).toString('hex') }))).toString('base64') } });
+  check('hosted: a payment made for the cheaper route, sent to the dearer one, is another 402', wrongRoute.status === 402);
+  const nobody = await post('/x402-facilitator/verify', {});
+  check('hosted: /verify with no payment is a 400', nobody.status === 400);
+  const payerKeyFile = (await import('node:fs')).existsSync(new URL('../.wallet/x402-payer.json', import.meta.url));
+  if (payerKeyFile) {
+    const key = JSON.parse((await import('node:fs')).readFileSync(new URL('../.wallet/x402-payer.json', import.meta.url), 'utf8')).privateKey;
+    const before = await atl('eth_call', [{ to: ex.config.asset, data: '0x70a08231' + ex.config.payTo.slice(2).padStart(64, '0') }, 'latest']);
+    const good = createPayment({ requirements: reqs, privateKey: key });
+    const real = await fetch(`${base}/data`, { headers: { 'PAYMENT-SIGNATURE': Buffer.from(JSON.stringify(good)).toString('base64') } });
+    const body = await real.json();
+    const after = await atl('eth_call', [{ to: ex.config.asset, data: '0x70a08231' + ex.config.payTo.slice(2).padStart(64, '0') }, 'latest']);
+    check('hosted: a VALID payment (the demo payer’s) verifies, and because this deployment holds no facilitator key it is a 503 that says nothing was charged', (real.status === 503 && body.verified === true && before === after) || (real.status === 200 && real.headers.get('payment-response')), `${real.status} ${body.error?.slice(0, 80) ?? ''}`);
+  }
 });
 
 await guard(async () => {
