@@ -87,6 +87,10 @@ test('freshness: latestTimestamp() is followed only when the explanation names i
   assert.equal(analyseExplanation('Check freshness using the documented timestamp method.').followUps.some((f) => f.fn.startsWith('latestTimestamp')), false);
 });
 
+test('real hedged wordings recorded from Docs MCP for a function it does not cover are all general knowledge', () => {
+  for (const t of ['I cannot verify this address’s `token0()` implementation from the Pharos docs. The docs don’t list this contract or its ABI.', 'If this contract implements the usual pair `token0()` getter, it returns the address of one token. I can’t verify this contract’s ABI.', '`token0()` typically returns the address of one ERC-20 token in a DEX pair. I can’t verify that this specific contract implements it.']) assert.equal(isHedged(t), true, t);
+});
+
 test('an answer that cannot confirm the contract is general knowledge, but "the docs do not list decimals" is documentation', () => {
   assert.equal(isHedged(HEDGED_ANSWER), true);
   assert.equal(isHedged(USDC_DECIMALS_ANSWER), false);
