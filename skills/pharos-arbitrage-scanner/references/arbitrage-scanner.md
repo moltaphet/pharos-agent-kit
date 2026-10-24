@@ -22,8 +22,8 @@ node skills/pharos-arbitrage-scanner/scripts/scan.mjs --pair WPROS/DLP --size 1 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `--pair` | string | No (default `WPROS/DLP`) | `WPROS/DLP` or `UNI-V2/PDOG` (pairs that exist on both V2 and V3 with liquidity). |
-| `--size` | number | No (default 1) | The **largest** trade considered, in the quote token. |
-| `--min-net` | number | No (default 0.001) | Minimum net profit in the quote token. Below it the scan skips. |
+| `--size` | number, 0 < size ≤ 1,000,000,000 | No (default 1) | The **largest** trade considered, in the quote token. |
+| `--min-net` | number ≥ 0 | No (default 0.001) | Minimum net profit in the quote token. Below it the scan skips. A negative value is refused: it would accept a losing trade. |
 | `--json` | flag | No | One JSON object per scan. |
 
 ### Output Parsing

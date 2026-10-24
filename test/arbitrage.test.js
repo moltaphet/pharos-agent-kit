@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { UserError } from '../lib/snapshot.js';
 import assert from 'node:assert/strict';
 import { FIXTURES, scanPair } from '../lib/tasks/arbitrage-scanner.js';
 
@@ -61,4 +62,21 @@ test('bad inputs are rejected with precise messages', async () => {
   await assert.rejects(scan('WPROS/DLP', {}, 'bogus'), /source must be live or one of/);
   await assert.rejects(scan('WPROS/DLP', { size: 0 }, 'profitable'), /size must be greater than 0/);
   await assert.rejects(scan('WPROS/DLP', { size: NaN }, 'profitable'), /size must be a number/);
+});
+
+// ---- found by stress-testing --------------------------------------------------------------------------------------------------------
+test('inputs that would corrupt the arithmetic are refused: a size too large for any pool, a loss-accepting threshold, free gas', async () => {
+  await assert.rejects(scan('WPROS/DLP', { size: 1e300 }, 'profitable'), /size must be at most 1,000,000,000/);
+  await assert.rejects(scan('WPROS/DLP', { size: 1e10 }, 'profitable'), /size must be at most/);
+  await assert.rejects(scan('WPROS/DLP', { minNet: -1 }, 'profitable'), /minNet must be 0 or more/);
+  for (const bad of [0, -100, 1.5, 1e30]) await assert.rejects(scan('WPROS/DLP', { gasUnitsV2: bad }, 'profitable'), /gasUnitsV2 must be a whole number of gas units/, `gasUnitsV2=${bad}`);
+  await assert.rejects(scan('WPROS/DLP', { gasUnitsV3: 0 }, 'profitable'), /gasUnitsV3 must be a whole number/);
+  assert.equal((await scan('WPROS/DLP', { size: 1e9 }, 'profitable')).decision !== undefined, true, 'the largest allowed size still computes');
+});
+
+test('names every object has (__proto__, constructor) are not pairs or sources', async () => {
+  for (const name of ['__proto__', 'constructor', 'toString']) {
+    await assert.rejects(scan(name, {}, 'profitable'), (e) => e instanceof UserError && /pair must be one of/.test(e.message), name);
+    await assert.rejects(scan('WPROS/DLP', {}, name), (e) => e instanceof UserError && /source must be live or one of/.test(e.message), name);
+  }
 });

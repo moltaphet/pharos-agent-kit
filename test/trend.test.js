@@ -106,5 +106,14 @@ test('a corrupt or foreign file is rejected, not silently replaced', async () =>
   await writeFile(path, '{"hello":"world"}');
   await assert.rejects(new FileStore(path).load(), /not a trend-watcher state file/);
   await writeFile(path, '{ nope');
-  await assert.rejects(new FileStore(path).load());
+  await assert.rejects(new FileStore(path).load(), (e) => e.constructor.name === 'UserError' && e.message.includes(path) && /not valid JSON/.test(e.message), 'a truncated file is a clear user error that names the file');
+});
+
+test('history is capped: the newest 200 observations and events are kept, so the saved state never outgrows what is accepted back', () => {
+  let state = newState({ direction: 'down', observations: 3 });
+  for (let i = 1; i <= 230; i++) state = observe(state, { block: i * 10, value: i % 2 ? 100 : 90 }).state; // flapping: many triggered/cleared events
+  assert.equal(state.observations.length, 200);
+  assert.equal(state.observations[0].block, 310, 'the 30 oldest were dropped');
+  assert.equal(state.observations.at(-1).block, 2300);
+  assert.ok(state.events.length <= 200);
 });

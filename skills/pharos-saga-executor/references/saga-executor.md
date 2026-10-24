@@ -80,9 +80,9 @@ node skills/pharos-saga-executor/scripts/saga.mjs --scenario failure --out run.j
 |-------|---------|
 | `step:start` / `step:attempt` / `step:sent` | A step began; an attempt was made; the transaction was submitted. |
 | `step:confirmed` | Receipt is `success` **and** the step's state check passed. |
-| `step:retry` | A transient error; waiting `waitMs` (exponential backoff) before trying again. |
+| `step:retry` | A transient error; waiting `waitMs` (exponential backoff) before trying again. If the transaction had already been sent, the `why` says it is asked about again, not sent twice; only a transaction the network lost (dropped, replaced, underpriced) is sent again. |
 | `step:failed` | Permanent failure (revert or failed state check), with the reason. |
-| `compensation:*` | Undoing confirmed steps, newest first. |
+| `compensation:*` | Undoing steps, newest first. A step that executed but failed its check (`step:failed` with `mined: true`) is undone too, because its effect is on chain; a step that reverted changed nothing. |
 | `saga:completed` / `saga:compensated` / `saga:stuck` | The final outcome. |
 
 ### Error Handling
@@ -172,7 +172,7 @@ A saga is a list of steps. Each has a transaction, an optional state check (`ver
 | `not-undoable` | A step has no compensation | Add one, or make the step the last in the saga. |
 
 > **Agent Guidelines**:
-> 1. Always write the compensation together with the step.
+> 1. Always write the compensation together with the step: it is used both for steps that were confirmed and for one that executed but failed its post-condition.
 > 2. Write `verify` against chain state (balances, allowances), not just the receipt.
 
 ---

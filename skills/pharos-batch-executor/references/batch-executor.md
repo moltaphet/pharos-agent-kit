@@ -40,7 +40,8 @@ node skills/pharos-batch-executor/scripts/batch.mjs --from <sender> --actions sk
 | Error Signature | Cause | Suggested Action |
 |----------------|-------|----|
 | `a batch needs at least 3 independent actions` | Too few | Add actions, or send them singly. |
-| `is an ERC-20 transfer … cannot be batched through Multicall3` | Sender-dependent action | Send it on its own. Never approve Multicall3. |
+| `is an ERC-20 transfer … cannot be batched through Multicall3` | Sender-dependent action (ERC-20 transfer, approval or allowance change; NFT transfers and approvals; a wrapped-token deposit or withdrawal; a vault deposit, mint, withdrawal or redemption) | Send it on its own. Never approve Multicall3. |
+| `action N must be an object` / `"id" must be a short label` / `the id "x" is used twice` / `"data" must be a 0x hex string` | An action of the wrong shape, an id that is not a short plain label, or two actions with the same id | Fix the file; ids are optional (a1, a2, … are used) but must be unique. |
 | `the batch would fail: Multicall3: call failed` | Every action passes alone but the batch fails | Reduce the batch or use `--on-failure abort` to investigate. |
 | `Timed out` / `HTTP 429` | Chain MCP busy | Retry. |
 

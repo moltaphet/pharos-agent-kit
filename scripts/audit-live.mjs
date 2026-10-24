@@ -188,6 +188,11 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  const sv = (o) => run('saga-executor', { real: 'start', ...o });
+  check('names every object has are not scenarios (400, not a crash)', is400(await sv({ scenario: '__proto__' })) && is400(await sv({ scenario: 'constructor' })));
+});
+
+await guard(async () => {
   sec('7 Arbitrage Scanner');
   const rec = (await run('arbitrage-scanner', { source: 'fork-recorded' })).body?.data?.recorded;
   check('recorded fork run is served: two scenarios with honesty notes', rec?.scenarios?.length === 2 && rec.honesty?.length >= 3);
@@ -232,6 +237,14 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  const sc = (o) => run('arbitrage-scanner', o);
+  check('pair __proto__ / constructor rejected with 400 (used to be a 500)', is400(await sc({ pair: '__proto__' })) && is400(await sc({ pair: 'constructor' })));
+  check('size 1e300 and 1e10 rejected with 400 (used to be a 500: the arithmetic overflowed)', is400(await sc({ size: '1e300' })) && is400(await sc({ size: '1e10' })));
+  check('a negative minNet is refused (it would accept a losing trade)', is400(await sc({ minNet: -1 })));
+  check('free or negative gas is refused (it would inflate the profit)', is400(await sc({ gasUnitsV2: -100 })) && is400(await sc({ gasUnitsV3: 0 })) && is400(await sc({ gasUnitsV2: 1.5 })));
+});
+
+await guard(async () => {
   sec('8 Dry-Run Executor');
 
   for (const [slug, reportName] of [['dry-run-executor', 'testnet-runs'], ['batch-executor', 'testnet-runs'], ['threshold-guardian', 'testnet-guardian'], ['policy-gatekeeper', 'testnet-gatekeeper']]) {
@@ -263,6 +276,14 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  const dr = (o) => run('dry-run-executor', { value: '0', ...o });
+  check('value above 2^256 wei rejected with 400', is400(await dr({ from: MORPHO, to: USDC, data: '0x', value: '0x' + 'f'.repeat(70) })));
+  const broke = await dr({ from: '0x00000000000000000000000000000000000000a1', to: USDC, data: '0x', value: '1' });
+  const sum = broke.body?.data?.report?.summary ?? '';
+  check('a blocked summary never ends in two full stops', /^The simulation failed: .*[^.]\.$/.test(sum), sum);
+});
+
+await guard(async () => {
   sec('9 Trend Watcher');
   const post = (o, state) => run('trend-watcher', o, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state }) });
   check('synthetic scenarios are no longer offered: action=scenario is refused with a 400', is400(await post({ action: 'scenario', scenario: 'decline', direction: 'down', observations: 3 }, null)));
@@ -279,6 +300,19 @@ await guard(async () => {
   check('unknown metric rejected with 400', is400(await post({ action: 'backfill', metric: 'nope' }, null)));
   const evil = await run('trend-watcher', { action: 'backfill', metric: 'usdc-supply', count: 3 }, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state: { version: 1, rule: { direction: 'down', observations: 3 }, observations: 'not-an-array', active: false, events: [] } }) });
   check('a malformed posted history is rejected with a clear 400 (never a 500) that says how to recover', is400(evil) && /Reset saved state/.test(evil.body?.error ?? ''), `${evil.status} ${evil.body?.error?.slice(0, 50)}`);
+});
+
+await guard(async () => {
+  const tw = (o, init) => run('trend-watcher', o, init);
+  check('metric __proto__ / constructor rejected with 400 (used to be a 500)', is400(await tw({ action: 'observe', metric: '__proto__' })) && is400(await tw({ action: 'observe', metric: 'constructor' })));
+  check('a step larger than the chain is refused, not answered with nothing', is400(await tw({ action: 'backfill', step: '999999999', count: 3 })));
+  const post = (state) => ({ method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ state }) });
+  const base = { version: 1, rule: {}, active: false, events: [] };
+  const o = (b, v = 1) => ({ id: `b${b}`, block: b, time: null, value: v });
+  check('a posted history with a block twice, or out of order, is refused with a 400', is400(await tw({ action: 'observe' }, post({ ...base, observations: [o(5), o(5, 2)] }))) && is400(await tw({ action: 'observe' }, post({ ...base, observations: [o(9), o(5)] }))));
+  const full = await tw({ action: 'observe' }, post({ ...base, observations: Array.from({ length: 200 }, (_, i) => o(i + 1, 100 - i * 0.1)) }));
+  const back = await tw({ action: 'observe' }, post(full.body?.data?.state));
+  check('the history is capped at 200: the state handed back after the 201st reading is accepted again', full.body?.data?.state?.observations?.length === 200 && back.body?.ok === true, back.body?.error);
 });
 
 await guard(async () => {
@@ -305,6 +339,19 @@ await guard(async () => {
   check('bad onFailure rejected with 400', is400(await run('batch-executor', { from, actions: JSON.stringify(sync), onFailure: 'yolo' })));
   check('bad amount rejected with 400', is400(await plan2()));
   async function plan2() { return run('batch-executor', { from, actions: JSON.stringify([{ to: sync[0].to, amountPros: '1e3' }, sync[1], sync[2]]) }); }
+});
+
+await guard(async () => {
+  const from = '0x9f8ea09770dc38fc61f5a62031b3be0526d54d92';
+  const sync = ['0xb7d5d299c671e4a4c7c0c5a33b812185182fc417', '0xb9f329a51837d27a20dff113679d47d673d5e45b', '0x7F4A462FC320db1E26dd1366DcE9E276eE6c5930'].map((to) => ({ to, data: '0xfff6cae9' }));
+  const bt = (actions) => run('batch-executor', { from, actions: JSON.stringify(actions) });
+  const s0 = sync[0], s1 = sync[1], s2 = sync[2];
+  check('a null or non-object action is a 400 (used to be a 500)', is400(await bt([null, s1, s2])) && is400(await bt([1, s1, s2])));
+  check('non-string data is a 400 (used to be a 500)', is400(await bt([{ to: s0.to, data: 5 }, s1, s2])));
+  check('two actions with the same id are refused', is400(await bt([{ id: 'x', to: s0.to }, { id: 'x', to: s1.to }, { id: 'y', to: s2.to }])));
+  check('an id that is not a short plain label is refused (markup, objects, too long)', is400(await bt([{ id: '<img src=x onerror=alert(1)>', to: s0.to }, s1, s2])) && is400(await bt([{ id: { a: 1 }, to: s0.to }, s1, s2])));
+  check('a wrapped-token deposit() is refused: the tokens would be credited to Multicall3', is400(await bt([{ to: s0.to, data: '0xd0e30db0' }, s1, s2])));
+  check('an ERC-4626 vault deposit is refused for the same reason', is400(await bt([{ to: s0.to, data: '0x6e553f65' + '00'.repeat(64) }, s1, s2])));
 });
 
 await guard(async () => {

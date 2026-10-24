@@ -150,3 +150,61 @@ test('onEvent receives every log entry as it happens, in order', async () => {
   assert.equal(seen.at(0), 'saga:start');
   assert.equal(seen.at(-1), 'saga:completed');
 });
+
+// ---- found by stress-testing: a transient error AFTER the send must not send the step twice -------------------------------------------
+test('a slow receipt is asked about again; the transaction is not sent a second time', async () => {
+  const exec = make();
+  const real = exec.receipt;
+  let slow = 2;
+  exec.receipt = async (hash) => { if (hash === '0xb' && slow-- > 0) throw new Error('request timed out'); return real(hash); };
+  const r = await runSaga({ steps: [step('a'), step('b'), step('c')], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'completed');
+  assert.deepEqual(exec.sent, ['a', 'b', 'c'], 'b was sent exactly once, however many times its receipt was asked for');
+  assert.equal(r.steps[1].attempts, 3);
+  assert.ok(r.log.filter((e) => e.event === 'step:retry').every((e) => /not sending it twice/.test(e.why)));
+});
+
+test('a verification read that times out is repeated; the step is not sent a second time', async () => {
+  const exec = make();
+  let calls = 0;
+  const r = await runSaga({ steps: [step('a', { verify: async () => { if (calls++ === 0) throw new Error('503 service unavailable'); return true; } })], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'completed');
+  assert.deepEqual(exec.sent, ['a']);
+});
+
+test('a transaction the network dropped IS sent again (nothing was executed)', async () => {
+  const exec = make();
+  const real = exec.receipt;
+  let lost = 1;
+  exec.receipt = async (hash) => { if (hash === '0xa' && lost-- > 0) throw new Error('transaction dropped from the mempool'); return real(hash); };
+  const r = await runSaga({ steps: [step('a')], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'completed');
+  assert.deepEqual(exec.sent, ['a', 'a'], 'sent again because it was lost');
+});
+
+test('a step that executed but failed its check is undone too: its effect is on chain', async () => {
+  const exec = make();
+  const r = await runSaga({ steps: [step('a'), step('b', { verify: async () => 'balance did not change' }), step('c')], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'compensated');
+  assert.deepEqual(exec.sent, ['a', 'b', 'undo-b', 'undo-a'], 'b ran, so b is undone first, then a');
+  assert.deepEqual(r.steps.map((s) => s.state), ['compensated', 'compensated', 'pending']);
+  assert.equal(r.log.find((e) => e.event === 'compensation:start').undo.join(), 'b,a');
+  assert.equal(r.log.find((e) => e.event === 'step:failed').mined, true);
+});
+
+test('a step that reverted changed nothing, so only the earlier steps are undone', async () => {
+  const exec = make({ 'status:b': 'revert' });
+  const r = await runSaga({ steps: [step('a'), step('b'), step('c')], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'compensated');
+  assert.deepEqual(exec.sent, ['a', 'b', 'undo-a']);
+  assert.equal(r.log.find((e) => e.event === 'step:failed').mined, undefined);
+});
+
+test('an executed step that fails its check and cannot be undone is reported stuck, not forgotten', async () => {
+  const exec = make();
+  const r = await runSaga({ steps: [step('a'), { id: 'b', title: 'b', tx: () => ({ tag: 'b' }), verify: async () => 'wrong' }], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'compensation-failed');
+  assert.deepEqual(r.stuck, ['b']);
+  assert.equal(r.steps[0].state, 'compensated');
+  assert.equal(r.steps[1].state, 'not-undoable');
+});

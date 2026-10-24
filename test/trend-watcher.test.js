@@ -96,3 +96,30 @@ test('validateState refuses malformed saved histories with a precise error inste
   ];
   for (const b of bads) assert.throws(() => validateState(b), (e) => e instanceof UE && /saved history is not valid/.test(e.message), JSON.stringify(b).slice(0, 60));
 });
+
+// ---- found by stress-testing --------------------------------------------------------------------------------------------------------
+test('names that exist on every object (__proto__, constructor, toString) are not metrics: a 400, not a crash', async () => {
+  for (const metric of ['__proto__', 'constructor', 'toString', 'hasOwnProperty']) await assert.rejects(runTrend({ chain: chainAt(1000) }, { action: 'observe', metric, rule }, now), (e) => e instanceof UE && /metric must be one of/.test(e.message), metric);
+  for (const scenario of ['__proto__', 'constructor']) await assert.rejects(runTrend({ chain: null }, { action: 'scenario', scenario, rule }, now), /scenario must be one of/, scenario);
+});
+
+test('a step so large that no observation point falls inside the chain is refused, not answered with nothing', async () => {
+  await assert.rejects(runTrend({ chain: chainAt(5000) }, { action: 'backfill', metric: 'usdc-supply', rule, count: 3, step: 999_999_999 }, now), /larger than the chain/);
+});
+
+test('the state the engine hands back is always accepted when it is passed in again, however long the watcher has run', async () => {
+  let state = null;
+  for (let head = 100_000; head < 100_000 + 230 * 100; head += 100) {
+    const out = await runTrend({ chain: chainAt(head + 2) }, { action: 'observe', metric: 'usdc-supply', rule, state }, now);
+    state = out.state; // would have been refused as "at most 200" on the 202nd round trip
+    validateState(state);
+  }
+  assert.equal(state.observations.length, 200);
+});
+
+test('a saved history with a block twice, or out of order, is refused (the engine reads the last few in order)', () => {
+  const good = newState({ direction: 'down', observations: 3 });
+  const o = (block, value = 1) => ({ id: `b${block}`, block, time: null, value });
+  for (const observations of [[o(5), o(5, 2)], [o(9), o(5)], [o(5), o(9), o(7)]]) assert.throws(() => validateState({ ...good, observations }), (e) => e instanceof UE && /order of block/.test(e.message), JSON.stringify(observations.map((x) => x.block)));
+  assert.doesNotThrow(() => validateState({ ...good, observations: [o(5), o(7), o(9)] }));
+});

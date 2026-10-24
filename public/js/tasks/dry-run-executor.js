@@ -101,6 +101,7 @@ const livePanel = makePanel({
     <h4 class="list-h">What would change</h4>
     <p>${esc(r.outcome.summary)}</p>
     ${r.outcome.rows.length ? table(['What', 'Before', 'After'], r.outcome.rows.map((x) => [esc(x.label), esc(x.before), `<b>${esc(x.after)}</b>`])) : ''}
+    ${r.outcome.caveat ? `<p class="check warn">${esc(r.outcome.caveat)}</p>` : ''}
     <p class="check ${r.verdict === 'go' ? 'ok' : 'bad'}"><b>Execution gate:</b> ${r.verdict === 'go' ? 'open. This transaction may be handed to an executor. (Here there is none: Chain MCP is read-only and no key is held.)' : 'closed. Nothing was sent, and nothing will be sent.'}</p>
     <p class="muted">A passing simulation is a prediction about the chain right now; state can change before a transaction is mined.</p>`,
 });

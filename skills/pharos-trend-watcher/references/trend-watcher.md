@@ -36,6 +36,7 @@ node skills/pharos-trend-watcher/scripts/watch.mjs --state trend.json --metric u
 | `◀ TREND MET HERE` | The observation that completed the trend. |
 | `status:` | `TREND ACTIVE` or `no trend`, with the reason. |
 | Exit code | `0` no trend, `10` trend active, `1` error. |
+| History size | The file keeps the newest 200 observations and the newest 200 events, so it never outgrows what it accepts back. |
 
 ### Error Handling
 
@@ -83,6 +84,9 @@ Same as above. The history is stored oldest to newest.
 |----------------|-------|----|
 | `count must be a whole number from 1 to 20` | `--backfill` out of range | Use 1 to 20. |
 | `step must be a whole number of at least 100 blocks` | `--step` too small | Use 100 or more (default 20000). |
+| `step … is larger than the chain` | `--step` so large that no observation point falls inside the chain | Use a smaller step. |
+| `… is not valid JSON, so it cannot be a trend-watcher state file` | The state file was truncated or edited by hand | Move it aside and start again. |
+| `observations must be in order of block, each block once` | A saved history out of order or with a block twice (web page: press “Reset saved state”) | The engine never produces this; it comes from hand edits. |
 | `… gave 3 different answers in a row … inconsistent historical state` | The node returned inconsistent history for a block | Retry later; nothing wrong is stored. |
 
 > **Agent Guidelines**:

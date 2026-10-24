@@ -25,7 +25,7 @@ try {
   const record = { recordedAt: new Date().toISOString(), plan: { ...plan, batch: plan.batch && { ...plan.batch, data: plan.batch.data.slice(0, 74) + '…', tx: undefined } } };
   console.log(`\nPLAN @ block ${plan.block.toLocaleString('en-US')}  ·  ${plan.summary}`);
   for (const a of plan.actions) console.log(`  ${a.id}  ${a.status === 'ok' ? (a.included ? 'IN ' : 'out') : 'FAILS'}  ${a.valuePros.padStart(8)} PROS → ${a.to.slice(0, 10)}…  ${a.soloGas ? `solo gas ${f(a.soloGas)}` : a.reason}`);
-  if (plan.comparison) console.log(`  1 transaction instead of ${plan.comparison.transactionsBefore}: estimated gas ${f(plan.comparison.soloGasTotal)} → ${f(plan.comparison.batchGas)} (saves ${f(plan.comparison.gasSaved)}, ${plan.comparison.gasSavedPct.toFixed(1)}%)`);
+  if (plan.comparison) console.log(`  1 transaction instead of ${plan.comparison.transactionsBefore}: estimated gas ${f(plan.comparison.soloGasTotal)} → ${f(plan.comparison.batchGas)} (${plan.comparison.gasSaved >= 0 ? 'saves' : 'costs'} ${f(Math.abs(plan.comparison.gasSaved))} gas${plan.comparison.gasSaved >= 0 ? '' : ' more'}, ${Math.abs(plan.comparison.gasSavedPct).toFixed(1)}%)${plan.comparison.gasSaved >= 0 ? '' : ': batch for the single signature, not to save gas'}`);
   for (const x of plan.excluded) console.log(`  left out ${x.id}: ${x.why}`);
 
   if (has('fork') && plan.batch?.tx) {

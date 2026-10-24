@@ -128,3 +128,35 @@ test('a plain value transfer (no data) to an account without code is fine', asyn
   assert.equal(plan.verdict, 'ready');
   assert.equal(plan.included.length, 3);
 });
+
+// ---- found by stress-testing --------------------------------------------------------------------------------------------------------
+test('an action that is not an object, or has the wrong types, is a precise error (it used to end as a crash)', () => {
+  const ok = [{ to: A(1) }, { to: A(2) }];
+  for (const bad of [null, 1, 'x', [], true]) assert.throws(() => parseActions([...ok, bad]), (e) => e.constructor.name === 'UserError' && /action 3 must be an object/.test(e.message), JSON.stringify(bad));
+  assert.throws(() => parseActions([...ok, { to: A(3), data: 5 }]), /"data" must be a 0x hex string/);
+  assert.throws(() => parseActions([...ok, { to: 5 }]), /"to" must be a 0x address/);
+  assert.throws(() => parseActions([...ok, { to: A(3), amountPros: { a: 1 } }]), /"amountPros" must be a decimal number/);
+  assert.equal(parseActions([...ok, { to: A(3), amountPros: 1 }])[2].value, 10n ** 18n, 'a JSON number is fine');
+});
+
+test('ids are short labels and unique, so a failure can always be named', () => {
+  const ok = [{ to: A(1) }, { to: A(2) }];
+  assert.throws(() => parseActions([{ id: 'x', to: A(1) }, { id: 'x', to: A(2) }, { to: A(3) }]), /the id "x" is used twice/);
+  for (const id of [{ a: 1 }, 5, '', '<img src=x onerror=alert(1)>', 'x'.repeat(41)]) assert.throws(() => parseActions([{ id, to: A(1) }, ...ok]), /"id" must be a short label/, JSON.stringify(id));
+  assert.equal(parseActions([{ id: 'pay rent #1'.replace('#', ''), to: A(1) }, ...ok])[0].id, 'pay rent 1');
+});
+
+test('calls that depend on who sends them are refused: a wrapped-token deposit would credit Multicall3, an NFT or vault call would act as Multicall3', () => {
+  const ok = [{ to: A(1) }, { to: A(2) }];
+  const calls = { '0xd0e30db0': /wrapped-token deposit/, '0x2e1a7d4d': /wrapped-token withdrawal/, '0x42842e0e': /NFT transfer/, '0xb88d4fde': /NFT transfer/, '0xf242432a': /ERC-1155/, '0xa22cb465': /approval for all/, '0x6e553f65': /vault deposit/, '0xba087652': /vault redemption/, '0x39509351': /allowance increase/ };
+  for (const [sel, re] of Object.entries(calls)) assert.throws(() => parseActions([...ok, { to: A(3), data: sel + '00'.repeat(64) }]), re, sel);
+  assert.doesNotThrow(() => parseActions([...ok, { to: A(3), data: '0xfff6cae9' }]), 'a sender-independent call is still fine');
+});
+
+test('the comparison says whether the batch is cheaper, so "ready" is never mistaken for "worth it"', async () => {
+  const dear = await planBatch({ chain: chain({ gas: { solo: 21_000, batch: 135_000 } }) }, { from: FROM, actions: four });
+  assert.equal(dear.comparison.cheaper, false);
+  assert.match(dear.summary, /costs/);
+  const cheap = await planBatch({ chain: chain({ gas: { solo: 80_000, batch: 200_000 } }) }, { from: FROM, actions: four });
+  assert.equal(cheap.comparison.cheaper, true);
+});

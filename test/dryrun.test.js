@@ -127,3 +127,29 @@ test('a plain value transfer (no data) to an account without code is still a GO'
   const r = await dryRun({ chain: chain({ noCode: true }) }, { from: '0x' + '1'.repeat(40), to: '0x' + '2'.repeat(40), data: '0x', value: '1' });
   assert.equal(r.verdict, 'go');
 });
+
+// ---- found by stress-testing --------------------------------------------------------------------------------------------------------
+test('a value larger than any amount the chain can hold is refused (2^256 wei and up)', () => {
+  assert.throws(() => parseTx({ from: A, to: B, value: '0x' + 'f'.repeat(70) }), /larger than any amount the chain can hold/);
+  assert.throws(() => parseTx({ from: A, to: B, value: (2n ** 256n).toString() }), /larger than any amount/);
+  assert.equal(parseTx({ from: A, to: B, value: (2n ** 256n - 1n).toString() }).value, 2n ** 256n - 1n);
+});
+
+test('the summary never ends in two full stops, whatever punctuation the node’s message carries', async () => {
+  for (const message of ['The caller does not have enough funds for value transfer.', 'nope...', 'nope  ']) {
+    const bad = revertErr(`execution reverted: ${message}`);
+    const r = await dryRun({ chain: chain({ call: () => bad, gas: () => bad }) }, transfer(9_000_000));
+    assert.doesNotMatch(r.summary, /\.\.$/, message);
+    assert.match(r.summary, /^The simulation failed: .*[^.]\.$/, message);
+  }
+});
+
+test('a token that does not move exactly the amount asked (balance below it, yet the call succeeds) gets no invented after-values', async () => {
+  const r = await dryRun({ chain: chain() }, transfer(5_000_000)); // balance is 2 USDC; the stubbed call succeeds
+  assert.equal(r.verdict, 'go');
+  assert.deepEqual(r.outcome.rows.map((x) => x.after), ['not predicted', 'not predicted']);
+  assert.match(r.outcome.caveat, /does not move exactly the amount/);
+  const ok = await dryRun({ chain: chain() }, transfer(1_000_000));
+  assert.equal(ok.outcome.caveat, undefined);
+  assert.equal(ok.outcome.rows[0].after, '1 USDC');
+});
