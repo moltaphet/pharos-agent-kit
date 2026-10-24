@@ -251,12 +251,13 @@ input, select { padding: 9px 11px; border: 1px solid var(--border-2); border-rad
 .run > details > summary::-webkit-details-marker, .entry summary::-webkit-details-marker { display: none; }
 .run .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
 .run[data-status="ok"] .dot { background: var(--ok); } .run[data-status="error"] .dot { background: var(--bad); }
+.run[data-status="finding"] .dot { background: var(--warn); }
 .run[data-status="running"] .dot { background: var(--accent); animation: pulse 1s infinite; }
 @keyframes pulse { 50% { opacity: .3; } }
 .rt { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 28ch; }
 .rs { color: var(--muted); font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rc, .rd { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.run[data-status="error"] .rs { color: var(--bad); }
+.run[data-status="error"] .rs { color: var(--bad); } .run[data-status="finding"] .rs { color: var(--warn); }
 .entries { border-top: 1px solid var(--border); padding: 4px 6px 8px; }
 .entry summary { display: grid; grid-template-columns: 70px 78px minmax(0, 1fr) 110px 66px; gap: 10px; align-items: center; padding: 7px 8px; border-radius: 8px; cursor: pointer; list-style: none; font-size: 13.5px; }
 .entry summary:hover { background: var(--surface-2); }

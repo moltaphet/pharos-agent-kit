@@ -120,7 +120,7 @@ export function mount(root, { slug }) {
           r.addTrace(res.trace, sent);
           for (const c of res.data.checks) r.add({ kind: 'decision', at: sent + res.ms, ok: c.ok !== false, title: `${c.ok === true ? 'Pass' : c.ok === false ? 'Fail' : 'Info'}: ${c.name}`, detail: c.detail });
           state[i] = { state: res.data.gap ? 'gap' : 'ok', result: res.data };
-          r.end({ status: res.data.gap ? 'error' : 'ok', summary: res.data.gap ? `gap: ${res.data.gap.title}` : 'checks pass' });
+          r.end({ status: res.data.gap ? 'finding' : 'ok', summary: res.data.gap ? `gap: ${res.data.gap.title}` : 'checks pass' });
         } catch (err) {
           if (err.trace) r.addTrace(err.trace, sent);
           r.add({ kind: 'error', title: err.message, error: err.detail ?? err.message, at: sent + (err.ms ?? 0) });

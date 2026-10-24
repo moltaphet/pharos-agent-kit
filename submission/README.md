@@ -26,6 +26,7 @@ These cover code every task stands on (MCP client, rate limiting, request tracin
 - [test/abi.test.js](../test/abi.test.js)
 - [test/limit.test.js](../test/limit.test.js)
 - [test/mcp-timeout.test.js](../test/mcp-timeout.test.js)
+- [test/md.test.js](../test/md.test.js)
 - [test/rpc-chain.test.js](../test/rpc-chain.test.js)
 - [test/server.test.js](../test/server.test.js)
 - [test/submission.test.js](../test/submission.test.js)

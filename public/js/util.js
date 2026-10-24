@@ -94,7 +94,13 @@ export async function copyText(text, message = 'Copied') {
 // Tiny, safe markdown: everything is escaped first, then a few constructs are re-enabled.
 export function md(src) {
   const blocks = [];
-  let t = esc(src).replace(/```(\w*)\n([\s\S]*?)```/g, (_, __, code) => `\u0000${blocks.push(`<pre><code>${code.trim()}</code></pre>`) - 1}\u0000`);
+  // A fenced block inside a list item arrives indented by the item's indent; remove that common indent so the code reads as written.
+  const dedent = (code) => {
+    const lines = code.replace(/^\n+|\s+$/g, '').split('\n');
+    const indent = Math.min(...lines.filter((l) => l.trim()).map((l) => l.match(/^ */)[0].length));
+    return lines.map((l) => l.slice(Math.min(indent, l.match(/^ */)[0].length))).join('\n');
+  };
+  let t = esc(src).replace(/```(\w*)\n([\s\S]*?)```/g, (_, __, code) => `\u0000${blocks.push(`<pre><code>${dedent(code)}</code></pre>`) - 1}\u0000`);
   t = t
     .replace(/`([^`\n]+)`/g, '<code>$1</code>')
     .replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>')
@@ -109,7 +115,7 @@ export function md(src) {
       continue;
     }
     if (list) out.push(`<ul>${list.join('')}</ul>`), (list = null);
-    if (line.trim()) out.push(line.startsWith('\u0000') ? line : `<p>${line}</p>`);
+    if (line.trim()) out.push(line.trim().startsWith('\u0000') ? line.trim() : `<p>${line}</p>`);
   }
   if (list) out.push(`<ul>${list.join('')}</ul>`);
   return out.join('').replace(/\u0000(\d+)\u0000/g, (_, i) => blocks[i]);
