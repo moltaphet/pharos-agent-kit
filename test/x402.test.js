@@ -92,7 +92,7 @@ function decodeLegacy(buf) {
 const route = (path) => ROUTES.find((r) => r.path === path);
 const req = (path) => requirementsFor(parseConfig(CONFIG), route(path));
 const pay = (path, o = {}) => createPayment({ requirements: req(path), privateKey: PAYER_KEY, now: NOW, ...o });
-const facilitatorOn = (chain, key = FAC_KEY) => createFacilitator({ rpc: chain.rpc, key, now: () => NOW, pollMs: 1, receiptTimeoutMs: 200 });
+const facilitatorOn = (chain, key = FAC_KEY) => createFacilitator({ rpc: chain.rpc, key, supportedAssets: [CONFIG], now: () => NOW, pollMs: 1, receiptTimeoutMs: 200 });
 
 // ---- prices, requirements, EIP-712 ----------------------------------------------------------------------------------------------------
 test('prices are exact decimals in the token’s base units; the requirements say exactly what is wanted', () => {
@@ -206,7 +206,7 @@ test('a settled payment cannot be settled again: the token’s own nonce says so
 });
 
 test('a facilitator with no key can verify but never settle, and says so', async () => {
-  const f = createFacilitator({ rpc: atlantic().rpc, now: () => NOW });
+  const f = createFacilitator({ rpc: atlantic().rpc, supportedAssets: [CONFIG], now: () => NOW });
   assert.equal((await f.verify(pay('/data'), req('/data'))).isValid, true);
   const s = await f.settle(pay('/data'), req('/data'));
   assert.deepEqual([s.success, s.errorReason], [false, 'facilitator_cannot_settle']);
@@ -215,7 +215,7 @@ test('a facilitator with no key can verify but never settle, and says so', async
 test('a settlement that never gets a receipt is reported as a timeout, with the hash, not as a failure to pay', async () => {
   const A = atlantic();
   const rpc = async (m, p) => (m === 'eth_getTransactionReceipt' ? null : A.rpc(m, p));
-  const s = await createFacilitator({ rpc, key: FAC_KEY, now: () => NOW, pollMs: 1, receiptTimeoutMs: 20 }).settle(pay('/data'), req('/data'));
+  const s = await createFacilitator({ rpc, key: FAC_KEY, supportedAssets: [CONFIG], now: () => NOW, pollMs: 1, receiptTimeoutMs: 20 }).settle(pay('/data'), req('/data'));
   assert.equal(s.success, false);
   assert.equal(s.errorReason, 'settlement_timeout');
   assert.match(s.transaction, /^0x[0-9a-f]{64}$/);
@@ -234,7 +234,7 @@ test('the facilitator’s HTTP routes: GET /supported, POST /verify, POST /settl
 // ---- the resource server and the client, end to end -------------------------------------------------------------------------------------
 function stack({ key = FAC_KEY, balance } = {}) {
   const A = atlantic({ balance });
-  const facilitator = createFacilitator({ rpc: A.rpc, key, now: () => NOW, pollMs: 1, receiptTimeoutMs: 200 });
+  const facilitator = createFacilitator({ rpc: A.rpc, key, supportedAssets: [CONFIG], now: () => NOW, pollMs: 1, receiptTimeoutMs: 200 });
   const server = createResourceServer({ config: CONFIG, facilitator, handlers: { '/health': () => ({ status: 'ok' }), '/data': () => ({ message: 'Hello, paid user!' }), '/api/info': () => ({ name: 'demo' }) } });
   // a fetch that talks to the in-process server, like the real thing over HTTP
   const fetchImpl = async (url, init = {}) => {
@@ -346,4 +346,158 @@ test('keys come from the environment or a file, are checked for shape, and are n
   assert.throws(() => loadPrivateKey({ env: {}, name: 'K' }), (e) => e instanceof UserError && /K is not set.*never taken from code or from a prompt/.test(e.message));
   assert.throws(() => loadPrivateKey({ env: { K: 'not a key' }, name: 'K' }), (e) => /does not look like a private key/.test(e.message) && !e.message.includes('not a key'));
   assert.throws(() => loadPrivateKey({ env: { K_FILE: join(dir, 'missing') }, name: 'K' }), /could not read the key file/);
+});
+
+// Audit regressions: malformed external input, gas sponsorship policy, and ambiguous settlement.
+test('facilitators fail closed for unsupported tokens before any chain calls', async () => {
+  let calls = 0;
+  const f = createFacilitator({ rpc: async () => { calls++; throw new Error('must not call'); }, key: FAC_KEY, supportedAssets: [CONFIG], now: () => NOW });
+  const requirements = { ...req('/data'), asset: '0x' + '44'.repeat(20) };
+  const payment = createPayment({ requirements, privateKey: PAYER_KEY, now: NOW });
+  assert.equal((await f.settle(payment, requirements)).errorReason, 'unsupported_asset');
+  assert.equal(calls, 0);
+  const empty = createFacilitator({ rpc: async () => { calls++; }, key: FAC_KEY, now: () => NOW });
+  assert.equal((await empty.verify(pay('/data'), req('/data'))).invalidReason, 'unsupported_asset');
+});
+
+test('malformed requirements produce invalid verdicts instead of exceptions', async () => {
+  const f = facilitatorOn(atlantic());
+  for (const patch of [{ amount: null }, { amount: 'abc' }, { amount: (1n << 256n).toString() }, { payTo: null }, { asset: [] }, { maxTimeoutSeconds: -1 }, { maxTimeoutSeconds: 1e30 }, { extra: { name: {} } }]) {
+    const requirements = { ...req('/data'), ...patch };
+    const payment = pay('/data'); payment.accepted = requirements;
+    assert.equal((await f.verify(payment, requirements)).isValid, false, JSON.stringify(patch));
+  }
+});
+
+test('authorizations enforce uint256 bounds and the advertised expiration window', async () => {
+  const f = facilitatorOn(atlantic());
+  for (const patch of [{ value: (1n << 256n).toString() }, { validAfter: (1n << 256n).toString() }, { validBefore: (1n << 256n).toString() }, { validBefore: String(NOW + 301) }, { validAfter: String(NOW) }]) {
+    const payment = pay('/data'); Object.assign(payment.payload.authorization, patch);
+    assert.equal((await f.verify(payment, req('/data'))).isValid, false, JSON.stringify(patch));
+  }
+});
+
+test('accepted domain and timeout terms must match the resource requirements', async () => {
+  const f = facilitatorOn(atlantic());
+  for (const patch of [{ extra: { name: 'USDC', version: '3' } }, { maxTimeoutSeconds: 301 }]) {
+    const payment = pay('/data'); Object.assign(payment.accepted, patch);
+    assert.equal((await f.verify(payment, req('/data'))).isValid, false);
+  }
+});
+
+test('different concurrent settlements reserve different facilitator transaction nonces', async () => {
+  const chain = atlantic(); const f = facilitatorOn(chain);
+  const payments = [pay('/data'), pay('/data')];
+  const settled = await Promise.all(payments.map(p => f.settle(p, req('/data'))));
+  assert.ok(settled.every(s => s.success));
+  assert.deepEqual(chain.st.sent.map(decodeLegacy).map(tx => tx.nonce), [4n, 5n]);
+});
+
+test('concurrent requests cannot submit the same authorization twice', async () => {
+  const chain = atlantic(); const f = facilitatorOn(chain); const payment = pay('/data');
+  const results = await Promise.all([f.settle(payment, req('/data')), f.settle(payment, req('/data'))]);
+  assert.equal(results.filter(s => s.success).length, 1);
+  assert.equal(chain.st.sent.length, 1);
+});
+
+test('receipt lookup errors preserve the broadcast transaction hash', async () => {
+  const chain = atlantic();
+  const f = createFacilitator({ rpc: async (m, p) => { if (m === 'eth_getTransactionReceipt') throw new Error('RPC disconnected'); return chain.rpc(m, p); }, key: FAC_KEY, supportedAssets: [CONFIG], now: () => NOW });
+  const settlement = await f.settle(pay('/data'), req('/data'));
+  assert.equal(settlement.success, false);
+  assert.match(settlement.transaction, /^0x[0-9a-f]{64}$/);
+  assert.equal(settlement.errorReason, 'settlement_unknown');
+});
+
+test('a settlement timeout returns 503 with its hash and never issues another payment challenge', async () => {
+  const settlement = { success: false, errorReason: 'settlement_timeout', transaction: '0x' + 'ab'.repeat(32), network: NETWORK };
+  const server = createResourceServer({ config: CONFIG, facilitator: { verify: async () => ({ isValid: true }), settle: async () => settlement } });
+  const out = await server.handle({ path: '/data', headers: { 'payment-signature': b64.enc(pay('/data')) } });
+  assert.equal(out.status, 503);
+  assert.equal(out.headers[HEADERS.required], undefined);
+  assert.deepEqual(b64.dec(out.headers[HEADERS.response]), settlement);
+});
+
+test('client preserves Headers and tuple headers and forbids redirecting signed payments', async () => {
+  for (const headers of [new Headers({ 'x-trace': 'kept' }), [['x-trace', 'kept']]]) {
+    const calls = [];
+    const fetchImpl = async (_url, init) => {
+      calls.push(init);
+      return calls.length === 1 ? { status: 402, headers: new Headers({ [HEADERS.required]: b64.enc({ x402Version: 2, accepts: [req('/data')] }) }) } : { status: 200, headers: new Headers(), json: async () => ({}) };
+    };
+    await payAndFetch({ url: 'https://x.example/data', privateKey: PAYER_KEY, init: { headers, redirect: 'follow' }, fetchImpl, now: NOW });
+    assert.equal(new Headers(calls[1].headers).get('x-trace'), 'kept');
+    assert.equal(calls[1].redirect, 'error');
+    assert.equal(calls[0].redirect, 'error');
+  }
+});
+
+test('client rejects unsupported challenge versions and malformed requirements without paying', async () => {
+  for (const challenge of [{ x402Version: 1, accepts: [req('/data')] }, { x402Version: 2, accepts: {} }, { x402Version: 2, accepts: [null] }, { x402Version: 2, accepts: [{ ...req('/data'), amount: '-1' }] }]) {
+    let calls = 0;
+    const fetchImpl = async () => { calls++; return { status: 402, headers: new Headers({ [HEADERS.required]: b64.enc(challenge) }) }; };
+    await assert.rejects(payAndFetch({ url: 'https://x.example/data', privateKey: PAYER_KEY, fetchImpl, now: NOW }));
+    assert.equal(calls, 1);
+  }
+});
+
+test('configuration rejects invalid decimals, networks, domains and timeout values', () => {
+  for (const patch of [{ decimals: -1 }, { decimals: 1000 }, { decimals: 1.5 }, { network: 'eip155:1' }, { name: {} }, { version: '' }, { maxTimeoutSeconds: 0 }, { maxTimeoutSeconds: 1e30 }]) assert.throws(() => parseConfig({ ...CONFIG, ...patch }));
+  assert.throws(() => priceToAmount('1', -1));
+  assert.throws(() => priceToAmount((1n << 256n).toString(), 0));
+});
+
+test('non-string authorization addresses and nonces are malformed instead of throwing', async () => {
+  const f = facilitatorOn(atlantic());
+  for (const patch of [{ from: [PAYER] }, { to: [PAY_TO] }, { nonce: ['0x' + 'ab'.repeat(32)] }]) {
+    const payment = pay('/data'); Object.assign(payment.payload.authorization, patch);
+    assert.equal((await f.verify(payment, req('/data'))).isValid, false);
+  }
+});
+
+test('an uncertain broadcast cannot be submitted again while its authorization is still valid', async () => {
+  const chain = atlantic(); let sends = 0;
+  const f = createFacilitator({ key: FAC_KEY, supportedAssets: [CONFIG], now: () => NOW, rpc: async (method, params) => { if (method === 'eth_sendRawTransaction') { sends++; throw new Error('connection dropped after send'); } return chain.rpc(method, params); } });
+  const payment = pay('/data');
+  const first = await f.settle(payment, req('/data'));
+  const second = await f.settle(payment, req('/data'));
+  assert.match(first.transaction, /^0x[0-9a-f]{64}$/);
+  assert.equal(second.transaction, first.transaction);
+  assert.equal(second.success, false);
+  assert.equal(sends, 1);
+});
+
+test('HTTP facilitator refuses redirects and non-2xx JSON responses', async () => {
+  let seen;
+  const remote = httpFacilitator('https://fac.example', async (_url, init) => { seen = init; return { status: 500, json: async () => ({ success: true }) }; });
+  await assert.rejects(remote.settle({}, {}), /HTTP 500/);
+  assert.equal(seen.redirect, 'error');
+});
+
+test('post-settlement handler failure preserves payment receipt and does not challenge again', async () => {
+  const settlement = { success: true, network: NETWORK, transaction: '0x' + 'ab'.repeat(32) };
+  const server = createResourceServer({ config: CONFIG, facilitator: { verify: async () => ({ isValid: true }), settle: async () => settlement }, handlers: { '/data': () => { throw new Error('data failed'); } } });
+  const out = await server.handle({ path: '/data', headers: { 'payment-signature': b64.enc(pay('/data')) } });
+  assert.equal(out.status, 500);
+  assert.deepEqual(b64.dec(out.headers[HEADERS.response]), settlement);
+  assert.equal(out.headers[HEADERS.required], undefined);
+});
+
+test('a 200 retry without a successful settlement receipt is not reported as paid', async () => {
+  let count = 0;
+  const fetchImpl = async () => ++count === 1 ? { status: 402, headers: new Headers({ [HEADERS.required]: b64.enc({ x402Version: 2, accepts: [req('/data')] }) }) } : { status: 200, headers: new Headers(), json: async () => ({ ok: true }) };
+  const out = await payAndFetch({ url: 'https://x.example/data', privateKey: PAYER_KEY, fetchImpl, now: NOW });
+  assert.equal(out.paid, false);
+});
+
+test('uncertain authorizations remain idempotent when JSON object keys are reordered', async () => {
+  const chain = atlantic(); let sends = 0;
+  const f = createFacilitator({ key: FAC_KEY, supportedAssets: [CONFIG], now: () => NOW, rpc: async (method, params) => { if (method === 'eth_sendRawTransaction') { sends++; throw new Error('connection dropped after send'); } return chain.rpc(method, params); } });
+  const original = pay('/data');
+  const first = await f.settle(original, req('/data'));
+  const reordered = Object.fromEntries(Object.entries(original).reverse());
+  reordered.payload = { authorization: Object.fromEntries(Object.entries(original.payload.authorization).reverse()), signature: original.payload.signature };
+  const second = await f.settle(reordered, Object.fromEntries(Object.entries(req('/data')).reverse()));
+  assert.equal(second.transaction, first.transaction);
+  assert.equal(sends, 1);
 });

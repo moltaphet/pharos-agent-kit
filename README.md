@@ -1,6 +1,6 @@
 # pharos-agent-kit
 
-Twenty working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
+Twenty-one working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
 **Season of AI** tasks, plus a site where each one can be tested and inspected:
 **https://pharos-agent-kit.vercel.app**
 
@@ -30,17 +30,18 @@ Per-task proof links, repo links and the requirements each task was built agains
 | 18 | Recurring Payment Agent | `agents/recurring-payment-agent/` | Pharos mainnet; the whole lifecycle on a mainnet fork | prepares each due payment unsigned; paid, pending and failed come from the chain; never twice |
 | 19 | Invoice-to-Payment Agent | `agents/invoice-to-payment-agent/` | Pharos mainnet through Chain MCP | flags instead of guessing; prepares an unsigned payment carrying the invoice reference |
 | 20 | x402 Paywalled API | `agents/x402-paywalled-api/` | Pharos Atlantic testnet (eip155:688689), real HTTP and real settlements | two paid routes and one free, its own facilitator and client; the settlements are real Atlantic transactions |
+| 21 | x402 Agent Buyer | `agents/x402-agent-buyer/` | Pharos Atlantic testnet (eip155:688689), HTTP x402 offers | evaluates two endpoints against value, per-call cap and total budget; retries the exact same authorization and stops on uncertain settlement |
 
 **Safety.** The skills in `skills/` never take a key: they read, simulate, or prepare unsigned transactions. Nothing in
-this repository sends a transaction to Pharos **mainnet**. Real execution happens in two places, and neither involves real money:
+this repository sends a transaction to Pharos **mainnet**. Real execution happens on throwaway forks and Atlantic testnet; neither involves real money:
 
 1. **Throwaway forks of mainnet** (tasks 6 and 7): anvil forks Pharos, the contracts are the live ones, the funds are fake,
    and the transactions exist only on that fork. On the site every click runs one inside a throwaway Vercel Sandbox (see
    below); the CLIs run it on your own machine (needs Foundry). There is no simulator.
-2. **Pharos Atlantic testnet** (tasks 5, 8, 10 and 11): `scripts/testnet-run.mjs`, `scripts/testnet-guardian.mjs` and `scripts/testnet-gatekeeper.mjs` send real transactions from a throwaway wallet that
+2. **Pharos Atlantic testnet** (tasks 5, 8, 10, 11 and 21): `scripts/testnet-run.mjs`, `scripts/testnet-guardian.mjs` and `scripts/testnet-gatekeeper.mjs` send real transactions from a throwaway wallet that
    only ever holds test tokens. Its key lives in a git-ignored file, is never printed or committed, and the script refuses to
    send unless the chain id is 688689 (so it cannot reach mainnet) and stops past a small gas budget. The key is not used by
-   any skill, and the website holds no key at all: it only re-reads the recorded transactions from the chain.
+   any skill. Task 21 is an opt-in CLI buyer: it loads a payer key from your environment or an ignored local file, checks a per-call cap and total test-token budget before signing, and never runs as part of the website. The website holds no key at all: it only re-reads recorded transactions from the chain.
 
 The command-line tools have no dependencies, no API keys and no build step; they need **Node.js 20+**. The web
 hub has one dependency, `@vercel/sandbox`, used only by the Saga Executor's live demo.

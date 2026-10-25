@@ -2,7 +2,7 @@
 
 > A watcher with memory: it acts only when a trend holds over several readings, never on one noisy blip.
 
-**Arena task:** SkillEngine · Hard · [brief](https://pharos-agent-arena.vercel.app/tasks/trend-watcher)  
+**Arena task:** SkillEngine · Hard · [brief](https://pharos-agent-arena.vercel.app/tasks/trend-watcher)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/trend-watcher/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/trend-watcher
 
 ## What it does
@@ -68,7 +68,7 @@ Found by following the imports from this folder and the files above, so the list
 
 **Only this task uses:** [lib/trend.js](../../lib/trend.js)
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/trace.js](../../lib/trace.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 
 ## Tests
 

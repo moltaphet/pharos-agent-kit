@@ -59,8 +59,8 @@ test('transient errors are retried with backoff, then the step succeeds', async 
   assert.equal(r.log.filter((e) => e.event === 'step:retry').length, 2);
 });
 
-test('retries are capped by the policy, then the saga undoes what it did', async () => {
-  const exec = make({ b: [new Error('request timed out'), new Error('request timed out')] });
+test('known pre-broadcast rejections are capped, then the saga undoes what it did', async () => {
+  const exec = make({ b: [new Error('replacement transaction underpriced'), new Error('replacement transaction underpriced')] });
   const r = await runSaga({ steps: [step('a'), step('b')], exec, policy: { maxAttempts: 2, baseDelayMs: 1 }, sleep: noSleep });
   assert.equal(r.status, 'compensated');
   assert.equal(r.failure.kind, 'transient');
@@ -172,14 +172,14 @@ test('a verification read that times out is repeated; the step is not sent a sec
   assert.deepEqual(exec.sent, ['a']);
 });
 
-test('a transaction the network dropped IS sent again (nothing was executed)', async () => {
+test('a missing mempool entry is checked again without resending a known transaction', async () => {
   const exec = make();
   const real = exec.receipt;
   let lost = 1;
   exec.receipt = async (hash) => { if (hash === '0xa' && lost-- > 0) throw new Error('transaction dropped from the mempool'); return real(hash); };
   const r = await runSaga({ steps: [step('a')], exec, policy: fast, sleep: noSleep });
   assert.equal(r.status, 'completed');
-  assert.deepEqual(exec.sent, ['a', 'a'], 'sent again because it was lost');
+  assert.deepEqual(exec.sent, ['a'], 'a missing mempool entry does not prove the transaction was never executed');
 });
 
 test('a step that executed but failed its check is undone too: its effect is on chain', async () => {
@@ -207,4 +207,61 @@ test('an executed step that fails its check and cannot be undone is reported stu
   assert.deepEqual(r.stuck, ['b']);
   assert.equal(r.steps[0].state, 'compensated');
   assert.equal(r.steps[1].state, 'not-undoable');
+});
+
+test('an exhausted receipt lookup preserves the pending hash and never starts undo', async () => {
+  const exec = make();
+  const original = exec.receipt;
+  exec.receipt = async (hash) => { if (hash === '0xb') throw new Error('request timed out'); return original(hash); };
+  const r = await runSaga({ steps: [step('a'), step('b'), step('c')], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'requires-reconciliation');
+  assert.equal(r.steps[1].state, 'unconfirmed');
+  assert.equal(r.steps[1].txHash, '0xb');
+  assert.deepEqual(exec.sent, ['a', 'b']);
+  assert.equal(r.steps[0].state, 'confirmed');
+});
+
+test('null and pending receipts are retried without being mistaken for a revert', async () => {
+  for (const pending of [null, { status: 'pending' }]) {
+    const exec = make();
+    const original = exec.receipt;
+    let first = true;
+    exec.receipt = (hash) => { if (first) { first = false; return pending; } return original(hash); };
+    const r = await runSaga({ steps: [step('a')], exec, policy: fast, sleep: noSleep });
+    assert.equal(r.status, 'completed');
+    assert.deepEqual(exec.sent, ['a']);
+    assert.equal(r.steps[0].attempts, 2);
+  }
+});
+
+test('pending compensation stops earlier undos until the transaction is reconciled', async () => {
+  const exec = make({ 'status:c': 'revert' });
+  const original = exec.receipt;
+  exec.receipt = async (hash) => { if (hash === '0xundo-b') throw new Error('HTTP 503'); return original(hash); };
+  const r = await runSaga({ steps: [step('a'), step('b'), step('c')], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'requires-reconciliation');
+  assert.equal(r.steps[1].compensationTx, '0xundo-b');
+  assert.deepEqual(exec.sent, ['a', 'b', 'c', 'undo-b']);
+});
+
+test('invalid engine policy and duplicate steps fail before sending anything', async () => {
+  const exec = make();
+  for (const policy of [{ maxAttempts: 0 }, { maxAttempts: Infinity }, { baseDelayMs: -1 }]) {
+    await assert.rejects(runSaga({ steps: [step('a')], exec, policy }), /policy/);
+  }
+  await assert.rejects(runSaga({ steps: [step('a'), step('a')], exec }), /unique/);
+  assert.deepEqual(exec.sent, []);
+});
+
+
+test('a timeout during broadcasting requires reconciliation instead of risking a duplicate send', async () => {
+  const exec = make({ b: [new Error('request timed out')] });
+  const r = await runSaga({ steps: [step('a'), step('b')], exec, policy: fast, sleep: noSleep });
+  assert.equal(r.status, 'requires-reconciliation');
+  assert.deepEqual(exec.sent, ['a', 'b']);
+  assert.equal(r.steps[1].attempts, 1);
+});
+
+test('a revert reason containing a transient phrase remains permanent', () => {
+  assert.equal(classifyError(new Error('execution reverted: oracle timed out')), 'permanent');
 });

@@ -1,0 +1,141 @@
+{
+  "generatedAt": "2026-10-25T08:57:02.501Z",
+  "mode": "simulated",
+  "disclaimer": "Offline mock endpoints, injected signer and mock settlement hashes. No network request, key, token or on-chain transaction was used.",
+  "scenarios": [
+    {
+      "id": "complete",
+      "title": "Job completed within budget",
+      "result": {
+        "status": "complete",
+        "mode": "simulated",
+        "stopReason": null,
+        "network": "eip155:688689",
+        "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+        "budget": "15000",
+        "maxPerCall": "10000",
+        "spent": "15000",
+        "reserved": "0",
+        "remaining": "0",
+        "decisions": [
+          {
+            "id": "protocol-summary",
+            "item": "Protocol summary",
+            "decision": "bought",
+            "detail": "Settlement confirmed in 0x1111111111111111111111111111111111111111111111111111111111111111.",
+            "price": "5000"
+          },
+          {
+            "id": "market-data",
+            "item": "Market data",
+            "decision": "bought",
+            "detail": "Settlement confirmed in 0x2222222222222222222222222222222222222222222222222222222222222222.",
+            "price": "10000"
+          }
+        ],
+        "payments": [
+          {
+            "id": "protocol-summary",
+            "item": "Protocol summary",
+            "price": "5000",
+            "transaction": "0x1111111111111111111111111111111111111111111111111111111111111111",
+            "simulated": true,
+            "runningTotal": "5000",
+            "attempts": 1,
+            "status": 200
+          },
+          {
+            "id": "market-data",
+            "item": "Market data",
+            "price": "10000",
+            "transaction": "0x2222222222222222222222222222222222222222222222222222222222222222",
+            "simulated": true,
+            "runningTotal": "15000",
+            "attempts": 1,
+            "status": 200
+          }
+        ],
+        "unresolved": [],
+        "results": [
+          {
+            "id": "protocol-summary",
+            "name": "Protocol summary",
+            "status": 200,
+            "paid": true,
+            "body": {
+              "data": "simulated protocol summary"
+            },
+            "transaction": "0x1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          {
+            "id": "market-data",
+            "name": "Market data",
+            "status": 200,
+            "paid": true,
+            "body": {
+              "data": "simulated market data"
+            },
+            "transaction": "0x2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        ]
+      }
+    },
+    {
+      "id": "budget-stop",
+      "title": "Stopped at the budget before buying the second endpoint",
+      "result": {
+        "status": "stopped",
+        "mode": "simulated",
+        "stopReason": "budget",
+        "network": "eip155:688689",
+        "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+        "budget": "7000",
+        "maxPerCall": "10000",
+        "spent": "5000",
+        "reserved": "0",
+        "remaining": "2000",
+        "decisions": [
+          {
+            "id": "protocol-summary",
+            "item": "Protocol summary",
+            "decision": "bought",
+            "detail": "Settlement confirmed in 0x1111111111111111111111111111111111111111111111111111111111111111.",
+            "price": "5000"
+          },
+          {
+            "id": "market-data",
+            "item": "Market data",
+            "decision": "budget",
+            "detail": "Offer is 10000 base units; only 2000 remain.",
+            "price": "10000"
+          }
+        ],
+        "payments": [
+          {
+            "id": "protocol-summary",
+            "item": "Protocol summary",
+            "price": "5000",
+            "transaction": "0x1111111111111111111111111111111111111111111111111111111111111111",
+            "simulated": true,
+            "runningTotal": "5000",
+            "attempts": 1,
+            "status": 200
+          }
+        ],
+        "unresolved": [],
+        "results": [
+          {
+            "id": "protocol-summary",
+            "name": "Protocol summary",
+            "status": 200,
+            "paid": true,
+            "body": {
+              "data": "simulated protocol summary"
+            },
+            "transaction": "0x1111111111111111111111111111111111111111111111111111111111111111"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 > Decide whether to act by checking several live conditions together, and explain the decision condition by condition.
 
-**Arena task:** SkillEngine · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/threshold-guardian)  
+**Arena task:** SkillEngine · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/threshold-guardian)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/threshold-guardian/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/threshold-guardian
 
 ## What it does
@@ -73,11 +73,11 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 Found by following the imports from this folder and the files above, so the list cannot go stale.
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 6, 8, 10, 11, 12, 17, 18, 19, 20), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 6, 7, 8, 10, 11, 15, 16, 17, 18, 19), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 6, 8, 10, 11, 12, 17, 18, 19, 20), [lib/testnet-signer.js](../../lib/testnet-signer.js) (also tasks 6, 8, 10, 11, 20), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 6, 8, 10, 11, 12, 17, 18, 19, 20), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 2, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 6, 7, 8, 10, 11, 15, 16, 17, 18, 19), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 6, 8, 10, 11, 12, 17, 18, 19, 20), [lib/testnet-signer.js](../../lib/testnet-signer.js) (also tasks 6, 8, 10, 11, 20), [lib/trace.js](../../lib/trace.js) (also tasks 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 
 ## Tests
 
-1 test file cover this task (run all of them with `npm test`):
+1 test file covers this task (run all of them with `npm test`):
 
 ```bash
 node --test test/guardian.test.js

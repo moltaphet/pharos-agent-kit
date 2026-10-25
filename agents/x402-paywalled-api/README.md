@@ -2,7 +2,7 @@
 
 > An API that charges per request with x402 on Pharos Atlantic testnet: two paid routes, one free, its own facilitator, and a client that pays and gets the data, with every settlement on the explorer.
 
-**Arena task:** Payments · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/x402-paywalled-api)  
+**Arena task:** Payments · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/x402-paywalled-api)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/x402-paywalled-api/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/x402-paywalled-api
 
 ## What it does
@@ -80,14 +80,14 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 Found by following the imports from this folder and the files above, so the list cannot go stale.
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/address.js](../../lib/address.js) (also tasks 17, 18, 19), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 3, 4, 13, 16, 17, 18, 19), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 13, 14, 15, 16, 17, 18, 19), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rlp.js](../../lib/rlp.js) (also tasks 17, 18, 19), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 5, 6, 8, 10, 11, 12, 17, 18, 19), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/secp256k1.js](../../lib/secp256k1.js) (also tasks 17, 19), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/testnet-contracts.js](../../lib/testnet-contracts.js) (also tasks 6, 8, 10), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 5, 6, 8, 10, 11, 12, 17, 18, 19), [lib/testnet-signer.js](../../lib/testnet-signer.js) (also tasks 5, 6, 8, 10, 11), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/address.js](../../lib/address.js) (also tasks 17, 18, 19, 21), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 3, 4, 13, 16, 17, 18, 19, 21), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 13, 14, 15, 16, 17, 18, 19, 21), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rlp.js](../../lib/rlp.js) (also tasks 17, 18, 19, 21), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 5, 6, 8, 10, 11, 12, 17, 18, 19), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/secp256k1.js](../../lib/secp256k1.js) (also tasks 17, 19, 21), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/testnet-contracts.js](../../lib/testnet-contracts.js) (also tasks 6, 8, 10), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 5, 6, 8, 10, 11, 12, 17, 18, 19), [lib/testnet-signer.js](../../lib/testnet-signer.js) (also tasks 5, 6, 8, 10, 11), [lib/trace.js](../../lib/trace.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
 
 ## Tests
 
-2 test files cover this task (run all of them with `npm test`):
+3 test files cover this task (run all of them with `npm test`):
 
 ```bash
-node --test test/x402.test.js test/x402-task.test.js
+node --test test/x402.test.js test/x402-task.test.js test/x402-audit.test.js
 ```
 
 ## Verify it yourself

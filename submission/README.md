@@ -26,6 +26,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 18 | Recurring Payment Agent | [demo](https://pharos-agent-kit.vercel.app/#/recurring-payment-agent/try) | [agents/recurring-payment-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/recurring-payment-agent) | [18-recurring-payment-agent.md](18-recurring-payment-agent.md) |
 | 19 | Invoice-to-Payment Agent | [demo](https://pharos-agent-kit.vercel.app/#/invoice-to-payment-agent/try) | [agents/invoice-to-payment-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/invoice-to-payment-agent) | [19-invoice-to-payment-agent.md](19-invoice-to-payment-agent.md) |
 | 20 | x402 Paywalled API | [demo](https://pharos-agent-kit.vercel.app/#/x402-paywalled-api/try) | [agents/x402-paywalled-api](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-paywalled-api) | [20-x402-paywalled-api.md](20-x402-paywalled-api.md) |
+| 21 | x402 Agent Buyer | [demo](https://pharos-agent-kit.vercel.app/#/x402-agent-buyer/try) | [agents/x402-agent-buyer](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-agent-buyer) | [21-x402-agent-buyer.md](21-x402-agent-buyer.md) |
 
 ## Tests of the shared platform
 
@@ -43,6 +44,7 @@ These cover code every task stands on (MCP client, rate limiting, request tracin
 - [test/ui-css.test.js](../test/ui-css.test.js)
 - [test/ui-forms.test.js](../test/ui-forms.test.js)
 - [test/crypto.test.js](../test/crypto.test.js)
+- [test/infra-audit.test.js](../test/infra-audit.test.js)
 
 Run everything with `npm test`.
 

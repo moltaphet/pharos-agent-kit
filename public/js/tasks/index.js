@@ -20,6 +20,7 @@ import * as naturalLanguagePaymentAgent from './natural-language-payment-agent.j
 import * as recurringPaymentAgent from './recurring-payment-agent.js';
 import * as invoiceToPaymentAgent from './invoice-to-payment-agent.js';
 import * as x402PaywalledApi from './x402-paywalled-api.js';
+import * as x402AgentBuyer from './x402-agent-buyer.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -39,4 +40,5 @@ export const TASK_MODULES = {
   'recurring-payment-agent': recurringPaymentAgent,
   'invoice-to-payment-agent': invoiceToPaymentAgent,
   'x402-paywalled-api': x402PaywalledApi,
+  'x402-agent-buyer': x402AgentBuyer,
 };

@@ -2,7 +2,7 @@
 
 > Turn “send 100 USDC to 0x…” into a checked summary and an unsigned transaction on Pharos. It asks when anything is unclear, and it never signs or sends.
 
-**Arena task:** Payments · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/natural-language-payment-agent)  
+**Arena task:** Payments · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/natural-language-payment-agent)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/natural-language-payment-agent/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/natural-language-payment-agent
 
 ## What it does
@@ -80,14 +80,14 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 Found by following the imports from this folder and the files above, so the list cannot go stale.
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/address.js](../../lib/address.js) (also tasks 18, 19, 20), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 3, 4, 13, 16, 18, 19, 20), [lib/defi.js](../../lib/defi.js) (also tasks 14, 15, 16, 18, 19), [lib/invoice.js](../../lib/invoice.js) (also tasks 18, 19), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 13, 14, 15, 16, 18, 19, 20), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/onchain.js](../../lib/onchain.js) (also tasks 14, 15, 16, 18, 19), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/recurring.js](../../lib/recurring.js) (also tasks 18, 19), [lib/revert.js](../../lib/revert.js) (also tasks 8, 10, 12, 13, 15, 18, 19), [lib/rlp.js](../../lib/rlp.js) (also tasks 18, 19, 20), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 5, 6, 8, 10, 11, 12, 18, 19, 20), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 6, 7, 8, 10, 11, 15, 16, 18, 19), [lib/secp256k1.js](../../lib/secp256k1.js) (also tasks 19, 20), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/steps.js](../../lib/steps.js) (also tasks 13, 14, 15, 16, 18, 19), [lib/tasks/dry-run-executor.js](../../lib/tasks/dry-run-executor.js) (also tasks 8, 10, 12, 18, 19), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 5, 6, 8, 10, 11, 12, 18, 19, 20), [lib/trace.js](../../lib/trace.js) (all tasks), [scripts/support/fork-chain.mjs](../../scripts/support/fork-chain.mjs) (also tasks 18, 19)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/address.js](../../lib/address.js) (also tasks 18, 19, 20, 21), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 3, 4, 13, 16, 18, 19, 20, 21), [lib/defi.js](../../lib/defi.js) (also tasks 14, 15, 16, 18, 19), [lib/invoice.js](../../lib/invoice.js) (also tasks 18, 19), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 13, 14, 15, 16, 18, 19, 20, 21), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/onchain.js](../../lib/onchain.js) (also tasks 14, 15, 16, 18, 19), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/recurring.js](../../lib/recurring.js) (also tasks 18, 19), [lib/revert.js](../../lib/revert.js) (also tasks 8, 10, 12, 13, 15, 18, 19), [lib/rlp.js](../../lib/rlp.js) (also tasks 18, 19, 20, 21), [lib/rpc-chain.js](../../lib/rpc-chain.js) (also tasks 5, 6, 8, 10, 11, 12, 18, 19, 20), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 6, 7, 8, 10, 11, 15, 16, 18, 19), [lib/secp256k1.js](../../lib/secp256k1.js) (also tasks 19, 20, 21), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/steps.js](../../lib/steps.js) (also tasks 13, 14, 15, 16, 18, 19), [lib/tasks/dry-run-executor.js](../../lib/tasks/dry-run-executor.js) (also tasks 8, 10, 12, 18, 19), [lib/testnet-report.js](../../lib/testnet-report.js) (also tasks 5, 6, 8, 10, 11, 12, 18, 19, 20), [lib/trace.js](../../lib/trace.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20), [scripts/support/fork-chain.mjs](../../scripts/support/fork-chain.mjs) (also tasks 18, 19)
 
 ## Tests
 
-2 test files cover this task (run all of them with `npm test`):
+3 test files cover this task (run all of them with `npm test`):
 
 ```bash
-node --test test/payments.test.js test/payments-task.test.js
+node --test test/payments.test.js test/payments-task.test.js test/payment-audit.test.js
 ```
 
 ## Verify it yourself

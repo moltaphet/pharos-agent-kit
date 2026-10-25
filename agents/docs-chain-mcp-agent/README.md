@@ -2,7 +2,7 @@
 
 > Give it a contract function: it asks the docs what it means, calls it on chain, and reads the answer the way the docs say, checking the docs against the chain.
 
-**Arena task:** Composition · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/docs-chain-mcp-agent)  
+**Arena task:** Composition · Medium · [brief](https://pharos-agent-arena.vercel.app/tasks/docs-chain-mcp-agent)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/docs-chain-mcp-agent/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/docs-chain-mcp-agent
 
 ## What it does
@@ -79,7 +79,7 @@ Found by following the imports from this folder and the files above, so the list
 
 **Only this task uses:** [lib/abi-call.js](../../lib/abi-call.js)
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 3, 4, 16, 17, 18, 19, 20), [lib/docs.js](../../lib/docs.js) (also tasks 3, 4), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 14, 15, 16, 17, 18, 19, 20), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/revert.js](../../lib/revert.js) (also tasks 8, 10, 12, 15, 17, 18, 19), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 6, 7, 8, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/steps.js](../../lib/steps.js) (also tasks 14, 15, 16, 17, 18, 19), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 3, 4, 16, 17, 18, 19, 20, 21), [lib/docs.js](../../lib/docs.js) (also tasks 3, 4), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 14, 15, 16, 17, 18, 19, 20, 21), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/revert.js](../../lib/revert.js) (also tasks 8, 10, 12, 15, 17, 18, 19), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/steps.js](../../lib/steps.js) (also tasks 14, 15, 16, 17, 18, 19), [lib/trace.js](../../lib/trace.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20)
 
 ## Tests
 

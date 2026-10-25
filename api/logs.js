@@ -11,12 +11,14 @@ const MAX_BEHIND = 5000; // never let one request chew through more than this
 const tokens = new Map(); // symbol/decimals never change, so cache per contract
 
 export default handle(async (q) => {
-  const address = (one(q.address) || '').toLowerCase();
+  const rawAddress = one(q.address);
+  need(typeof rawAddress === 'string', 'address must be a 0x contract address');
+  const address = rawAddress.toLowerCase();
   need(isAddress(address), 'address must be a 0x contract address');
   const event = one(q.event) || 'Transfer';
-  need(EVENTS[event], `event must be one of ${Object.keys(EVENTS).join(', ')}`);
+  need(typeof event === 'string' && Object.hasOwn(EVENTS, event), `event must be one of ${Object.keys(EVENTS).join(', ')}`);
   const from = one(q.from);
-  need(!from || /^\d{1,12}$/.test(from), 'from must be a block number');
+  need(from == null || from === '' || (typeof from === 'string' && /^\d{1,12}$/.test(from)), 'from must be a block number');
 
   const client = chainClient();
   const head = await blockNumber(client, 'Ask which block is the latest');

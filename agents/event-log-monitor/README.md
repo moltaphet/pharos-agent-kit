@@ -2,7 +2,7 @@
 
 > Watch a contract live and see every new event exactly once.
 
-**Arena task:** Chain MCP · Easy · [brief](https://pharos-agent-arena.vercel.app/tasks/event-log-monitor)  
+**Arena task:** Chain MCP · Easy · [brief](https://pharos-agent-arena.vercel.app/tasks/event-log-monitor)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/event-log-monitor/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/event-log-monitor
 
 ## What it does
@@ -66,11 +66,11 @@ Found by following the imports from this folder and the files above, so the list
 
 **Only this task uses:** [lib/watch.js](../../lib/watch.js)
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 3, 4, 13, 16, 17, 18, 19, 20), [lib/confirm.js](../../lib/confirm.js) (also tasks 1, 4), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/server.js](../../lib/server.js) (also tasks 1, 4), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 3, 4, 13, 16, 17, 18, 19, 20, 21), [lib/confirm.js](../../lib/confirm.js) (also tasks 1, 4), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/server.js](../../lib/server.js) (also tasks 1, 4), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/trace.js](../../lib/trace.js) (also tasks 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 
 ## Tests
 
-1 test file cover this task (run all of them with `npm test`):
+1 test file covers this task (run all of them with `npm test`):
 
 ```bash
 node --test test/watch.test.js

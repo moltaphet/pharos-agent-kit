@@ -2,7 +2,7 @@
 
 > Onboard onto Pharos with nothing but its docs server, and report exactly where it let you down.
 
-**Arena task:** Developer Docs MCP · Easy · [brief](https://pharos-agent-arena.vercel.app/tasks/docs-mcp-onboarding)  
+**Arena task:** Developer Docs MCP · Easy · [brief](https://pharos-agent-arena.vercel.app/tasks/docs-mcp-onboarding)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/docs-mcp-onboarding/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/docs-mcp-onboarding
 
 ## What it does
@@ -66,11 +66,11 @@ Found by following the imports from this folder and the files above, so the list
 
 **Only this task uses:** [lib/http.js](../../lib/http.js)
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 4, 13, 16, 17, 18, 19, 20), [lib/docs.js](../../lib/docs.js) (also tasks 4, 13), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/trace.js](../../lib/trace.js) (all tasks)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/cli.js](../../lib/cli.js) (also tasks 1, 2, 4, 13, 16, 17, 18, 19, 20, 21), [lib/docs.js](../../lib/docs.js) (also tasks 4, 13), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/trace.js](../../lib/trace.js) (also tasks 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 
 ## Tests
 
-1 test file cover this task (run all of them with `npm test`):
+1 test file covers this task (run all of them with `npm test`):
 
 ```bash
 node --test test/onboarding.test.js

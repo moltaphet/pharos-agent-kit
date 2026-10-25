@@ -57,3 +57,36 @@ test('multicall chunks large batches and keeps results in order', async () => {
   assert.equal(out.length, 130);
   assert.ok(out.every((o) => o.success && o.data.endsWith('7')));
 });
+
+test('malformed aggregate results fail closed instead of truncating data or trusting offsets', () => {
+  const w = (n) => BigInt(n).toString(16).padStart(64, '0');
+  const malformed = [
+    '0x', '0xzz', '0x0',
+    '0x' + w(1) + w(0), // unaligned array
+    '0x' + w(32) + w(1n << 255n), // enormous result count
+    '0x' + w(32) + w(1) + w(32) + w(2) + w(64) + w(0), // invalid ABI bool
+    '0x' + w(32) + w(1) + w(32) + w(1) + w(64) + w(32), // missing byte payload
+    '0x' + w(32) + w(1) + w(0), // tuple inside offset table
+  ];
+  for (const hex of malformed) assert.throws(() => decodeAggregate3(hex), /multicall/i, hex);
+});
+
+test('multicall rejects invalid chunk sizes and result counts that do not match requests', async () => {
+  const w = (n) => BigInt(n).toString(16).padStart(64, '0');
+  let requests = 0;
+  const chain = { callTool: async () => { requests++; return { result: '0x' + w(32) + w(0) }; } };
+  for (const chunk of [0, -1, 0.5, Infinity, '60']) {
+    await assert.rejects(multicall(chain, [{ target: USDC, data: '0x' }], { chunk }), /chunk/);
+  }
+  assert.equal(requests, 0);
+  await assert.rejects(multicall(chain, [{ target: USDC, data: '0x' }]), /result count/);
+});
+
+test('aggregate encoders reject malformed addresses, bytes and booleans', () => {
+  for (const call of [
+    { target: '0x1', data: '0x' },
+    { target: USDC, data: '0x1' },
+    { target: USDC, data: '0xgg' },
+    { target: USDC, data: '0x', allowFailure: 'false' },
+  ]) assert.throws(() => encodeAggregate3([call]), /multicall/i);
+});

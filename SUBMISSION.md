@@ -299,6 +299,21 @@ Requirements it was built against (the Arena's own list):
 5. Rejects a bad or underpaid payment with another 402.
 6. Keeps private keys in env vars or a file, never in code or prompts.
 
+## 21. x402 Agent Buyer
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/x402-agent-buyer/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/x402-agent-buyer
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-agent-buyer
+- **What the proof shows:** A plan-driven x402 buyer evaluates two endpoint prices against explicit value estimates, a per-call cap and a cumulative budget. The offline fixture demonstrates both a completed job and a budget stop; live purchases require the user’s funded Atlantic testnet key and endpoints.
+
+Requirements it was built against (the Arena's own list):
+
+1. Calls at least 2 different x402 endpoints. They can be your own or another dev's.
+2. Enforces a spend budget and a per-call price cap, and refuses calls over either one.
+3. Logs every payment with the price, what it bought and the tx hash, plus a running total.
+4. Handles payment failures with retries that are safe: the same payment never counts twice.
+5. Includes a demo task where the agent completes the job, and one where it stops because it hit the budget.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

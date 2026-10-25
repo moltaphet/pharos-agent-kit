@@ -30,6 +30,7 @@ export const content = {
   decisions: [
     { title: 'Real EVM, no real funds', text: 'The hosted Chain MCP is read-only and we hold no mainnet key (and should not). The only key in this project is a throwaway wallet for Atlantic testnet, used by the Dry-Run and Batch runs and never by this skill. An anvil fork gives real contract logic, real receipts and real revert reasons without touching anything real.' },
     { title: 'Verify state, not just the receipt', text: 'A transaction can succeed and still not do what the next step needs. Every step has a state check, and a failed check is a permanent failure.' },
+    { title: 'Unknown transactions need reconciliation', text: 'If broadcasting times out or a sent transaction has no final receipt after the retries, the run pauses as requires-reconciliation and keeps its hash when available. It does not resend the payment or start undoing earlier steps: the pending transaction may still land. A missing mempool entry is not proof that it cannot execute.' },
     { title: 'Reverts are never retried', text: 'Only network and mempool trouble is transient. The classification is tested, so a revert cannot loop.' },
     { title: 'Honest about a failed undo', text: 'If a compensation fails, the saga reports “compensation-failed” and lists what is stranded, instead of claiming a rollback. The “stuck” scenario shows it.' },
     { title: 'No simulator in the demo', text: 'An in-memory model proves the engine, not the contracts, so the demo does not use one. Vercel’s functions cannot run anvil, so each run starts a Vercel Sandbox (a throwaway microVM) from a snapshot with Foundry installed and streams its output back. The in-memory model survives only as a test double for the engine’s unit tests.' },
@@ -69,8 +70,8 @@ expected: everything undone, nothing left behind → AS EXPECTED`,
   ],
 };
 
-const STATE_TONE = { confirmed: 'ok', compensated: 'info', failed: 'bad', 'compensation-failed': 'bad', 'not-undoable': 'warn', pending: '', running: 'info', compensating: 'warn' };
-const STATUS_TONE = { completed: 'ok', compensated: 'warn', 'compensation-failed': 'bad' };
+const STATE_TONE = { unconfirmed: 'warn', 'compensation-unconfirmed': 'warn', confirmed: 'ok', compensated: 'info', failed: 'bad', 'compensation-failed': 'bad', 'not-undoable': 'warn', pending: '', running: 'info', compensating: 'warn' };
+const STATUS_TONE = { 'requires-reconciliation': 'warn', completed: 'ok', compensated: 'warn', 'compensation-failed': 'bad' };
 
 function runHtml(run, kind) {
   const f = run.finalCheck;

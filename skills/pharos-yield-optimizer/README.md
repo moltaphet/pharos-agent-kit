@@ -2,7 +2,7 @@
 
 > Compare the USDC vaults on Pharos with live data, count gas, fees and whether you can even get in and out, and say “move” or “stay put”.
 
-**Arena task:** DeFi / Portfolio · Hard · [brief](https://pharos-agent-arena.vercel.app/tasks/yield-optimizer)  
+**Arena task:** DeFi / Portfolio · Hard · [brief](https://pharos-agent-arena.vercel.app/tasks/yield-optimizer)<br>
 **Try it:** https://pharos-agent-kit.vercel.app/#/yield-optimizer/try  ·  **Story, decisions and how to verify:** https://pharos-agent-kit.vercel.app/#/yield-optimizer
 
 ## What it does
@@ -85,7 +85,7 @@ The platform needs these in fixed places (Vercel functions in `api/`, server han
 
 Found by following the imports from this folder and the files above, so the list cannot go stale.
 
-**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/defi.js](../../lib/defi.js) (also tasks 14, 16, 17, 18, 19), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 13, 14, 16, 17, 18, 19, 20), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (all tasks), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/onchain.js](../../lib/onchain.js) (also tasks 14, 16, 17, 18, 19), [lib/policy.js](../../lib/policy.js) (also tasks 11, 12), [lib/portfolio.js](../../lib/portfolio.js) (also task 14), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/revert.js](../../lib/revert.js) (also tasks 8, 10, 12, 13, 17, 18, 19), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 6, 7, 8, 10, 11, 16, 17, 18, 19), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/steps.js](../../lib/steps.js) (also tasks 13, 14, 16, 17, 18, 19), [lib/trace.js](../../lib/trace.js) (all tasks), [lib/yields.js](../../lib/yields.js) (also task 14)
+**Shared with other tasks:** [lib/abi.js](../../lib/abi.js) (all tasks), [lib/chain.js](../../lib/chain.js) (all tasks), [lib/defi.js](../../lib/defi.js) (also tasks 14, 16, 17, 18, 19), [lib/keccak.js](../../lib/keccak.js) (also tasks 6, 13, 14, 16, 17, 18, 19, 20, 21), [lib/labels.js](../../lib/labels.js) (all tasks), [lib/limit.js](../../lib/limit.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20), [lib/mcp.js](../../lib/mcp.js) (also tasks 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19), [lib/multicall.js](../../lib/multicall.js) (all tasks), [lib/onchain.js](../../lib/onchain.js) (also tasks 14, 16, 17, 18, 19), [lib/policy.js](../../lib/policy.js) (also tasks 11, 12), [lib/portfolio.js](../../lib/portfolio.js) (also task 14), [lib/protocols.js](../../lib/protocols.js) (all tasks), [lib/revert.js](../../lib/revert.js) (also tasks 8, 10, 12, 13, 17, 18, 19), [lib/rpc.js](../../lib/rpc.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20), [lib/saga-fork.js](../../lib/saga-fork.js) (also tasks 5, 6, 7, 8, 10, 11, 16, 17, 18, 19), [lib/snapshot.js](../../lib/snapshot.js) (all tasks), [lib/stable.js](../../lib/stable.js) (all tasks), [lib/steps.js](../../lib/steps.js) (also tasks 13, 14, 16, 17, 18, 19), [lib/trace.js](../../lib/trace.js) (also tasks 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20), [lib/yields.js](../../lib/yields.js) (also task 14)
 
 ## Tests
 

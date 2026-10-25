@@ -8,10 +8,10 @@ import { REPO, buildAll } from '../scripts/make-submission.mjs';
 
 const files = buildAll();
 
-test('there is a folder for each of the 20 built tasks, each with its own README', () => {
-  assert.equal(TASK_MAP.length, 20);
-  assert.deepEqual(TASK_MAP.map((t) => t.n), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
-  assert.equal(new Set(TASK_MAP.map((t) => t.folder)).size, 20, 'no two tasks share a folder');
+test('there is a folder for each of the 21 built tasks, each with its own README', () => {
+  assert.equal(TASK_MAP.length, 21);
+  assert.deepEqual(TASK_MAP.map((t) => t.n), Array.from({ length: 21 }, (_, i) => i + 1));
+  assert.equal(new Set(TASK_MAP.map((t) => t.folder)).size, 21, 'no two tasks share a folder');
   for (const t of TASK_MAP) {
     assert.ok(existsSync(ROOT + t.folder), t.folder);
     assert.ok(scriptsOf(t).length >= 1, `${t.folder} has no script of its own`);

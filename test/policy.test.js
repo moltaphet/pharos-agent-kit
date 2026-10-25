@@ -231,3 +231,31 @@ test('evaluation is pure: the same inputs give the same decision, and nothing pa
 test('evaluate refuses to guess the time', () => {
   for (const bad of [undefined, 0, -5, 1.5, '1700000000']) assert.throws(() => evaluate(POLICY, { from: FROM, to: A }, { nowSec: bad }), /needs nowSec/);
 });
+
+test('zero-decimal assets retain whole numbers and invalid decimal scales are rejected', () => {
+  assert.equal(plain(25n, 0), '25');
+  assert.equal(plain(0n, 0), '0');
+  assert.equal(parseUnits('25', 0), 25n);
+  for (const decimals of [-1, 1.5, 1000, NaN]) assert.throws(() => parseUnits('1', decimals), UserError);
+});
+
+test('allowlists reject empty invalid entries and token decimals must be supplied explicitly', () => {
+  const source = policySource();
+  source.rules[2].values = [''];
+  assert.throws(() => parsePolicy(source), /not a valid address/);
+  for (const decimals of [null, '', true]) {
+    const source = policySource();
+    source.rules[1].decimals = decimals;
+    assert.throws(() => parsePolicy(source), /decimals/);
+  }
+});
+
+test('requests reject out-of-range wei, unsafe numeric inputs and noncanonical ABI addresses', () => {
+  for (const value of [(1n << 256n).toString(), Number.MAX_SAFE_INTEGER + 1]) {
+    const result = run({ to: A, value });
+    assert.equal(result.decision, 'deny');
+    assert.equal(result.rule.id, 'request-shape');
+  }
+  const malformed = '0xa9059cbb' + '1'.repeat(24) + A.slice(2) + word(1);
+  assert.equal(run({ to: USDC, data: malformed }).rule.id, 'request-shape');
+});

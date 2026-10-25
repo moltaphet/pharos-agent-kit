@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "id": "protocol-summary",
+      "name": "Protocol summary",
+      "url": "http://localhost:4021/api/info",
+      "value": "5000"
+    },
+    {
+      "id": "market-data",
+      "name": "Market data",
+      "url": "http://localhost:4021/data",
+      "value": "10000"
+    }
+  ]
+}

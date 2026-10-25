@@ -48,6 +48,24 @@ test('levels: the boundaries are inclusive on the warning side, and below 1 is l
   assert.deepEqual([2, 1.3001, 1.3, 1.2, 1.1001, 1.1, 1.0001, 1, 0.9999, 0.5].map((x) => levelOf(x, th)), ['ok', 'ok', 'warning', 'warning', 'warning', 'critical', 'critical', 'critical', 'liquidatable', 'liquidatable']);
 });
 
+test('assess uses Morpho integer health at the liquidation boundary, not a rounded float', () => {
+  const read = {
+    params: { lltv: WAD },
+    position: { collateral: 0n, borrowShares: 10n ** 18n },
+    price: ORACLE_PRICE_SCALE,
+    market: { totalBorrowAssets: 10n ** 18n, totalBorrowShares: 10n ** 18n, lastUpdate: 100n },
+    borrowRate: 0n,
+    block: { timestamp: 100 },
+  };
+  const first = assess(read);
+  read.position.collateral = first.health.borrowed - 1n;
+  const a = assess(read);
+  assert.ok(a.health.hfWad < WAD && a.health.hfWad > WAD - 100n);
+  assert.equal(a.health.hf, 1, 'the UI number rounds to 1');
+  assert.equal(a.health.healthy, false);
+  assert.equal(a.level, 'liquidatable');
+});
+
 test('thresholds are validated: critical above 1, warn above critical, numbers only', () => {
   assert.deepEqual(parseThresholds(), DEFAULT_THRESHOLDS);
   assert.deepEqual(parseThresholds({ warn: '1.5', critical: '1.2' }), { warn: 1.5, critical: 1.2 });
