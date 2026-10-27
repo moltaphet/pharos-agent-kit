@@ -71,6 +71,8 @@ export const TASK_MAP = [
     tests: ['risk.test.js'] },
   { n: 26, slug: 'audit-log-agent', folder: TASK_FOLDERS['audit-log-agent'], entries: ['lib/auditlog.js', 'lib/rpc-batch.js', 'lib/tasks/audit-log-agent.js', 'scripts/auditlog-run.mjs'], data: ['reports/auditlog-run.json', 'reports/auditlog/wallet-a.md', 'reports/auditlog/wallet-a.csv', 'reports/auditlog/wallet-a.pdf', 'reports/auditlog/wallet-b.md', 'reports/auditlog/wallet-b.csv', 'reports/auditlog/wallet-b.pdf', 'reports/auditlog/wallet-c.md', 'reports/auditlog/wallet-c.csv', 'reports/auditlog/wallet-c.pdf'], page: ['public/js/tasks/audit-log-agent.js'],
     tests: ['auditlog.test.js'] },
+  { n: 27, slug: 'dapp-support-agent', folder: TASK_FOLDERS['dapp-support-agent'], entries: ['lib/support.js', 'lib/tasks/dapp-support-agent.js', 'scripts/support-run.mjs'], data: ['contracts/FailLab.sol', 'config/support-demo.json', 'reports/support-run.json'], page: ['public/js/tasks/dapp-support-agent.js'],
+    tests: ['support.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

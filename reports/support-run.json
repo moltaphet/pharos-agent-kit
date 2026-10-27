@@ -1,0 +1,696 @@
+{
+ "recordedAt": "2026-10-27T10:38:38.541Z",
+ "network": "Pharos mainnet (read-only, via Chain MCP) and Pharos Atlantic testnet (failures made on purpose)",
+ "demo": {
+  "network": "Pharos Atlantic testnet (688689)",
+  "failLab": "0x438a627438c2f91dea3ffe1fd13939ac30315c4e",
+  "failures": [
+   {
+    "id": "not-authorized",
+    "title": "A stranger calls the token’s owner-only mint()",
+    "hash": "0x6144eed3c6c51bf2d717abd384ffead3cd720bfb39dc2a84deadbb69da2ad790"
+   },
+   {
+    "id": "insufficient-balance",
+    "title": "Sending far more USDC than the account holds",
+    "hash": "0x8f2b8f7fee03b3906753c469b7723c8e54954f78c58334b12fd5088b5a874495"
+   },
+   {
+    "id": "insufficient-allowance",
+    "title": "Spending someone else’s USDC without an approval",
+    "hash": "0xc2a5fe2556795d83d81e078093f1d690acb559cdf9250d9ec4ba35a34846b544"
+   },
+   {
+    "id": "paused",
+    "title": "Moving tokens while the contract is paused",
+    "hash": "0x91780afef600eb0729752315894b0fa698e17d91bf0a8399f748fa4b3a3c974c"
+   },
+   {
+    "id": "out-of-gas",
+    "title": "A gas limit set too low for a contract call",
+    "hash": "0x393c87d70c904916c74c780b3498a492a2b636cc1f912b69594b281ff9f301c9"
+   },
+   {
+    "id": "panic",
+    "title": "A contract that divides by zero",
+    "hash": "0x0550362f5096666796b9785f52d780dbcc763da63f8ae920bb03899595ca3f87"
+   },
+   {
+    "id": "custom-error",
+    "title": "A payment smaller than the contract’s minimum (a custom error)",
+    "hash": "0x2ad03b7d63f58b88b1776d172af6580ae0f337e3ad6d06fd19cbb69daca59bb4"
+   },
+   {
+    "id": "not-payable",
+    "title": "Attaching PROS to a function that does not accept it",
+    "hash": "0x20d74916da78d6e1cb0912e0b6a77e9641b7a37d9bce9f9e6cea6ca2fb9ad78c"
+   },
+   {
+    "id": "wrong-function",
+    "title": "Calling a function the contract does not have",
+    "hash": "0xa0fe8444bc46fbe56aa96c77b435f103026e594da19e37fcdf54899aa6816631"
+   }
+  ],
+  "complete": true,
+  "note": "Made to fail on purpose by scripts/support-run.mjs, with throwaway wallets and test tokens."
+ },
+ "cases": [
+  {
+   "id": "mainnet-slippage",
+   "chain": "mainnet",
+   "title": "A swap that moved past its price limit (Uniswap V3 code SPL)",
+   "hash": "0xf7fc5fcc273c9dd0fdbbb3e15ba90d4f902409f50ac5f812fffa108b73d797b1",
+   "explorer": "https://www.pharosscan.xyz/tx/0xf7fc5fcc273c9dd0fdbbb3e15ba90d4f902409f50ac5f812fffa108b73d797b1",
+   "diagnosis": {
+    "status": "failed",
+    "category": "slippage",
+    "headline": "The price moved too much",
+    "plain": "The price moved against the swap: it would have returned less than the minimum you asked for. The contract’s own message was “SPL0”.",
+    "fix": [
+     "Try again with a higher slippage tolerance, or a smaller amount, if you accept a worse price.",
+     "Check the pool’s liquidity: a thin pool moves a lot on a large trade."
+    ],
+    "reason": "SPL0",
+    "revertKind": "Error",
+    "evidence": {},
+    "facts": {
+     "from": "0x15ddce897d76ac39c188ade4d353711a60395315",
+     "to": "0x869379f2d9df67891e0159dd2520dc1681908f10",
+     "valueWei": "0",
+     "gasLimit": "420000",
+     "gasUsed": "29631",
+     "block": 21393448,
+     "selector": "0x9c1f7cd9",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Chain MCP",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 21,393,448"
+     },
+     {
+      "tool": "Chain MCP",
+      "what": "Replayed the call on block 21,393,447, the state just before the failure",
+      "result": "the contract answered 0x08c379a00000000000000000000000000000000000000000000000000000000000000020…"
+     }
+    ],
+    "links": {
+     "explorer": "https://www.pharosscan.xyz/tx/0xf7fc5fcc273c9dd0fdbbb3e15ba90d4f902409f50ac5f812fffa108b73d797b1"
+    }
+   }
+  },
+  {
+   "id": "mainnet-allowance",
+   "chain": "mainnet",
+   "title": "A transfer the spender was not approved for",
+   "hash": "0xe8b01dc91222df4f54aa3e07ad25404da394f2e9b32e08eaf9e73eac9bd09586",
+   "explorer": "https://www.pharosscan.xyz/tx/0xe8b01dc91222df4f54aa3e07ad25404da394f2e9b32e08eaf9e73eac9bd09586",
+   "diagnosis": {
+    "status": "failed",
+    "category": "insufficient-allowance",
+    "headline": "The contract was not approved to spend enough",
+    "plain": "The contract was not allowed to spend that many tokens on the account’s behalf. The contract’s own message was “ERC20InsufficientAllowance: the spender 0x63ffadf944583d8e4fdc30144efdfe3bdc2122f5 is approved for 0 but needs 1487747084573624507580715”.",
+    "fix": [
+     "Approve the contract (the spender) for at least the amount first, then repeat the transaction.",
+     "Approve only what you need; an unlimited approval stays open until you revoke it."
+    ],
+    "reason": "ERC20InsufficientAllowance: the spender 0x63ffadf944583d8e4fdc30144efdfe3bdc2122f5 is approved for 0 but needs 1487747084573624507580715",
+    "revertKind": "custom",
+    "evidence": {},
+    "facts": {
+     "from": "0xaa5b49c725127e8e417880d0808b3e24610e0a86",
+     "to": "0x63ffadf944583d8e4fdc30144efdfe3bdc2122f5",
+     "valueWei": "0",
+     "gasLimit": "370818",
+     "gasUsed": "98311",
+     "block": 21392110,
+     "selector": "0xfddc508e",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Chain MCP",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 21,392,110"
+     },
+     {
+      "tool": "Chain MCP",
+      "what": "Replayed the call on block 21,392,109, the state just before the failure",
+      "result": "the contract answered 0xfb8f41b200000000000000000000000063ffadf944583d8e4fdc30144efdfe3bdc2122f5…"
+     }
+    ],
+    "links": {
+     "explorer": "https://www.pharosscan.xyz/tx/0xe8b01dc91222df4f54aa3e07ad25404da394f2e9b32e08eaf9e73eac9bd09586"
+    }
+   }
+  },
+  {
+   "id": "mainnet-state",
+   "chain": "mainnet",
+   "title": "A call that works on the state before its block (something changed first)",
+   "hash": "0xcc0a673a516d492450aab88554ef4b48a45d88e5ea1f3727ac1250f2fb7066e8",
+   "explorer": "https://www.pharosscan.xyz/tx/0xcc0a673a516d492450aab88554ef4b48a45d88e5ea1f3727ac1250f2fb7066e8",
+   "diagnosis": {
+    "status": "failed",
+    "category": "state-changed",
+    "headline": "It would work now: something changed just before it was mined",
+    "plain": "Replayed on the state just before its block, the same call succeeds. So it failed because of something that happened in the same block before it, most often another transaction that changed a price, a balance or a limit it depended on.",
+    "fix": [
+     "Try the transaction again; it will probably go through.",
+     "If it is a swap or a mint, raise the slippage tolerance or the price limit, since a busy block moves prices."
+    ],
+    "reason": null,
+    "revertKind": null,
+    "evidence": {},
+    "facts": {
+     "from": "0x08cd62babd8dac7404504792df30c12fc5384df5",
+     "to": "0x884b9cee8b6c3ba3a2aaf9842bebcd8ab4c25515",
+     "valueWei": "0",
+     "gasLimit": "450000",
+     "gasUsed": "168057",
+     "block": 21392781,
+     "selector": "0x3ce95c61",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Chain MCP",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 21,392,781"
+     },
+     {
+      "tool": "Chain MCP",
+      "what": "Replayed the call on block 21,392,780, the state just before the failure",
+      "result": "it succeeded on that state"
+     }
+    ],
+    "links": {
+     "explorer": "https://www.pharosscan.xyz/tx/0xcc0a673a516d492450aab88554ef4b48a45d88e5ea1f3727ac1250f2fb7066e8"
+    }
+   }
+  },
+  {
+   "id": "mainnet-custom",
+   "chain": "mainnet",
+   "title": "A call refused with a custom error of a contract with no public ABI here",
+   "hash": "0x5560f21df22c69b4a8b422d73c5d37607c3528cec140fc66c33ba0251415c47c",
+   "explorer": "https://www.pharosscan.xyz/tx/0x5560f21df22c69b4a8b422d73c5d37607c3528cec140fc66c33ba0251415c47c",
+   "diagnosis": {
+    "status": "failed",
+    "category": "custom-error",
+    "headline": "The contract refused with an error code",
+    "plain": "The contract rejected the call with a custom error (0x911bb2c9) that this tool does not know by name. That means the contract’s own rules were not met; the error’s name will be in the contract’s source or its ABI.",
+    "fix": [
+     "Look the code 0x911bb2c9 up in the contract’s verified source or on a signature database such as 4byte.directory.",
+     "If you did not intend to do what the contract expected (the wrong function, or the wrong value), start again from the app rather than repeating the same transaction."
+    ],
+    "reason": "custom error 0x911bb2c9",
+    "revertKind": "custom",
+    "evidence": {},
+    "facts": {
+     "from": "0xc5f6fe56976e0a55aed6c0e08951a8a2f8980f45",
+     "to": "0x936564245b69f5a293b42cbd752e0ee3bb68b470",
+     "valueWei": "0",
+     "gasLimit": "540000",
+     "gasUsed": "188083",
+     "block": 21393437,
+     "selector": "0x2f139e4f",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Chain MCP",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 21,393,437"
+     },
+     {
+      "tool": "Chain MCP",
+      "what": "Replayed the call on block 21,393,436, the state just before the failure",
+      "result": "the contract answered 0x911bb2c900000000000000000000000000000000000000000000000729824b9059808000…"
+     }
+    ],
+    "links": {
+     "explorer": "https://www.pharosscan.xyz/tx/0x5560f21df22c69b4a8b422d73c5d37607c3528cec140fc66c33ba0251415c47c"
+    }
+   }
+  },
+  {
+   "id": "not-authorized",
+   "chain": "atlantic",
+   "title": "A stranger calls the token’s owner-only mint()",
+   "hash": "0x6144eed3c6c51bf2d717abd384ffead3cd720bfb39dc2a84deadbb69da2ad790",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x6144eed3c6c51bf2d717abd384ffead3cd720bfb39dc2a84deadbb69da2ad790",
+   "diagnosis": {
+    "status": "failed",
+    "category": "not-authorized",
+    "headline": "This account is not allowed to do that",
+    "plain": "The account is not allowed to do this: the function is restricted to an owner or administrator. The contract’s own message was “owner only”.",
+    "fix": [
+     "Use the account that owns or administers the contract, or ask its owner to do it.",
+     "If you are not meant to call this function, you picked the wrong action or the wrong contract."
+    ],
+    "reason": "owner only",
+    "revertKind": "Error",
+    "evidence": {},
+    "facts": {
+     "from": "0x7e3a54fccb211f9e1d7b393bde14ea0e93474158",
+     "to": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+     "valueWei": "0",
+     "gasLimit": "100000",
+     "gasUsed": "24258",
+     "block": 31941978,
+     "selector": "0x40c10f19",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,941,978"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,941,977, the state just before the failure",
+      "result": "the contract answered 0x08c379a00000000000000000000000000000000000000000000000000000000000000020…"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x6144eed3c6c51bf2d717abd384ffead3cd720bfb39dc2a84deadbb69da2ad790"
+    }
+   }
+  },
+  {
+   "id": "insufficient-balance",
+   "chain": "atlantic",
+   "title": "Sending far more USDC than the account holds",
+   "hash": "0x8f2b8f7fee03b3906753c469b7723c8e54954f78c58334b12fd5088b5a874495",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x8f2b8f7fee03b3906753c469b7723c8e54954f78c58334b12fd5088b5a874495",
+   "diagnosis": {
+    "status": "failed",
+    "category": "insufficient-token-balance",
+    "headline": "Not enough tokens",
+    "plain": "The account did not hold enough of the token for this transaction. The account held 0 USDC and the transaction needed 1,000,000,000 USDC.",
+    "fix": [
+     "Check the token balance of the sending account and lower the amount, or add more of the token first.",
+     "Remember that amounts are in the token’s smallest unit: 1 USDC is 1,000,000 units."
+    ],
+    "reason": "transfer amount exceeds balance",
+    "revertKind": "Error",
+    "evidence": {
+     "balance": {
+      "holder": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "balance": "0",
+      "formatted": "0 USDC",
+      "needed": "1000000000000000",
+      "neededFormatted": "1,000,000,000 USDC",
+      "token": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef"
+     }
+    },
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+     "valueWei": "0",
+     "gasLimit": "100000",
+     "gasUsed": "24142",
+     "block": 31941984,
+     "selector": "0xa9059cbb",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,941,984"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,941,983, the state just before the failure",
+      "result": "the contract answered 0x08c379a00000000000000000000000000000000000000000000000000000000000000020…"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x8f2b8f7fee03b3906753c469b7723c8e54954f78c58334b12fd5088b5a874495"
+    }
+   }
+  },
+  {
+   "id": "insufficient-allowance",
+   "chain": "atlantic",
+   "title": "Spending someone else’s USDC without an approval",
+   "hash": "0xc2a5fe2556795d83d81e078093f1d690acb559cdf9250d9ec4ba35a34846b544",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0xc2a5fe2556795d83d81e078093f1d690acb559cdf9250d9ec4ba35a34846b544",
+   "diagnosis": {
+    "status": "failed",
+    "category": "insufficient-allowance",
+    "headline": "The contract was not approved to spend enough",
+    "plain": "The contract was not allowed to spend that many tokens on the account’s behalf. The spender was approved for 0 USDC and needed 0.000005 USDC.",
+    "fix": [
+     "Approve the contract (the spender) for at least the amount first, then repeat the transaction.",
+     "Approve only what you need; an unlimited approval stays open until you revoke it."
+    ],
+    "reason": "insufficient allowance",
+    "revertKind": "Error",
+    "evidence": {
+     "balance": {
+      "holder": "0x7e3a54fccb211f9e1d7b393bde14ea0e93474158",
+      "balance": "0",
+      "formatted": "0 USDC",
+      "needed": "5",
+      "neededFormatted": "0.000005 USDC",
+      "token": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef"
+     },
+     "allowance": {
+      "owner": "0x7e3a54fccb211f9e1d7b393bde14ea0e93474158",
+      "spender": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "allowance": "0",
+      "formatted": "0 USDC",
+      "needed": "5",
+      "neededFormatted": "0.000005 USDC"
+     }
+    },
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+     "valueWei": "0",
+     "gasLimit": "100000",
+     "gasUsed": "24868",
+     "block": 31941993,
+     "selector": "0x23b872dd",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,941,993"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,941,992, the state just before the failure",
+      "result": "the contract answered 0x08c379a00000000000000000000000000000000000000000000000000000000000000020…"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0xc2a5fe2556795d83d81e078093f1d690acb559cdf9250d9ec4ba35a34846b544"
+    }
+   }
+  },
+  {
+   "id": "paused",
+   "chain": "atlantic",
+   "title": "Moving tokens while the contract is paused",
+   "hash": "0x91780afef600eb0729752315894b0fa698e17d91bf0a8399f748fa4b3a3c974c",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x91780afef600eb0729752315894b0fa698e17d91bf0a8399f748fa4b3a3c974c",
+   "diagnosis": {
+    "status": "failed",
+    "category": "paused-or-blocked",
+    "headline": "The contract is paused or the account is blocked",
+    "plain": "The contract is paused, or this account is blocked from using it. The contract’s own message was “blocked”.",
+    "fix": [
+     "Wait until the owner unpauses the contract, or ask the project why the account is blocked.",
+     "Check the project’s announcements before trying again: repeating the transaction will fail the same way."
+    ],
+    "reason": "blocked",
+    "revertKind": "Error",
+    "evidence": {},
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+     "valueWei": "0",
+     "gasLimit": "100000",
+     "gasUsed": "24013",
+     "block": 31942007,
+     "selector": "0xa9059cbb",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,942,007"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,942,006, the state just before the failure",
+      "result": "the contract answered 0x08c379a00000000000000000000000000000000000000000000000000000000000000020…"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x91780afef600eb0729752315894b0fa698e17d91bf0a8399f748fa4b3a3c974c"
+    }
+   }
+  },
+  {
+   "id": "out-of-gas",
+   "chain": "atlantic",
+   "title": "A gas limit set too low for a contract call",
+   "hash": "0x393c87d70c904916c74c780b3498a492a2b636cc1f912b69594b281ff9f301c9",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x393c87d70c904916c74c780b3498a492a2b636cc1f912b69594b281ff9f301c9",
+   "diagnosis": {
+    "status": "failed",
+    "category": "out-of-gas",
+    "headline": "It ran out of gas",
+    "plain": "The transaction was given 30,000 units of gas and used 30,000 of them (100%) before the work was finished, so the network stopped it and undid everything. The fee for the gas used was still paid.",
+    "fix": [
+     "Send it again with a higher gas limit: most wallets let you edit it, or use “estimate” instead of a fixed number.",
+     "Do not set the gas limit by hand to a round number; let the wallet estimate it, then add 20% of margin."
+    ],
+    "reason": null,
+    "revertKind": "empty",
+    "evidence": {
+     "gas": {
+      "limit": "30000",
+      "used": "30000",
+      "percent": 100
+     }
+    },
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+     "valueWei": "0",
+     "gasLimit": "30000",
+     "gasUsed": "30000",
+     "block": 31942020,
+     "selector": "0x40c10f19",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,942,020"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,942,019, the state just before the failure",
+      "result": "it reverted with no message"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x393c87d70c904916c74c780b3498a492a2b636cc1f912b69594b281ff9f301c9"
+    }
+   }
+  },
+  {
+   "id": "panic",
+   "chain": "atlantic",
+   "title": "A contract that divides by zero",
+   "hash": "0x0550362f5096666796b9785f52d780dbcc763da63f8ae920bb03899595ca3f87",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x0550362f5096666796b9785f52d780dbcc763da63f8ae920bb03899595ca3f87",
+   "diagnosis": {
+    "status": "failed",
+    "category": "panic",
+    "headline": "The contract hit a bug-like error",
+    "plain": "The contract stopped because the contract divided a number by zero. This is not a problem with your account or your fee: the input you sent made the contract’s own code fail in a way its authors did not guard against.",
+    "fix": [
+     "Check the values you entered: a zero where a number is expected, or an index that is too large, are common triggers.",
+     "If the app’s inputs were valid, tell the app’s team: this is a bug in the contract."
+    ],
+    "reason": "division or modulo by zero (code 0x12)",
+    "revertKind": "Panic",
+    "evidence": {},
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x438a627438c2f91dea3ffe1fd13939ac30315c4e",
+     "valueWei": "0",
+     "gasLimit": "100000",
+     "gasUsed": "21640",
+     "block": 31942025,
+     "selector": "0xf88e9fbf",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,942,025"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,942,024, the state just before the failure",
+      "result": "the contract answered 0x4e487b710000000000000000000000000000000000000000000000000000000000000012"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x0550362f5096666796b9785f52d780dbcc763da63f8ae920bb03899595ca3f87"
+    }
+   }
+  },
+  {
+   "id": "custom-error",
+   "chain": "atlantic",
+   "title": "A payment smaller than the contract’s minimum (a custom error)",
+   "hash": "0x2ad03b7d63f58b88b1776d172af6580ae0f337e3ad6d06fd19cbb69daca59bb4",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x2ad03b7d63f58b88b1776d172af6580ae0f337e3ad6d06fd19cbb69daca59bb4",
+   "diagnosis": {
+    "status": "failed",
+    "category": "custom-error",
+    "headline": "The contract refused with an error code",
+    "plain": "The contract rejected the call with a custom error (0xe94fe3af) that this tool does not know by name. That means the contract’s own rules were not met; the error’s name will be in the contract’s source or its ABI.",
+    "fix": [
+     "Look the code 0xe94fe3af up in the contract’s verified source or on a signature database such as 4byte.directory.",
+     "If you did not intend to do what the contract expected (the wrong function, or the wrong value), start again from the app rather than repeating the same transaction."
+    ],
+    "reason": "custom error 0xe94fe3af",
+    "revertKind": "custom",
+    "evidence": {},
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x438a627438c2f91dea3ffe1fd13939ac30315c4e",
+     "valueWei": "3",
+     "gasLimit": "100000",
+     "gasUsed": "21486",
+     "block": 31942035,
+     "selector": "0x95ec5129",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,942,035"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,942,034, the state just before the failure",
+      "result": "the contract answered 0xe94fe3af0000000000000000000000000000000000000000000000000000000000000003…"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x2ad03b7d63f58b88b1776d172af6580ae0f337e3ad6d06fd19cbb69daca59bb4"
+    }
+   }
+  },
+  {
+   "id": "not-payable",
+   "chain": "atlantic",
+   "title": "Attaching PROS to a function that does not accept it",
+   "hash": "0x20d74916da78d6e1cb0912e0b6a77e9641b7a37d9bce9f9e6cea6ca2fb9ad78c",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0x20d74916da78d6e1cb0912e0b6a77e9641b7a37d9bce9f9e6cea6ca2fb9ad78c",
+   "diagnosis": {
+    "status": "failed",
+    "category": "not-payable",
+    "headline": "This action does not accept PROS",
+    "plain": "The same call works when no PROS is attached, so the function is not meant to receive money and rejected it. The fee was still paid.",
+    "fix": [
+     "Send the transaction without any PROS value.",
+     "If you meant to pay with PROS, you are calling the wrong function: use the one marked as payable (often called deposit or buy)."
+    ],
+    "reason": null,
+    "revertKind": "empty",
+    "evidence": {
+     "valueRejected": true
+    },
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+     "valueWei": "1",
+     "gasLimit": "100000",
+     "gasUsed": "21389",
+     "block": 31942043,
+     "selector": "0xa9059cbb",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,942,043"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,942,042, the state just before the failure",
+      "result": "it reverted with no message"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x20d74916da78d6e1cb0912e0b6a77e9641b7a37d9bce9f9e6cea6ca2fb9ad78c"
+    }
+   }
+  },
+  {
+   "id": "wrong-function",
+   "chain": "atlantic",
+   "title": "Calling a function the contract does not have",
+   "hash": "0xa0fe8444bc46fbe56aa96c77b435f103026e594da19e37fcdf54899aa6816631",
+   "explorer": "https://atlantic.pharosscan.xyz/tx/0xa0fe8444bc46fbe56aa96c77b435f103026e594da19e37fcdf54899aa6816631",
+   "diagnosis": {
+    "status": "failed",
+    "category": "wrong-function",
+    "headline": "The contract has no such function",
+    "plain": "The contract has no function matching 0x12345678, and it has no fallback that accepts the call, so it rejected it. That usually means the wrong contract address, the wrong network, or an app that is out of date.",
+    "fix": [
+     "Check that the address is the contract you meant to use, on the right network.",
+     "Refresh the app or reconnect the wallet, then repeat the action from the beginning."
+    ],
+    "reason": null,
+    "revertKind": "empty",
+    "evidence": {
+     "selectorMissing": "0x12345678"
+    },
+    "facts": {
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+     "valueWei": "0",
+     "gasLimit": "100000",
+     "gasUsed": "21280",
+     "block": 31942050,
+     "selector": "0x12345678",
+     "creation": false
+    },
+    "steps": [
+     {
+      "tool": "Atlantic RPC",
+      "what": "Fetched the transaction and its receipt",
+      "result": "mined in block 31,942,050"
+     },
+     {
+      "tool": "Atlantic RPC",
+      "what": "Replayed the call on block 31,942,049, the state just before the failure",
+      "result": "it reverted with no message"
+     }
+    ],
+    "links": {
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0xa0fe8444bc46fbe56aa96c77b435f103026e594da19e37fcdf54899aa6816631"
+    }
+   }
+  }
+ ],
+ "summary": {
+  "cases": 13,
+  "categories": [
+   "slippage",
+   "insufficient-allowance",
+   "state-changed",
+   "custom-error",
+   "not-authorized",
+   "insufficient-token-balance",
+   "paused-or-blocked",
+   "out-of-gas",
+   "panic",
+   "not-payable",
+   "wrong-function"
+  ]
+ }
+}

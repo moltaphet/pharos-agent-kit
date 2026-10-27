@@ -1,0 +1,53 @@
+{
+ "network": "Pharos Atlantic testnet (688689)",
+ "failLab": "0x438a627438c2f91dea3ffe1fd13939ac30315c4e",
+ "failures": [
+  {
+   "id": "not-authorized",
+   "title": "A stranger calls the token’s owner-only mint()",
+   "hash": "0x6144eed3c6c51bf2d717abd384ffead3cd720bfb39dc2a84deadbb69da2ad790"
+  },
+  {
+   "id": "insufficient-balance",
+   "title": "Sending far more USDC than the account holds",
+   "hash": "0x8f2b8f7fee03b3906753c469b7723c8e54954f78c58334b12fd5088b5a874495"
+  },
+  {
+   "id": "insufficient-allowance",
+   "title": "Spending someone else’s USDC without an approval",
+   "hash": "0xc2a5fe2556795d83d81e078093f1d690acb559cdf9250d9ec4ba35a34846b544"
+  },
+  {
+   "id": "paused",
+   "title": "Moving tokens while the contract is paused",
+   "hash": "0x91780afef600eb0729752315894b0fa698e17d91bf0a8399f748fa4b3a3c974c"
+  },
+  {
+   "id": "out-of-gas",
+   "title": "A gas limit set too low for a contract call",
+   "hash": "0x393c87d70c904916c74c780b3498a492a2b636cc1f912b69594b281ff9f301c9"
+  },
+  {
+   "id": "panic",
+   "title": "A contract that divides by zero",
+   "hash": "0x0550362f5096666796b9785f52d780dbcc763da63f8ae920bb03899595ca3f87"
+  },
+  {
+   "id": "custom-error",
+   "title": "A payment smaller than the contract’s minimum (a custom error)",
+   "hash": "0x2ad03b7d63f58b88b1776d172af6580ae0f337e3ad6d06fd19cbb69daca59bb4"
+  },
+  {
+   "id": "not-payable",
+   "title": "Attaching PROS to a function that does not accept it",
+   "hash": "0x20d74916da78d6e1cb0912e0b6a77e9641b7a37d9bce9f9e6cea6ca2fb9ad78c"
+  },
+  {
+   "id": "wrong-function",
+   "title": "Calling a function the contract does not have",
+   "hash": "0xa0fe8444bc46fbe56aa96c77b435f103026e594da19e37fcdf54899aa6816631"
+  }
+ ],
+ "complete": true,
+ "note": "Made to fail on purpose by scripts/support-run.mjs, with throwaway wallets and test tokens."
+}

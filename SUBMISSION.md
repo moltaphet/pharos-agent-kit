@@ -384,6 +384,20 @@ Requirements it was built against (the Arena's own list):
 3. Includes totals per category and notable transactions with links.
 4. Exports the report as Markdown, PDF or CSV.
 
+## 27. dApp Support Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/dapp-support-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/dapp-support-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/dapp-support-agent
+- **What the proof shows:** A support agent that takes a failed transaction hash, fetches the transaction and receipt through Chain MCP, replays the call on the block before it to get the contract’s own revert data, checks the numbers behind the usual causes (token balance, allowance, native value, gas used against the limit, the function selector) and explains the cause and the fix in plain words. Thirteen real failures of eleven kinds are recorded: four on Pharos mainnet and nine made on purpose on Atlantic testnet.
+
+Requirements it was built against (the Arena's own list):
+
+1. Accepts a tx hash and fetches the transaction and receipt via Chain MCP.
+2. Identifies the failure cause: revert reason, out of gas, insufficient balance or allowance, etc.
+3. Explains it without jargon and suggests a fix.
+4. Demonstrated on at least 3 different failure types.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

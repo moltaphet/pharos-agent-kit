@@ -32,6 +32,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 24 | Gas Fee Optimizer | [demo](https://pharos-agent-kit.vercel.app/#/gas-fee-optimizer/try) | [agents/gas-fee-optimizer](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/gas-fee-optimizer) | [24-gas-fee-optimizer.md](24-gas-fee-optimizer.md) |
 | 25 | Wallet Risk Checker | [demo](https://pharos-agent-kit.vercel.app/#/wallet-risk-checker/try) | [agents/wallet-risk-checker](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/wallet-risk-checker) | [25-wallet-risk-checker.md](25-wallet-risk-checker.md) |
 | 26 | Audit-Log Agent | [demo](https://pharos-agent-kit.vercel.app/#/audit-log-agent/try) | [agents/audit-log-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/audit-log-agent) | [26-audit-log-agent.md](26-audit-log-agent.md) |
+| 27 | dApp Support Agent | [demo](https://pharos-agent-kit.vercel.app/#/dapp-support-agent/try) | [agents/dapp-support-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/dapp-support-agent) | [27-dapp-support-agent.md](27-dapp-support-agent.md) |
 
 ## Tests of the shared platform
 

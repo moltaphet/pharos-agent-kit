@@ -26,6 +26,7 @@ import * as whaleWatchingAgent from './whale-watching-agent.js';
 import * as gasFeeOptimizer from './gas-fee-optimizer.js';
 import * as walletRiskChecker from './wallet-risk-checker.js';
 import * as auditLogAgent from './audit-log-agent.js';
+import * as dappSupportAgent from './dapp-support-agent.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -51,4 +52,5 @@ export const TASK_MODULES = {
   'gas-fee-optimizer': gasFeeOptimizer,
   'wallet-risk-checker': walletRiskChecker,
   'audit-log-agent': auditLogAgent,
+  'dapp-support-agent': dappSupportAgent,
 };

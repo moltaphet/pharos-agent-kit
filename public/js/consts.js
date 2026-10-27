@@ -32,6 +32,7 @@ export const TASK_FOLDERS = {
   'gas-fee-optimizer': 'agents/gas-fee-optimizer',
   'wallet-risk-checker': 'agents/wallet-risk-checker',
   'audit-log-agent': 'agents/audit-log-agent',
+  'dapp-support-agent': 'agents/dapp-support-agent',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);
