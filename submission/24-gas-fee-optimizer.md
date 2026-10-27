@@ -8,7 +8,7 @@
 ## Requirements it was built against (the Arena’s own list)
 
 1. Tracks gas price over time and shows recent history.
-   - Met by: The history of both networks is sampled over 3,000 blocks (30 points) with minimum, quartiles and maximum; the Try tab shows it live for mainnet or Atlantic.
+   - Met by: The history of both networks is sampled over 3,000 blocks (30 readings) with minimum, quartiles and maximum; the Try tab shows it live for mainnet or Atlantic.
 2. Accepts a transaction with a deadline and holds it until gas is favorable or the deadline is reached.
    - Met by: The recorded run holds a transaction with an unreachable ceiling, re-checks seven times, then submits at the deadline; the favourable-now and automatic-target runs submit within a second.
 3. Reports the actual gas paid compared with the price at request time.

@@ -32,7 +32,7 @@ export const content = {
     { title: 'Failure is reported, not hidden', text: 'If the RPC cannot be read the loop still reaches the deadline and uses the last reading; if the submission fails three times the error is raised with the full hold log. It never claims a submission it did not make.' },
   ],
   evidence: [
-    'The history of both networks is sampled over 3,000 blocks (30 points) with minimum, quartiles and maximum; the Try tab shows it live for mainnet or Atlantic.',
+    'The history of both networks is sampled over 3,000 blocks (30 readings) with minimum, quartiles and maximum; the Try tab shows it live for mainnet or Atlantic.',
     'The recorded run holds a transaction with an unreachable ceiling, re-checks seven times, then submits at the deadline; the favourable-now and automatic-target runs submit within a second.',
     'Each recorded transaction reports gas used, price paid and cost beside the request-time quote: 0.000021 PHRS against 0.00021 PHRS for the naive wallet’s identical transfer.',
     'All three optimized transactions were submitted before their deadlines (36.6 s of a 40 s deadline for the held one); a scripted-price test proves the deadline submission when the price never drops, and that a drop releases the hold.',
