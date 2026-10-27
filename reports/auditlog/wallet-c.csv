@@ -1,0 +1,2 @@
+time_utc,block,category,direction,what_happened,token,amount,usd_estimate,counterparty_or_spender,method,failed,transaction,link
+2026-10-26 00:38:16,21264071,transfer,out,Sent 2.994349 USDC to 0x33a7…5a13,USDC,2.994349,2.99,0x33a7dbf2ed4c32fa801ca7ee4875faa0578b5a13,transfer,no,0xc4c4923c3cf03c8baf1b760392536e0e435158a4f7e8faf0a9480ea03a03e4f2,https://www.pharosscan.xyz/tx/0xc4c4923c3cf03c8baf1b760392536e0e435158a4f7e8faf0a9480ea03a03e4f2

@@ -31,6 +31,7 @@ export const TASK_FOLDERS = {
   'whale-watching-agent': 'agents/whale-watching-agent',
   'gas-fee-optimizer': 'agents/gas-fee-optimizer',
   'wallet-risk-checker': 'agents/wallet-risk-checker',
+  'audit-log-agent': 'agents/audit-log-agent',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

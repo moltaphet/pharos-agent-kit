@@ -1,0 +1,43 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 3330 >>
+stream
+BT /F1 8 Tf 10 TL 36 806 Td (Activity report for 0xde027284a721e4435cb4598cf019c28cc4bc2c15) Tj T* () Tj T* (Network: Pharos mainnet \(1672\)  ) Tj T* (Period: 2026-10-26 00:00:00 UTC to 2026-10-26 23:59:59 UTC \(blocks 21,261,543?21,355,420\)  ) Tj T* (Generated: 2026-10-27T10:27:24.290Z  ) Tj T* (Source: Pharos mainnet public RPC: token Transfer/Approval logs filtered on the wallet, then) Tj T* (each transaction and receipt) Tj T* () Tj T* (Summary) Tj T* () Tj T* (In this period the wallet appears in 11 transactions: 0 incoming and 0 outgoing token transfers,) Tj T* (5 swaps, 5 approvals and 1 other contract interaction. Its native PROS balance went from) Tj T* (80.241286 to 0.221341 PROS; fees paid on the transactions it sent and that are listed: 0.019945) Tj T* (PROS.) Tj T* () Tj T* (   Category    Events    Value \(USD, where priced\)   ) Tj T* (  ---  ---:  ---:  ) Tj T* (   Transfers in    0    $0   ) Tj T* (   Transfers out    0    $0   ) Tj T* (   Swaps    5    $247.04   ) Tj T* (   Approvals    5    0 unlimited, 0 revoked   ) Tj T* (   Contract interactions    1      ) Tj T* () Tj T* (Notable transactions) Tj T* () Tj T* (- Swapped 604,213.942486 pDOG for 78.967645 WPROS via 0xa5ca?f75c ? One of the largest movements) Tj T* (of value in the period \(about $49.92\). Block 21,277,404, 2026-10-26 03:55:33 UTC. Transaction) Tj T* (\(https://www.pharosscan.xyz/tx/0x77dff3e050866c87658d3db2452f6712e69b4d694ec3ec8d7954146761767e1) Tj T* (5\)) Tj T* (- Swapped 78.967645 WPROS for 596,409.381689 pDOG via 0xa5ca?f75c ? One of the largest movements) Tj T* (of value in the period \(about $49.92\). Block 21,277,462, 2026-10-26 03:56:26 UTC. Transaction) Tj T* (\(https://www.pharosscan.xyz/tx/0xde5be34c65fa757767433fd0c5f0f36cd1fe006ed2f682113206b3ed6870a69) Tj T* (a\)) Tj T* (- Swapped 596,409.381689 pDOG for 77.948574 WPROS via 0xa5ca?f75c ? One of the largest movements) Tj T* (of value in the period \(about $49.28\). Block 21,277,525, 2026-10-26 03:57:19 UTC. Transaction) Tj T* (\(https://www.pharosscan.xyz/tx/0x58f88c1833910459194162ae1ac1bb364109cf1a7d0eaa3cdb2c290305f1220) Tj T* (f\)) Tj T* (- Swapped 77.948574 WPROS for 588,712.618679 pDOG via 0xa5ca?f75c ? One of the largest movements) Tj T* (of value in the period \(about $49.28\). Block 21,277,667, 2026-10-26 03:59:53 UTC. Transaction) Tj T* (\(https://www.pharosscan.xyz/tx/0x61c53d9d8104df543695b0e5f04b171648e3f076e6b5330ffea8069ad8737e1) Tj T* (0\)) Tj T* (- Swapped 588,712.618679 pDOG for 76.942616 WPROS via 0xa5ca?f75c ? One of the largest movements) Tj T* (of value in the period \(about $48.64\). Block 21,277,714, 2026-10-26 04:00:38 UTC. Transaction) Tj T* (\(https://www.pharosscan.xyz/tx/0xc7d6fefa5a6d7cb97e4b384070ffdd049bc43d356eb5a71856c908c267de1f1) Tj T* (a\)) Tj T* () Tj T* (Transfers) Tj T* () Tj T* (None in this period.) Tj T* () Tj T* (Swaps) Tj T* () Tj T* (   Time \(UTC\)    What happened    Value    Transaction   ) Tj T* (  ---  ---  ---:  ---  ) Tj T* (   2026-10-26 03:55:33    Swapped 604,213.942486 pDOG for 78.967645 WPROS via 0xa5ca?f75c   ) Tj T* ($49.92    0x77dff3e0? \(https://www.pharosscan.xyz/tx/0x77dff3e050866c87658d3db2452f6712e69b4d694) Tj T* (ec3ec8d7954146761767e15\)   ) Tj T* (   2026-10-26 03:56:26    Swapped 78.967645 WPROS for 596,409.381689 pDOG via 0xa5ca?f75c   ) Tj T* ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 2730 >>
+stream
+BT /F1 8 Tf 10 TL 36 806 Td ($49.92    0xde5be34c? \(https://www.pharosscan.xyz/tx/0xde5be34c65fa757767433fd0c5f0f36cd1fe006ed) Tj T* (2f682113206b3ed6870a69a\)   ) Tj T* (   2026-10-26 03:57:19    Swapped 596,409.381689 pDOG for 77.948574 WPROS via 0xa5ca?f75c   ) Tj T* ($49.28    0x58f88c18? \(https://www.pharosscan.xyz/tx/0x58f88c1833910459194162ae1ac1bb364109cf1a7) Tj T* (d0eaa3cdb2c290305f1220f\)   ) Tj T* (   2026-10-26 03:59:53    Swapped 77.948574 WPROS for 588,712.618679 pDOG via 0xa5ca?f75c   ) Tj T* ($49.28    0x61c53d9d? \(https://www.pharosscan.xyz/tx/0x61c53d9d8104df543695b0e5f04b171648e3f076e) Tj T* (6b5330ffea8069ad8737e10\)   ) Tj T* (   2026-10-26 04:00:38    Swapped 588,712.618679 pDOG for 76.942616 WPROS via 0xa5ca?f75c   ) Tj T* ($48.64    0xc7d6fefa? \(https://www.pharosscan.xyz/tx/0xc7d6fefa5a6d7cb97e4b384070ffdd049bc43d356) Tj T* (eb5a71856c908c267de1f1a\)   ) Tj T* () Tj T* (Approvals) Tj T* () Tj T* (   Time \(UTC\)    What happened    Value    Transaction   ) Tj T* (  ---  ---  ---:  ---  ) Tj T* (   2026-10-26 03:55:09    Approved 0xbf10?849c to spend 604,213.942486 pDOG    ?    0xea8a9d3b?) Tj T* (\(https://www.pharosscan.xyz/tx/0xea8a9d3b805ab36ad72218974e73f8ac7bfa6a771076611a64d590e2e41e3e9) Tj T* (7\)   ) Tj T* (   2026-10-26 03:55:58    Approved 0xbf10?849c to spend 78.967645 WPROS    ?    0x579f5b51?) Tj T* (\(https://www.pharosscan.xyz/tx/0x579f5b51b16f6faa41838c412b4304b695386775da919f29cf53d0c51257e28) Tj T* (f\)   ) Tj T* (   2026-10-26 03:56:52    Approved 0xbf10?849c to spend 596,409.381689 pDOG    ?    0x4fa3872a?) Tj T* (\(https://www.pharosscan.xyz/tx/0x4fa3872a7956a76992a7c2ec0000a79086c136e272db5875605bf915519ed7a) Tj T* (a\)   ) Tj T* (   2026-10-26 03:58:51    Approved 0xbf10?849c to spend 77.948574 WPROS    ?    0x13e1f945?) Tj T* (\(https://www.pharosscan.xyz/tx/0x13e1f94538090d84c78e5d19dcf46c8a222b7fe5d0c8b3bcb88954da79ec785) Tj T* (c\)   ) Tj T* (   2026-10-26 04:00:16    Approved 0xbf10?849c to spend 588,712.618679 pDOG    ?    0xa331d50d?) Tj T* (\(https://www.pharosscan.xyz/tx/0xa331d50d74e3466d2dc3c6e3f8178ae96606811e2e931e18f08e97b893ab385) Tj T* (1\)   ) Tj T* () Tj T* (Contract interactions) Tj T* () Tj T* (   Time \(UTC\)    What happened    Value    Transaction   ) Tj T* (  ---  ---  ---:  ---  ) Tj T* (   2026-10-26 03:54:32    Called unknown method 0xff84aafa on 0xa5ca?f75c: received) Tj T* (604,213.942486 pDOG    ?    0x6c91e034? \(https://www.pharosscan.xyz/tx/0x6c91e034082b659a02c9c91) Tj T* (1e3c1ff65064b8d954f99515b3309d8e18c52a8f8\)   ) Tj T* () Tj T* (Values in USD use USDC at $1 and PROS/WPROS at the PROS/USD feed price at the end of the period) Tj T* (\(0.6322\); other tokens are not priced.) Tj T* () Tj T* ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000189 00000 n 
+0000000315 00000 n 
+0000003697 00000 n 
+0000003823 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+6605
+%%EOF

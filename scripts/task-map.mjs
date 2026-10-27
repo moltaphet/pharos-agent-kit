@@ -69,6 +69,8 @@ export const TASK_MAP = [
     tests: ['gas.test.js'] },
   { n: 25, slug: 'wallet-risk-checker', folder: TASK_FOLDERS['wallet-risk-checker'], entries: ['lib/risk.js', 'lib/tasks/wallet-risk-checker.js', 'scripts/risk-run.mjs'], data: ['contracts/RiskyToken.sol', 'config/risk-demo.json', 'reports/risk-run.json'], page: ['public/js/tasks/wallet-risk-checker.js'],
     tests: ['risk.test.js'] },
+  { n: 26, slug: 'audit-log-agent', folder: TASK_FOLDERS['audit-log-agent'], entries: ['lib/auditlog.js', 'lib/rpc-batch.js', 'lib/tasks/audit-log-agent.js', 'scripts/auditlog-run.mjs'], data: ['reports/auditlog-run.json', 'reports/auditlog/wallet-a.md', 'reports/auditlog/wallet-a.csv', 'reports/auditlog/wallet-a.pdf', 'reports/auditlog/wallet-b.md', 'reports/auditlog/wallet-b.csv', 'reports/auditlog/wallet-b.pdf', 'reports/auditlog/wallet-c.md', 'reports/auditlog/wallet-c.csv', 'reports/auditlog/wallet-c.pdf'], page: ['public/js/tasks/audit-log-agent.js'],
+    tests: ['auditlog.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

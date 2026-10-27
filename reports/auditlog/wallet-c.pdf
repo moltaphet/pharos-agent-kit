@@ -1,0 +1,32 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 2314 >>
+stream
+BT /F1 8 Tf 10 TL 36 806 Td (Activity report for 0xb246960e21e6a1bb8cfe2974809981848b86bde6) Tj T* () Tj T* (Network: Pharos mainnet \(1672\)  ) Tj T* (Period: 2026-10-26 00:00:00 UTC to 2026-10-26 23:59:59 UTC \(blocks 21,261,543?21,355,420\)  ) Tj T* (Generated: 2026-10-27T10:27:09.933Z  ) Tj T* (Source: Pharos mainnet public RPC: token Transfer/Approval logs filtered on the wallet, then) Tj T* (each transaction and receipt) Tj T* () Tj T* (Summary) Tj T* () Tj T* (In this period the wallet appears in 1 transaction: 0 incoming and 1 outgoing token transfer, 0) Tj T* (swaps, 0 approvals and 0 other contract interactions. Its native PROS balance went from 0.032236) Tj T* (to 0.031577 PROS; fees paid on the transactions it sent and that are listed: 0.000658 PROS.) Tj T* () Tj T* (   Category    Events    Value \(USD, where priced\)   ) Tj T* (  ---  ---:  ---:  ) Tj T* (   Transfers in    0    $0   ) Tj T* (   Transfers out    1    $2.99   ) Tj T* (   Swaps    0    $0   ) Tj T* (   Approvals    0    0 unlimited, 0 revoked   ) Tj T* (   Contract interactions    0      ) Tj T* () Tj T* (Token transfers by token) Tj T* () Tj T* (   Token    Received    Sent   ) Tj T* (  ---  ---:  ---:  ) Tj T* (   USDC    0    2.994349   ) Tj T* () Tj T* (Notable transactions) Tj T* () Tj T* (- Sent 2.994349 USDC to 0x33a7?5a13 ? One of the largest movements of value in the period \(about) Tj T* ($2.99\). Block 21,264,071, 2026-10-26 00:38:16 UTC. Transaction) Tj T* (\(https://www.pharosscan.xyz/tx/0xc4c4923c3cf03c8baf1b760392536e0e435158a4f7e8faf0a9480ea03a03e4f) Tj T* (2\)) Tj T* () Tj T* (Transfers) Tj T* () Tj T* (   Time \(UTC\)    What happened    Value    Transaction   ) Tj T* (  ---  ---  ---:  ---  ) Tj T* (   2026-10-26 00:38:16    Sent 2.994349 USDC to 0x33a7?5a13    $2.99    0xc4c4923c?) Tj T* (\(https://www.pharosscan.xyz/tx/0xc4c4923c3cf03c8baf1b760392536e0e435158a4f7e8faf0a9480ea03a03e4f) Tj T* (2\)   ) Tj T* () Tj T* (Swaps) Tj T* () Tj T* (None in this period.) Tj T* () Tj T* (Approvals) Tj T* () Tj T* (None in this period.) Tj T* () Tj T* (Contract interactions) Tj T* () Tj T* (None in this period.) Tj T* () Tj T* (Values in USD use USDC at $1 and PROS/WPROS at the PROS/USD feed price at the end of the period) Tj T* (\(0.6322\); other tokens are not priced.) Tj T* () Tj T* ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000183 00000 n 
+0000000309 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2675
+%%EOF

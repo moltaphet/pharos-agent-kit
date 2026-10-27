@@ -370,6 +370,20 @@ Requirements it was built against (the Arena's own list):
 3. Explains each flag in plain language.
 4. Demonstrated on at least 1 clean and 1 risky example.
 
+## 26. Audit-Log Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/audit-log-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/audit-log-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/audit-log-agent
+- **What the proof shows:** An agent that turns a wallet’s activity over a date range into a plain-language report: it finds the blocks for the dates, reads the wallet’s token transfers and approvals (the node’s only per-address index) and the transactions behind them in JSON-RPC batches, groups them into transfers in and out, swaps, approvals and contract interactions with totals and notable transactions, and exports Markdown, CSV and PDF. Recorded for three real wallets over one whole day on Pharos mainnet; what the node cannot list (plain PROS transfers) is counted and stated.
+
+Requirements it was built against (the Arena's own list):
+
+1. Accepts a wallet address and a date range.
+2. Groups activity into categories: transfers in and out, swaps, approvals, contract interactions.
+3. Includes totals per category and notable transactions with links.
+4. Exports the report as Markdown, PDF or CSV.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

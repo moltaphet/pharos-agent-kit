@@ -4,6 +4,13 @@
 const BASE = process.argv[2] ?? 'https://pharos-agent-kit.vercel.app';
 const USDC = '0xc879c018db60520f4355c26ed1a6d572cdac1815';
 const MORPHO = '0x18573fA18fd17dDfD790B4a5B5b2977aad3b4Efb';
+// The audit makes hundreds of requests, some straight to the public RPCs; a dropped connection (TypeError: fetch failed) is the network, not the site, so it is retried.
+const realFetch = globalThis.fetch;
+globalThis.fetch = async (url, init) => {
+  for (let i = 0; ; i++) {
+    try { return await realFetch(url, init); } catch (err) { if (i >= 3 || !(err instanceof TypeError)) { if (process.env.DEBUG_AUDIT) console.error('FETCH FAILED', String(url).slice(0, 120), err.cause?.code ?? err.cause?.message); throw err; } await new Promise((r) => setTimeout(r, 1000 * (i + 1))); }
+  }
+};
 const results = [];
 let section = '';
 class Skip extends Error {}
