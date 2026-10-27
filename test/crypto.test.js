@@ -5,7 +5,7 @@ import { rlp, signedLegacyTx, unsignedLegacyTx } from '../lib/rlp.js';
 import { checksumStatus, toChecksumAddress } from '../lib/address.js';
 import { keccak256 } from '../lib/keccak.js';
 
-const DEV = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'; // anvil's public dev key #0
+const DEV = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'; // gitleaks:allow (anvil's public dev account #0, worth nothing) // anvil's public dev key #0
 
 test('secp256k1: the address of a private key, and a signature that matches cast byte for byte (RFC 6979)', () => {
   assert.equal(addressFromPrivateKey(DEV), '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266');

@@ -18,7 +18,7 @@ import { USDC } from '../lib/protocols.js';
 import { usdcStateDiff } from '../lib/defi.js';
 import { forkChain } from './support/fork-chain.mjs';
 
-const KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'; // anvil dev account #0: public, worth nothing
+const KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'; // gitleaks:allow (anvil's public dev account #0, worth nothing) // anvil dev account #0: public, worth nothing
 const PAYER = addressFromPrivateKey(KEY);
 const invoices = Object.fromEntries(JSON.parse(readFileSync(new URL('../agents/invoice-to-payment-agent/examples/invoices.json', import.meta.url), 'utf8')).map((i) => [i.id, i]));
 const fork = await startFork({ port: 8640 });

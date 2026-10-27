@@ -572,7 +572,7 @@ await guard(async () => {
   check('only 10,000 USDC: MOVE of exactly that amount, a smaller net gain', part?.recommendation?.action === 'move' && /^MOVE 10,000 USDC/.test(part.recommendation.headline) && part.recommendation.netGainUsd < rec.netGainUsd / 50);
   const rk = await run(SLUG, { wallet: ex?.cases?.[4]?.wallet, from: 'auto' });
   const rko = rk.body?.data?.optimizer;
-  check('a wallet with its money in the Rockaway vault: auto picks that bucket and the plan starts with a redeem', rko?.source?.id === 'rockaway-usdc' && rko.recommendation.action === 'move' && rko.prepared.transactions.map((t) => t.step).join() === 'redeem,approve,deposit', rko?.recommendation?.headline);
+  check('a wallet with its money in the Rockaway vault: auto picks that bucket; a MOVE starts with a redeem, a STAY PUT prepares nothing (the market decides which)', rko?.source?.id === 'rockaway-usdc' && (rko.recommendation.action === 'move' ? rko.prepared.transactions.map((t) => t.step).join() === 'redeem,approve,deposit' : rko.prepared === null), rko?.recommendation?.headline);
   const pinned = await opt({ from: 'idle', block: recd?.demo?.cases?.[0]?.block });
   check('?block pins the read: the same block, the same decision and the same rates as the recording', pinned?.block?.number === recd?.demo?.cases?.[0]?.block && pinned.recommendation.action === recd.demo.cases[0].result.recommendation.action && pinned.candidates.every((c) => c.apy === recd.demo.cases[0].result.candidates.find((x) => x.id === c.id)?.apy));
   for (const id of ['idle-to-best', 'quarterly-stuck']) {
