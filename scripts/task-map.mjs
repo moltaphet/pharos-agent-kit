@@ -65,6 +65,8 @@ export const TASK_MAP = [
     tests: ['alerts.test.js'] },
   { n: 23, slug: 'whale-watching-agent', folder: TASK_FOLDERS['whale-watching-agent'], entries: ['lib/whales.js', 'lib/tasks/whale-watching-agent.js', 'scripts/whales-run.mjs'], data: ['agents/whale-watching-agent/watchlist.example.json', 'reports/whales-run.json'], page: ['public/js/tasks/whale-watching-agent.js'],
     tests: ['whales.test.js'] },
+  { n: 24, slug: 'gas-fee-optimizer', folder: TASK_FOLDERS['gas-fee-optimizer'], entries: ['lib/gas.js', 'lib/tasks/gas-fee-optimizer.js', 'scripts/gas-run.mjs'], data: ['reports/gas-run.json'], page: ['public/js/tasks/gas-fee-optimizer.js'],
+    tests: ['gas.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

@@ -1,0 +1,645 @@
+{
+ "recordedAt": "2026-10-27T07:42:28.708Z",
+ "network": "History read from Pharos mainnet (chain 1672) and Atlantic testnet (688689); four real transactions on Atlantic testnet from the throwaway wallet. Nothing was sent to mainnet.",
+ "history": {
+  "mainnet": {
+   "now": {
+    "at": 1793086884376,
+    "block": 21384759,
+    "blockTime": 1793086881,
+    "baseFee": "10000000000",
+    "gasPrice": "10000000000",
+    "tip": "0",
+    "fullness": 0.000270463
+   },
+   "span": 3000,
+   "step": 103,
+   "rows": [
+    {
+     "block": 21381746,
+     "time": 1793084079,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21381849,
+     "time": 1793084180,
+     "baseFee": "10000000000",
+     "fullness": 0.000119724
+    },
+    {
+     "block": 21381952,
+     "time": 1793084274,
+     "baseFee": "10000000000",
+     "fullness": 0.000119724
+    },
+    {
+     "block": 21382055,
+     "time": 1793084363,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21382158,
+     "time": 1793084453,
+     "baseFee": "10000000000",
+     "fullness": 2.1e-05
+    },
+    {
+     "block": 21382261,
+     "time": 1793084543,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21382364,
+     "time": 1793084633,
+     "baseFee": "10000000000",
+     "fullness": 7.8354e-05
+    },
+    {
+     "block": 21382467,
+     "time": 1793084722,
+     "baseFee": "10000000000",
+     "fullness": 0.000225971
+    },
+    {
+     "block": 21382570,
+     "time": 1793084817,
+     "baseFee": "10000000000",
+     "fullness": 0.00043754
+    },
+    {
+     "block": 21382673,
+     "time": 1793084912,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21382776,
+     "time": 1793085003,
+     "baseFee": "10000000000",
+     "fullness": 0.000119724
+    },
+    {
+     "block": 21382879,
+     "time": 1793085096,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21382982,
+     "time": 1793085196,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383085,
+     "time": 1793085295,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383188,
+     "time": 1793085385,
+     "baseFee": "10000000000",
+     "fullness": 0.00017574
+    },
+    {
+     "block": 21383291,
+     "time": 1793085499,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383394,
+     "time": 1793085596,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383497,
+     "time": 1793085694,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383600,
+     "time": 1793085795,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383703,
+     "time": 1793085886,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383806,
+     "time": 1793085974,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21383909,
+     "time": 1793086069,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384012,
+     "time": 1793086161,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384115,
+     "time": 1793086268,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384218,
+     "time": 1793086360,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384321,
+     "time": 1793086465,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384424,
+     "time": 1793086557,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384527,
+     "time": 1793086648,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384630,
+     "time": 1793086752,
+     "baseFee": "10000000000",
+     "fullness": 0
+    },
+    {
+     "block": 21384733,
+     "time": 1793086858,
+     "baseFee": "10000000000",
+     "fullness": 0
+    }
+   ],
+   "stats": {
+    "min": "10000000000",
+    "p25": "10000000000",
+    "median": "10000000000",
+    "p75": "10000000000",
+    "max": "10000000000",
+    "samples": 30,
+    "flat": true
+   }
+  },
+  "atlantic": {
+   "now": {
+    "at": 1793086884987,
+    "block": 31936928,
+    "blockTime": 1793086883,
+    "baseFee": "1000000000",
+    "gasPrice": "10000000000",
+    "tip": "0",
+    "fullness": 0
+   },
+   "span": 3000,
+   "step": 103,
+   "rows": [
+    {
+     "block": 31933931,
+     "time": 1793081133,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934034,
+     "time": 1793081272,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934137,
+     "time": 1793081465,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934240,
+     "time": 1793081686,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934343,
+     "time": 1793081892,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934446,
+     "time": 1793082056,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934549,
+     "time": 1793082345,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934652,
+     "time": 1793082549,
+     "baseFee": "1000000000",
+     "fullness": 0.000191135
+    },
+    {
+     "block": 31934755,
+     "time": 1793082700,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934858,
+     "time": 1793082893,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31934961,
+     "time": 1793083096,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935064,
+     "time": 1793083373,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935167,
+     "time": 1793083599,
+     "baseFee": "1000000000",
+     "fullness": 0.000116207
+    },
+    {
+     "block": 31935270,
+     "time": 1793083840,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935373,
+     "time": 1793084106,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935476,
+     "time": 1793084337,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935579,
+     "time": 1793084487,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935682,
+     "time": 1793084669,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935785,
+     "time": 1793084850,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935888,
+     "time": 1793085036,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31935991,
+     "time": 1793085189,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936094,
+     "time": 1793085346,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936197,
+     "time": 1793085580,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936300,
+     "time": 1793085739,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936403,
+     "time": 1793085950,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936506,
+     "time": 1793086162,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936609,
+     "time": 1793086349,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936712,
+     "time": 1793086521,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936815,
+     "time": 1793086717,
+     "baseFee": "1000000000",
+     "fullness": 0
+    },
+    {
+     "block": 31936918,
+     "time": 1793086865,
+     "baseFee": "1000000000",
+     "fullness": 0
+    }
+   ],
+   "stats": {
+    "min": "1000000000",
+    "p25": "1000000000",
+    "median": "1000000000",
+    "p75": "1000000000",
+    "max": "1000000000",
+    "samples": 30,
+    "flat": true
+   }
+  }
+ },
+ "scenarios": [
+  {
+   "id": "naive",
+   "title": "A naive wallet: a legacy transaction at the price eth_gasPrice quotes",
+   "quotedGasPrice": "10000000000",
+   "tx": {
+    "hash": "0xfba724f356ed2423941da64b81e3a18a80f344a9ec2b38e505b1786508408a98",
+    "gasUsed": 21000,
+    "effectiveGasPrice": "10000000000",
+    "block": 31936933,
+    "status": "success",
+    "type": "0x0",
+    "maxFeePerGas": null,
+    "maxPriorityFeePerGas": null
+   },
+   "costWei": "210000000000000"
+  },
+  {
+   "id": "favorable-now",
+   "title": "Ceiling 2 gwei, the network is at its floor: submit at once",
+   "deadlineSec": 60,
+   "maxPrice": "2000000000",
+   "reason": "favorable",
+   "heldMs": 673,
+   "deadlineMs": 59327,
+   "submittedBeforeDeadline": true,
+   "samples": 1,
+   "holds": [
+    {
+     "t": 0,
+     "block": 31936935,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "2000000000",
+     "favorable": true
+    }
+   ],
+   "atRequest": {
+    "block": 31936935,
+    "gasPrice": "10000000000",
+    "baseFee": "1000000000"
+   },
+   "atSubmit": {
+    "block": 31936935,
+    "baseFee": "1000000000",
+    "tip": "0",
+    "maxFeePerGas": "2000000000",
+    "maxPriorityFeePerGas": "0"
+   },
+   "paid": {
+    "gasUsed": "21000",
+    "effectiveGasPrice": "1000000000",
+    "costWei": "21000000000000"
+   },
+   "naiveCostWei": "210000000000000",
+   "savedWei": "189000000000000",
+   "tx": {
+    "hash": "0xdd75cd48812ebe43ab4dd44a19937f98d4f8d19808ef46402d14c528d47e23d3",
+    "gasUsed": 21000,
+    "effectiveGasPrice": "1000000000",
+    "block": 31936940,
+    "status": "success",
+    "type": "0x2",
+    "maxFeePerGas": "0x77359400",
+    "maxPriorityFeePerGas": "0x0"
+   }
+  },
+  {
+   "id": "hold-to-deadline",
+   "title": "Ceiling 0.5 gwei is below the network floor: hold, then submit at the deadline anyway",
+   "deadlineSec": 40,
+   "maxPrice": "500000000",
+   "reason": "deadline",
+   "heldMs": 36640,
+   "deadlineMs": 3360,
+   "submittedBeforeDeadline": true,
+   "samples": 7,
+   "holds": [
+    {
+     "t": 0,
+     "block": 31936943,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "500000000",
+     "favorable": false
+    },
+    {
+     "t": 5598,
+     "block": 31936952,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "500000000",
+     "favorable": false
+    },
+    {
+     "t": 12494,
+     "block": 31936953,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "500000000",
+     "favorable": false
+    },
+    {
+     "t": 19320,
+     "block": 31936958,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "500000000",
+     "favorable": false
+    },
+    {
+     "t": 26259,
+     "block": 31936965,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "500000000",
+     "favorable": false
+    },
+    {
+     "t": 33287,
+     "block": 31936967,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "500000000",
+     "favorable": false
+    },
+    {
+     "t": 36000,
+     "block": 31936967,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "500000000",
+     "favorable": false
+    }
+   ],
+   "atRequest": {
+    "block": 31936943,
+    "gasPrice": "10000000000",
+    "baseFee": "1000000000"
+   },
+   "atSubmit": {
+    "block": 31936967,
+    "baseFee": "1000000000",
+    "tip": "0",
+    "maxFeePerGas": "3000000000",
+    "maxPriorityFeePerGas": "0"
+   },
+   "paid": {
+    "gasUsed": "21000",
+    "effectiveGasPrice": "1000000000",
+    "costWei": "21000000000000"
+   },
+   "naiveCostWei": "210000000000000",
+   "savedWei": "189000000000000",
+   "tx": {
+    "hash": "0x2156bb1aed41baae8b705f3b8a7335da42a9fac54aa31befbb7a77bee1c71edc",
+    "gasUsed": 21000,
+    "effectiveGasPrice": "1000000000",
+    "block": 31936969,
+    "status": "success",
+    "type": "0x2",
+    "maxFeePerGas": "0xb2d05e00",
+    "maxPriorityFeePerGas": "0x0"
+   }
+  },
+  {
+   "id": "auto-target",
+   "title": "No ceiling: the target is the 25th percentile of the last 3,000 blocks",
+   "deadlineSec": 60,
+   "maxPrice": null,
+   "reason": "favorable",
+   "heldMs": 661,
+   "deadlineMs": 59339,
+   "submittedBeforeDeadline": true,
+   "samples": 1,
+   "holds": [
+    {
+     "t": 0,
+     "block": 31936972,
+     "baseFee": "1000000000",
+     "price": "1000000000",
+     "target": "1000000000",
+     "favorable": true
+    }
+   ],
+   "atRequest": {
+    "block": 31936972,
+    "gasPrice": "10000000000",
+    "baseFee": "1000000000"
+   },
+   "atSubmit": {
+    "block": 31936972,
+    "baseFee": "1000000000",
+    "tip": "0",
+    "maxFeePerGas": "2000000000",
+    "maxPriorityFeePerGas": "0"
+   },
+   "paid": {
+    "gasUsed": "21000",
+    "effectiveGasPrice": "1000000000",
+    "costWei": "21000000000000"
+   },
+   "naiveCostWei": "210000000000000",
+   "savedWei": "189000000000000",
+   "tx": {
+    "hash": "0xe2d4814b972e156d7ae6b9c58457bf7e15f5d6b608ffb1214a3e7a6e09af3f19",
+    "gasUsed": 21000,
+    "effectiveGasPrice": "1000000000",
+    "block": 31936978,
+    "status": "success",
+    "type": "0x2",
+    "maxFeePerGas": "0x77359400",
+    "maxPriorityFeePerGas": "0x0"
+   }
+  }
+ ],
+ "summary": {
+  "naiveCostWei": "210000000000000",
+  "optimizedCostWei": [
+   "21000000000000",
+   "21000000000000",
+   "21000000000000"
+  ],
+  "allBeforeDeadline": true,
+  "holdSubmittedAtDeadline": true,
+  "savedPercent": 90,
+  "gasFlat": {
+   "mainnet": true,
+   "atlantic": true
+  }
+ }
+}

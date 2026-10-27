@@ -23,6 +23,7 @@ import * as x402PaywalledApi from './x402-paywalled-api.js';
 import * as x402AgentBuyer from './x402-agent-buyer.js';
 import * as onChainAlertBot from './on-chain-alert-bot.js';
 import * as whaleWatchingAgent from './whale-watching-agent.js';
+import * as gasFeeOptimizer from './gas-fee-optimizer.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -45,4 +46,5 @@ export const TASK_MODULES = {
   'x402-agent-buyer': x402AgentBuyer,
   'on-chain-alert-bot': onChainAlertBot,
   'whale-watching-agent': whaleWatchingAgent,
+  'gas-fee-optimizer': gasFeeOptimizer,
 };

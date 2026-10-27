@@ -29,6 +29,7 @@ export const TASK_FOLDERS = {
   'x402-agent-buyer': 'agents/x402-agent-buyer',
   'on-chain-alert-bot': 'agents/on-chain-alert-bot',
   'whale-watching-agent': 'agents/whale-watching-agent',
+  'gas-fee-optimizer': 'agents/gas-fee-optimizer',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

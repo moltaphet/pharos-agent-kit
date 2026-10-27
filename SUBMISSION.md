@@ -342,6 +342,20 @@ Requirements it was built against (the Arena's own list):
 3. Each report explains the move: what moved, how much, and where to (labelled where known).
 4. Produces a summary view of recent activity across all watched addresses.
 
+## 24. Gas Fee Optimizer
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/gas-fee-optimizer/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/gas-fee-optimizer
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/gas-fee-optimizer
+- **What the proof shows:** An agent that reads the base fee, quoted gas price and tip, holds a transaction until the price is at or under a ceiling (or the history’s cheap quarter) or until the deadline, then submits it as an EIP-1559 transaction. Run for real on Atlantic testnet: four transfers, each read back from the chain; the optimized ones paid 1 gwei where the naive legacy transaction at the quoted price paid 10 gwei, the held one was submitted before its deadline, and Pharos mainnet is only read and prepared. Gas on both networks is flat, which the report states.
+
+Requirements it was built against (the Arena's own list):
+
+1. Tracks gas price over time and shows recent history.
+2. Accepts a transaction with a deadline and holds it until gas is favorable or the deadline is reached.
+3. Reports the actual gas paid compared with the price at request time.
+4. Never misses the deadline. It submits at the deadline even if gas is high.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.
