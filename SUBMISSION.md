@@ -314,6 +314,20 @@ Requirements it was built against (the Arena's own list):
 4. Handles payment failures with retries that are safe: the same payment never counts twice.
 5. Includes a demo task where the agent completes the job, and one where it stops because it hit the budget.
 
+## 22. On-Chain Alert Bot
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/on-chain-alert-bot/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/on-chain-alert-bot
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/on-chain-alert-bot
+- **What the proof shows:** A bot that watches Pharos mainnet for a price crossing on the PROS/USD feed, large USDC/WPROS transfers, contract events and contract calls, and delivers each alert (what, value, explorer link) to Discord, Telegram, ntfy or a webhook. Each event goes to each channel once; a channel outage loses nothing. The recorded run scans 1,000 real mainnet blocks and delivers over real HTTP to local Discord-style, ntfy and webhook receivers (sending to Discord/Telegram itself needs the owner’s webhook or bot token).
+
+Requirements it was built against (the Arena's own list):
+
+1. At least one configurable alert condition.
+2. Delivers alerts to a real channel: Telegram, Discord or similar.
+3. Each alert includes what happened, the value, and a tx or explorer link.
+4. No repeat spam for the same event.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

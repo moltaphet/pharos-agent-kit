@@ -27,6 +27,7 @@ export const TASK_FOLDERS = {
   'invoice-to-payment-agent': 'agents/invoice-to-payment-agent',
   'x402-paywalled-api': 'agents/x402-paywalled-api',
   'x402-agent-buyer': 'agents/x402-agent-buyer',
+  'on-chain-alert-bot': 'agents/on-chain-alert-bot',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

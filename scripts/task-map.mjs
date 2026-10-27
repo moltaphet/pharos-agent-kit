@@ -61,6 +61,8 @@ export const TASK_MAP = [
     tests: ['x402.test.js', 'x402-task.test.js', 'x402-audit.test.js'] },
   { n: 21, slug: 'x402-agent-buyer', folder: TASK_FOLDERS['x402-agent-buyer'], entries: ['lib/x402-buyer.js', 'lib/tasks/x402-agent-buyer.js', 'scripts/x402-buyer-run.mjs'], data: ['agents/x402-agent-buyer/plan.example.json', 'reports/x402-buyer-run.json'], page: ['public/js/tasks/x402-agent-buyer.js'],
     tests: ['x402-buyer.test.js'] },
+  { n: 22, slug: 'on-chain-alert-bot', folder: TASK_FOLDERS['on-chain-alert-bot'], entries: ['lib/alerts.js', 'lib/tasks/on-chain-alert-bot.js', 'scripts/alerts-run.mjs'], data: ['agents/on-chain-alert-bot/alerts.example.json', 'reports/alerts-run.json'], page: ['public/js/tasks/on-chain-alert-bot.js'],
+    tests: ['alerts.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

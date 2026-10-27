@@ -1,0 +1,706 @@
+{
+ "recordedAt": "2026-10-27T07:26:58.185Z",
+ "network": "Pharos mainnet (chain 1672), read-only: blocks, logs and the PROS/USD feed read from the public RPC; delivery over real HTTP to receivers on 127.0.0.1 started by this script",
+ "pinnedHead": 21380660,
+ "conditions": [
+  {
+   "id": "usdc-10k",
+   "label": "USDC transfer of 10,000 or more",
+   "type": "transfer"
+  },
+  {
+   "id": "wpros-1k",
+   "label": "WPROS transfer of 1,000 or more",
+   "type": "transfer"
+  },
+  {
+   "id": "pros-above-60c",
+   "label": "PROS/USD above 0.60",
+   "type": "price"
+  },
+  {
+   "id": "wpros-deposits",
+   "label": "WPROS Deposit events",
+   "type": "event"
+  },
+  {
+   "id": "calls-0xf4a0",
+   "label": "Calls of 0x04060252 on 0xf4a0…904c",
+   "type": "call"
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "first-cycle",
+   "title": "First cycle over 1,000 mainnet blocks: every event goes to every channel once",
+   "window": [
+    21379661,
+    21380660
+   ],
+   "eventsFound": 29,
+   "delivered": 87,
+   "suppressedDuplicates": 0,
+   "failed": 0,
+   "cursorAfter": 21380660,
+   "byCondition": {
+    "usdc-10k": 0,
+    "wpros-1k": 3,
+    "pros-above-60c": 1,
+    "wpros-deposits": 25
+   }
+  },
+  {
+   "id": "same-window-again",
+   "title": "The same 1,000 blocks scanned again (cursor reset): nothing is sent twice",
+   "window": [
+    21379661,
+    21380660
+   ],
+   "eventsFound": 28,
+   "delivered": 0,
+   "suppressedDuplicates": 84,
+   "failed": 0,
+   "cursorAfter": 21380660
+  },
+  {
+   "id": "restart-from-state-file",
+   "title": "A restarted bot loads the saved state: still nothing is sent twice",
+   "window": [
+    21379661,
+    21380660
+   ],
+   "eventsFound": 28,
+   "delivered": 0,
+   "suppressedDuplicates": 84,
+   "failed": 0,
+   "cursorAfter": 21380660
+  },
+  {
+   "id": "channel-outage",
+   "title": "Discord down for the first attempts: the cycle reports failures and does not move on",
+   "window": [
+    21379661,
+    21380660
+   ],
+   "eventsFound": 25,
+   "delivered": 50,
+   "suppressedDuplicates": 0,
+   "failed": 25,
+   "cursorAfter": null,
+   "cursorMoved": false
+  },
+  {
+   "id": "channel-recovered",
+   "title": "Discord back: only what it missed is sent; ntfy and the webhook are not sent the same alerts again",
+   "window": [
+    21379661,
+    21380660
+   ],
+   "eventsFound": 25,
+   "delivered": 25,
+   "suppressedDuplicates": 50,
+   "failed": 0,
+   "cursorAfter": 21380660,
+   "sentTo": {
+    "discord": 25,
+    "ntfy": 0,
+    "webhook": 0
+   }
+  },
+  {
+   "id": "call-condition",
+   "title": "A call condition over the last 200 blocks of the window",
+   "window": [
+    21380461,
+    21380660
+   ],
+   "eventsFound": 3,
+   "delivered": 9,
+   "suppressedDuplicates": 0,
+   "failed": 0,
+   "cursorAfter": 21380660
+  }
+ ],
+ "alerts": {
+  "keys": [
+   {
+    "key": "price:pros-above-60c:1793082035",
+    "condition": "pros-above-60c",
+    "block": 21379661
+   },
+   {
+    "key": "0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672:0",
+    "condition": "wpros-deposits",
+    "block": 21379741
+   },
+   {
+    "key": "0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7:0",
+    "condition": "wpros-deposits",
+    "block": 21379834
+   },
+   {
+    "key": "0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef:0",
+    "condition": "wpros-deposits",
+    "block": 21379854
+   },
+   {
+    "key": "0x64b249d63637d9d38c531bee21d16ee74eb20fd2081562a8026cf8bf5527232f:0",
+    "condition": "wpros-deposits",
+    "block": 21379874
+   },
+   {
+    "key": "0x5653f943458775d7554cb77a07a96c447ad50627f2e33ddc54b7f593292d01c7:0",
+    "condition": "wpros-deposits",
+    "block": 21379948
+   },
+   {
+    "key": "0x20e89a05db11160f96d96feee947b9b8eb19f3715777e25a6cad35242e8e4b02:0",
+    "condition": "wpros-deposits",
+    "block": 21379969
+   },
+   {
+    "key": "0xa1a4110078f3fe0329b65b73a4a4c3ff42892a7b1b285ff44f32be539f1b1953:0",
+    "condition": "wpros-deposits",
+    "block": 21379981
+   },
+   {
+    "key": "0xe07f03081daba8688bc6025f1c4473e672609a74267e5ebcd06d651bd514c6cb:0",
+    "condition": "wpros-deposits",
+    "block": 21380037
+   },
+   {
+    "key": "0xf433445728da2865b1c890aaf4ad1e387c1bdffda1d5b996ed95d02eba22ffad:0",
+    "condition": "wpros-deposits",
+    "block": 21380059
+   },
+   {
+    "key": "0x24be595c3df9eeb535dbce39a57e77e435ec39abe0a025ce602fb0387a87bf68:0",
+    "condition": "wpros-deposits",
+    "block": 21380102
+   },
+   {
+    "key": "0xdfcd59ab24dbbdd7f48ccf2c2d49024b1f8a8de8614124f71539e11758fe4324:0",
+    "condition": "wpros-deposits",
+    "block": 21380118
+   },
+   {
+    "key": "0x5b0f1811d1f7f4510032f87d17a5f8d63494b8dcb13ef6c8089d9cbc62848bf9:0",
+    "condition": "wpros-deposits",
+    "block": 21380170
+   },
+   {
+    "key": "0xe0349022f57b6fc015f6e28a5e186c5cd9f7d45722f5d894e82c8a56decb08fa:0",
+    "condition": "wpros-deposits",
+    "block": 21380242
+   },
+   {
+    "key": "0xecd9790363f7edf73b72c9fd003d3d828c01e1371f901294002a337c35c7ca03:0",
+    "condition": "wpros-deposits",
+    "block": 21380313
+   },
+   {
+    "key": "0xdbba1983a61ac9aac1435109fa0cea71238dba6e698545d2692d97f758d4f608:0",
+    "condition": "wpros-deposits",
+    "block": 21380329
+   },
+   {
+    "key": "0xb32146c875392ccfb81b6335073c5aabe2e4cc99e2f59d69720e54cf6abd93bc:0",
+    "condition": "wpros-deposits",
+    "block": 21380351
+   },
+   {
+    "key": "0x759936b006963558199c067cd966a810f3f2d614e6e6abf57dffd7e1deaa3f51:1",
+    "condition": "wpros-deposits",
+    "block": 21380430
+   },
+   {
+    "key": "0xc7a2d444e54e18411226fc6d7bf242de05988010ca17c37838e7e5c0148bb153:20",
+    "condition": "wpros-deposits",
+    "block": 21380461
+   },
+   {
+    "key": "0x2296a07d0cf1cd896048ae7b91b61c690ca240214ed45814d6ee03eced438bbf:0",
+    "condition": "wpros-deposits",
+    "block": 21380465
+   },
+   {
+    "key": "0xf95e7c75193901dc8d094c8c516df3ff0f316a1f179662575460c21514d835b5:1",
+    "condition": "wpros-1k",
+    "block": 21380483
+   },
+   {
+    "key": "0xa27623a512dc44d4b54ecebed0dd593b8496cb3b14cc801a9e43189882e9a6b1:0",
+    "condition": "wpros-deposits",
+    "block": 21380484
+   },
+   {
+    "key": "0x47c3635edeedceb43822e872ed6d06c12619bfa4c3da383927e3936f913a80d0:2",
+    "condition": "wpros-deposits",
+    "block": 21380523
+   },
+   {
+    "key": "0x47c3635edeedceb43822e872ed6d06c12619bfa4c3da383927e3936f913a80d0:4",
+    "condition": "wpros-1k",
+    "block": 21380523
+   },
+   {
+    "key": "0xa16ff24fec4fd31e4338a8c3a04426ce947d7caae6a01b28ed2bdf1faded49a7:0",
+    "condition": "wpros-deposits",
+    "block": 21380548
+   },
+   {
+    "key": "0xa1d1b4f50ac316f269ddd0ee5edb9a1281af6b87eca223a838f0a3b8fb639cbb:0",
+    "condition": "wpros-deposits",
+    "block": 21380613
+   },
+   {
+    "key": "0xed436fced3f36897cfb147c844a8b88d5f7b0cba43ebff5c6bf11e912b82ce0e:0",
+    "condition": "wpros-deposits",
+    "block": 21380615
+   },
+   {
+    "key": "0xed436fced3f36897cfb147c844a8b88d5f7b0cba43ebff5c6bf11e912b82ce0e:2",
+    "condition": "wpros-1k",
+    "block": 21380615
+   },
+   {
+    "key": "0xf1c2b35b3ef2b10996229adf1e3c8fa53a222734d1e86b1c15d768547c3414a4:3",
+    "condition": "wpros-deposits",
+    "block": 21380618
+   }
+  ],
+  "sample": [
+   {
+    "key": "price:pros-above-60c:1793082035",
+    "condition": "pros-above-60c",
+    "title": "PROS/USD is above 0.6",
+    "what": "PROS/USD reads 0.625673, above your threshold of 0.6",
+    "value": "0.625673 USD (feed updated 2026-10-27 06:20:35 UTC)",
+    "block": 21379661,
+    "link": "https://www.pharosscan.xyz/address/0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466"
+   },
+   {
+    "key": "0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21379741,
+    "link": "https://www.pharosscan.xyz/tx/0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672"
+   },
+   {
+    "key": "0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21379834,
+    "link": "https://www.pharosscan.xyz/tx/0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7"
+   },
+   {
+    "key": "0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21379854,
+    "link": "https://www.pharosscan.xyz/tx/0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef"
+   },
+   {
+    "key": "0x64b249d63637d9d38c531bee21d16ee74eb20fd2081562a8026cf8bf5527232f:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21379874,
+    "link": "https://www.pharosscan.xyz/tx/0x64b249d63637d9d38c531bee21d16ee74eb20fd2081562a8026cf8bf5527232f"
+   },
+   {
+    "key": "0x5653f943458775d7554cb77a07a96c447ad50627f2e33ddc54b7f593292d01c7:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21379948,
+    "link": "https://www.pharosscan.xyz/tx/0x5653f943458775d7554cb77a07a96c447ad50627f2e33ddc54b7f593292d01c7"
+   },
+   {
+    "key": "0x20e89a05db11160f96d96feee947b9b8eb19f3715777e25a6cad35242e8e4b02:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21379969,
+    "link": "https://www.pharosscan.xyz/tx/0x20e89a05db11160f96d96feee947b9b8eb19f3715777e25a6cad35242e8e4b02"
+   },
+   {
+    "key": "0xa1a4110078f3fe0329b65b73a4a4c3ff42892a7b1b285ff44f32be539f1b1953:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21379981,
+    "link": "https://www.pharosscan.xyz/tx/0xa1a4110078f3fe0329b65b73a4a4c3ff42892a7b1b285ff44f32be539f1b1953"
+   },
+   {
+    "key": "0xe07f03081daba8688bc6025f1c4473e672609a74267e5ebcd06d651bd514c6cb:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380037,
+    "link": "https://www.pharosscan.xyz/tx/0xe07f03081daba8688bc6025f1c4473e672609a74267e5ebcd06d651bd514c6cb"
+   },
+   {
+    "key": "0xf433445728da2865b1c890aaf4ad1e387c1bdffda1d5b996ed95d02eba22ffad:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380059,
+    "link": "https://www.pharosscan.xyz/tx/0xf433445728da2865b1c890aaf4ad1e387c1bdffda1d5b996ed95d02eba22ffad"
+   },
+   {
+    "key": "0x24be595c3df9eeb535dbce39a57e77e435ec39abe0a025ce602fb0387a87bf68:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380102,
+    "link": "https://www.pharosscan.xyz/tx/0x24be595c3df9eeb535dbce39a57e77e435ec39abe0a025ce602fb0387a87bf68"
+   },
+   {
+    "key": "0xdfcd59ab24dbbdd7f48ccf2c2d49024b1f8a8de8614124f71539e11758fe4324:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380118,
+    "link": "https://www.pharosscan.xyz/tx/0xdfcd59ab24dbbdd7f48ccf2c2d49024b1f8a8de8614124f71539e11758fe4324"
+   },
+   {
+    "key": "0x5b0f1811d1f7f4510032f87d17a5f8d63494b8dcb13ef6c8089d9cbc62848bf9:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380170,
+    "link": "https://www.pharosscan.xyz/tx/0x5b0f1811d1f7f4510032f87d17a5f8d63494b8dcb13ef6c8089d9cbc62848bf9"
+   },
+   {
+    "key": "0xe0349022f57b6fc015f6e28a5e186c5cd9f7d45722f5d894e82c8a56decb08fa:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380242,
+    "link": "https://www.pharosscan.xyz/tx/0xe0349022f57b6fc015f6e28a5e186c5cd9f7d45722f5d894e82c8a56decb08fa"
+   },
+   {
+    "key": "0xecd9790363f7edf73b72c9fd003d3d828c01e1371f901294002a337c35c7ca03:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380313,
+    "link": "https://www.pharosscan.xyz/tx/0xecd9790363f7edf73b72c9fd003d3d828c01e1371f901294002a337c35c7ca03"
+   },
+   {
+    "key": "0xdbba1983a61ac9aac1435109fa0cea71238dba6e698545d2692d97f758d4f608:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380329,
+    "link": "https://www.pharosscan.xyz/tx/0xdbba1983a61ac9aac1435109fa0cea71238dba6e698545d2692d97f758d4f608"
+   },
+   {
+    "key": "0xb32146c875392ccfb81b6335073c5aabe2e4cc99e2f59d69720e54cf6abd93bc:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380351,
+    "link": "https://www.pharosscan.xyz/tx/0xb32146c875392ccfb81b6335073c5aabe2e4cc99e2f59d69720e54cf6abd93bc"
+   },
+   {
+    "key": "0x759936b006963558199c067cd966a810f3f2d614e6e6abf57dffd7e1deaa3f51:1",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380430,
+    "link": "https://www.pharosscan.xyz/tx/0x759936b006963558199c067cd966a810f3f2d614e6e6abf57dffd7e1deaa3f51"
+   },
+   {
+    "key": "0xc7a2d444e54e18411226fc6d7bf242de05988010ca17c37838e7e5c0148bb153:20",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380461,
+    "link": "https://www.pharosscan.xyz/tx/0xc7a2d444e54e18411226fc6d7bf242de05988010ca17c37838e7e5c0148bb153"
+   },
+   {
+    "key": "0x2296a07d0cf1cd896048ae7b91b61c690ca240214ed45814d6ee03eced438bbf:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380465,
+    "link": "https://www.pharosscan.xyz/tx/0x2296a07d0cf1cd896048ae7b91b61c690ca240214ed45814d6ee03eced438bbf"
+   },
+   {
+    "key": "0xf95e7c75193901dc8d094c8c516df3ff0f316a1f179662575460c21514d835b5:1",
+    "condition": "wpros-1k",
+    "title": "Large WPROS transfer",
+    "what": "1,024.949364 WPROS moved from 0x9365…b470 to 0x912c…f647",
+    "value": "1,024.949364 WPROS (alert threshold 1000 WPROS)",
+    "block": 21380483,
+    "link": "https://www.pharosscan.xyz/tx/0xf95e7c75193901dc8d094c8c516df3ff0f316a1f179662575460c21514d835b5"
+   },
+   {
+    "key": "0xa27623a512dc44d4b54ecebed0dd593b8496cb3b14cc801a9e43189882e9a6b1:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380484,
+    "link": "https://www.pharosscan.xyz/tx/0xa27623a512dc44d4b54ecebed0dd593b8496cb3b14cc801a9e43189882e9a6b1"
+   },
+   {
+    "key": "0x47c3635edeedceb43822e872ed6d06c12619bfa4c3da383927e3936f913a80d0:2",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380523,
+    "link": "https://www.pharosscan.xyz/tx/0x47c3635edeedceb43822e872ed6d06c12619bfa4c3da383927e3936f913a80d0"
+   },
+   {
+    "key": "0x47c3635edeedceb43822e872ed6d06c12619bfa4c3da383927e3936f913a80d0:4",
+    "condition": "wpros-1k",
+    "title": "Large WPROS transfer",
+    "what": "1,215.277849 WPROS moved from 0x08cd…4df5 to 0xcb79…6300",
+    "value": "1,215.277849 WPROS (alert threshold 1000 WPROS)",
+    "block": 21380523,
+    "link": "https://www.pharosscan.xyz/tx/0x47c3635edeedceb43822e872ed6d06c12619bfa4c3da383927e3936f913a80d0"
+   },
+   {
+    "key": "0xa16ff24fec4fd31e4338a8c3a04426ce947d7caae6a01b28ed2bdf1faded49a7:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380548,
+    "link": "https://www.pharosscan.xyz/tx/0xa16ff24fec4fd31e4338a8c3a04426ce947d7caae6a01b28ed2bdf1faded49a7"
+   },
+   {
+    "key": "0xa1d1b4f50ac316f269ddd0ee5edb9a1281af6b87eca223a838f0a3b8fb639cbb:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380613,
+    "link": "https://www.pharosscan.xyz/tx/0xa1d1b4f50ac316f269ddd0ee5edb9a1281af6b87eca223a838f0a3b8fb639cbb"
+   },
+   {
+    "key": "0xed436fced3f36897cfb147c844a8b88d5f7b0cba43ebff5c6bf11e912b82ce0e:0",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380615,
+    "link": "https://www.pharosscan.xyz/tx/0xed436fced3f36897cfb147c844a8b88d5f7b0cba43ebff5c6bf11e912b82ce0e"
+   },
+   {
+    "key": "0xed436fced3f36897cfb147c844a8b88d5f7b0cba43ebff5c6bf11e912b82ce0e:2",
+    "condition": "wpros-1k",
+    "title": "Large WPROS transfer",
+    "what": "1,044.822578 WPROS moved from 0x08cd…4df5 to 0xcb79…6300",
+    "value": "1,044.822578 WPROS (alert threshold 1000 WPROS)",
+    "block": 21380615,
+    "link": "https://www.pharosscan.xyz/tx/0xed436fced3f36897cfb147c844a8b88d5f7b0cba43ebff5c6bf11e912b82ce0e"
+   },
+   {
+    "key": "0xf1c2b35b3ef2b10996229adf1e3c8fa53a222734d1e86b1c15d768547c3414a4:3",
+    "condition": "wpros-deposits",
+    "title": "Deposit emitted",
+    "what": "WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)",
+    "value": "Deposit(address,uint256)",
+    "block": 21380618,
+    "link": "https://www.pharosscan.xyz/tx/0xf1c2b35b3ef2b10996229adf1e3c8fa53a222734d1e86b1c15d768547c3414a4"
+   }
+  ],
+  "callSample": [
+   {
+    "key": "0x345b61847f469c4064f294b5158e71dce7dc434d255949fac19c828f12349f21:call",
+    "condition": "calls-0xf4a0",
+    "title": "Call to 0xf4a0…904c",
+    "what": "0x2830…b8cc called 0x04060252 on 0xf4a0…904c",
+    "value": "no PROS sent with the call",
+    "block": 21380483,
+    "link": "https://www.pharosscan.xyz/tx/0x345b61847f469c4064f294b5158e71dce7dc434d255949fac19c828f12349f21"
+   },
+   {
+    "key": "0xcca7f9ca6e3f902f78260894f01d977eee269d133ead71484c92308e33715778:call",
+    "condition": "calls-0xf4a0",
+    "title": "Call to 0xf4a0…904c",
+    "what": "0xeb54…da15 called 0x04060252 on 0xf4a0…904c",
+    "value": "no PROS sent with the call",
+    "block": 21380543,
+    "link": "https://www.pharosscan.xyz/tx/0xcca7f9ca6e3f902f78260894f01d977eee269d133ead71484c92308e33715778"
+   },
+   {
+    "key": "0x857697c13407be1e6593941f69a5ffe8d4069062ab21d3ec808dccf7c9516ed6:call",
+    "condition": "calls-0xf4a0",
+    "title": "Call to 0xf4a0…904c",
+    "what": "0x54de…45cc called 0x04060252 on 0xf4a0…904c",
+    "value": "no PROS sent with the call",
+    "block": 21380590,
+    "link": "https://www.pharosscan.xyz/tx/0x857697c13407be1e6593941f69a5ffe8d4069062ab21d3ec808dccf7c9516ed6"
+   }
+  ]
+ },
+ "received": [
+  {
+   "channel": "discord",
+   "method": "POST",
+   "path": "/discord/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 322,
+   "body": "{\"content\":\"🔔 PROS/USD is above 0.6\\nWhat: PROS/USD reads 0.625673, above your threshold of 0.6\\nValue: 0.625673 USD (feed updated 2026-10-27 06:20:35 UTC)\\nBlock: 21,379,661\\nLink: https://www.pharosscan.xyz/address/0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\\nAlert: PROS/USD above 0.60\",\"allowed_mentions\":{\"parse\":[]}}",
+   "answered": 204
+  },
+  {
+   "channel": "ntfy",
+   "method": "POST",
+   "path": "/ntfy/pharos-alerts",
+   "contentType": "text/plain;charset=UTF-8",
+   "title": "PROS/USD is above 0.6",
+   "click": "https://www.pharosscan.xyz/address/0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466",
+   "bytes": 271,
+   "body": "🔔 PROS/USD is above 0.6\nWhat: PROS/USD reads 0.625673, above your threshold of 0.6\nValue: 0.625673 USD (feed updated 2026-10-27 06:20:35 UTC)\nBlock: 21,379,661\nLink: https://www.pharosscan.xyz/address/0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\nAlert: PROS/USD above 0.60",
+   "answered": 200
+  },
+  {
+   "channel": "webhook",
+   "method": "POST",
+   "path": "/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 616,
+   "body": "{\"title\":\"PROS/USD is above 0.6\",\"what\":\"PROS/USD reads 0.625673, above your threshold of 0.6\",\"value\":\"0.625673 USD (feed updated 2026-10-27 06:20:35 UTC)\",\"block\":21379661,\"link\":\"https://www.pharosscan.xyz/address/0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\",\"key\":\"price:pros-above-60c:1793082035\",\"condition\":\"pros-above-60c\",\"text\":\"🔔 PROS/USD is above 0.6\\nWhat: PROS/USD reads 0.625673, above your threshold of 0.6\\nValue: 0.625673 USD (feed updated 2026-10-27 06:20:35 UTC)\\nBlock: 21,379,661\\nLink: https://www.pharosscan.xyz/address/0x371ed36aee5bffbed1a2aa9b7ded7f4eb30f5466\\nAlert: PROS/USD above 0.60\"}",
+   "answered": 200
+  },
+  {
+   "channel": "discord",
+   "method": "POST",
+   "path": "/discord/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 324,
+   "body": "{\"content\":\"🔔 Deposit emitted\\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\\nValue: Deposit(address,uint256)\\nBlock: 21,379,741\\nLink: https://www.pharosscan.xyz/tx/0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672\\nAlert: WPROS Deposit events\",\"allowed_mentions\":{\"parse\":[]}}",
+   "answered": 204
+  },
+  {
+   "channel": "ntfy",
+   "method": "POST",
+   "path": "/ntfy/pharos-alerts",
+   "contentType": "text/plain;charset=UTF-8",
+   "title": "Deposit emitted",
+   "click": "https://www.pharosscan.xyz/tx/0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672",
+   "bytes": 273,
+   "body": "🔔 Deposit emitted\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\nValue: Deposit(address,uint256)\nBlock: 21,379,741\nLink: https://www.pharosscan.xyz/tx/0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672\nAlert: WPROS Deposit events",
+   "answered": 200
+  },
+  {
+   "channel": "webhook",
+   "method": "POST",
+   "path": "/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 656,
+   "body": "{\"title\":\"Deposit emitted\",\"what\":\"WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\",\"value\":\"Deposit(address,uint256)\",\"block\":21379741,\"link\":\"https://www.pharosscan.xyz/tx/0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672\",\"key\":\"0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672:0\",\"condition\":\"wpros-deposits\",\"text\":\"🔔 Deposit emitted\\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\\nValue: Deposit(address,uint256)\\nBlock: 21,379,741\\nLink: https://www.pharosscan.xyz/tx/0xa4f90a5eeab855aa52e7616b518fdd2170f54b046460739b7b6caab34de92672\\nAlert: WPROS Deposit events\"}",
+   "answered": 200
+  },
+  {
+   "channel": "discord",
+   "method": "POST",
+   "path": "/discord/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 324,
+   "body": "{\"content\":\"🔔 Deposit emitted\\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\\nValue: Deposit(address,uint256)\\nBlock: 21,379,834\\nLink: https://www.pharosscan.xyz/tx/0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7\\nAlert: WPROS Deposit events\",\"allowed_mentions\":{\"parse\":[]}}",
+   "answered": 204
+  },
+  {
+   "channel": "ntfy",
+   "method": "POST",
+   "path": "/ntfy/pharos-alerts",
+   "contentType": "text/plain;charset=UTF-8",
+   "title": "Deposit emitted",
+   "click": "https://www.pharosscan.xyz/tx/0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7",
+   "bytes": 273,
+   "body": "🔔 Deposit emitted\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\nValue: Deposit(address,uint256)\nBlock: 21,379,834\nLink: https://www.pharosscan.xyz/tx/0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7\nAlert: WPROS Deposit events",
+   "answered": 200
+  },
+  {
+   "channel": "webhook",
+   "method": "POST",
+   "path": "/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 656,
+   "body": "{\"title\":\"Deposit emitted\",\"what\":\"WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\",\"value\":\"Deposit(address,uint256)\",\"block\":21379834,\"link\":\"https://www.pharosscan.xyz/tx/0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7\",\"key\":\"0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7:0\",\"condition\":\"wpros-deposits\",\"text\":\"🔔 Deposit emitted\\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\\nValue: Deposit(address,uint256)\\nBlock: 21,379,834\\nLink: https://www.pharosscan.xyz/tx/0x93ee7dded4a579e737446b6f5674977785e638c1a8342249406e409a2166f5e7\\nAlert: WPROS Deposit events\"}",
+   "answered": 200
+  },
+  {
+   "channel": "discord",
+   "method": "POST",
+   "path": "/discord/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 324,
+   "body": "{\"content\":\"🔔 Deposit emitted\\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\\nValue: Deposit(address,uint256)\\nBlock: 21,379,854\\nLink: https://www.pharosscan.xyz/tx/0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef\\nAlert: WPROS Deposit events\",\"allowed_mentions\":{\"parse\":[]}}",
+   "answered": 204
+  },
+  {
+   "channel": "ntfy",
+   "method": "POST",
+   "path": "/ntfy/pharos-alerts",
+   "contentType": "text/plain;charset=UTF-8",
+   "title": "Deposit emitted",
+   "click": "https://www.pharosscan.xyz/tx/0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef",
+   "bytes": 273,
+   "body": "🔔 Deposit emitted\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\nValue: Deposit(address,uint256)\nBlock: 21,379,854\nLink: https://www.pharosscan.xyz/tx/0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef\nAlert: WPROS Deposit events",
+   "answered": 200
+  },
+  {
+   "channel": "webhook",
+   "method": "POST",
+   "path": "/webhook",
+   "contentType": "application/json",
+   "title": null,
+   "click": null,
+   "bytes": 656,
+   "body": "{\"title\":\"Deposit emitted\",\"what\":\"WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\",\"value\":\"Deposit(address,uint256)\",\"block\":21379854,\"link\":\"https://www.pharosscan.xyz/tx/0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef\",\"key\":\"0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef:0\",\"condition\":\"wpros-deposits\",\"text\":\"🔔 Deposit emitted\\nWhat: WPROS (Wrapped PROS) · 0x52c4…f0b0 emitted Deposit(address,uint256)\\nValue: Deposit(address,uint256)\\nBlock: 21,379,854\\nLink: https://www.pharosscan.xyz/tx/0x2feed0d6f2612fd4513380c81eb8426b9951a6cccfa0ae4a74216b953c9d1aef\\nAlert: WPROS Deposit events\"}",
+   "answered": 200
+  }
+ ],
+ "receivedTotal": 246,
+ "summary": {
+  "eventsInFirstWindow": 29,
+  "duplicatesSentOnRescan": 0,
+  "outageLostNothing": true,
+  "callEvents": 3
+ }
+}

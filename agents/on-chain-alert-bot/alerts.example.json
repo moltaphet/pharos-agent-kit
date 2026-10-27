@@ -1,0 +1,9 @@
+{
+  "conditions": [
+    { "id": "usdc-10k", "label": "USDC transfer of 10,000 or more", "type": "transfer", "token": "USDC", "min": "10000" },
+    { "id": "pros-above-60c", "label": "PROS/USD above 0.60", "type": "price", "feed": "PROS/USD", "op": "above", "threshold": "0.60" },
+    { "id": "wpros-deposits", "label": "WPROS Deposit events", "type": "event", "contract": "0x52c48d4213107b20bc583832b0d951fb9ca8f0b0", "signature": "Deposit(address,uint256)" },
+    { "id": "calls", "label": "Calls of 0x04060252 on 0xf4a0…904c", "type": "call", "contract": "0xf4a04f7537d8456ba0c78a518cb60a334579904c", "method": "0x04060252" }
+  ],
+  "labels": {}
+}

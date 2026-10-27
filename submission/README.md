@@ -27,6 +27,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 19 | Invoice-to-Payment Agent | [demo](https://pharos-agent-kit.vercel.app/#/invoice-to-payment-agent/try) | [agents/invoice-to-payment-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/invoice-to-payment-agent) | [19-invoice-to-payment-agent.md](19-invoice-to-payment-agent.md) |
 | 20 | x402 Paywalled API | [demo](https://pharos-agent-kit.vercel.app/#/x402-paywalled-api/try) | [agents/x402-paywalled-api](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-paywalled-api) | [20-x402-paywalled-api.md](20-x402-paywalled-api.md) |
 | 21 | x402 Agent Buyer | [demo](https://pharos-agent-kit.vercel.app/#/x402-agent-buyer/try) | [agents/x402-agent-buyer](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-agent-buyer) | [21-x402-agent-buyer.md](21-x402-agent-buyer.md) |
+| 22 | On-Chain Alert Bot | [demo](https://pharos-agent-kit.vercel.app/#/on-chain-alert-bot/try) | [agents/on-chain-alert-bot](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/on-chain-alert-bot) | [22-on-chain-alert-bot.md](22-on-chain-alert-bot.md) |
 
 ## Tests of the shared platform
 
