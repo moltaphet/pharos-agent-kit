@@ -57,6 +57,7 @@ test('out of gas: nearly all the gas used and no reason from the contract', asyn
 });
 
 test('a revert message is matched to its cause', async () => {
+  assert.equal((await d(world({ replay: { ok: false, data: errorString('ERC20: transfer amount exceeds allowance') } }))).category, 'insufficient-allowance', 'a message about the allowance is not read as one about the balance');
   const cases = [['owner only', 'not-authorized'], ['Ownable: caller is not the owner', 'not-authorized'], ['Pausable: paused', 'paused-or-blocked'], ['blocked', 'paused-or-blocked'], ['UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT', 'slippage'],
     ['SPL0', 'slippage'], ['Transaction too old', 'deadline'], ['UniswapV2Router: EXPIRED', 'deadline'], ['transfer to the zero address', 'zero-address'], ['STF', 'transfer-failed'], ['something else entirely', 'revert-reason']];
   for (const [msg, category] of cases) assert.equal((await d(world({ replay: { ok: false, data: errorString(msg) } }))).category, category, msg);

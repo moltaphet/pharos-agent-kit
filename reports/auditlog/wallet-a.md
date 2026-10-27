@@ -2,20 +2,20 @@
 
 **Network:** Pharos mainnet (1672)  
 **Period:** 2026-10-26 00:00:00 UTC to 2026-10-26 23:59:59 UTC (blocks 21,261,543–21,355,420)  
-**Generated:** 2026-10-27T10:26:39.535Z  
+**Generated:** 2026-10-27T15:04:36.715Z  
 **Source:** Pharos mainnet public RPC: token Transfer/Approval logs filtered on the wallet, then each transaction and receipt
 
 ## Summary
 
-In this period the wallet appears in 52 transactions: 2 incoming and 0 outgoing token transfers, 33 swaps, 17 approvals and 0 other contract interactions. Its native PROS balance went from 16.866763 to 0.777186 PROS; fees paid on the transactions it sent and that are listed: 0.388331 PROS.
+In this period the wallet appears in 52 transactions: 2 incoming and 0 outgoing token transfers, 0 swaps, 17 approvals and 33 other contract interactions. Its native PROS balance went from 16.866763 to 0.777186 PROS; fees paid on the transactions it sent and that are listed: 0.388331 PROS.
 
 | Category | Events | Value (USD, where priced) |
 |---|---:|---:|
 | Transfers in | 2 | $38.21 |
 | Transfers out | 0 | $0 |
-| Swaps | 33 | $621.13 |
+| Swaps | 0 | $0 |
 | Approvals | 17 | 0 unlimited, 0 revoked |
-| Contract interactions | 0 | |
+| Contract interactions | 33 | |
 
 ### Token transfers by token
 
@@ -25,11 +25,11 @@ In this period the wallet appears in 52 transactions: 2 incoming and 0 outgoing 
 
 ## Notable transactions
 
-- **Swapped 38.05273 USDC for 37.754501 APT via 0x9219…ea6b** — One of the largest movements of value in the period (about $38.05). Block 21,328,906, 2026-10-26 17:14:11 UTC. [Transaction](https://www.pharosscan.xyz/tx/0x97fdb39e77054dc17dc70d0090b5ec694e49a02ee5b1633862d3a0b7ae33e981)
-- **Swapped 37.754501 APT for 37.99565 USDC via 0x9219…ea6b** — One of the largest movements of value in the period (about $38). Block 21,328,929, 2026-10-26 17:14:34 UTC. [Transaction](https://www.pharosscan.xyz/tx/0x206bee57b4d4814cb84aa921a24bfdf19217ae1c616456bc17172a7580671fde)
-- **Swapped 37.99565 USDC for 37.697869 APT via 0x9219…ea6b** — One of the largest movements of value in the period (about $38). Block 21,328,973, 2026-10-26 17:15:17 UTC. [Transaction](https://www.pharosscan.xyz/tx/0x65dacaacada92609c8856e037d7534ba6d4202eaa2693251301150b1857b93b6)
-- **Swapped 37.697869 APT for 37.938656 USDC via 0x9219…ea6b** — One of the largest movements of value in the period (about $37.94). Block 21,329,001, 2026-10-26 17:15:45 UTC. [Transaction](https://www.pharosscan.xyz/tx/0xdcb4d42a2a06c71e456d6fab7437182f464348e140d75bd8acdc056f7f98c1a3)
-- **Swapped 37.938656 USDC for 37.641322 APT via 0x9219…ea6b** — One of the largest movements of value in the period (about $37.94). Block 21,329,039, 2026-10-26 17:16:23 UTC. [Transaction](https://www.pharosscan.xyz/tx/0xcf496cc592c752b48b781d213bbd6565e84f0c962115f7ef86f4ae42eb605601)
+- **Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 38.05273 USDC, received 37.754501 APT** — One of the largest movements of value in the period (about $38.05). Block 21,328,906, 2026-10-26 17:14:11 UTC. [Transaction](https://www.pharosscan.xyz/tx/0x97fdb39e77054dc17dc70d0090b5ec694e49a02ee5b1633862d3a0b7ae33e981)
+- **Called redeem on 0x9219…ea6b: sent 37.754501 APT, received 37.99565 USDC** — One of the largest movements of value in the period (about $38). Block 21,328,929, 2026-10-26 17:14:34 UTC. [Transaction](https://www.pharosscan.xyz/tx/0x206bee57b4d4814cb84aa921a24bfdf19217ae1c616456bc17172a7580671fde)
+- **Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.99565 USDC, received 37.697869 APT** — One of the largest movements of value in the period (about $38). Block 21,328,973, 2026-10-26 17:15:17 UTC. [Transaction](https://www.pharosscan.xyz/tx/0x65dacaacada92609c8856e037d7534ba6d4202eaa2693251301150b1857b93b6)
+- **Called redeem on 0x9219…ea6b: sent 37.697869 APT, received 37.938656 USDC** — One of the largest movements of value in the period (about $37.94). Block 21,329,001, 2026-10-26 17:15:45 UTC. [Transaction](https://www.pharosscan.xyz/tx/0xdcb4d42a2a06c71e456d6fab7437182f464348e140d75bd8acdc056f7f98c1a3)
+- **Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.938656 USDC, received 37.641322 APT** — One of the largest movements of value in the period (about $37.94). Block 21,329,039, 2026-10-26 17:16:23 UTC. [Transaction](https://www.pharosscan.xyz/tx/0xcf496cc592c752b48b781d213bbd6565e84f0c962115f7ef86f4ae42eb605601)
 
 ## Transfers
 
@@ -40,41 +40,7 @@ In this period the wallet appears in 52 transactions: 2 incoming and 0 outgoing 
 
 ## Swaps
 
-| Time (UTC) | What happened | Value | Transaction |
-|---|---|---:|---|
-| 2026-10-26 10:51:02 | Swapped 9.361255 USDC for 9.288265 APT via 0x9219…ea6b | $9.36 | [0xeeb1fa29…](https://www.pharosscan.xyz/tx/0xeeb1fa29188482b61d6fe03b0e0e979eda45a3fd84295278731e3fe4403f28be) |
-| 2026-10-26 10:51:54 | Swapped 9.288265 APT for 9.347213 USDC via 0x9219…ea6b | $9.35 | [0x2f7880db…](https://www.pharosscan.xyz/tx/0x2f7880dbcac2ae48cc330d8553218ee7c85b2ab6e5f214db825ea320584c34b1) |
-| 2026-10-26 10:53:33 | Swapped 9.347213 USDC for 9.274332 APT via 0x9219…ea6b | $9.35 | [0x550403e7…](https://www.pharosscan.xyz/tx/0x550403e7bea4e380dd0009a6e3504a47a38dfb31444cf302414d070093bb6f91) |
-| 2026-10-26 10:55:01 | Swapped 9.274332 APT for 9.333192 USDC via 0x9219…ea6b | $9.33 | [0xee91fbd9…](https://www.pharosscan.xyz/tx/0xee91fbd9b9fe3a73449c43fb100fae5d30508911fe7dc95be7e420e3ff962006) |
-| 2026-10-26 10:55:34 | Swapped 9.333192 USDC for 9.260421 APT via 0x9219…ea6b | $9.33 | [0x423d07f3…](https://www.pharosscan.xyz/tx/0x423d07f3503ae088fb8098395626badf9599ca195b4d5db299335f64a9799d40) |
-| 2026-10-26 10:56:37 | Swapped 9.260421 APT for 9.319192 USDC via 0x9219…ea6b | $9.32 | [0xb352b6d4…](https://www.pharosscan.xyz/tx/0xb352b6d441065cbd5f4e01546369557079d1be773316a8aa68c5bf42f5795190) |
-| 2026-10-26 10:57:21 | Swapped 9.319192 USDC for 9.24653 APT via 0x9219…ea6b | $9.32 | [0x8f975871…](https://www.pharosscan.xyz/tx/0x8f975871e61a41c3bc5a398d7caac2a5f07ff4382edcb997892bd73001ef4b4b) |
-| 2026-10-26 10:58:08 | Swapped 9.24653 APT for 9.305213 USDC via 0x9219…ea6b | $9.31 | [0xa3e18248…](https://www.pharosscan.xyz/tx/0xa3e18248ee6e9d2c3e5897f08532c00f7a7fd0c1b42ec32b3dbdfa2a9122f98f) |
-| 2026-10-26 10:58:43 | Swapped 9.305213 USDC for 9.23266 APT via 0x9219…ea6b | $9.31 | [0xbf4b89fb…](https://www.pharosscan.xyz/tx/0xbf4b89fb9229d546f5ddd3107d4a30f5cae47f071a66b7596304b8db1461be77) |
-| 2026-10-26 10:59:49 | Swapped 9.23266 APT for 9.291255 USDC via 0x9219…ea6b | $9.29 | [0x072db3f5…](https://www.pharosscan.xyz/tx/0x072db3f55efee66c0040f37f8e6cc8586116d819e3592f1a88f00ac0c952e895) |
-| 2026-10-26 11:00:28 | Swapped 9.291255 USDC for 9.218811 APT via 0x9219…ea6b | $9.29 | [0x38bb56d7…](https://www.pharosscan.xyz/tx/0x38bb56d7cd26ad4f6eb52c361901123bfa689a82e60b907ccc7f16a8f349d515) |
-| 2026-10-26 11:01:09 | Swapped 9.218811 APT for 9.277318 USDC via 0x9219…ea6b | $9.28 | [0xb8f8621b…](https://www.pharosscan.xyz/tx/0xb8f8621be5fb1345b9f6fbde21baaa751b1e7f63ef762bcd270e3df2641e1667) |
-| 2026-10-26 11:01:55 | Swapped 9.277318 USDC for 9.204982 APT via 0x9219…ea6b | $9.28 | [0x8f01276a…](https://www.pharosscan.xyz/tx/0x8f01276acc9a3553805263145fa814d145b1e1cb105fa461ea865ba7bf9dcbcd) |
-| 2026-10-26 11:02:46 | Swapped 9.204982 APT for 9.263402 USDC via 0x9219…ea6b | $9.26 | [0xe8296b4f…](https://www.pharosscan.xyz/tx/0xe8296b4f34b4d7b3238c0ba81c3fdb12ddb610a9b535657513a1d273efa33c4f) |
-| 2026-10-26 11:03:14 | Swapped 9.263402 USDC for 9.191175 APT via 0x9219…ea6b | $9.26 | [0x2f8f2990…](https://www.pharosscan.xyz/tx/0x2f8f29908b1f3cc791791398ff7f23cf8bc585941300c7c250bd7930488e8444) |
-| 2026-10-26 11:04:50 | Swapped 9.191175 APT for 9.249506 USDC via 0x9219…ea6b | $9.25 | [0x9743892a…](https://www.pharosscan.xyz/tx/0x9743892af460f701a223857a5aa8ec61cacdf3dd16aec770223d9ba8d77c2356) |
-| 2026-10-26 11:05:20 | Swapped 9.249506 USDC for 9.177387 APT via 0x9219…ea6b | $9.25 | [0x63a331c7…](https://www.pharosscan.xyz/tx/0x63a331c76e127291cde10222174afc312ee6a7bed06e345dae8f7fa508c35609) |
-| 2026-10-26 11:05:57 | Swapped 9.177387 APT for 9.235631 USDC via 0x9219…ea6b | $9.24 | [0xf4c3aa59…](https://www.pharosscan.xyz/tx/0xf4c3aa59c48ca9a49bdd832ba879b145bf9c5b60122ddebe95ff7affa524d1ed) |
-| 2026-10-26 11:06:26 | Swapped 9.235631 USDC for 9.16362 APT via 0x9219…ea6b | $9.24 | [0x9d1f147f…](https://www.pharosscan.xyz/tx/0x9d1f147fca1a84747295b7a01b3798a0e9096649a9afb8a3ea4dfb087d46ede1) |
-| 2026-10-26 11:07:30 | Swapped 9.163619 APT for 9.221776 USDC via 0x9219…ea6b | $9.22 | [0x16f9f837…](https://www.pharosscan.xyz/tx/0x16f9f837930c9f30d7c1c6b9271b6d13843f527399921abfc3c9f96c2eff6ced) |
-| 2026-10-26 11:07:59 | Swapped 9.221776 USDC for 9.149873 APT via 0x9219…ea6b | $9.22 | [0x947973d0…](https://www.pharosscan.xyz/tx/0x947973d0d17b87172e90efe10f80005db844ee931c10e8b578165a5eac6d81ee) |
-| 2026-10-26 13:07:48 | Swapped 9.149874 APT for 9.208318 USDC via 0x9219…ea6b | $9.21 | [0x23ea7b91…](https://www.pharosscan.xyz/tx/0x23ea7b91a7840385d22d37e2bfd06ffe2eb9127f809100836fb790e21d918320) |
-| 2026-10-26 17:14:11 | Swapped 38.05273 USDC for 37.754501 APT via 0x9219…ea6b | $38.05 | [0x97fdb39e…](https://www.pharosscan.xyz/tx/0x97fdb39e77054dc17dc70d0090b5ec694e49a02ee5b1633862d3a0b7ae33e981) |
-| 2026-10-26 17:14:34 | Swapped 37.754501 APT for 37.99565 USDC via 0x9219…ea6b | $38 | [0x206bee57…](https://www.pharosscan.xyz/tx/0x206bee57b4d4814cb84aa921a24bfdf19217ae1c616456bc17172a7580671fde) |
-| 2026-10-26 17:15:17 | Swapped 37.99565 USDC for 37.697869 APT via 0x9219…ea6b | $38 | [0x65dacaac…](https://www.pharosscan.xyz/tx/0x65dacaacada92609c8856e037d7534ba6d4202eaa2693251301150b1857b93b6) |
-| 2026-10-26 17:15:45 | Swapped 37.697869 APT for 37.938656 USDC via 0x9219…ea6b | $37.94 | [0xdcb4d42a…](https://www.pharosscan.xyz/tx/0xdcb4d42a2a06c71e456d6fab7437182f464348e140d75bd8acdc056f7f98c1a3) |
-| 2026-10-26 17:16:23 | Swapped 37.938656 USDC for 37.641322 APT via 0x9219…ea6b | $37.94 | [0xcf496cc5…](https://www.pharosscan.xyz/tx/0xcf496cc592c752b48b781d213bbd6565e84f0c962115f7ef86f4ae42eb605601) |
-| 2026-10-26 17:17:45 | Swapped 37.641322 APT for 37.881748 USDC via 0x9219…ea6b | $37.88 | [0x1528ae83…](https://www.pharosscan.xyz/tx/0x1528ae83e749c522fa3f50090bd8499fa656a86174aaf8c2fe149d08e3bee163) |
-| 2026-10-26 17:18:24 | Swapped 37.881748 USDC for 37.58486 APT via 0x9219…ea6b | $37.88 | [0x6c03c60a…](https://www.pharosscan.xyz/tx/0x6c03c60ace7930d4b048110fbed4085aca169411b15768fbecb5bd3bfb80f7f4) |
-| 2026-10-26 17:19:07 | Swapped 37.58486 APT for 37.824925 USDC via 0x9219…ea6b | $37.82 | [0xba289fcd…](https://www.pharosscan.xyz/tx/0xba289fcddb9d04008e98b55ed315d3d9d6bfb07df2bec3dab20f2c960322fb3d) |
-| 2026-10-26 17:19:45 | Swapped 37.824925 USDC for 37.528482 APT via 0x9219…ea6b | $37.82 | [0x01479211…](https://www.pharosscan.xyz/tx/0x0147921142cf0d9182cce04cef295116c46a3ec0581d2a67c5bd33ab42983f5e) |
-| 2026-10-26 17:20:29 | Swapped 37.528482 APT for 37.768187 USDC via 0x9219…ea6b | $37.77 | [0xc8466323…](https://www.pharosscan.xyz/tx/0xc84663237ae524dcdb09e74eab17e64d4e37d1061f5b23cffd8f8ab1f150b7df) |
-| 2026-10-26 17:21:12 | Swapped 37.768187 USDC for 37.472189 APT via 0x9219…ea6b | $37.77 | [0x37adb6ac…](https://www.pharosscan.xyz/tx/0x37adb6ac682a4c7a43fb9bcf00f0f0d612d3f3de6e81f88913ca1422ad208e48) |
+None in this period.
 
 ## Approvals
 
@@ -100,7 +66,41 @@ In this period the wallet appears in 52 transactions: 2 incoming and 0 outgoing 
 
 ## Contract interactions
 
-None in this period.
+| Time (UTC) | What happened | Value | Transaction |
+|---|---|---:|---|
+| 2026-10-26 10:51:02 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.361255 USDC, received 9.288265 APT | $9.36 | [0xeeb1fa29…](https://www.pharosscan.xyz/tx/0xeeb1fa29188482b61d6fe03b0e0e979eda45a3fd84295278731e3fe4403f28be) |
+| 2026-10-26 10:51:54 | Called redeem on 0x9219…ea6b: sent 9.288265 APT, received 9.347213 USDC | $9.35 | [0x2f7880db…](https://www.pharosscan.xyz/tx/0x2f7880dbcac2ae48cc330d8553218ee7c85b2ab6e5f214db825ea320584c34b1) |
+| 2026-10-26 10:53:33 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.347213 USDC, received 9.274332 APT | $9.35 | [0x550403e7…](https://www.pharosscan.xyz/tx/0x550403e7bea4e380dd0009a6e3504a47a38dfb31444cf302414d070093bb6f91) |
+| 2026-10-26 10:55:01 | Called redeem on 0x9219…ea6b: sent 9.274332 APT, received 9.333192 USDC | $9.33 | [0xee91fbd9…](https://www.pharosscan.xyz/tx/0xee91fbd9b9fe3a73449c43fb100fae5d30508911fe7dc95be7e420e3ff962006) |
+| 2026-10-26 10:55:34 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.333192 USDC, received 9.260421 APT | $9.33 | [0x423d07f3…](https://www.pharosscan.xyz/tx/0x423d07f3503ae088fb8098395626badf9599ca195b4d5db299335f64a9799d40) |
+| 2026-10-26 10:56:37 | Called redeem on 0x9219…ea6b: sent 9.260421 APT, received 9.319192 USDC | $9.32 | [0xb352b6d4…](https://www.pharosscan.xyz/tx/0xb352b6d441065cbd5f4e01546369557079d1be773316a8aa68c5bf42f5795190) |
+| 2026-10-26 10:57:21 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.319192 USDC, received 9.24653 APT | $9.32 | [0x8f975871…](https://www.pharosscan.xyz/tx/0x8f975871e61a41c3bc5a398d7caac2a5f07ff4382edcb997892bd73001ef4b4b) |
+| 2026-10-26 10:58:08 | Called redeem on 0x9219…ea6b: sent 9.24653 APT, received 9.305213 USDC | $9.31 | [0xa3e18248…](https://www.pharosscan.xyz/tx/0xa3e18248ee6e9d2c3e5897f08532c00f7a7fd0c1b42ec32b3dbdfa2a9122f98f) |
+| 2026-10-26 10:58:43 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.305213 USDC, received 9.23266 APT | $9.31 | [0xbf4b89fb…](https://www.pharosscan.xyz/tx/0xbf4b89fb9229d546f5ddd3107d4a30f5cae47f071a66b7596304b8db1461be77) |
+| 2026-10-26 10:59:49 | Called redeem on 0x9219…ea6b: sent 9.23266 APT, received 9.291255 USDC | $9.29 | [0x072db3f5…](https://www.pharosscan.xyz/tx/0x072db3f55efee66c0040f37f8e6cc8586116d819e3592f1a88f00ac0c952e895) |
+| 2026-10-26 11:00:28 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.291255 USDC, received 9.218811 APT | $9.29 | [0x38bb56d7…](https://www.pharosscan.xyz/tx/0x38bb56d7cd26ad4f6eb52c361901123bfa689a82e60b907ccc7f16a8f349d515) |
+| 2026-10-26 11:01:09 | Called redeem on 0x9219…ea6b: sent 9.218811 APT, received 9.277318 USDC | $9.28 | [0xb8f8621b…](https://www.pharosscan.xyz/tx/0xb8f8621be5fb1345b9f6fbde21baaa751b1e7f63ef762bcd270e3df2641e1667) |
+| 2026-10-26 11:01:55 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.277318 USDC, received 9.204982 APT | $9.28 | [0x8f01276a…](https://www.pharosscan.xyz/tx/0x8f01276acc9a3553805263145fa814d145b1e1cb105fa461ea865ba7bf9dcbcd) |
+| 2026-10-26 11:02:46 | Called redeem on 0x9219…ea6b: sent 9.204982 APT, received 9.263402 USDC | $9.26 | [0xe8296b4f…](https://www.pharosscan.xyz/tx/0xe8296b4f34b4d7b3238c0ba81c3fdb12ddb610a9b535657513a1d273efa33c4f) |
+| 2026-10-26 11:03:14 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.263402 USDC, received 9.191175 APT | $9.26 | [0x2f8f2990…](https://www.pharosscan.xyz/tx/0x2f8f29908b1f3cc791791398ff7f23cf8bc585941300c7c250bd7930488e8444) |
+| 2026-10-26 11:04:50 | Called redeem on 0x9219…ea6b: sent 9.191175 APT, received 9.249506 USDC | $9.25 | [0x9743892a…](https://www.pharosscan.xyz/tx/0x9743892af460f701a223857a5aa8ec61cacdf3dd16aec770223d9ba8d77c2356) |
+| 2026-10-26 11:05:20 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.249506 USDC, received 9.177387 APT | $9.25 | [0x63a331c7…](https://www.pharosscan.xyz/tx/0x63a331c76e127291cde10222174afc312ee6a7bed06e345dae8f7fa508c35609) |
+| 2026-10-26 11:05:57 | Called redeem on 0x9219…ea6b: sent 9.177387 APT, received 9.235631 USDC | $9.24 | [0xf4c3aa59…](https://www.pharosscan.xyz/tx/0xf4c3aa59c48ca9a49bdd832ba879b145bf9c5b60122ddebe95ff7affa524d1ed) |
+| 2026-10-26 11:06:26 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.235631 USDC, received 9.16362 APT | $9.24 | [0x9d1f147f…](https://www.pharosscan.xyz/tx/0x9d1f147fca1a84747295b7a01b3798a0e9096649a9afb8a3ea4dfb087d46ede1) |
+| 2026-10-26 11:07:30 | Called redeem on 0x9219…ea6b: sent 9.163619 APT, received 9.221776 USDC | $9.22 | [0x16f9f837…](https://www.pharosscan.xyz/tx/0x16f9f837930c9f30d7c1c6b9271b6d13843f527399921abfc3c9f96c2eff6ced) |
+| 2026-10-26 11:07:59 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.221776 USDC, received 9.149873 APT | $9.22 | [0x947973d0…](https://www.pharosscan.xyz/tx/0x947973d0d17b87172e90efe10f80005db844ee931c10e8b578165a5eac6d81ee) |
+| 2026-10-26 13:07:48 | Called redeem on 0x9219…ea6b: sent 9.149874 APT, received 9.208318 USDC | $9.21 | [0x23ea7b91…](https://www.pharosscan.xyz/tx/0x23ea7b91a7840385d22d37e2bfd06ffe2eb9127f809100836fb790e21d918320) |
+| 2026-10-26 17:14:11 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 38.05273 USDC, received 37.754501 APT | $38.05 | [0x97fdb39e…](https://www.pharosscan.xyz/tx/0x97fdb39e77054dc17dc70d0090b5ec694e49a02ee5b1633862d3a0b7ae33e981) |
+| 2026-10-26 17:14:34 | Called redeem on 0x9219…ea6b: sent 37.754501 APT, received 37.99565 USDC | $38 | [0x206bee57…](https://www.pharosscan.xyz/tx/0x206bee57b4d4814cb84aa921a24bfdf19217ae1c616456bc17172a7580671fde) |
+| 2026-10-26 17:15:17 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.99565 USDC, received 37.697869 APT | $38 | [0x65dacaac…](https://www.pharosscan.xyz/tx/0x65dacaacada92609c8856e037d7534ba6d4202eaa2693251301150b1857b93b6) |
+| 2026-10-26 17:15:45 | Called redeem on 0x9219…ea6b: sent 37.697869 APT, received 37.938656 USDC | $37.94 | [0xdcb4d42a…](https://www.pharosscan.xyz/tx/0xdcb4d42a2a06c71e456d6fab7437182f464348e140d75bd8acdc056f7f98c1a3) |
+| 2026-10-26 17:16:23 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.938656 USDC, received 37.641322 APT | $37.94 | [0xcf496cc5…](https://www.pharosscan.xyz/tx/0xcf496cc592c752b48b781d213bbd6565e84f0c962115f7ef86f4ae42eb605601) |
+| 2026-10-26 17:17:45 | Called redeem on 0x9219…ea6b: sent 37.641322 APT, received 37.881748 USDC | $37.88 | [0x1528ae83…](https://www.pharosscan.xyz/tx/0x1528ae83e749c522fa3f50090bd8499fa656a86174aaf8c2fe149d08e3bee163) |
+| 2026-10-26 17:18:24 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.881748 USDC, received 37.58486 APT | $37.88 | [0x6c03c60a…](https://www.pharosscan.xyz/tx/0x6c03c60ace7930d4b048110fbed4085aca169411b15768fbecb5bd3bfb80f7f4) |
+| 2026-10-26 17:19:07 | Called redeem on 0x9219…ea6b: sent 37.58486 APT, received 37.824925 USDC | $37.82 | [0xba289fcd…](https://www.pharosscan.xyz/tx/0xba289fcddb9d04008e98b55ed315d3d9d6bfb07df2bec3dab20f2c960322fb3d) |
+| 2026-10-26 17:19:45 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.824925 USDC, received 37.528482 APT | $37.82 | [0x01479211…](https://www.pharosscan.xyz/tx/0x0147921142cf0d9182cce04cef295116c46a3ec0581d2a67c5bd33ab42983f5e) |
+| 2026-10-26 17:20:29 | Called redeem on 0x9219…ea6b: sent 37.528482 APT, received 37.768187 USDC | $37.77 | [0xc8466323…](https://www.pharosscan.xyz/tx/0xc84663237ae524dcdb09e74eab17e64d4e37d1061f5b23cffd8f8ab1f150b7df) |
+| 2026-10-26 17:21:12 | Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.768187 USDC, received 37.472189 APT | $37.77 | [0x37adb6ac…](https://www.pharosscan.xyz/tx/0x37adb6ac682a4c7a43fb9bcf00f0f0d612d3f3de6e81f88913ca1422ad208e48) |
 
 ## Notes and limits
 

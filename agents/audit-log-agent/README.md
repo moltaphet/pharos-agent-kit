@@ -37,9 +37,9 @@ Output of node scripts/auditlog-run.mjs 2026-10-26:
 
 ```text
 period 2026-10-26 00:00:00 UTC – 2026-10-26 23:59:59 UTC: blocks 21261543–21355420 (93,878)
-  transfer 2 · swap 33 · approval 17 · contract interaction 0
+  transfer 2 · swap 0 · approval 17 · contract interaction 33
   transfer 1 · swap 0 · approval 0 · contract interaction 0
-  transfer 0 · swap 5 · approval 5 · contract interaction 1
+  transfer 0 · swap 6 · approval 5 · contract interaction 0
 ```
 
 ## What is in this folder

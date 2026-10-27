@@ -20,7 +20,7 @@ export const content = {
     { server: 'rpc', tool: 'eth_getBlockByNumber (binary search)', text: 'Turns the start and end of the date range into block numbers by searching block timestamps.' },
     { server: 'rpc', tool: 'eth_getLogs in batches', text: 'Transfer (from the wallet, to the wallet) and Approval (by the wallet) logs, one window of 1,000 blocks per request, sent 40 requests to a batch.' },
     { server: 'rpc', tool: 'transaction and receipt', text: 'Every distinct transaction: who sent it, to what, which method, what it cost, whether it failed, and its logs.' },
-    { server: 'local', tool: 'classify', text: 'A swap is a transaction in which the wallet gives one token and receives another (or that carries a swap event); an approval is an Approval log; a call the wallet sent to a non-token contract is a contract interaction; the rest are transfers.' },
+    { server: 'local', tool: 'classify', text: 'A swap is a transaction in which the wallet gives one token and receives another and that carries a swap event or calls a swap method or a router; an approval is an Approval log; a call the wallet sent to a non-token contract is a contract interaction (a vault deposit or a redemption moves two tokens and is one, not a swap); the rest are transfers.' },
     { server: 'rpc', tool: 'balances and counters', text: 'PROS balance and transaction count at both ends, the PROS/USD feed at the end, for the fee total and the list of what could not be seen.' },
   ],
   decisions: [
@@ -44,9 +44,9 @@ export const content = {
     ],
     sampleLabel: 'Output of node scripts/auditlog-run.mjs 2026-10-26:',
     sample: `period 2026-10-26 00:00:00 UTC – 2026-10-26 23:59:59 UTC: blocks 21261543–21355420 (93,878)
-  transfer 2 · swap 33 · approval 17 · contract interaction 0
+  transfer 2 · swap 0 · approval 17 · contract interaction 33
   transfer 1 · swap 0 · approval 0 · contract interaction 0
-  transfer 0 · swap 5 · approval 5 · contract interaction 1`,
+  transfer 0 · swap 6 · approval 5 · contract interaction 0`,
   },
   verify: [
     { title: 'Open a notable transaction', text: 'Each report links its notable transactions to the explorer; the amounts and the wallet are in the logs.' },

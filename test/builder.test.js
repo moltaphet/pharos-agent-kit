@@ -130,6 +130,28 @@ test('sending funds: prepared for signature, never signed; affordability is chec
   await assert.rejects(run(`How do I send 0 PROS to ${B} from ${A}?`, clients()), /above zero/);
 });
 
+test('amounts are read exactly: "1e3 PROS" is not 3 PROS, "1,000 PROS" is 1000', () => {
+  assert.equal(parseRequest(`How do I send 1e3 PROS to ${B} from ${A}?`), null);
+  assert.equal(parseRequest(`How do I send 1,000 PROS to ${B} from ${A}?`).amount, '1000');
+  assert.equal(parseRequest(`How do I send 2,500.75 PROS to ${B} from ${A}?`).amount, '2500.75');
+  assert.equal(parseRequest(`How do I send .5 PROS to ${B} from ${A}?`)?.amount ?? null, null, 'a bare ".5" is not an amount this agent will guess at');
+});
+
+test('an unaffordable transfer is a clear failure with the numbers, and the node is never asked to estimate it', async () => {
+  const c = clients({ balance: 10n ** 18n });
+  const r = await run(`How do I send 5 PROS to ${B} from ${A}?`, c);
+  assert.equal(r.verdict.status, 'failure');
+  assert.match(r.verdict.reason, /holds 1 and the amount alone is 5/);
+  assert.ok(!c.log.chain.includes('estimate_gas'));
+  assert.equal(r.prepared, undefined, 'nothing is prepared for a transaction that cannot be paid');
+});
+
+test('the prepared transaction handed back for verification must be one the agent could have made', async () => {
+  const hash = '0x' + 'ab'.repeat(32);
+  for (const prepared of [null, 'x', {}, { from: 5 }, { from: A, chainId: 1672, nonce: 'x', valueWei: '1', to: B }, { from: A, chainId: 1672, nonce: 1, valueWei: '-1', to: B }, { from: A, chainId: 1672, nonce: 1, valueWei: '1', to: 'nope' }]) await assert.rejects(verifyOutcome({ prepared, hash, clients: clients() }), /prepared must be/);
+  await assert.rejects(verifyOutcome({ prepared: { from: A, chainId: 1672, nonce: 1, valueWei: '1', to: B }, hash, clients: clients(), network: '__proto__' }), /network must be/);
+});
+
 test('the signed transaction is verified against the plan: success, and each way it can differ', async () => {
   const c = clients();
   const r = await run(`How do I send 0.5 PROS to ${B} from ${A}?`, c);

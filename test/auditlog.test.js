@@ -14,7 +14,7 @@ const APPROVAL = topic('Approval(address,address,uint256)');
 const SWAP = topic('Swap(address,uint256,uint256,uint256,uint256,address)');
 const USDC = '0xc879c018db60520f4355c26ed1a6d572cdac1815';
 const WPROS = '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0';
-const W = '0x' + '11'.repeat(20); const OTHER = '0x' + '22'.repeat(20); const ROUTER = '0x' + '33'.repeat(20); const SPENDER = '0x' + '44'.repeat(20);
+const ZERO = '0x' + '00'.repeat(20); const W = '0x' + '11'.repeat(20); const OTHER = '0x' + '22'.repeat(20); const ROUTER = '0x' + '33'.repeat(20); const SPENDER = '0x' + '44'.repeat(20);
 const t32 = (a) => '0x' + a.slice(2).padStart(64, '0'); const w32 = (n) => BigInt(n).toString(16).padStart(64, '0');
 const hash = (n) => '0x' + n.toString(16).padStart(64, '0');
 const log = (address, topics, data, block, n, txn = n) => ({ address, topics, data, blockNumber: '0x' + block.toString(16), transactionHash: hash(txn), logIndex: '0x' + n.toString(16) });
@@ -106,6 +106,22 @@ test('the report groups transfers in and out, swaps, approvals and contract inte
     assert.ok(r.notes.some((n) => /sent 5 transactions/.test(n)), 'the transactions the node cannot list are counted');
     assert.ok(r.notes.some((n) => /could not be read/.test(n)), 'an unreadable transaction is reported, not hidden');
   } finally { c.close(); }
+});
+
+test('a vault deposit (one token out, a share token in) is a contract interaction, not a swap; the same two transfers with a swap event are a swap', async () => {
+  const SHARE = '0x' + '55'.repeat(20);
+  const deposit = [log(USDC, [TRANSFER, t32(W), t32(SPENDER)], '0x' + w32(usdc(100)), 100, 1), log(SHARE, [TRANSFER, t32(ZERO), t32(W)], '0x' + w32(usdc(100)), 100, 2, 1)];
+  const txs = { [hash(1)]: tx(hash(1), W, SPENDER, selectorOf('deposit(uint256,address)') + '00') };
+  const c = await chain({ logs: deposit, txs, receipts: { [hash(1)]: rc(hash(1), 100, deposit) } });
+  try {
+    const r = await buildReport({ wallet: W, fromBlock: 1, toBlock: 2500, rpcUrl: c.url });
+    assert.deepEqual(r.events.map((e) => e.category), ['contract interaction']);
+    assert.match(r.events[0].summary, /Called deposit/);
+    assert.match(r.events[0].summary, /sent 100 USDC, received/);
+  } finally { c.close(); }
+  const withSwap = [...deposit];
+  const c2 = await chain({ logs: withSwap, txs: { [hash(1)]: tx(hash(1), W, ROUTER, '0x12345678') }, receipts: { [hash(1)]: rc(hash(1), 100, [...deposit, { topics: [SWAP], data: '0x' }]) } });
+  try { assert.deepEqual((await buildReport({ wallet: W, fromBlock: 1, toBlock: 2500, rpcUrl: c2.url })).events.map((e) => e.category), ['swap']); } finally { c2.close(); }
 });
 
 test('the exports: Markdown, CSV (with a formula guard) and a structurally valid PDF', async () => {

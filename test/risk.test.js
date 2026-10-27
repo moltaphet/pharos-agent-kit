@@ -174,6 +174,22 @@ test('the recorded examples: clean ones low, USDC medium, risky ones high; at le
   assert.ok(by['risky-token'].flags.some((f) => /destroy/.test(f.title)));
 });
 
+test('a node that cannot give old state does not sink the check: the age is "unknown" and the other signals stand', async () => {
+  const base = chainOf({ [A(60)]: { code: code('6001'), createdBlock: 1000 }, [A(61)]: { nonce: 50, firstTxBlock: 1000 } });
+  const noOld = async (m, p) => { if ((m === 'eth_getCode' || m === 'eth_getTransactionCount') && p[1] !== 'latest' && parseInt(p[1], 16) < HEAD - 10) throw new Error('missing trie node'); return base(m, p); };
+  const contract = await checkAddress({ chain, address: A(60), rpc: noOld, window: 1000 });
+  assert.equal(contract.signals.find((s) => s.id === 'age').status, 'na');
+  assert.ok(contract.signals.some((s) => s.id === 'admin'));
+  const wallet = await checkAddress({ chain, address: A(61), rpc: noOld, window: 1000 });
+  assert.equal(wallet.signals.find((s) => s.id === 'age').status, 'na');
+  assert.match(wallet.signals.find((s) => s.id === 'age').detail, /could not give the date/);
+});
+
+test('the web handler refuses inherited chain names before any read', async () => {
+  const handler = (await import('../lib/tasks/wallet-risk-checker.js')).default;
+  for (const chain of ['__proto__', 'constructor', 'toString']) await assert.rejects(handler({ q: { check: '1', chain, address: A(1) } }), /chain must be mainnet or atlantic/, chain);
+});
+
 test('task page', () => {
   assert.equal(content.evidence.length, 4);
   assert.doesNotMatch(JSON.stringify(content), /simulated|mock/i);

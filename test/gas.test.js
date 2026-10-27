@@ -118,6 +118,11 @@ test('sampleGas and gasHistory read the chain', async () => {
   assert.equal(fmtGwei(10n * GWEI), '10 gwei');
 });
 
+test('the web handler refuses inherited names, a zero ceiling and bad numbers before reading any chain', async () => {
+  const handler = (await import('../lib/tasks/gas-fee-optimizer.js')).default;
+  for (const q of [{ history: '1', chain: '__proto__' }, { history: '1', chain: 'constructor' }, { history: '1', maxGwei: '0' }, { history: '1', maxGwei: '1e3' }, { history: '1', span: 'x' }, { history: '1', gas: '5' }, { history: '1', deadlineSec: '1' }]) await assert.rejects(handler({ q }), /chain must be|maxGwei must|span must|gas must|deadlineSec must/, JSON.stringify(q));
+});
+
 test('the recorded run agrees with its claims', () => {
   const r = JSON.parse(readFileSync(new URL('../reports/gas-run.json', import.meta.url), 'utf8'));
   const by = Object.fromEntries(r.scenarios.map((s) => [s.id, s]));

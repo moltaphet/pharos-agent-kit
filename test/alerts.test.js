@@ -36,6 +36,10 @@ test('conditions are validated', () => {
   assert.equal(validateConditions(EXAMPLE).length, 4);
 });
 
+test('a feed name that is an object property is not a feed', () => {
+  for (const feed of ['__proto__', 'constructor', 'toString', 'hasOwnProperty']) assert.throws(() => validateConditions([{ id: 'a', type: 'price', feed, op: 'above', threshold: '1' }]), /feed must be one of/, feed);
+});
+
 test('only transfers at or above the threshold are found; ERC-721 style transfers are ignored', async () => {
   const nft = { ...log(5, 9, 1n), topics: [TRANSFER_TOPIC, topicOf(A), topicOf(B), topicOf('0x1')] };
   const rpc = chainWith({ logs: [log(5, 1, 9_999_999_999n), log(6, 2, 10_000_000_000n), log(7, 3, 55_000_000_000n), nft] });

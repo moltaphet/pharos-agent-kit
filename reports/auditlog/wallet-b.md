@@ -2,20 +2,20 @@
 
 **Network:** Pharos mainnet (1672)  
 **Period:** 2026-10-26 00:00:00 UTC to 2026-10-26 23:59:59 UTC (blocks 21,261,543–21,355,420)  
-**Generated:** 2026-10-27T10:27:24.290Z  
+**Generated:** 2026-10-27T15:05:05.316Z  
 **Source:** Pharos mainnet public RPC: token Transfer/Approval logs filtered on the wallet, then each transaction and receipt
 
 ## Summary
 
-In this period the wallet appears in 11 transactions: 0 incoming and 0 outgoing token transfers, 5 swaps, 5 approvals and 1 other contract interaction. Its native PROS balance went from 80.241286 to 0.221341 PROS; fees paid on the transactions it sent and that are listed: 0.019945 PROS.
+In this period the wallet appears in 11 transactions: 0 incoming and 0 outgoing token transfers, 6 swaps, 5 approvals and 0 other contract interactions. Its native PROS balance went from 80.241286 to 0.221341 PROS; fees paid on the transactions it sent and that are listed: 0.019945 PROS.
 
 | Category | Events | Value (USD, where priced) |
 |---|---:|---:|
 | Transfers in | 0 | $0 |
 | Transfers out | 0 | $0 |
-| Swaps | 5 | $247.04 |
+| Swaps | 6 | $247.04 |
 | Approvals | 5 | 0 unlimited, 0 revoked |
-| Contract interactions | 1 | |
+| Contract interactions | 0 | |
 
 ## Notable transactions
 
@@ -33,6 +33,7 @@ None in this period.
 
 | Time (UTC) | What happened | Value | Transaction |
 |---|---|---:|---|
+| 2026-10-26 03:54:32 | Swapped ? for 604,213.942486 pDOG via 0xa5ca…f75c | — | [0x6c91e034…](https://www.pharosscan.xyz/tx/0x6c91e034082b659a02c9c911e3c1ff65064b8d954f99515b3309d8e18c52a8f8) |
 | 2026-10-26 03:55:33 | Swapped 604,213.942486 pDOG for 78.967645 WPROS via 0xa5ca…f75c | $49.92 | [0x77dff3e0…](https://www.pharosscan.xyz/tx/0x77dff3e050866c87658d3db2452f6712e69b4d694ec3ec8d7954146761767e15) |
 | 2026-10-26 03:56:26 | Swapped 78.967645 WPROS for 596,409.381689 pDOG via 0xa5ca…f75c | $49.92 | [0xde5be34c…](https://www.pharosscan.xyz/tx/0xde5be34c65fa757767433fd0c5f0f36cd1fe006ed2f682113206b3ed6870a69a) |
 | 2026-10-26 03:57:19 | Swapped 596,409.381689 pDOG for 77.948574 WPROS via 0xa5ca…f75c | $49.28 | [0x58f88c18…](https://www.pharosscan.xyz/tx/0x58f88c1833910459194162ae1ac1bb364109cf1a7d0eaa3cdb2c290305f1220f) |
@@ -51,8 +52,6 @@ None in this period.
 
 ## Contract interactions
 
-| Time (UTC) | What happened | Value | Transaction |
-|---|---|---:|---|
-| 2026-10-26 03:54:32 | Called unknown method 0xff84aafa on 0xa5ca…f75c: received 604,213.942486 pDOG | — | [0x6c91e034…](https://www.pharosscan.xyz/tx/0x6c91e034082b659a02c9c911e3c1ff65064b8d954f99515b3309d8e18c52a8f8) |
+None in this period.
 
 _Values in USD use USDC at $1 and PROS/WPROS at the PROS/USD feed price at the end of the period (0.6322); other tokens are not priced._

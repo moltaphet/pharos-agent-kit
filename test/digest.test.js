@@ -139,7 +139,9 @@ test('the scheduled run: refused without the secret, and with the wrong one; har
     await assert.rejects(weekly({ q: { cron: '1' }, headers: { authorization: 'Bearer wrong-secret' } }), /CRON_SECRET/);
     await assert.rejects(weekly({ q: { cron: '1' }, headers: {} }), /CRON_SECRET/);
   } finally { delete process.env.CRON_SECRET; }
-  await assert.rejects(weekly({ q: { digest: '1', days: '0' } }), /1 to 14/);
+  await assert.rejects(weekly({ q: { digest: '1', days: '0' } }), /1 to 7/);
+  await assert.rejects(weekly({ q: { digest: '1', days: '8' } }), /1 to 7 on the web/);
+  await assert.rejects(weekly({ q: { digest: '1', days: '2.5' } }), /whole number/);
   await assert.rejects(weekly({ q: {} }), /use \?recorded/);
 });
 

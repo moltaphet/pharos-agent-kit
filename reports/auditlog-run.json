@@ -1,5 +1,5 @@
 {
- "recordedAt": "2026-10-27T10:27:24.294Z",
+ "recordedAt": "2026-10-27T15:05:05.321Z",
  "network": "Pharos mainnet (1672), read-only",
  "day": "2026-10-26",
  "range": {
@@ -23,7 +23,7 @@
     "wallet": "0x16797a0f3f0dbbf3a9d2dfb66c9c4a5a61e9cb76",
     "walletLabel": null,
     "chain": "Pharos mainnet (1672)",
-    "generatedAt": "2026-10-27T10:26:39.535Z",
+    "generatedAt": "2026-10-27T15:04:36.715Z",
     "fromBlock": 21261543,
     "toBlock": 21355420,
     "fromTime": 1792972800,
@@ -59,9 +59,9 @@
       }
      },
      "swap": {
-      "count": 33,
-      "transactions": 33,
-      "usd": 621.128031
+      "count": 0,
+      "transactions": 0,
+      "usd": 0
      },
      "approval": {
       "count": 17,
@@ -70,8 +70,8 @@
       "revoked": 0
      },
      "contract interaction": {
-      "count": 0,
-      "transactions": 0
+      "count": 33,
+      "transactions": 33
      }
     },
     "events": [
@@ -125,22 +125,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.361255",
-       "raw": "9361255",
-       "usd": 9.361255
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.288265",
-       "raw": "9288265391123392594",
-       "usd": null
-      },
       "usd": 9.361255,
-      "summary": "Swapped 9.361255 USDC for 9.288265 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.361255 USDC, received 9.288265 APT",
+      "moved": [
+       "sent 9.361255 USDC",
+       "received 9.288265 APT"
+      ]
      },
      {
       "hash": "0x2f7880dbcac2ae48cc330d8553218ee7c85b2ab6e5f214db825ea320584c34b1",
@@ -152,22 +144,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.288265",
-       "raw": "9288265391123392594",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.347213",
-       "raw": "9347213",
-       "usd": 9.347213
-      },
       "usd": 9.347213,
-      "summary": "Swapped 9.288265 APT for 9.347213 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.288265 APT, received 9.347213 USDC",
+      "moved": [
+       "sent 9.288265 APT",
+       "received 9.347213 USDC"
+      ]
      },
      {
       "hash": "0x2ef9218a44c1144391a8297ade5ac8597297deba53b030796d9bf3b39c1070e7",
@@ -198,22 +182,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.347213",
-       "raw": "9347213",
-       "usd": 9.347213
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.274332",
-       "raw": "9274332876452072102",
-       "usd": null
-      },
       "usd": 9.347213,
-      "summary": "Swapped 9.347213 USDC for 9.274332 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.347213 USDC, received 9.274332 APT",
+      "moved": [
+       "sent 9.347213 USDC",
+       "received 9.274332 APT"
+      ]
      },
      {
       "hash": "0xee91fbd9b9fe3a73449c43fb100fae5d30508911fe7dc95be7e420e3ff962006",
@@ -225,22 +201,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.274332",
-       "raw": "9274332876452072102",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.333192",
-       "raw": "9333192",
-       "usd": 9.333192
-      },
       "usd": 9.333192,
-      "summary": "Swapped 9.274332 APT for 9.333192 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.274332 APT, received 9.333192 USDC",
+      "moved": [
+       "sent 9.274332 APT",
+       "received 9.333192 USDC"
+      ]
      },
      {
       "hash": "0xc5467928562ec638737ec2ec0985226001b8a592cb164031ba3b0079c270d5bb",
@@ -271,22 +239,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.333192",
-       "raw": "9333192",
-       "usd": 9.333192
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.260421",
-       "raw": "9260421198043970116",
-       "usd": null
-      },
       "usd": 9.333192,
-      "summary": "Swapped 9.333192 USDC for 9.260421 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.333192 USDC, received 9.260421 APT",
+      "moved": [
+       "sent 9.333192 USDC",
+       "received 9.260421 APT"
+      ]
      },
      {
       "hash": "0xb352b6d441065cbd5f4e01546369557079d1be773316a8aa68c5bf42f5795190",
@@ -298,22 +258,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.260421",
-       "raw": "9260421198043970116",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.319192",
-       "raw": "9319192",
-       "usd": 9.319192
-      },
       "usd": 9.319192,
-      "summary": "Swapped 9.260421 APT for 9.319192 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.260421 APT, received 9.319192 USDC",
+      "moved": [
+       "sent 9.260421 APT",
+       "received 9.319192 USDC"
+      ]
      },
      {
       "hash": "0xcc7edf9ac9116380e4429988b96d6da546ca42fee62bbcc4f0e55d4dd8974de8",
@@ -344,22 +296,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.319192",
-       "raw": "9319192",
-       "usd": 9.319192
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.24653",
-       "raw": "9246530355899086629",
-       "usd": null
-      },
       "usd": 9.319192,
-      "summary": "Swapped 9.319192 USDC for 9.24653 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.319192 USDC, received 9.24653 APT",
+      "moved": [
+       "sent 9.319192 USDC",
+       "received 9.24653 APT"
+      ]
      },
      {
       "hash": "0xa3e18248ee6e9d2c3e5897f08532c00f7a7fd0c1b42ec32b3dbdfa2a9122f98f",
@@ -371,22 +315,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.24653",
-       "raw": "9246530355899086629",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.305213",
-       "raw": "9305213",
-       "usd": 9.305213
-      },
       "usd": 9.305213,
-      "summary": "Swapped 9.24653 APT for 9.305213 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.24653 APT, received 9.305213 USDC",
+      "moved": [
+       "sent 9.24653 APT",
+       "received 9.305213 USDC"
+      ]
      },
      {
       "hash": "0xda4c6277888d62595d08ab0ab6f3fa6bef2d5ad434b5bc63fa8a3efe4f2db0ca",
@@ -417,22 +353,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.305213",
-       "raw": "9305213",
-       "usd": 9.305213
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.23266",
-       "raw": "9232660350017421636",
-       "usd": null
-      },
       "usd": 9.305213,
-      "summary": "Swapped 9.305213 USDC for 9.23266 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.305213 USDC, received 9.23266 APT",
+      "moved": [
+       "sent 9.305213 USDC",
+       "received 9.23266 APT"
+      ]
      },
      {
       "hash": "0x072db3f55efee66c0040f37f8e6cc8586116d819e3592f1a88f00ac0c952e895",
@@ -444,22 +372,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.23266",
-       "raw": "9232660350017421636",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.291255",
-       "raw": "9291255",
-       "usd": 9.291255
-      },
       "usd": 9.291255,
-      "summary": "Swapped 9.23266 APT for 9.291255 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.23266 APT, received 9.291255 USDC",
+      "moved": [
+       "sent 9.23266 APT",
+       "received 9.291255 USDC"
+      ]
      },
      {
       "hash": "0xad1c5c1a5f113eec383bdb12ef79ad6a4d114fefcab2c054bb6e04d8331b6289",
@@ -490,22 +410,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.291255",
-       "raw": "9291255",
-       "usd": 9.291255
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.218811",
-       "raw": "9218811180398975132",
-       "usd": null
-      },
       "usd": 9.291255,
-      "summary": "Swapped 9.291255 USDC for 9.218811 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.291255 USDC, received 9.218811 APT",
+      "moved": [
+       "sent 9.291255 USDC",
+       "received 9.218811 APT"
+      ]
      },
      {
       "hash": "0xb8f8621be5fb1345b9f6fbde21baaa751b1e7f63ef762bcd270e3df2641e1667",
@@ -517,22 +429,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.218811",
-       "raw": "9218811180398975132",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.277318",
-       "raw": "9277318",
-       "usd": 9.277318
-      },
       "usd": 9.277318,
-      "summary": "Swapped 9.218811 APT for 9.277318 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.218811 APT, received 9.277318 USDC",
+      "moved": [
+       "sent 9.218811 APT",
+       "received 9.277318 USDC"
+      ]
      },
      {
       "hash": "0xecfc2d0cc077b78de2cfe735e7fb368e39e9ac429e3a39d5734cc8ca9e3c777f",
@@ -563,22 +467,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.277318",
-       "raw": "9277318",
-       "usd": 9.277318
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.204982",
-       "raw": "9204982847043747112",
-       "usd": null
-      },
       "usd": 9.277318,
-      "summary": "Swapped 9.277318 USDC for 9.204982 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.277318 USDC, received 9.204982 APT",
+      "moved": [
+       "sent 9.277318 USDC",
+       "received 9.204982 APT"
+      ]
      },
      {
       "hash": "0xe8296b4f34b4d7b3238c0ba81c3fdb12ddb610a9b535657513a1d273efa33c4f",
@@ -590,22 +486,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.204982",
-       "raw": "9204982847043747112",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.263402",
-       "raw": "9263402",
-       "usd": 9.263402
-      },
       "usd": 9.263402,
-      "summary": "Swapped 9.204982 APT for 9.263402 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.204982 APT, received 9.263402 USDC",
+      "moved": [
+       "sent 9.204982 APT",
+       "received 9.263402 USDC"
+      ]
      },
      {
       "hash": "0x35d97e85573ea490edf473c222be9c09fc190b00b8f5540adcabf52ea2b69d2f",
@@ -636,22 +524,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.263402",
-       "raw": "9263402",
-       "usd": 9.263402
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.191175",
-       "raw": "9191175349951737571",
-       "usd": null
-      },
       "usd": 9.263402,
-      "summary": "Swapped 9.263402 USDC for 9.191175 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.263402 USDC, received 9.191175 APT",
+      "moved": [
+       "sent 9.263402 USDC",
+       "received 9.191175 APT"
+      ]
      },
      {
       "hash": "0x9743892af460f701a223857a5aa8ec61cacdf3dd16aec770223d9ba8d77c2356",
@@ -663,22 +543,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.191175",
-       "raw": "9191175349951737571",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.249506",
-       "raw": "9249506",
-       "usd": 9.249506
-      },
       "usd": 9.249506,
-      "summary": "Swapped 9.191175 APT for 9.249506 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.191175 APT, received 9.249506 USDC",
+      "moved": [
+       "sent 9.191175 APT",
+       "received 9.249506 USDC"
+      ]
      },
      {
       "hash": "0x1ec4aeb037b02fe6c99562172f1f574875027228b713914f0304dd0d50578ac4",
@@ -709,22 +581,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.249506",
-       "raw": "9249506",
-       "usd": 9.249506
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.177387",
-       "raw": "9177387696919936210",
-       "usd": null
-      },
       "usd": 9.249506,
-      "summary": "Swapped 9.249506 USDC for 9.177387 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.249506 USDC, received 9.177387 APT",
+      "moved": [
+       "sent 9.249506 USDC",
+       "received 9.177387 APT"
+      ]
      },
      {
       "hash": "0xf4c3aa59c48ca9a49bdd832ba879b145bf9c5b60122ddebe95ff7affa524d1ed",
@@ -736,22 +600,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.177387",
-       "raw": "9177387696919936210",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.235631",
-       "raw": "9235631",
-       "usd": 9.235631
-      },
       "usd": 9.235631,
-      "summary": "Swapped 9.177387 APT for 9.235631 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.177387 APT, received 9.235631 USDC",
+      "moved": [
+       "sent 9.177387 APT",
+       "received 9.235631 USDC"
+      ]
      },
      {
       "hash": "0x20781dde0a0b0e6cf66814b59f5331e9c72b3ca4b7e006776dbe68a9c17832f2",
@@ -782,22 +638,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.235631",
-       "raw": "9235631",
-       "usd": 9.235631
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.16362",
-       "raw": "9163620880151353317",
-       "usd": null
-      },
       "usd": 9.235631,
-      "summary": "Swapped 9.235631 USDC for 9.16362 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.235631 USDC, received 9.16362 APT",
+      "moved": [
+       "sent 9.235631 USDC",
+       "received 9.16362 APT"
+      ]
      },
      {
       "hash": "0x16f9f837930c9f30d7c1c6b9271b6d13843f527399921abfc3c9f96c2eff6ced",
@@ -809,22 +657,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.163619",
-       "raw": "9163619887948343024",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.221776",
-       "raw": "9221776",
-       "usd": 9.221776
-      },
       "usd": 9.221776,
-      "summary": "Swapped 9.163619 APT for 9.221776 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.163619 APT, received 9.221776 USDC",
+      "moved": [
+       "sent 9.163619 APT",
+       "received 9.221776 USDC"
+      ]
      },
      {
       "hash": "0x2353ecea40cac74766b52eb0382be897771a125c265aed74e69a9b1fce0785a6",
@@ -855,22 +695,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "9.221776",
-       "raw": "9221776",
-       "usd": 9.221776
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "9.149873",
-       "raw": "9149873907442978594",
-       "usd": null
-      },
       "usd": 9.221776,
-      "summary": "Swapped 9.221776 USDC for 9.149873 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 9.221776 USDC, received 9.149873 APT",
+      "moved": [
+       "sent 9.221776 USDC",
+       "received 9.149873 APT"
+      ]
      },
      {
       "hash": "0x23ea7b91a7840385d22d37e2bfd06ffe2eb9127f809100836fb790e21d918320",
@@ -882,22 +714,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "9.149874",
-       "raw": "9149874899645988887",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "9.208318",
-       "raw": "9208318",
-       "usd": 9.208318
-      },
       "usd": 9.208318,
-      "summary": "Swapped 9.149874 APT for 9.208318 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 9.149874 APT, received 9.208318 USDC",
+      "moved": [
+       "sent 9.149874 APT",
+       "received 9.208318 USDC"
+      ]
      },
      {
       "hash": "0xe297332a06270641329d3397b4d8de4a5d72eacc824dedc6427522e553c515ea",
@@ -949,22 +773,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "38.05273",
-       "raw": "38052730",
-       "usd": 38.05273
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.754501",
-       "raw": "37754501993943276331",
-       "usd": null
-      },
       "usd": 38.05273,
-      "summary": "Swapped 38.05273 USDC for 37.754501 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 38.05273 USDC, received 37.754501 APT",
+      "moved": [
+       "sent 38.05273 USDC",
+       "received 37.754501 APT"
+      ]
      },
      {
       "hash": "0x206bee57b4d4814cb84aa921a24bfdf19217ae1c616456bc17172a7580671fde",
@@ -976,22 +792,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "37.754501",
-       "raw": "37754501993943276331",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "37.99565",
-       "raw": "37995650",
-       "usd": 37.99565
-      },
       "usd": 37.99565,
-      "summary": "Swapped 37.754501 APT for 37.99565 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 37.754501 APT, received 37.99565 USDC",
+      "moved": [
+       "sent 37.754501 APT",
+       "received 37.99565 USDC"
+      ]
      },
      {
       "hash": "0x3dd29133fb3c64312dfb632b683aa2c204a3246654d56a11caf47b6874df429d",
@@ -1022,22 +830,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "37.99565",
-       "raw": "37995650",
-       "usd": 37.99565
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.697869",
-       "raw": "37697869343041877533",
-       "usd": null
-      },
       "usd": 37.99565,
-      "summary": "Swapped 37.99565 USDC for 37.697869 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.99565 USDC, received 37.697869 APT",
+      "moved": [
+       "sent 37.99565 USDC",
+       "received 37.697869 APT"
+      ]
      },
      {
       "hash": "0xdcb4d42a2a06c71e456d6fab7437182f464348e140d75bd8acdc056f7f98c1a3",
@@ -1049,22 +849,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "37.697869",
-       "raw": "37697869343041877533",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "37.938656",
-       "raw": "37938656",
-       "usd": 37.938656
-      },
       "usd": 37.938656,
-      "summary": "Swapped 37.697869 APT for 37.938656 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 37.697869 APT, received 37.938656 USDC",
+      "moved": [
+       "sent 37.697869 APT",
+       "received 37.938656 USDC"
+      ]
      },
      {
       "hash": "0x0a8cfac196a6f271c368441b16608c9df82bb98fbf35d6369ab39a782d6d7bb5",
@@ -1095,22 +887,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "37.938656",
-       "raw": "37938656",
-       "usd": 37.938656
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.641322",
-       "raw": "37641322018138688110",
-       "usd": null
-      },
       "usd": 37.938656,
-      "summary": "Swapped 37.938656 USDC for 37.641322 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.938656 USDC, received 37.641322 APT",
+      "moved": [
+       "sent 37.938656 USDC",
+       "received 37.641322 APT"
+      ]
      },
      {
       "hash": "0x1528ae83e749c522fa3f50090bd8499fa656a86174aaf8c2fe149d08e3bee163",
@@ -1122,22 +906,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "37.641322",
-       "raw": "37641322018138688110",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "37.881748",
-       "raw": "37881748",
-       "usd": 37.881748
-      },
       "usd": 37.881748,
-      "summary": "Swapped 37.641322 APT for 37.881748 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 37.641322 APT, received 37.881748 USDC",
+      "moved": [
+       "sent 37.641322 APT",
+       "received 37.881748 USDC"
+      ]
      },
      {
       "hash": "0x50fd2b69754e07582fa445cf0dac42042cbca3b0232ef22db829cc41c9fd844f",
@@ -1168,22 +944,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "37.881748",
-       "raw": "37881748",
-       "usd": 37.881748
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.58486",
-       "raw": "37584860019233708040",
-       "usd": null
-      },
       "usd": 37.881748,
-      "summary": "Swapped 37.881748 USDC for 37.58486 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.881748 USDC, received 37.58486 APT",
+      "moved": [
+       "sent 37.881748 USDC",
+       "received 37.58486 APT"
+      ]
      },
      {
       "hash": "0xba289fcddb9d04008e98b55ed315d3d9d6bfb07df2bec3dab20f2c960322fb3d",
@@ -1195,22 +963,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "37.58486",
-       "raw": "37584860019233708040",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "37.824925",
-       "raw": "37824925",
-       "usd": 37.824925
-      },
       "usd": 37.824925,
-      "summary": "Swapped 37.58486 APT for 37.824925 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 37.58486 APT, received 37.824925 USDC",
+      "moved": [
+       "sent 37.58486 APT",
+       "received 37.824925 USDC"
+      ]
      },
      {
       "hash": "0xbbcfbe997615fc97408b28132d7a6dba980c859bce2b776e18e14f14a1a78455",
@@ -1241,22 +1001,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "37.824925",
-       "raw": "37824925",
-       "usd": 37.824925
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.528482",
-       "raw": "37528482354164167537",
-       "usd": null
-      },
       "usd": 37.824925,
-      "summary": "Swapped 37.824925 USDC for 37.528482 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.824925 USDC, received 37.528482 APT",
+      "moved": [
+       "sent 37.824925 USDC",
+       "received 37.528482 APT"
+      ]
      },
      {
       "hash": "0xc84663237ae524dcdb09e74eab17e64d4e37d1061f5b23cffd8f8ab1f150b7df",
@@ -1268,22 +1020,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "37.528482",
-       "raw": "37528482354164167537",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "37.768187",
-       "raw": "37768187",
-       "usd": 37.768187
-      },
       "usd": 37.768187,
-      "summary": "Swapped 37.528482 APT for 37.768187 USDC via 0x9219…ea6b"
+      "summary": "Called redeem on 0x9219…ea6b: sent 37.528482 APT, received 37.768187 USDC",
+      "moved": [
+       "sent 37.528482 APT",
+       "received 37.768187 USDC"
+      ]
      },
      {
       "hash": "0x2cb95c807e3c0d6b00e4a3313a5b3b86821eefb99153a3e967efbb57f123615c",
@@ -1314,22 +1058,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "37.768187",
-       "raw": "37768187",
-       "usd": 37.768187
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.472189",
-       "raw": "37472189022930066580",
-       "usd": null
-      },
       "usd": 37.768187,
-      "summary": "Swapped 37.768187 USDC for 37.472189 APT via 0x9219…ea6b"
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.768187 USDC, received 37.472189 APT",
+      "moved": [
+       "sent 37.768187 USDC",
+       "received 37.472189 APT"
+      ]
      }
     ],
     "notable": [
@@ -1343,22 +1079,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "38.05273",
-       "raw": "38052730",
-       "usd": 38.05273
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.754501",
-       "raw": "37754501993943276331",
-       "usd": null
-      },
       "usd": 38.05273,
-      "summary": "Swapped 38.05273 USDC for 37.754501 APT via 0x9219…ea6b",
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 38.05273 USDC, received 37.754501 APT",
+      "moved": [
+       "sent 38.05273 USDC",
+       "received 37.754501 APT"
+      ],
       "why": "One of the largest movements of value in the period (about $38.05)."
      },
      {
@@ -1371,22 +1099,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "37.754501",
-       "raw": "37754501993943276331",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "37.99565",
-       "raw": "37995650",
-       "usd": 37.99565
-      },
       "usd": 37.99565,
-      "summary": "Swapped 37.754501 APT for 37.99565 USDC via 0x9219…ea6b",
+      "summary": "Called redeem on 0x9219…ea6b: sent 37.754501 APT, received 37.99565 USDC",
+      "moved": [
+       "sent 37.754501 APT",
+       "received 37.99565 USDC"
+      ],
       "why": "One of the largest movements of value in the period (about $38)."
      },
      {
@@ -1399,22 +1119,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "37.99565",
-       "raw": "37995650",
-       "usd": 37.99565
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.697869",
-       "raw": "37697869343041877533",
-       "usd": null
-      },
       "usd": 37.99565,
-      "summary": "Swapped 37.99565 USDC for 37.697869 APT via 0x9219…ea6b",
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.99565 USDC, received 37.697869 APT",
+      "moved": [
+       "sent 37.99565 USDC",
+       "received 37.697869 APT"
+      ],
       "why": "One of the largest movements of value in the period (about $38)."
      },
      {
@@ -1427,22 +1139,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "APT",
-       "amount": "37.697869",
-       "raw": "37697869343041877533",
-       "usd": null
-      },
-      "in": {
-       "symbol": "USDC",
-       "amount": "37.938656",
-       "raw": "37938656",
-       "usd": 37.938656
-      },
       "usd": 37.938656,
-      "summary": "Swapped 37.697869 APT for 37.938656 USDC via 0x9219…ea6b",
+      "summary": "Called redeem on 0x9219…ea6b: sent 37.697869 APT, received 37.938656 USDC",
+      "moved": [
+       "sent 37.697869 APT",
+       "received 37.938656 USDC"
+      ],
       "why": "One of the largest movements of value in the period (about $37.94)."
      },
      {
@@ -1455,22 +1159,14 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "swap",
+      "category": "contract interaction",
       "direction": null,
-      "out": {
-       "symbol": "USDC",
-       "amount": "37.938656",
-       "raw": "37938656",
-       "usd": 37.938656
-      },
-      "in": {
-       "symbol": "APT",
-       "amount": "37.641322",
-       "raw": "37641322018138688110",
-       "usd": null
-      },
       "usd": 37.938656,
-      "summary": "Swapped 37.938656 USDC for 37.641322 APT via 0x9219…ea6b",
+      "summary": "Called unknown method 0xd53d5885 on 0x9219…ea6b: sent 37.938656 USDC, received 37.641322 APT",
+      "moved": [
+       "sent 37.938656 USDC",
+       "received 37.641322 APT"
+      ],
       "why": "One of the largest movements of value in the period (about $37.94)."
      }
     ],
@@ -1488,7 +1184,7 @@
     "wallet": "0xb246960e21e6a1bb8cfe2974809981848b86bde6",
     "walletLabel": null,
     "chain": "Pharos mainnet (1672)",
-    "generatedAt": "2026-10-27T10:27:09.933Z",
+    "generatedAt": "2026-10-27T15:04:50.137Z",
     "fromBlock": 21261543,
     "toBlock": 21355420,
     "fromTime": 1792972800,
@@ -1598,7 +1294,7 @@
     "wallet": "0xde027284a721e4435cb4598cf019c28cc4bc2c15",
     "walletLabel": null,
     "chain": "Pharos mainnet (1672)",
-    "generatedAt": "2026-10-27T10:27:24.290Z",
+    "generatedAt": "2026-10-27T15:05:05.316Z",
     "fromBlock": 21261543,
     "toBlock": 21355420,
     "fromTime": 1792972800,
@@ -1629,8 +1325,8 @@
       "perToken": {}
      },
      "swap": {
-      "count": 5,
-      "transactions": 5,
+      "count": 6,
+      "transactions": 6,
       "usd": 247.03512079215133
      },
      "approval": {
@@ -1640,8 +1336,8 @@
       "revoked": 0
      },
      "contract interaction": {
-      "count": 1,
-      "transactions": 1
+      "count": 0,
+      "transactions": 0
      }
     },
     "events": [
@@ -1655,13 +1351,17 @@
       "toLabel": null,
       "failed": false,
       "initiatedByWallet": true,
-      "category": "contract interaction",
+      "category": "swap",
       "direction": null,
+      "out": null,
+      "in": {
+       "symbol": "pDOG",
+       "amount": "604,213.942486",
+       "raw": "604213942486548690763776",
+       "usd": null
+      },
       "usd": null,
-      "summary": "Called unknown method 0xff84aafa on 0xa5ca…f75c: received 604,213.942486 pDOG",
-      "moved": [
-       "received 604,213.942486 pDOG"
-      ]
+      "summary": "Swapped ? for 604,213.942486 pDOG via 0xa5ca…f75c"
      },
      {
       "hash": "0xea8a9d3b805ab36ad72218974e73f8ac7bfa6a771076611a64d590e2e41e3e97",

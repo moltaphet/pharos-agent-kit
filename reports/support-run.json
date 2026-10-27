@@ -1,5 +1,5 @@
 {
- "recordedAt": "2026-10-27T10:38:38.541Z",
+ "recordedAt": "2026-10-27T15:05:30.548Z",
  "network": "Pharos mainnet (read-only, via Chain MCP) and Pharos Atlantic testnet (failures made on purpose)",
  "demo": {
   "network": "Pharos Atlantic testnet (688689)",
@@ -451,7 +451,7 @@
     "status": "failed",
     "category": "out-of-gas",
     "headline": "It ran out of gas",
-    "plain": "The transaction was given 30,000 units of gas and used 30,000 of them (100%) before the work was finished, so the network stopped it and undid everything. The fee for the gas used was still paid.",
+    "plain": "The transaction was given 30,000 units of gas and used 30,000 of them (100%) before the work was finished, so the network stopped it and undid everything. The fee for the gas used was still paid. (A transaction that uses all its gas and gives no reason can also have hit an instruction the contract could not run; the replay found no reason either, so a higher gas limit is the first thing to try.)",
     "fix": [
      "Send it again with a higher gas limit: most wallets let you edit it, or use “estimate” instead of a fixed number.",
      "Do not set the gas limit by hand to a round number; let the wallet estimate it, then add 20% of margin."
