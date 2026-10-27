@@ -412,6 +412,21 @@ Requirements it was built against (the Arena's own list):
 3. Highlights the top 3 notable events of the period.
 4. Delivers to a real channel (email, Telegram, Discord) or as a published page.
 
+## 29. Doc-Grounded Builder Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/doc-grounded-builder-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/doc-grounded-builder-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/doc-grounded-builder-agent
+- **What the proof shows:** An agent that answers “how do I do X on Pharos?” end to end: it asks Developer Docs MCP and keeps only an answer the docs support, with its sources; reads the facts it needs (chain ID, the price feed address and heartbeat) from the docs pages; does X through Chain MCP (a balance, a price, and transfers or deployments prepared unsigned for the user’s signature); and verifies the outcome on chain against the plan. Nine real requests are recorded, including a transfer and a deployment signed on Atlantic testnet and verified, a mainnet transfer left unsigned, and requests the docs do not cover, which it refuses to improvise.
+
+Requirements it was built against (the Arena's own list):
+
+1. Uses Docs MCP to plan, with sources cited, before acting.
+2. Executes the plan with Chain MCP and/or SkillEngine; anything that moves funds is prepared for signature.
+3. Verifies the outcome on chain and reports success or failure against the plan.
+4. Works for at least 3 different "how do I…" requests.
+5. Handles a request the docs don't cover by saying so instead of improvising.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

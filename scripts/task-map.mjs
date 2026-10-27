@@ -75,6 +75,8 @@ export const TASK_MAP = [
     tests: ['support.test.js'] },
   { n: 28, slug: 'weekly-digest-agent', folder: TASK_FOLDERS['weekly-digest-agent'], entries: ['lib/digest.js', 'lib/digest-delivery.js', 'lib/tasks/weekly-digest-agent.js', 'scripts/digest-run.mjs'], data: ['reports/digest-run.json', 'public/digests/latest.html', 'public/digests/latest.md'], page: ['public/js/tasks/weekly-digest-agent.js'],
     tests: ['digest.test.js'] },
+  { n: 29, slug: 'doc-grounded-builder-agent', folder: TASK_FOLDERS['doc-grounded-builder-agent'], entries: ['lib/builder.js', 'lib/builder-artifacts.js', 'lib/tasks/doc-grounded-builder-agent.js', 'scripts/builder-run.mjs'], data: ['reports/builder-run.json'], page: ['public/js/tasks/doc-grounded-builder-agent.js'],
+    tests: ['builder.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

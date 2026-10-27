@@ -34,6 +34,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 26 | Audit-Log Agent | [demo](https://pharos-agent-kit.vercel.app/#/audit-log-agent/try) | [agents/audit-log-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/audit-log-agent) | [26-audit-log-agent.md](26-audit-log-agent.md) |
 | 27 | dApp Support Agent | [demo](https://pharos-agent-kit.vercel.app/#/dapp-support-agent/try) | [agents/dapp-support-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/dapp-support-agent) | [27-dapp-support-agent.md](27-dapp-support-agent.md) |
 | 28 | Weekly Digest Agent | [demo](https://pharos-agent-kit.vercel.app/#/weekly-digest-agent/try) | [agents/weekly-digest-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/weekly-digest-agent) | [28-weekly-digest-agent.md](28-weekly-digest-agent.md) |
+| 29 | Doc-Grounded Builder Agent | [demo](https://pharos-agent-kit.vercel.app/#/doc-grounded-builder-agent/try) | [agents/doc-grounded-builder-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/doc-grounded-builder-agent) | [29-doc-grounded-builder-agent.md](29-doc-grounded-builder-agent.md) |
 
 ## Tests of the shared platform
 

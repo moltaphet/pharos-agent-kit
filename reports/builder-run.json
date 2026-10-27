@@ -1,0 +1,1213 @@
+{
+ "recordedAt": "2026-10-27T11:01:12.905Z",
+ "network": "Developer Docs MCP, Chain MCP (Pharos mainnet, read-only) and Pharos Atlantic testnet (two real transactions signed by the throwaway wallet standing in for the user)",
+ "cases": [
+  {
+   "id": "balance",
+   "title": "A read: the PROS balance of an address",
+   "question": "How do I check the PROS balance of 0x1159105d91825b0615c9fbe23c2055676676f96d?",
+   "run": {
+    "question": "How do I check the PROS balance of 0x1159105d91825b0615c9fbe23c2055676676f96d?",
+    "request": {
+     "recipe": "balance",
+     "network": "mainnet",
+     "address": "0x1159105d91825b0615c9fbe23c2055676676f96d"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I check the native PROS balance of an address on Pharos?”",
+      "result": "answered, 5 source page(s)"
+     },
+     {
+      "n": 2,
+      "actor": "docs-mcp",
+      "what": "getPage /getting-started/network/pacific-mainnet",
+      "result": "583 characters"
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "what": "get_chain_info",
+      "result": "chain ID 1672"
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "what": "get_block_number",
+      "result": "reading at block 21,397,213, two behind the head"
+     },
+     {
+      "n": 5,
+      "actor": "chain-mcp",
+      "what": "get_balance 0x115910…76f96d",
+      "result": "2.995240515625 PROS"
+     },
+     {
+      "n": 6,
+      "actor": "public-rpc",
+      "what": "eth_getBalance at block 21,397,213",
+      "result": "2995240515625000000 wei"
+     }
+    ],
+    "docs": {
+     "question": "How do I check the native PROS balance of an address on Pharos?",
+     "answer": "Query Pharos RPC with `eth_getBalance`:\n\n```bash\ncurl https://rpc.pharos.xyz \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"<address>\",\"latest\"],\"id\":1}'\n```\n\nThe result is hex-encoded wei. Convert it to PROS by dividing by `10^18`. You can also look up the address on [PharosScan](https://www.pharosscan.xyz).\n\nFor an MCP-based workflow, use `get_balance` as described in [Pharos MCP](https://docs.pharos.xyz/tooling-and-infrastructure/mcp). The [Get PROS Gas](https://docs.pharos.xyz/getting-started/get-pros-gas) guide includes the RPC example.",
+     "sources": [
+      {
+       "title": "Pharos MCP",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/mcp",
+       "cited": true
+      },
+      {
+       "title": "Get PROS Gas",
+       "url": "https://docs.pharos.xyz/getting-started/get-pros-gas",
+       "cited": true
+      },
+      {
+       "title": "Circle CCTP",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/cross-chain/circle-cctp",
+       "content": "CCTP smart contract addresses for Pharos. For contract interfaces and method signatures, see Contract Interfaces.\n\nFull contract source code is available on GitHub.\n",
+       "cited": false
+      },
+      {
+       "title": "About Pharos",
+       "url": "https://docs.pharos.xyz/introduction/readme",
+       "content": "Pharos has designed a Modular & Full-stack Parallel L1 Blockchain Network, structured into three primary layers: L1-Base, L1-Core, and L1-Extension.\n\nL1-Base: Delivers industry-leading data availability and hardware acceleration.\nL1-Core: A high-performance, globally distributed blockchain network powered by decentralized nodes. These nodes provide high-throughput and sub-second finality, enabling real-time Web3 user experiences.\nL1-Extension: Built on top of L1-Core, this layer supports network expansion across three dimensions:\nLeverages heterogeneous computation to create custom Special Processing Networks (SPNs), capable of running blockchain networks, sidechains, or non-blockchain applications like HFT, ZKML, and AI models.\nEnables Native Restaking to support rapid SPN creation, shared security, staking rewards, and slashing mechanisms. SPNs utilize the excess computing power of validators, providing flexibility in resource use while incentivizing upgrades.\nFacilitates Cross-SPNs Interoperation, allowing infrastructure, middleware, and application-focused SPNs to communicate and collaborate effortlessly, fostering a highly modular and composable ecosystem.\n",
+       "cited": false
+      },
+      {
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "content": "Every operation that sends a transaction (transfer, deploy, airdrop, contract write) must pass four checks before the command runs. This is enforced by SKILL.md and cannot be skipped.\n\n⚠️ Foundry does NOT read env vars automatically. cast and forge do not pick up $PRIVATE_KEY from the environment on their own. The agent must always pass it explicitly as --private-key $PRIVATE_KEY in every command. This is a common source of confusion.\n",
+       "cited": false
+      }
+     ],
+     "related": [],
+     "reason": "The answer does not refuse, the keyword search matched 10 page(s) and the answer links 2 docs page(s)."
+    },
+    "network": {
+     "name": "Pharos Pacific mainnet",
+     "docsChainId": 1672,
+     "chainId": 1672,
+     "rpc": "https://rpc.pharos.xyz",
+     "explorer": "https://www.pharosscan.xyz",
+     "page": "https://docs.pharos.xyz/getting-started/network/pacific-mainnet"
+    },
+    "verification": [
+     {
+      "what": "The chain I am connected to is the one the docs describe (chain ID 1672)",
+      "expected": "1672",
+      "actual": "1672",
+      "ok": true
+     },
+     {
+      "what": "A second, independent read of the same block gives the same balance",
+      "expected": "2995240515625000000",
+      "actual": "2995240515625000000",
+      "ok": true
+     }
+    ],
+    "plan": [
+     {
+      "step": "Use the Pharos Pacific mainnet network (chain ID 1672, RPC https://rpc.pharos.xyz)",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Ask Chain MCP for the native balance of 0x115910…76f96d (get_balance)",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Check it against a second source",
+      "from": "agent",
+      "done": true
+     }
+    ],
+    "result": {
+     "address": "0x1159105d91825b0615c9fbe23c2055676676f96d",
+     "symbol": "PROS",
+     "balanceWei": "2995240515625000000",
+     "balance": "2.995240515625",
+     "block": 21397213,
+     "explorer": "https://www.pharosscan.xyz/address/0x1159105d91825b0615c9fbe23c2055676676f96d"
+    },
+    "verdict": {
+     "status": "success",
+     "headline": "Done and verified: 0x1159105d… holds 2.995240515625 PROS",
+     "reason": "All 2 checks against the plan passed."
+    }
+   }
+  },
+  {
+   "id": "price-pros",
+   "title": "A read: a price from the docs-listed oracle",
+   "question": "How do I read the PROS/USD price on Pharos?",
+   "run": {
+    "question": "How do I read the PROS/USD price on Pharos?",
+    "request": {
+     "recipe": "price-feed",
+     "network": "mainnet",
+     "pair": "PROS/USD"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I read the PROS/USD price on Pharos from a Chainlink price feed?”",
+      "result": "answered, 5 source page(s)"
+     },
+     {
+      "n": 2,
+      "actor": "docs-mcp",
+      "what": "getPage /getting-started/network/pacific-mainnet",
+      "result": "583 characters"
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "what": "get_chain_info",
+      "result": "chain ID 1672"
+     },
+     {
+      "n": 4,
+      "actor": "docs-mcp",
+      "what": "getPage /tooling-and-infrastructure/oracles/chainlink-pe",
+      "result": "6,967 characters"
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "what": "Read the PROS/USD proxy address from the docs table",
+      "result": "0x371Ed36aEe5bFFbED1A2aa9b7deD7F4EB30F5466"
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "what": "eth_call latestAnswer() on 0x371Ed3…0F5466",
+      "result": "598578181263305500 → $0.5986 (18 decimals, from the docs)"
+     },
+     {
+      "n": 7,
+      "actor": "chain-mcp",
+      "what": "eth_call latestTimestamp()",
+      "result": "observed 2026-10-27 10:55:08 UTC"
+     },
+     {
+      "n": 8,
+      "actor": "public-rpc",
+      "what": "eth_call latestAnswer() at block 21,397,235",
+      "result": "598578181263305500"
+     }
+    ],
+    "docs": {
+     "question": "How do I read the PROS/USD price on Pharos from a Chainlink price feed?",
+     "answer": "On Pacific Mainnet, call the PROS/USD feed proxy’s `latestAnswer()` and divide the result by `1e18`.\n\n```bash\ncast call 0x371Ed36aEe5bFFbED1A2aa9b7deD7F4EB30F5466 \\\n  \"latestAnswer()(int256)\" \\\n  --rpc-url https://rpc.pharos.xyz\n```\n\nThe feed uses **18 decimals**. For example, a raw answer of `2500000000000000000` means `$2.5`. Check the observation timestamp too, and reject data older than your application’s staleness limit. The proxy also exposes `latestTimestamp()`.\n\nSee [Chainlink Push Engine Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe) for testnet addresses, feed IDs, and interface details.",
+     "sources": [
+      {
+       "title": "Chainlink Push Engine Feeds",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe",
+       "cited": true
+      },
+      {
+       "title": "Chainlink Data Feeds",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-ds",
+       "content": "Chainlink Data Streams is typically used for:\n\nHigh-frequency price data and market feeds\nLow-latency applications such as trading and derivatives\nAdvanced DeFi protocols requiring real-time data updates\nUse cases where data freshness and speed are critical\n",
+       "cited": false
+      },
+      {
+       "title": "Get PROS Gas",
+       "url": "https://docs.pharos.xyz/getting-started/get-pros-gas",
+       "content": "A card/bank on-ramp. Use the Alchemy Pay button on the Port page. It will open a \"Buy Crypto\" checkout:\n\nYou pay — enter an amount and pick your fiat currency (e.g. USD).\nYou receive (estimate) — auto-fills the equivalent in PROS on the Pharos network; this is a live quote that refreshes on a short timer (shown as a countdown, e.g. \"8 sec\") until you proceed.\nReview Your order (e.g. \"749.46 PROS for 300 USD\"), then click Proceed · Buy PROS.\nPay via Visa, Mastercard, Apple Pay, Google Pay, or bank transfer — the widget is \"Powered by Alchemy Pay,\" so this is the same checkout as going to ramp.alchemypay.org directly.\nComplete KYC if it's your first purchase, then confirm. The destination wallet address comes from whatever address you were connected with on Pharos Port.\n",
+       "cited": false
+      },
+      {
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "content": "When a developer asks the AI agent to do something on Pharos, the agent's first action is to read SKILL.md. This file does two things:\n\nDeclares the prerequisites the agent must satisfy (Foundry installed, private key configured)\nProvides a Capability Index — a table that maps every possible user intent to the correct capability and points to detailed instructions in a reference file\n\nFor example: if a developer says \"check my wallet balance\", the agent reads the Capability Index, finds the row for balance queries, and then reads references/query.md for the exact cast balance command template, parameter spec, and output parsing rules.\n",
+       "cited": false
+      },
+      {
+       "title": "Chainlink CCIP",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/cross-chain/chainlink-ccip",
+       "content": "Chainlink CCIP is typically used for:\n\nCross-chain token transfers\nSending messages between smart contracts on different chains\nBuilding omnichain applications\nIntegrating liquidity and users from other ecosystems\n",
+       "cited": false
+      }
+     ],
+     "related": [],
+     "reason": "The answer does not refuse, the keyword search matched 10 page(s) and the answer links 1 docs page(s)."
+    },
+    "network": {
+     "name": "Pharos Pacific mainnet",
+     "docsChainId": 1672,
+     "chainId": 1672,
+     "rpc": "https://rpc.pharos.xyz",
+     "explorer": "https://www.pharosscan.xyz",
+     "page": "https://docs.pharos.xyz/getting-started/network/pacific-mainnet"
+    },
+    "verification": [
+     {
+      "what": "The chain I am connected to is the one the docs describe (chain ID 1672)",
+      "expected": "1672",
+      "actual": "1672",
+      "ok": true
+     },
+     {
+      "what": "A second, independent read of the same block gives the same price",
+      "expected": "598578181263305500",
+      "actual": "598578181263305500",
+      "ok": true
+     },
+     {
+      "what": "The price is fresh: observed no more than twice the docs’ heartbeat (3600 s) before the block",
+      "expected": "≤ 7200 s",
+      "actual": "241 s",
+      "ok": true
+     },
+     {
+      "what": "The price is a plausible number (above zero)",
+      "expected": "> 0",
+      "actual": "0.598578",
+      "ok": true
+     }
+    ],
+    "plan": [
+     {
+      "step": "Find the PROS/USD feed on the docs page “Chainlink Push Engine Feeds”: proxy 0x371Ed3…0F5466",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Call latestAnswer() through Chain MCP and divide by 10^18 (the docs’ “Decimals”)",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Check freshness with latestTimestamp(), as the docs advise",
+      "from": "docs",
+      "done": true
+     }
+    ],
+    "result": {
+     "pair": "PROS/USD",
+     "feed": "0x371Ed36aEe5bFFbED1A2aa9b7deD7F4EB30F5466",
+     "price": 0.5985781812633054,
+     "raw": "598578181263305500",
+     "decimals": 18,
+     "observedAt": 1793098508,
+     "ageSeconds": 241,
+     "block": 21397235,
+     "explorer": "https://www.pharosscan.xyz/address/0x371Ed36aEe5bFFbED1A2aa9b7deD7F4EB30F5466"
+    },
+    "verdict": {
+     "status": "success",
+     "headline": "Done and verified: PROS/USD is $0.5986, observed 241 s before block 21,397,235",
+     "reason": "All 4 checks against the plan passed."
+    }
+   }
+  },
+  {
+   "id": "price-btc",
+   "title": "The same recipe for another feed the docs list",
+   "question": "How do I read the BTC/USD price on Pharos?",
+   "run": {
+    "question": "How do I read the BTC/USD price on Pharos?",
+    "request": {
+     "recipe": "price-feed",
+     "network": "mainnet",
+     "pair": "BTC/USD"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I read the BTC/USD price on Pharos from a Chainlink price feed?”",
+      "result": "answered, 5 source page(s)"
+     },
+     {
+      "n": 2,
+      "actor": "docs-mcp",
+      "what": "getPage /getting-started/network/pacific-mainnet",
+      "result": "583 characters"
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "what": "get_chain_info",
+      "result": "chain ID 1672"
+     },
+     {
+      "n": 4,
+      "actor": "docs-mcp",
+      "what": "getPage /tooling-and-infrastructure/oracles/chainlink-pe",
+      "result": "6,967 characters"
+     },
+     {
+      "n": 5,
+      "actor": "agent",
+      "what": "Read the BTC/USD proxy address from the docs table",
+      "result": "0x8b5DB228Fbccf588f08B073C235254aCb6791D36"
+     },
+     {
+      "n": 6,
+      "actor": "chain-mcp",
+      "what": "eth_call latestAnswer() on 0x8b5DB2…791D36",
+      "result": "79655595777626560000000 → $79655.5958 (18 decimals, from the docs)"
+     },
+     {
+      "n": 7,
+      "actor": "chain-mcp",
+      "what": "eth_call latestTimestamp()",
+      "result": "observed 2026-10-27 10:00:37 UTC"
+     },
+     {
+      "n": 8,
+      "actor": "public-rpc",
+      "what": "eth_call latestAnswer() at block 21,397,255",
+      "result": "79655595777626560000000"
+     }
+    ],
+    "docs": {
+     "question": "How do I read the BTC/USD price on Pharos from a Chainlink price feed?",
+     "answer": "On Pharos, call the BTC/USD feed proxy’s `latestAnswer()`; its value uses **18 decimals**.\n\n* **Pacific Mainnet:** `0x8b5DB228Fbccf588f08B073C235254aCb6791D36`\n* **Atlantic Testnet:** `0x5bcff8e4f4C02b5a3192A96DF4Eb5BB0Afdc36f0`\n\nWith Foundry:\n\n```bash\ncast call <feed-address> \"latestAnswer()(int256)\" --rpc-url <pharos-rpc>\n```\n\nConvert the returned integer to USD by dividing by `1e18`. Also read `latestTimestamp()` and check freshness against your application’s staleness limit. The timestamp represents when the price was observed, not when the transaction was included.\n\nSee [Chainlink Push Engine Feeds](https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe) for feed addresses and interface details.",
+     "sources": [
+      {
+       "title": "Chainlink Push Engine Feeds",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-pe",
+       "cited": true
+      },
+      {
+       "title": "Chainlink Data Feeds",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/oracles/chainlink-ds",
+       "content": "Chainlink Data Streams is typically used for:\n\nHigh-frequency price data and market feeds\nLow-latency applications such as trading and derivatives\nAdvanced DeFi protocols requiring real-time data updates\nUse cases where data freshness and speed are critical\n",
+       "cited": false
+      },
+      {
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "content": "When a developer asks the AI agent to do something on Pharos, the agent's first action is to read SKILL.md. This file does two things:\n\nDeclares the prerequisites the agent must satisfy (Foundry installed, private key configured)\nProvides a Capability Index — a table that maps every possible user intent to the correct capability and points to detailed instructions in a reference file\n\nFor example: if a developer says \"check my wallet balance\", the agent reads the Capability Index, finds the row for balance queries, and then reads references/query.md for the exact cast balance command template, parameter spec, and output parsing rules.\n",
+       "cited": false
+      },
+      {
+       "title": "Chainlink CCIP",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/cross-chain/chainlink-ccip",
+       "content": "Chainlink CCIP is typically used for:\n\nCross-chain token transfers\nSending messages between smart contracts on different chains\nBuilding omnichain applications\nIntegrating liquidity and users from other ecosystems\n",
+       "cited": false
+      },
+      {
+       "title": "About Pharos",
+       "url": "https://docs.pharos.xyz/introduction/readme",
+       "content": "A modular stack is provided to support SPNs, Pharos L2/L3 systems. Each modular component is open-sourced and available to partners and developers for scaling and customization.Performance benchmarks have been demonstrated on Geth, and future collaborations with ecosystem partners will help drive the development of Web3 infrastructure.\n",
+       "cited": false
+      }
+     ],
+     "related": [],
+     "reason": "The answer does not refuse, the keyword search matched 10 page(s) and the answer links 1 docs page(s)."
+    },
+    "network": {
+     "name": "Pharos Pacific mainnet",
+     "docsChainId": 1672,
+     "chainId": 1672,
+     "rpc": "https://rpc.pharos.xyz",
+     "explorer": "https://www.pharosscan.xyz",
+     "page": "https://docs.pharos.xyz/getting-started/network/pacific-mainnet"
+    },
+    "verification": [
+     {
+      "what": "The chain I am connected to is the one the docs describe (chain ID 1672)",
+      "expected": "1672",
+      "actual": "1672",
+      "ok": true
+     },
+     {
+      "what": "A second, independent read of the same block gives the same price",
+      "expected": "79655595777626560000000",
+      "actual": "79655595777626560000000",
+      "ok": true
+     },
+     {
+      "what": "The price is fresh: observed no more than twice the docs’ heartbeat (3600 s) before the block",
+      "expected": "≤ 7200 s",
+      "actual": "3528 s",
+      "ok": true
+     },
+     {
+      "what": "The price is a plausible number (above zero)",
+      "expected": "> 0",
+      "actual": "79655.595778",
+      "ok": true
+     }
+    ],
+    "plan": [
+     {
+      "step": "Find the BTC/USD feed on the docs page “Chainlink Push Engine Feeds”: proxy 0x8b5DB2…791D36",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Call latestAnswer() through Chain MCP and divide by 10^18 (the docs’ “Decimals”)",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Check freshness with latestTimestamp(), as the docs advise",
+      "from": "docs",
+      "done": true
+     }
+    ],
+    "result": {
+     "pair": "BTC/USD",
+     "feed": "0x8b5DB228Fbccf588f08B073C235254aCb6791D36",
+     "price": 79655.59577762656,
+     "raw": "79655595777626560000000",
+     "decimals": 18,
+     "observedAt": 1793095237,
+     "ageSeconds": 3528,
+     "block": 21397255,
+     "explorer": "https://www.pharosscan.xyz/address/0x8b5DB228Fbccf588f08B073C235254aCb6791D36"
+    },
+    "verdict": {
+     "status": "success",
+     "headline": "Done and verified: BTC/USD is $79655.5958, observed 3528 s before block 21,397,255",
+     "reason": "All 4 checks against the plan passed."
+    }
+   }
+  },
+  {
+   "id": "send-mainnet",
+   "title": "Funds: a transfer prepared on mainnet, never signed",
+   "question": "How do I send 0.001 PROS to 0x000000000000000000000000000000000000dEaD from 0x1159105d91825b0615c9fbe23c2055676676f96d?",
+   "run": {
+    "question": "How do I send 0.001 PROS to 0x000000000000000000000000000000000000dEaD from 0x1159105d91825b0615c9fbe23c2055676676f96d?",
+    "request": {
+     "recipe": "send",
+     "network": "mainnet",
+     "amount": "0.001",
+     "to": "0x000000000000000000000000000000000000dEaD",
+     "from": "0x1159105d91825b0615c9fbe23c2055676676f96d"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I send PROS to another address on Pharos?”",
+      "result": "answered, 5 source page(s)"
+     },
+     {
+      "n": 2,
+      "actor": "docs-mcp",
+      "what": "getPage /getting-started/network/pacific-mainnet",
+      "result": "583 characters"
+     },
+     {
+      "n": 3,
+      "actor": "chain-mcp",
+      "what": "get_chain_info",
+      "result": "chain ID 1672"
+     },
+     {
+      "n": 4,
+      "actor": "chain-mcp",
+      "what": "get_transaction_count, get_gas_price, get_balance, estimate_gas",
+      "result": "nonce 3, gas price 10 gwei, 21000 gas"
+     }
+    ],
+    "docs": {
+     "question": "How do I send PROS to another address on Pharos?",
+     "answer": "Send native PROS with Foundry’s `cast`:\n\n```bash\nexport RPC=https://rpc.pharos.xyz\ncast send <RECIPIENT_ADDRESS> \\\n  --value 1ether \\\n  --private-key \"$PRIVATE_KEY\" \\\n  --rpc-url \"$RPC\"\n```\n\nReplace `1ether` with the amount to send. Keep enough PROS in your wallet for gas, and verify the recipient address and network before signing. Pacific Mainnet uses chain ID `1672`.\n\nSee [Pharos Skill Engine](https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide) for transaction commands and [Pacific Mainnet](https://docs.pharos.xyz/getting-started/network/pacific-mainnet) for network details.",
+     "sources": [
+      {
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "cited": true
+      },
+      {
+       "title": "Pacific Mainnet",
+       "url": "https://docs.pharos.xyz/getting-started/network/pacific-mainnet",
+       "cited": true
+      },
+      {
+       "title": "Pharos MCP",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/mcp",
+       "content": "The server is non-custodial: it never receives, stores, or asks for a private key. Signing happens entirely in your own wallet or script; the server only relays the resulting signed bytes to the network.\n\nYour private key ──sign (locally)──▶ 0x02f86b…──▶ MCP server ──▶ Pharos\n\nThe flow is:\n\nBuild and sign a transaction locally with your own tooling (viem, ethers, a wallet).\nPass the resulting 0x-prefixed string to send_raw_transaction.\nUse the returned transaction hash with get_transaction_receipt to confirm inclusion.\n\nBecause signing is local, an AI agent connected to this server can prepare and broadcast a transaction for you without ever having access to your key.\n",
+       "cited": false
+      },
+      {
+       "title": "Get PROS Gas",
+       "url": "https://docs.pharos.xyz/getting-started/get-pros-gas",
+       "content": "Crypto already, in another wallet\nHalliday → wallet transfer\nCrypto already, on an exchange\nWithdraw directly, network = Pharos\nFiat (card/bank) only\nHalliday or Alchemy Pay\nNo wallet yet\nTopNod\n\nAll the options mentioned can be accessed at port.pharos.xyz/get-pros.\n",
+       "cited": false
+      },
+      {
+       "title": "Circle CCTP",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/cross-chain/circle-cctp",
+       "content": "CCTP smart contract addresses for Pharos. For contract interfaces and method signatures, see Contract Interfaces.\n\nFull contract source code is available on GitHub.\n",
+       "cited": false
+      }
+     ],
+     "related": [],
+     "reason": "The answer does not refuse, the keyword search matched 10 page(s) and the answer links 2 docs page(s)."
+    },
+    "network": {
+     "name": "Pharos Pacific mainnet",
+     "docsChainId": 1672,
+     "chainId": 1672,
+     "rpc": "https://rpc.pharos.xyz",
+     "explorer": "https://www.pharosscan.xyz",
+     "page": "https://docs.pharos.xyz/getting-started/network/pacific-mainnet"
+    },
+    "verification": [
+     {
+      "what": "The chain I am connected to is the one the docs describe (chain ID 1672)",
+      "expected": "1672",
+      "actual": "1672",
+      "ok": true
+     },
+     {
+      "what": "The sender can afford the amount plus the maximum fee",
+      "expected": "≥ 0.00121",
+      "actual": "2.99524",
+      "ok": true
+     },
+     {
+      "what": "The network accepted the transaction for estimation, so it would succeed now",
+      "expected": "estimate_gas returns a number",
+      "actual": "21000 gas",
+      "ok": true
+     }
+    ],
+    "plan": [
+     {
+      "step": "Use Pharos Pacific mainnet (chain ID 1672, from the docs)",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Read the sender’s nonce, the gas price and an estimate of the gas through Chain MCP",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Build the transaction and check the sender can pay for it",
+      "from": "agent",
+      "done": true
+     },
+     {
+      "step": "Hand it over for the user’s signature (the agent holds no key)",
+      "from": "agent",
+      "done": true
+     },
+     {
+      "step": "After it is signed and sent, read the receipt and check it against this plan",
+      "from": "agent",
+      "done": false
+     }
+    ],
+    "prepared": {
+     "chainId": 1672,
+     "network": "Pharos Pacific mainnet",
+     "from": "0x1159105d91825b0615c9fbe23c2055676676f96d",
+     "to": "0x000000000000000000000000000000000000dead",
+     "valueWei": "1000000000000000",
+     "nonce": 3,
+     "gasLimit": "21000",
+     "gasPriceWei": "10000000000",
+     "maxFeeWei": "210000000000000",
+     "balanceWei": "2995240515625000000",
+     "data": "0x"
+    },
+    "verdict": {
+     "status": "prepared",
+     "headline": "Prepared for your signature: 0.001 PROS to 0x000000…00dEaD",
+     "reason": "Nothing was sent. Sign this transaction in your wallet (or with your own tool), broadcast it, and give me the transaction hash to verify the outcome on chain."
+    }
+   }
+  },
+  {
+   "id": "send-atlantic",
+   "title": "Funds: prepared on Atlantic; the user signs; the agent verifies",
+   "question": "How do I send 0.0001 PHRS to 0x000000000000000000000000000000000000dEaD from 0x0ec197b8a30543c93e521a6c3f2db5d110e60850 on the Atlantic testnet?",
+   "run": {
+    "question": "How do I send 0.0001 PHRS to 0x000000000000000000000000000000000000dEaD from 0x0ec197b8a30543c93e521a6c3f2db5d110e60850 on the Atlantic testnet?",
+    "request": {
+     "recipe": "send",
+     "network": "atlantic",
+     "amount": "0.0001",
+     "to": "0x000000000000000000000000000000000000dEaD",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I send PHRS on the Atlantic testnet to another address on Pharos?”",
+      "result": "answered, 5 source page(s)"
+     },
+     {
+      "n": 2,
+      "actor": "docs-mcp",
+      "what": "getPage /getting-started/network/atlantic-testnet",
+      "result": "818 characters"
+     },
+     {
+      "n": 3,
+      "actor": "chain-rpc",
+      "what": "get_chain_info",
+      "result": "chain ID 688689"
+     },
+     {
+      "n": 4,
+      "actor": "chain-rpc",
+      "what": "get_transaction_count, get_gas_price, get_balance, estimate_gas",
+      "result": "nonce 70, gas price 10 gwei, 21000 gas"
+     }
+    ],
+    "docs": {
+     "question": "How do I send PHRS on the Atlantic testnet to another address on Pharos?",
+     "answer": "Use an EVM wallet connected to Atlantic Testnet, then send a native-token transaction to the recipient’s address.\n\n* **RPC:** `https://atlantic.dplabs-internal.com`\n* **Chain ID:** `688689`\n* **Token symbol:** `PHRS`\n\nWith ethers.js, set `to` to the recipient address and `value` to the amount in wei, then call `wallet.sendTransaction(tx)`. Keep your private key secure, and ensure your wallet has enough PHRS for the amount and gas.\n\nSee the [Atlantic Testnet](https://docs.pharos.xyz/getting-started/network/atlantic-testnet) and the [Hardhat](https://docs.pharos.xyz/developer-guide/hardhat).",
+     "sources": [
+      {
+       "title": "Atlantic Testnet",
+       "url": "https://docs.pharos.xyz/getting-started/network/atlantic-testnet",
+       "cited": true
+      },
+      {
+       "title": "Hardhat",
+       "url": "https://docs.pharos.xyz/developer-guide/hardhat",
+       "cited": true
+      },
+      {
+       "title": "x402 Atlantic Testnet",
+       "url": "https://docs.pharos.xyz/developer-guide/x402/x402-atlantic-testnet",
+       "content": "TPS\n30,000\nUsually < 5,000\nBlock Time\n< 1 Second\nUsually 2 - 15 Seconds\nFinality Time\nSub-second\nUsually several minutes\nMicro-payment Viability\nExtremely High\nLow - High\n",
+       "cited": false
+      },
+      {
+       "title": "Node Management",
+       "url": "https://docs.pharos.xyz/node-and-validator-guide/node-management",
+       "content": "Follow Using Docker (Atlantic Testnet), which uses container_name: atlantic-testnet.\n\ndocker start atlantic-testnet\n",
+       "cited": false
+      },
+      {
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "content": "# Send native PHRS to an address\ncast send <recipient> --value 0.1ether --private-key $PRIVATE_KEY --rpc-url $RPC\n# Call a contract write method\ncast send <contract> \"<method(paramType)>\" <arg> --private-key $PRIVATE_KEY --rpc-url $RPC\n# Call a payable method (sending PHRS with the call)\ncast send <contract> \"<method()>\" --value 0.01ether --private-key $PRIVATE_KEY --rpc-url $RPC\n",
+       "cited": false
+      }
+     ],
+     "related": [],
+     "reason": "The answer does not refuse, the keyword search matched 10 page(s) and the answer links 2 docs page(s)."
+    },
+    "network": {
+     "name": "Pharos Atlantic testnet",
+     "docsChainId": 688689,
+     "chainId": 688689,
+     "rpc": "https://atlantic.dplabs-internal.com",
+     "explorer": "https://atlantic.pharosscan.xyz",
+     "page": "https://docs.pharos.xyz/getting-started/network/atlantic-testnet"
+    },
+    "verification": [
+     {
+      "what": "The chain I am connected to is the one the docs describe (chain ID 688689)",
+      "expected": "688689",
+      "actual": "688689",
+      "ok": true
+     },
+     {
+      "what": "The sender can afford the amount plus the maximum fee",
+      "expected": "≥ 0.00031",
+      "actual": "0.033939",
+      "ok": true
+     },
+     {
+      "what": "The network accepted the transaction for estimation, so it would succeed now",
+      "expected": "estimate_gas returns a number",
+      "actual": "21000 gas",
+      "ok": true
+     }
+    ],
+    "plan": [
+     {
+      "step": "Use Pharos Atlantic testnet (chain ID 688689, from the docs)",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Read the sender’s nonce, the gas price and an estimate of the gas through Chain MCP",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Build the transaction and check the sender can pay for it",
+      "from": "agent",
+      "done": true
+     },
+     {
+      "step": "Hand it over for the user’s signature (the agent holds no key)",
+      "from": "agent",
+      "done": true
+     },
+     {
+      "step": "After it is signed and sent, read the receipt and check it against this plan",
+      "from": "agent",
+      "done": false
+     }
+    ],
+    "prepared": {
+     "chainId": 688689,
+     "network": "Pharos Atlantic testnet",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": "0x000000000000000000000000000000000000dead",
+     "valueWei": "100000000000000",
+     "nonce": 70,
+     "gasLimit": "21000",
+     "gasPriceWei": "10000000000",
+     "maxFeeWei": "210000000000000",
+     "balanceWei": "33939246496973260",
+     "data": "0x"
+    },
+    "verdict": {
+     "status": "prepared",
+     "headline": "Prepared for your signature: 0.0001 PHRS to 0x000000…00dEaD",
+     "reason": "Nothing was sent. Sign this transaction in your wallet (or with your own tool), broadcast it, and give me the transaction hash to verify the outcome on chain."
+    }
+   },
+   "afterSigning": {
+    "status": "success",
+    "headline": "Done and verified against the plan",
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-rpc",
+      "what": "get_transaction, get_transaction_receipt",
+      "result": "mined in block 31,942,790, status success"
+     }
+    ],
+    "verification": [
+     {
+      "what": "The transaction succeeded",
+      "expected": "status 1",
+      "actual": "status 1",
+      "ok": true
+     },
+     {
+      "what": "It was sent from the prepared sender",
+      "expected": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "actual": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "ok": true
+     },
+     {
+      "what": "It used the nonce the plan read",
+      "expected": "70",
+      "actual": "70",
+      "ok": true
+     },
+     {
+      "what": "It is on the chain the plan named",
+      "expected": "688689",
+      "actual": "688689",
+      "ok": true
+     },
+     {
+      "what": "It went to the prepared recipient",
+      "expected": "0x000000000000000000000000000000000000dead",
+      "actual": "0x000000000000000000000000000000000000dead",
+      "ok": true
+     },
+     {
+      "what": "It carried the prepared amount",
+      "expected": "100000000000000",
+      "actual": "100000000000000",
+      "ok": true
+     }
+    ],
+    "result": {
+     "recipient": "0x000000000000000000000000000000000000dead",
+     "valueWei": "100000000000000"
+    },
+    "gasUsed": "21000",
+    "block": 31942790
+   }
+  },
+  {
+   "id": "deploy",
+   "title": "Funds: a deployment prepared for Atlantic; the user signs; the agent verifies",
+   "question": "How do I deploy a smart contract to the Pharos Atlantic testnet from 0x0ec197b8a30543c93e521a6c3f2db5d110e60850?",
+   "run": {
+    "question": "How do I deploy a smart contract to the Pharos Atlantic testnet from 0x0ec197b8a30543c93e521a6c3f2db5d110e60850?",
+    "request": {
+     "recipe": "deploy",
+     "network": "atlantic",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850"
+    },
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I deploy a smart contract to the Pharos Atlantic testnet?”",
+      "result": "answered, 5 source page(s)"
+     },
+     {
+      "n": 2,
+      "actor": "docs-mcp",
+      "what": "getPage /getting-started/network/atlantic-testnet",
+      "result": "818 characters"
+     },
+     {
+      "n": 3,
+      "actor": "chain-rpc",
+      "what": "get_chain_info",
+      "result": "chain ID 688689"
+     },
+     {
+      "n": 4,
+      "actor": "chain-rpc",
+      "what": "get_transaction_count, get_gas_price, get_balance, estimate_gas",
+      "result": "nonce 71, gas price 10 gwei, 140596 gas"
+     }
+    ],
+    "docs": {
+     "question": "How do I deploy a smart contract to the Pharos Atlantic testnet?",
+     "answer": "Use Hardhat and configure Atlantic Testnet with RPC `https://atlantic.dplabs-internal.com` and chain ID `688689`.\n\n1. Set your deployer key: `npx hardhat vars set PRIVATE_KEY`\n2. Compile and test: `npx hardhat compile` and `npx hardhat test`\n3. Deploy: `npx hardhat ignition deploy ./ignition/modules/Token.js --network pharos`\n\nMake sure the deployer wallet has enough testnet tokens for gas. See [Write Your First Token](https://docs.pharos.xyz/developer-guide/hardhat/write-your-first-token) for the Hardhat network configuration and verification steps, and [Atlantic Testnet](https://docs.pharos.xyz/getting-started/network/atlantic-testnet) for network details.",
+     "sources": [
+      {
+       "title": "Write Your First Token",
+       "url": "https://docs.pharos.xyz/developer-guide/hardhat/write-your-first-token",
+       "cited": true
+      },
+      {
+       "title": "Atlantic Testnet",
+       "url": "https://docs.pharos.xyz/getting-started/network/atlantic-testnet",
+       "cited": true
+      },
+      {
+       "title": "Supra",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/oracles/supra",
+       "content": "Supra provides high-performance oracle services that deliver real-time price feeds and external data to decentralized applications.\n\nOn Pharos, Supra’s DORA Pull Oracle is deployed on Pacific Mainnet and Atlantic Testnet, enabling smart contracts to securely fetch off-chain data directly from the oracle network.\n",
+       "cited": false
+      },
+      {
+       "title": "x402 Atlantic Testnet",
+       "url": "https://docs.pharos.xyz/developer-guide/x402/x402-atlantic-testnet",
+       "content": "TPS\n30,000\nUsually < 5,000\nBlock Time\n< 1 Second\nUsually 2 - 15 Seconds\nFinality Time\nSub-second\nUsually several minutes\nMicro-payment Viability\nExtremely High\nLow - High\n",
+       "cited": false
+      },
+      {
+       "title": "Canonical Contracts",
+       "url": "https://docs.pharos.xyz/getting-started/canonical-contracts",
+       "content": "Create2Deployer\nHelper for CREATE2 opcode usage\n0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2\nDeterministicDeploymentProxy\nIntegrated with Foundry for deterministic deployments\n0x4e59b44847b379578588920ca78fbf26c0b4956c\nMultiCall3\nAllows bundling multiple transactions\n0xcA11bde05977b3631167028862bE2a173976CA11\nGnosisSafe (v1.3.0)\nMultisignature wallet\n0x69f4D1788e39c87893C980c06EdF4b7f686e2938\nGnosisSafeL2 (v1.3.0)\nEvents-based implementation of GnosisSafe\n0xfb1bffC9d739B8D520DaF37dF666da4C687191EA\nMultiSendCallOnly (v1.3.0)\nBatches multiple transactions (calls only)\n0xA1dabEF33b3B82c7814B6D82A79e50F4AC44102B\nMultiSend (v1.3.0)\nBatches multiple transactions\n0x998739BFdAAdde7C933B942a68053933098f9EDa\nPermit2\nNext-generation token approval system\n0x000000000022D473030F116dDEE9F6B43aC78BA3\nEntryPoint (v0.7.0)\nERC-4337 entry point for account abstraction\n0x0000000071727De22E5E9d8BAf0edAc6f37da032\nSenderCreator (v0.7.0)\nHelper for EntryPoint\n0xEFC2c1444eBCC4Db75e7613d20C6a62fF67A167C\n",
+       "cited": false
+      }
+     ],
+     "related": [],
+     "reason": "The answer does not refuse, the keyword search matched 10 page(s) and the answer links 2 docs page(s)."
+    },
+    "network": {
+     "name": "Pharos Atlantic testnet",
+     "docsChainId": 688689,
+     "chainId": 688689,
+     "rpc": "https://atlantic.dplabs-internal.com",
+     "explorer": "https://atlantic.pharosscan.xyz",
+     "page": "https://docs.pharos.xyz/getting-started/network/atlantic-testnet"
+    },
+    "verification": [
+     {
+      "what": "The chain I am connected to is the one the docs describe (chain ID 688689)",
+      "expected": "688689",
+      "actual": "688689",
+      "ok": true
+     },
+     {
+      "what": "The deployer can afford the maximum fee",
+      "expected": "≥ 0.001405",
+      "actual": "0.033818",
+      "ok": true
+     },
+     {
+      "what": "The network accepted the deployment for estimation",
+      "expected": "estimate_gas returns a number",
+      "actual": "140596 gas",
+      "ok": true
+     }
+    ],
+    "plan": [
+     {
+      "step": "Use Pharos Atlantic testnet (chain ID 688689, from the docs)",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Take the compiled contract (Counter) and read the deployer’s nonce, the gas price and the gas estimate",
+      "from": "docs",
+      "done": true
+     },
+     {
+      "step": "Check the deployer can pay for the deployment",
+      "from": "agent",
+      "done": true
+     },
+     {
+      "step": "Hand the unsigned deployment over for the user’s signature",
+      "from": "agent",
+      "done": true
+     },
+     {
+      "step": "After it is mined, check that the receipt has a contract address, that the code there is the compiled code, and that the contract answers a call",
+      "from": "agent",
+      "done": false
+     }
+    ],
+    "prepared": {
+     "chainId": 688689,
+     "network": "Pharos Atlantic testnet",
+     "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "to": null,
+     "valueWei": "0",
+     "nonce": 71,
+     "gasLimit": "140596",
+     "gasPriceWei": "10000000000",
+     "maxFeeWei": "1405960000000000",
+     "balanceWei": "33818246496952260",
+     "data": "0x608060405234801561001057600080fd5b50610114806100206000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c80633b3546c8146037578063773acdef146066575b600080fd5b6054604236600460c6565b60006020819052908152604090205481565b60405190815260200160405180910390f35b6075607136600460c6565b6077565b005b60008181526020818152604091829020805460010190819055915182815283917f2cbdbe00cebef89186c967208065ecaafca1aa8a8971c4ccaa8ac017a9cad9ae910160405180910390a25050565b60006020828403121560d757600080fd5b503591905056fea26469706673582212204339cfec5a50f9cc68df529138730ab179d1e6b187131cb8231bb91ab5ec706b64736f6c63430008180033",
+     "contract": "Counter",
+     "expectedRuntimeBytes": 276
+    },
+    "verdict": {
+     "status": "prepared",
+     "headline": "Prepared for your signature: deploy the Counter contract to Atlantic",
+     "reason": "Nothing was sent. Sign and broadcast the deployment, and give me the transaction hash to verify it."
+    }
+   },
+   "afterSigning": {
+    "status": "success",
+    "headline": "Done and verified against the plan",
+    "steps": [
+     {
+      "n": 1,
+      "actor": "chain-rpc",
+      "what": "get_transaction, get_transaction_receipt",
+      "result": "mined in block 31,942,814, status success"
+     },
+     {
+      "n": 2,
+      "actor": "chain-rpc",
+      "what": "get_code 0xd4453f…f6fc1d",
+      "result": "276 bytes"
+     }
+    ],
+    "verification": [
+     {
+      "what": "The transaction succeeded",
+      "expected": "status 1",
+      "actual": "status 1",
+      "ok": true
+     },
+     {
+      "what": "It was sent from the prepared sender",
+      "expected": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "actual": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "ok": true
+     },
+     {
+      "what": "It used the nonce the plan read",
+      "expected": "71",
+      "actual": "71",
+      "ok": true
+     },
+     {
+      "what": "It is on the chain the plan named",
+      "expected": "688689",
+      "actual": "688689",
+      "ok": true
+     },
+     {
+      "what": "The receipt names a new contract address",
+      "expected": "an address",
+      "actual": "0xd4453f3ce552e18d58db65ac0e9ee2c7f8f6fc1d",
+      "ok": true
+     },
+     {
+      "what": "The code at that address is the compiled Counter code",
+      "expected": "276 bytes, identical",
+      "actual": "276 bytes",
+      "ok": true
+     },
+     {
+      "what": "The contract answers a call: count(0) is 0",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+     }
+    ],
+    "result": {
+     "contract": "0xd4453f3ce552e18d58db65ac0e9ee2c7f8f6fc1d"
+    },
+    "gasUsed": "113061",
+    "block": 31942814
+   }
+  },
+  {
+   "id": "not-covered-1",
+   "title": "Not in the docs: liquidity on FaroSwap",
+   "question": "How do I earn yield by providing liquidity on FaroSwap?",
+   "run": {
+    "question": "How do I earn yield by providing liquidity on FaroSwap?",
+    "request": null,
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I earn yield by providing liquidity on FaroSwap?”",
+      "result": "not answered: The answer itself says it cannot find what was asked, so it is not shown as the answer."
+     }
+    ],
+    "docs": {
+     "question": "How do I earn yield by providing liquidity on FaroSwap?",
+     "answer": null,
+     "sources": [],
+     "related": [
+      {
+       "title": "Publish Service Agent",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/overview/publish-skill-af",
+       "content": "Your Service Agent can earn for you by setting a unit price per call.\n\nHow pricing works:\n\nPricing is per-call and fixed\nSet the unit price at publishing time to either Free or X.XX USDC/call\nThe price is shown publicly in the Marketplace\nEach paid call is settled automatically Enabling your wallet:\n\nGo to https://flow.anvita.xyz/dashboard and enable your wallet. Once enabled, an Agent wallet is generated automatically for every Service Agent you publish.\n\nThe earnings feature is still in beta. To avoid call failures, set the public price to Free for now.\n"
+      },
+      {
+       "title": "RPC Infrastructure",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/rpc",
+       "content": "Pharos supports multiple RPC providers for both Mainnet and Testnet environments.\n\nZAN RPC\nNirvana RPC\nAlchemy RPC\n"
+      },
+      {
+       "title": "Indexer",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/indexing",
+       "content": "Pharos supports indexing solutions that help developers access and structure on-chain data efficiently.\n\nRefer to the provider below for setup and integration details:\n\nGoldsky\n"
+      }
+     ],
+     "reason": "The answer itself says it cannot find what was asked, so it is not shown as the answer.",
+     "partial": "I cannot find FaroSwap-specific instructions or yield rates in the docs. The Pharos example shows the basic liquidity flow: provide both pool tokens, approve their transfers, then call `addLiquidity(amountA, amountB)`. It doesn’t describe FaroSwap’s fees, rewards, or how returns are calculated.\n\nFor the contract-level example, read [Write Your First Uniswap Contract](https://docs.pharos.xyz/developer-guide/foundry/write-your-first-uniswap-contract)."
+    },
+    "verdict": {
+     "status": "not-covered",
+     "headline": "The docs do not cover this, so I did nothing",
+     "reason": "The answer itself says it cannot find what was asked, so it is not shown as the answer. I do not improvise an answer or an action for something the documentation does not describe."
+    },
+    "plan": [],
+    "verification": []
+   }
+  },
+  {
+   "id": "not-covered-2",
+   "title": "Not in the docs: something unrelated",
+   "question": "How do I bake sourdough bread with Pharos?",
+   "run": {
+    "question": "How do I bake sourdough bread with Pharos?",
+    "request": null,
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I bake sourdough bread with Pharos?”",
+      "result": "not answered: The answer itself says it cannot find what was asked, so it is not shown as the answer."
+     }
+    ],
+    "docs": {
+     "question": "How do I bake sourdough bread with Pharos?",
+     "answer": null,
+     "sources": [],
+     "related": [
+      {
+       "title": "About Pharos",
+       "url": "https://docs.pharos.xyz/introduction/readme",
+       "content": "A modular stack is provided to support SPNs, Pharos L2/L3 systems. Each modular component is open-sourced and available to partners and developers for scaling and customization.Performance benchmarks have been demonstrated on Geth, and future collaborations with ecosystem partners will help drive the development of Web3 infrastructure.\n"
+      },
+      {
+       "title": "Pharos Skill Engine",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/pharos-skill-engine-guide",
+       "content": "The Pharos Skill Engine is a packaged developer toolkit that lets an AI agent perform any on-chain operation on the Pharos — check balances, send transactions, deploy and verify Solidity contracts, run batch airdrops, and generate Web3 interaction scripts — entirely through CLI commands.\n\nIt is not an SDK, not an API, and not a smart contract framework. It is a self-contained knowledge and tooling package that a developer installs once and then hands to an AI agent (like Claude). The agent reads the package, understands what Pharos operations are available, and executes them by running the correct cast and forge commands.\n"
+      },
+      {
+       "title": "Circle CCTP",
+       "url": "https://docs.pharos.xyz/tooling-and-infrastructure/cross-chain/circle-cctp",
+       "content": "The relationship between CCTP’s onchain components and Circle’s offchain Attestation Service is illustrated below for a burn-and-mint of USDC between EVM-compatible domains:\n\nOn Pharos, the onchain component for crosschain burning and minting is called TokenMessengerV2, which is built on top of MessageTransmitterV2, an onchain component for generalized message passing.\n\nIn the diagram, a token depositor calls the TokenMessengerV2#depositForBurn function to deposit a native token (such as USDC), which delegates to the TokenMinterV2 contract to burn the token. The TokenMessengerV2 contract then sends a message via the MessageTransmitterV2#sendMessage function. After sufficient block confirmations, Circle’s offchain attestation service, Iris, signs the message. An API consumer must query this attestation and submits it onchain to the destination domain’s MessageTransmitterV2#receiveMessage function.\n\nTo send an arbitrary message, directly call MessageTransmitterV2#sendMessage. The message recipient must implement the following methods to handle messages based on their finality threshold:\n\nImplement IMessageHandlerV2#handleReceiveFinalizedMessage to receive messages with finalityThresholdExecuted ≥ 2000.\nImplement IMessageHandlerV2#handleReceiveUnfinalizedMessage to receive messages with finalityThresholdExecuted < 2000.\n\nThis distinction allows the recipient to control the level of finality it requires before accepting a message.\n"
+      }
+     ],
+     "reason": "The answer itself says it cannot find what was asked, so it is not shown as the answer."
+    },
+    "verdict": {
+     "status": "not-covered",
+     "headline": "The docs do not cover this, so I did nothing",
+     "reason": "The answer itself says it cannot find what was asked, so it is not shown as the answer. I do not improvise an answer or an action for something the documentation does not describe."
+    },
+    "plan": [],
+    "verification": []
+   }
+  },
+  {
+   "id": "explained-only",
+   "title": "In the docs, but not something the agent can do",
+   "question": "How do I run a validator node on Pharos?",
+   "run": {
+    "question": "How do I run a validator node on Pharos?",
+    "request": null,
+    "steps": [
+     {
+      "n": 1,
+      "actor": "docs-mcp",
+      "what": "askQuestion + searchDocumentation: “How do I run a validator node on Pharos?”",
+      "result": "answered, 5 source page(s)"
+     }
+    ],
+    "docs": {
+     "question": "How do I run a validator node on Pharos?",
+     "answer": "Run a Full/Validator node, sync it, then register it on-chain:\n\n1. Check the [Validator Requirements](https://docs.pharos.xyz/node-and-validator-guide/validator-requirements).\n2. Follow the network-specific Docker setup in [Validator Node Deployment](https://docs.pharos.xyz/node-and-validator-guide/validator-node-deployment), then start it with `docker compose up -d`.\n3. From `/data` inside the container, generate an unsigned registration using `./ops add-validator --unsigned`. Set a reachable endpoint such as `tcp://YOUR_PUBLIC_IP:19000` and use the node’s existing keys.\n4. Submit the registration with a hardware wallet or Safe. The owner cannot be changed.\n\nActivation requires total stake of **100,000 PROS on Atlantic** or **1,000,000 PROS on Pacific**. See [Node Management](https://docs.pharos.xyz/node-and-validator-guide/node-management) for network-specific commands and registration steps.",
+     "sources": [
+      {
+       "title": "Validator Requirements",
+       "url": "https://docs.pharos.xyz/node-and-validator-guide/validator-requirements",
+       "cited": true
+      },
+      {
+       "title": "Validator Node Deployment",
+       "url": "https://docs.pharos.xyz/node-and-validator-guide/validator-node-deployment",
+       "cited": true
+      },
+      {
+       "title": "Node Management",
+       "url": "https://docs.pharos.xyz/node-and-validator-guide/node-management",
+       "cited": true
+      },
+      {
+       "title": "About Pharos",
+       "url": "https://docs.pharos.xyz/introduction/readme",
+       "content": "Pharos has designed a Modular & Full-stack Parallel L1 Blockchain Network, structured into three primary layers: L1-Base, L1-Core, and L1-Extension.\n\nL1-Base: Delivers industry-leading data availability and hardware acceleration.\nL1-Core: A high-performance, globally distributed blockchain network powered by decentralized nodes. These nodes provide high-throughput and sub-second finality, enabling real-time Web3 user experiences.\nL1-Extension: Built on top of L1-Core, this layer supports network expansion across three dimensions:\nLeverages heterogeneous computation to create custom Special Processing Networks (SPNs), capable of running blockchain networks, sidechains, or non-blockchain applications like HFT, ZKML, and AI models.\nEnables Native Restaking to support rapid SPN creation, shared security, staking rewards, and slashing mechanisms. SPNs utilize the excess computing power of validators, providing flexibility in resource use while incentivizing upgrades.\nFacilitates Cross-SPNs Interoperation, allowing infrastructure, middleware, and application-focused SPNs to communicate and collaborate effortlessly, fostering a highly modular and composable ecosystem.\n",
+       "cited": false
+      },
+      {
+       "title": "Node Monitoring Setup",
+       "url": "https://docs.pharos.xyz/node-and-validator-guide/node-monitoring-setup",
+       "content": "Ensure you have a Prometheus Pushgateway running and accessible from your node\nEdit your pharos.conf file and add the monitor_config section under chain:\n\nvim pharos.conf\n\nReplace the placeholder values:\nyour_job_name: A unique identifier for your node (e.g., my_validator_node)\nyour_pushgateway_address: Your Pushgateway hostname or IP\nRestart your node to apply the changes:\n\nFor Docker:\n\ndocker compose restart\n\nFor Binary:\n\n./ops stop --force\n./ops start --config ./pharos.conf\n",
+       "cited": false
+      }
+     ],
+     "related": [],
+     "reason": "The answer does not refuse, the keyword search matched 10 page(s) and the answer links 3 docs page(s)."
+    },
+    "verdict": {
+     "status": "explained-only",
+     "headline": "The docs explain this, but it is not something I can do myself",
+     "reason": "The answer above is from the docs, with its sources. I can only act on four kinds of request (checking a balance, reading a price feed, preparing a transfer of PROS, preparing a contract deployment), so I stopped at the explanation."
+    },
+    "plan": [],
+    "verification": []
+   }
+  }
+ ],
+ "summary": {
+  "cases": 9,
+  "doThings": 6,
+  "verifiedOnChain": 5,
+  "notCovered": 2,
+  "preparedMainnet": true
+ }
+}
