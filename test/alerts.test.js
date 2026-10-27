@@ -112,7 +112,7 @@ test('a channel that is down loses nothing and does not make the others repeat',
   assert.equal(r2.failed.length, 0);
   assert.equal(up.sent.length, 1, 'the healthy channel got it once');
   assert.equal(flaky.sent.length, 1, 'the recovered channel got what it missed');
-  assert.equal(state.cursor, 10_000);
+  assert.equal(state.cursor, 9_998, 'two blocks of margin behind the head by default');
 });
 
 test('channels: request shapes, secrets never leak, bad configs refused', async () => {
