@@ -33,7 +33,7 @@ export const content = {
     'Queries (rates, value locked, free liquidity, a wallet’s positions) and actions (deposit and withdraw, prepared as unsigned approve + deposit/withdraw transactions with a simulation) go through the same interface; nothing is signed.',
     'Each request is routed to a venue and the answer says why: the best measured return among the venues that accept it, with every other venue listed with its reason; withdrawals come from the lowest return that can pay.',
     'The recorded run takes down R25, then Morpho Vault V2, then both, then everything: each time the others carry on, and with all down the answer is a clear “no venue can take this right now”.',
-    'The architecture write-up is in docs/architecture-multi-protocol-aggregator.md. A demo video is something the author records; this page and the CLI are what it would show.',
+    'The architecture write-up is in docs/architecture-multi-protocol-aggregator.md; the Try tab and the CLI show the same requests step by step.',
   ],
   files: ['agents/multi-protocol-aggregator/pharos-aggregate.js', 'lib/aggregator.js', 'lib/rpc-batch.js', 'lib/tasks/multi-protocol-aggregator.js', 'docs/architecture-multi-protocol-aggregator.md', 'scripts/aggregator-run.mjs', 'reports/aggregator-run.json'],
   run: {

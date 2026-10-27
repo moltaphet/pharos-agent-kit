@@ -550,11 +550,13 @@ await guard(async () => {
   const opt = async (o) => (await withRetry(() => run(SLUG, { wallet: W, ...o }))).body?.data?.optimizer;
   const idle = await opt({ from: 'idle' });
   const cand = (r, id) => r?.candidates?.find((x) => x.id === id);
-  check('idle USDC: MOVE to the weekly vault, not the highest-paying (quarterly) one', idle?.recommendation?.action === 'move' && idle.recommendation.to === 'r25-weekly' && cand(idle, 'r25-quarterly')?.apy > cand(idle, 'r25-weekly')?.apy, idle?.recommendation?.headline);
+  // which vault pays best changes with the market; what must hold is that it MOVES to a vault that really lets this wallet in, and never to the quarterly one that pays more but refuses it
+  const pick = idle?.recommendation?.to;
+  check('idle USDC: MOVE to a vault that lets the wallet in, not the highest-paying (quarterly) one that refuses it', idle?.recommendation?.action === 'move' && pick !== 'r25-quarterly' && cand(idle, pick)?.viable === true && cand(idle, 'r25-quarterly')?.viable === false && cand(idle, 'r25-quarterly')?.apy > cand(idle, 'r25-weekly')?.apy, idle?.recommendation?.headline);
   check('the quarterly vault is rejected: not let in, cannot be redeemed, no invented explanation', cand(idle, 'r25-quarterly')?.viable === false && cand(idle, 'r25-quarterly').enter.eligible === false && cand(idle, 'r25-quarterly').rejected.some((r) => /0xe19a2672/.test(r)) && !cand(idle, 'r25-quarterly').rejected.some((r) => /whitelist|KYC|permissioned/i.test(r)));
   check('the semi-yearly vault is rejected because its deposit cap is below the amount', cand(idle, 'r25-semi-yearly')?.viable === false && cand(idle, 'r25-semi-yearly').rejected.some((r) => /caps this wallet's deposit/.test(r)));
   const rec = idle?.recommendation;
-  check('net = extra yield − gas − fees; the gas comes from the fork run; the plan is unsigned approve then deposit', rec && Math.abs(rec.grossGainUsd - rec.gasUsd - rec.feesUsd - rec.netGainUsd) < 0.01 && idle.prepared?.transactions?.map((t) => t.step).join() === 'approve,deposit' && idle.prepared.transactions.every((t) => t.gasLimit === Math.ceil(t.gasUnits * 1.3)) && idle.prepared.transactions[1].gasUnits === recd?.fork?.vaults?.['r25-weekly']?.deposit?.gasUsed && /Unsigned/.test(idle.prepared.note), JSON.stringify(idle?.prepared?.transactions?.map((t) => t.gasLimit)));
+  check('net = extra yield − gas − fees; the gas comes from the fork run; the plan is unsigned approve then deposit', rec && Math.abs(rec.grossGainUsd - rec.gasUsd - rec.feesUsd - rec.netGainUsd) < 0.01 && idle.prepared?.transactions?.map((t) => t.step).join() === 'approve,deposit' && idle.prepared.transactions.every((t) => t.gasLimit === Math.ceil(t.gasUnits * 1.3)) && idle.prepared.transactions[1].gasUnits === recd?.fork?.vaults?.[pick]?.deposit?.gasUsed && /Unsigned/.test(idle.prepared.note), JSON.stringify(idle?.prepared?.transactions?.map((t) => t.gasLimit)));
   check('integrity: every batch confirmed on the public RPC, none unconfirmed', idle?.integrity?.inconclusive === 0 && idle.integrity.confirmed + idle.integrity.resolved === idle.integrity.batches && idle.rpcCalls > 0, JSON.stringify(idle?.integrity));
   // the weekly rate, recomputed from the public RPC alone at the recorded window
   const head = idle?.block?.number;
@@ -572,7 +574,7 @@ await guard(async () => {
   const stuck = await opt({ from: 'r25-quarterly' });
   check('money in the quarterly vault: STAY PUT because it cannot be redeemed, nothing to sign', stuck?.recommendation?.action === 'stay' && /cannot be redeemed/.test(stuck.recommendation.reason) && stuck.prepared === null, stuck?.recommendation?.reason?.slice(0, 100));
   const wk = await opt({ from: 'r25-weekly' });
-  check('money in the weekly vault: STAY PUT with a reason for every other vault', wk?.recommendation?.action === 'stay' && /^No vault is worth moving/.test(wk.recommendation.reason) && wk.candidates.every((c) => c.viable === false));
+  check('money in the weekly vault: STAY PUT with a reason for every other vault, or a MOVE to a viable vault that clears the minimum (it depends on the market)', (wk?.recommendation?.action === 'stay' && /^No vault is worth moving/.test(wk.recommendation.reason) && wk.candidates.every((c) => c.viable === false)) || (wk?.recommendation?.action === 'move' && cand(wk, wk.recommendation.to)?.viable === true && wk.recommendation.netGainUsd >= 10), wk?.recommendation?.headline);
   const strict = await opt({ from: 'idle', minNetGainUsd: 1e9 });
   check('a minimum net gain nothing can reach: STAY PUT (the threshold is respected)', strict?.recommendation?.action === 'stay' && strict.prepared === null);
   const part = await opt({ from: 'idle', amount: '10000' });

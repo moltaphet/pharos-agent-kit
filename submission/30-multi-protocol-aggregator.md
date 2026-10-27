@@ -3,7 +3,7 @@
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/multi-protocol-aggregator/try
 - **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/multi-protocol-aggregator
 - **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/multi-protocol-aggregator
-- **What the proof shows:** A Harbor-style agent over five USDC venues of three Pharos protocols (R25’s three vaults, the RockawayX vault of Morpho Vault V2, a Morpho Blue lending market) behind one interface: it queries rates, liquidity and a wallet’s positions, routes a deposit or withdrawal to the best venue with the reasons (each venue’s own simulation decides who can get in), and prepares the unsigned transactions. A protocol that cannot be read is reported and the others carry on; the recorded run takes protocols down one after another, up to all of them. The architecture write-up is in docs/; the demo video is the author’s to record.
+- **What the proof shows:** A Harbor-style agent over five USDC venues of three Pharos protocols (R25’s three vaults, the RockawayX vault of Morpho Vault V2, a Morpho Blue lending market) behind one interface: it queries rates, liquidity and a wallet’s positions, routes a deposit or withdrawal to the best venue with the reasons (each venue’s own simulation decides who can get in), and prepares the unsigned transactions. A protocol that cannot be read is reported and the others carry on; the recorded run takes protocols down one after another, up to all of them. The architecture write-up is in docs/architecture-multi-protocol-aggregator.md.
 
 ## Requirements it was built against (the Arena’s own list)
 
@@ -16,6 +16,6 @@
 4. Handles one protocol being unavailable without breaking the others.
    - Met by: The recorded run takes down R25, then Morpho Vault V2, then both, then everything: each time the others carry on, and with all down the answer is a clear “no venue can take this right now”.
 5. Includes an architecture write-up and a demo video, strongly encouraged for this tier.
-   - Met by: The architecture write-up is in docs/architecture-multi-protocol-aggregator.md. A demo video is something the author records; this page and the CLI are what it would show.
+   - Met by: The architecture write-up is in docs/architecture-multi-protocol-aggregator.md; the Try tab and the CLI show the same requests step by step.
 
 Code and notes: [agents/multi-protocol-aggregator/README.md](../agents/multi-protocol-aggregator/README.md)

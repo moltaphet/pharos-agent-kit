@@ -101,6 +101,18 @@ test('the same event is never sent to the same channel twice, across rescans and
   assert.equal(r3.found, 0, 'the cursor moved past the scanned blocks');
 });
 
+test('scanning exactly the same blocks again sends nothing, price alerts included (the window must not shift between the two scans)', async () => {
+  const conds = validateConditions([{ id: 'big', type: 'transfer', token: 'USDC', min: '10000' }, { id: 'p', type: 'price', feed: 'PROS/USD', op: 'above', threshold: '0.60' }]);
+  const rpc = chainWith({ logs: [log(9_500, 1, 20_000_000_000n)], feed: (n) => ({ answer: 7n * 10n ** 17n, updatedAt: 1000 + Math.floor(n / 100) }) });
+  const ch = channel('a'); const state = newState();
+  const first = await runCycle({ rpc, conditions: conds, channels: [ch], state, lookback: 1000 });
+  assert.ok(first.delivered.length >= 2);
+  const second = await runCycle({ rpc, conditions: conds, channels: [ch], state: { ...state, cursor: null, side: {} }, head: first.to, confirmations: 0, lookback: first.to - first.from + 1 });
+  assert.equal(second.from, first.from); assert.equal(second.to, first.to);
+  assert.equal(second.delivered.length, 0);
+  assert.equal(second.duplicates, second.found);
+});
+
 test('a channel that is down loses nothing and does not make the others repeat', async () => {
   const rpc = chainWith({ logs: [log(9_500, 1, 20_000_000_000n)] });
   const up = channel('up'); const flaky = channel('flaky', { fail: 1 });

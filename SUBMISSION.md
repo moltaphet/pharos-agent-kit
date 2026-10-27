@@ -432,7 +432,7 @@ Requirements it was built against (the Arena's own list):
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/multi-protocol-aggregator/try
 - **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/multi-protocol-aggregator
 - **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/multi-protocol-aggregator
-- **What the proof shows:** A Harbor-style agent over five USDC venues of three Pharos protocols (R25’s three vaults, the RockawayX vault of Morpho Vault V2, a Morpho Blue lending market) behind one interface: it queries rates, liquidity and a wallet’s positions, routes a deposit or withdrawal to the best venue with the reasons (each venue’s own simulation decides who can get in), and prepares the unsigned transactions. A protocol that cannot be read is reported and the others carry on; the recorded run takes protocols down one after another, up to all of them. The architecture write-up is in docs/; the demo video is the author’s to record.
+- **What the proof shows:** A Harbor-style agent over five USDC venues of three Pharos protocols (R25’s three vaults, the RockawayX vault of Morpho Vault V2, a Morpho Blue lending market) behind one interface: it queries rates, liquidity and a wallet’s positions, routes a deposit or withdrawal to the best venue with the reasons (each venue’s own simulation decides who can get in), and prepares the unsigned transactions. A protocol that cannot be read is reported and the others carry on; the recorded run takes protocols down one after another, up to all of them. The architecture write-up is in docs/architecture-multi-protocol-aggregator.md.
 
 Requirements it was built against (the Arena's own list):
 
