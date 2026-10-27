@@ -788,6 +788,82 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  sec('21 x402 Agent Buyer');
+  const rec = (await run('x402-agent-buyer', { recorded: 1 })).body?.data;
+  check('recorded real run: every purchase transaction re-verified on the Atlantic chain just now (4 of 4)', rec?.verification?.verifiedCount === 4 && rec.verification.total === 4, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  const by = Object.fromEntries((rec?.run?.scenarios ?? []).map((x) => [x.id, x]));
+  check('the completed job bought both endpoints for 15000 base units and the payer’s balance fell by exactly that', by.complete?.result?.status === 'complete' && by.complete.result.spent === '15000' && by.complete.tokenMoved === '15000' && by.complete.ledgerAgreesWithChain === true);
+  check('the budget-stop job bought one endpoint and refused the other because of the budget', by['budget-stop']?.result?.status === 'stopped' && by['budget-stop'].result.stopReason === 'budget' && by['budget-stop'].result.spent === '5000');
+  check('the not-worth-it job skipped the endpoint priced above its estimated value', by['not-worth-it']?.result?.decisions?.some((d) => d.decision === 'not-worth-it'));
+  const atl = async (method, params) => (await (await fetch('https://atlantic.dplabs-internal.com', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) })).json()).result;
+  const hash = by.complete?.chain?.[0]?.transaction;
+  const r = hash ? await atl('eth_getTransactionReceipt', [hash]) : null;
+  const log = r?.logs?.find((l) => l.topics?.[0] === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef');
+  check('independent check: the first purchase is a successful transaction with a Transfer of exactly its price from the payer to the pay-to address', r?.status === '0x1' && BigInt(log?.data ?? 0) === BigInt(by.complete.chain[0].value) && ('0x' + log.topics[1].slice(26)).toLowerCase() === by.complete.chain[0].from.toLowerCase());
+  const d1 = (await run('x402-agent-buyer', { decide: 1, budget: '15000', maxPerCall: '10000' })).body?.data?.result;
+  check('decide: 15000 budget buys both', d1?.status === 'complete' && d1.spent === '15000');
+  const d2 = (await run('x402-agent-buyer', { decide: 1, budget: '7000', maxPerCall: '10000' })).body?.data?.result;
+  check('decide: 7000 budget stops before the second purchase', d2?.status === 'stopped' && d2.stopReason === 'budget' && d2.spent === '5000');
+  const d3 = (await run('x402-agent-buyer', { decide: 1, budget: '15000', maxPerCall: '6000' })).body?.data?.result;
+  check('decide: a 6000 per-call cap refuses the 10000 offer', d3?.stopReason === 'per-call-cap');
+  check('bad input is a 400', is400(await run('x402-agent-buyer', { decide: 1, budget: '-1' })) && is400(await run('x402-agent-buyer', { decide: 1, budget: '0x10' })) && is400(await run('x402-agent-buyer', {})));
+});
+
+await guard(async () => {
+  sec('22 On-Chain Alert Bot');
+  const rec = (await run('on-chain-alert-bot', { recorded: 1 })).body?.data;
+  check('recorded run: every alerted transaction re-read from mainnet just now', rec?.verification?.verifiedCount === rec?.verification?.total && rec.verification.total >= 5, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  check('rescans and a restart sent nothing twice; an outage lost nothing', rec?.run?.summary?.duplicatesSentOnRescan === 0 && rec.run.summary.outageLostNothing === true);
+  check('the first cycle reached all three channels once per event', (() => { const f = rec.run.scenarios.find((x) => x.id === 'first-cycle'); return f.delivered === f.eventsFound * 3; })());
+  const sc = (await run('on-chain-alert-bot', { scan: 1, token: 'USDC', min: '1', threshold: '0.01', blocks: 300 })).body?.data;
+  check('live scan of the latest 300 blocks returns messages with what, value, block and an explorer link', sc?.total >= 1 && sc.alerts.every((a) => /What:/.test(a.text) && /Value:/.test(a.text) && /pharosscan\.xyz\//.test(a.link)), `${sc?.total} alerts`);
+  check('scanning the same blocks again sends nothing twice', sc?.secondPass?.sent === 0 && sc.secondPass.suppressed >= 1, JSON.stringify(sc?.secondPass));
+  check('bad input is a 400', is400(await run('on-chain-alert-bot', { scan: 1, blocks: 5 })) && is400(await run('on-chain-alert-bot', { scan: 1, token: 'NOPE' })) && is400(await run('on-chain-alert-bot', { scan: 1, min: '0' })) && is400(await run('on-chain-alert-bot', {})));
+});
+
+await guard(async () => {
+  sec('23 Whale-Watching Agent');
+  const rec = (await run('whale-watching-agent', { recorded: 1 })).body?.data;
+  check('recorded scan: the 30 biggest moves re-read from mainnet just now', rec?.verification?.verifiedCount === 30 && rec.verification.total === 30, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  check('the recorded watchlist has at least 5 addresses and stricter thresholds report fewer moves', rec?.run?.watchlist?.length >= 5 && rec.run.runs[0].summary.significantMoves > rec.run.runs[1].summary.significantMoves);
+  const addrs = rec.run.watchlist.slice(0, 5).map((w) => w.address).join(',');
+  const sc = (await run('whale-watching-agent', { scan: 1, addresses: addrs, usdc: '100', wpros: '100', pros: '100', usd: '100', blocks: 300 })).body?.data;
+  check('live scan: summary covers all 5 watched addresses', sc?.summary?.perWallet?.length === 5 && sc.summary.watched === 5);
+  check('every reported move says what, why it matters and links to the transaction', (sc?.moves ?? []).every((m) => m.what && Array.isArray(m.why) && /pharosscan\.xyz\/tx\//.test(m.link)), `${sc?.movesTotal} moves`);
+  check('bad input is a 400', is400(await run('whale-watching-agent', { scan: 1, addresses: '', blocks: 100 })) && is400(await run('whale-watching-agent', { scan: 1, addresses: addrs, blocks: 5000 })) && is400(await run('whale-watching-agent', { scan: 1, addresses: 'nope' })) && is400(await run('whale-watching-agent', { scan: 1, addresses: addrs, usdc: '0', wpros: '', pros: '' })));
+});
+
+await guard(async () => {
+  sec('24 Gas Fee Optimizer');
+  const rec = (await run('gas-fee-optimizer', { recorded: 1 })).body?.data;
+  check('recorded run: all 4 transactions re-read from Atlantic just now', rec?.verification?.verifiedCount === 4 && rec.verification.total === 4, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  const by = Object.fromEntries((rec?.run?.scenarios ?? []).map((x) => [x.id, x]));
+  check('the held transaction waited for its deadline and was submitted before it', by['hold-to-deadline']?.reason === 'deadline' && by['hold-to-deadline'].submittedBeforeDeadline === true && by['hold-to-deadline'].samples >= 5);
+  check('the optimized transactions paid 1 gwei where the naive legacy transaction paid 10', by.naive?.tx?.effectiveGasPrice === '10000000000' && by['favorable-now']?.paid?.effectiveGasPrice === '1000000000');
+  const atl = async (method, params) => (await (await fetch('https://atlantic.dplabs-internal.com', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) })).json()).result;
+  const rcpt = await atl('eth_getTransactionReceipt', [by['hold-to-deadline'].tx.hash]);
+  check('independent check: the held transaction’s receipt shows the recorded price and gas', BigInt(rcpt?.effectiveGasPrice ?? 0) === BigInt(by['hold-to-deadline'].paid.effectiveGasPrice) && BigInt(rcpt.gasUsed) === 21000n);
+  const hi = (await run('gas-fee-optimizer', { history: 1, chain: 'mainnet', maxGwei: '5', deadlineSec: 60 })).body?.data;
+  check('mainnet history has 30 samples; with a 5 gwei ceiling and a 10 gwei price the decision is to hold', hi?.history?.rows?.length >= 25 && hi.decision?.favorable === false && /hold/.test(hi.decision.action));
+  const lo = (await run('gas-fee-optimizer', { history: 1, chain: 'mainnet', maxGwei: '20' })).body?.data;
+  check('with a 20 gwei ceiling the decision is to submit now', lo?.decision?.favorable === true && lo.decision.action === 'submit now');
+  check('bad input is a 400', is400(await run('gas-fee-optimizer', { history: 1, chain: 'x' })) && is400(await run('gas-fee-optimizer', { history: 1, maxGwei: 'abc' })) && is400(await run('gas-fee-optimizer', { history: 1, deadlineSec: 1 })) && is400(await run('gas-fee-optimizer', { history: 1, gas: 5 })) && is400(await run('gas-fee-optimizer', {})));
+});
+
+await guard(async () => {
+  sec('25 Wallet Risk Checker');
+  const rec = (await run('wallet-risk-checker', { recorded: 1 })).body?.data;
+  check('recorded setup re-read from Atlantic just now (deploy, fund, approve, code present)', rec?.verification?.verifiedCount === 4 && rec.verification.total === 4, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  const by = Object.fromEntries((rec?.run?.examples ?? []).map((e) => [e.id, e.result]));
+  check('recorded: two clean examples are low, USDC is medium, two risky examples are high', by.wpros?.level === 'low' && by['old-wallet']?.level === 'low' && by.usdc?.level === 'medium' && by['risky-token']?.level === 'high' && by['fresh-wallet']?.level === 'high');
+  const live = (await run('wallet-risk-checker', { check: 1, chain: 'mainnet', address: '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0' })).body?.data?.result;
+  check('live: WPROS on mainnet is low with at least 4 signals checked and no flags', live?.level === 'low' && live.signals.filter((s) => s.status !== 'na').length >= 4 && live.flags.length === 0);
+  const risky = (await run('wallet-risk-checker', { check: 1, chain: 'atlantic', address: rec.run.demo.riskyToken })).body?.data?.result;
+  check('live: the risky token on Atlantic is high, with plain-language reasons including the owner’s powers and self-destruction', risky?.level === 'high' && risky.flags.some((f) => /One key/.test(f.title)) && risky.flags.some((f) => /destroy/.test(f.title)) && risky.flags.every((f) => f.plain.length > 40));
+  check('bad input is a 400', is400(await run('wallet-risk-checker', { check: 1, address: '0x123' })) && is400(await run('wallet-risk-checker', { check: 1, chain: 'x', address: '0x52c48d4213107b20bc583832b0d951fb9ca8f0b0' })) && is400(await run('wallet-risk-checker', {})));
+});
+
+await guard(async () => {
   sec('Cross-cutting');
   check('unknown task slug rejected with 400', is400(await run('nope')));
   check('prototype-pollution slug rejected with 400', is400(await run('__proto__')) && is400(await run('constructor')));

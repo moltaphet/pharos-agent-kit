@@ -49,6 +49,7 @@ These cover code every task stands on (MCP client, rate limiting, request tracin
 - [test/ui-forms.test.js](../test/ui-forms.test.js)
 - [test/crypto.test.js](../test/crypto.test.js)
 - [test/infra-audit.test.js](../test/infra-audit.test.js)
+- [test/pages.test.js](../test/pages.test.js)
 
 Run everything with `npm test`.
 

@@ -7,18 +7,18 @@ const baseUsdc = (n) => `${(Number(n) / 1e6).toFixed(6).replace(/0+$/, '').repla
 
 export const content = {
   tagline: 'A buyer that reads the offer, checks the value and budget, then pays only for data worth its price.',
-  tools: ['http'],
+  tools: ['rpc'],
   story: [
     'The buyer takes a short plan of useful data to fetch. It asks each x402 endpoint for its price, compares that offer with the value estimate supplied for the task, checks a per-call ceiling and the remaining job budget, then signs only an offer that passes all four checks.',
     'The plan can call two or more different APIs in one job. Each confirmed purchase is logged with its item, exact token-unit price, settlement hash and running total. On Pharos Atlantic the amounts are integer test-USDC base units, so there is no floating-point rounding in budget decisions.',
     'A network error after signing is different from a clean refusal: settlement may already have happened. The buyer retries only the same signed authorization, never signs a replacement for that endpoint, reserves the uncertain price and stops the job until someone checks the transaction. The jobs below are real: the settlements are Atlantic transactions you can open.',
   ],
   how: [
-    { server: 'http', tool: 'GET endpoint', text: 'Request the resource without payment. A free 2xx result is returned directly; a paid route returns a PAYMENT-REQUIRED challenge.' },
+    { server: 'local', tool: 'GET endpoint', text: 'Request the resource without payment. A free 2xx result is returned directly; a paid route returns a PAYMENT-REQUIRED challenge.' },
     { server: 'local', tool: 'evaluate offer', text: 'Validate x402 v2, exact scheme, Atlantic network, token address, EIP-712 domain and uint256 amount; require consistent token/domain across the job.' },
     { server: 'local', tool: 'budget and value policy', text: 'Compare the endpoint’s price with the per-call cap, the remaining total budget and the plan’s explicit value estimate. A caller supplies the estimate; the agent does not invent value.' },
     { server: 'local', tool: 'EIP-712 authorization', text: 'Only after approval, sign the exact offer with the existing x402 signer. The key is loaded from EVM_PRIVATE_KEY or EVM_PRIVATE_KEY_FILE, never from the plan or CLI arguments.' },
-    { server: 'http', tool: 'retry same payment', text: 'Send PAYMENT-SIGNATURE. On a transient error retry the same serialized signature; a repeated 402 or ambiguous settlement stops the job and reserves the price.' },
+    { server: 'local', tool: 'retry same payment', text: 'Send PAYMENT-SIGNATURE. On a transient error retry the same serialized signature; a repeated 402 or ambiguous settlement stops the job and reserves the price.' },
     { server: 'local', tool: 'settlement ledger', text: 'Count the purchase once only when PAYMENT-RESPONSE says success on Atlantic and includes a valid transaction hash; reject duplicate hashes/authorizations.' },
   ],
   decisions: [

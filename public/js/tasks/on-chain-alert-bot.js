@@ -8,7 +8,7 @@ const short = (h) => `${h.slice(0, 10)}…${h.slice(-6)}`;
 
 export const content = {
   tagline: 'Watches Pharos mainnet for the conditions you set and tells your channel once, with the value and a link.',
-  tools: ['rpc', 'http'],
+  tools: ['rpc'],
   story: [
     'You describe what matters in a small config file: a price crossing a threshold on a Chainlink-style feed, an ERC-20 transfer above an amount, an event emitted by a contract, or a call to a contract. The bot reads new blocks, finds the matching events and sends each one to Discord, Telegram, ntfy or a webhook.',
     'Every alert says what happened, the value and a Pharos explorer link. The same event is never sent to the same channel twice: each event has a key (transaction and log index), the bot remembers what it sent to which channel, and a price alert fires when the price crosses the threshold, not on every look while it stays there.',
@@ -19,7 +19,7 @@ export const content = {
     { server: 'rpc', tool: 'eth_call latestRoundData', text: 'The PROS/USD feed, sampled along the window. A reading older than an earlier sample is a stale node and is read again.' },
     { server: 'rpc', tool: 'eth_getBlockByNumber', text: 'For call conditions: the transactions of each block, filtered by target contract and method.' },
     { server: 'local', tool: 'dedup ledger', text: 'Event key + channel, saved to a state file, so a restart does not repeat anything.' },
-    { server: 'http', tool: 'channel delivery', text: 'Discord webhook, Telegram Bot API, ntfy or a JSON webhook. Retries on 429 and 5xx; secrets never appear in logs or errors.' },
+    { server: 'local', tool: 'channel delivery', text: 'Discord webhook, Telegram Bot API, ntfy or a JSON webhook. Retries on 429 and 5xx; secrets never appear in logs or errors.' },
   ],
   decisions: [
     { title: 'Prices alert on a crossing', text: 'A price above 0.60 stays above 0.60 for hours. One alert when it becomes true; another only after it went back and crossed again.' },
@@ -64,7 +64,7 @@ function mountTry(el, slug) {
       <label>Token<select name="token"><option>USDC</option><option>WPROS</option><option>LINK</option><option>WETH</option></select></label>
       <label>Transfer of at least<input name="min" value="1000" inputmode="decimal"></label>
       <label>PROS/USD above<input name="threshold" value="0.60" inputmode="decimal"></label>
-      <label>Blocks to scan<input name="blocks" type="number" min="10" max="2000" step="10" value="1000"></label>
+      <label>Blocks to scan<input name="blocks" type="number" min="10" max="2000" step="10" value="500"></label>
       <button type="submit" class="chip">Scan</button></form>
     <div data-out><div class="idle">Press Scan.</div></div></section>`;
   const out = el.querySelector('[data-out]');
