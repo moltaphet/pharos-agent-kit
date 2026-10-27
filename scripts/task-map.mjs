@@ -77,6 +77,8 @@ export const TASK_MAP = [
     tests: ['digest.test.js'] },
   { n: 29, slug: 'doc-grounded-builder-agent', folder: TASK_FOLDERS['doc-grounded-builder-agent'], entries: ['lib/builder.js', 'lib/builder-artifacts.js', 'lib/tasks/doc-grounded-builder-agent.js', 'scripts/builder-run.mjs'], data: ['reports/builder-run.json'], page: ['public/js/tasks/doc-grounded-builder-agent.js'],
     tests: ['builder.test.js'] },
+  { n: 30, slug: 'multi-protocol-aggregator', folder: TASK_FOLDERS['multi-protocol-aggregator'], entries: ['lib/aggregator.js', 'lib/tasks/multi-protocol-aggregator.js', 'scripts/aggregator-run.mjs'], data: ['docs/architecture-multi-protocol-aggregator.md', 'reports/aggregator-run.json'], page: ['public/js/tasks/multi-protocol-aggregator.js'],
+    tests: ['aggregator.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

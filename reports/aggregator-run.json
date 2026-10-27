@@ -1,0 +1,1798 @@
+{
+ "recordedAt": "2026-10-27T11:16:19.111Z",
+ "network": "Pharos mainnet (1672), read-only: nothing was signed or sent. Outages are made by pointing a protocol’s reads at an unreachable endpoint.",
+ "block": 21398286,
+ "venues": [
+  {
+   "id": "r25-weekly",
+   "name": "R25 VRPC Weekly",
+   "protocol": "R25"
+  },
+  {
+   "id": "r25-quarterly",
+   "name": "R25 VRPC Quarterly",
+   "protocol": "R25"
+  },
+  {
+   "id": "r25-semi-yearly",
+   "name": "R25 VRPC Semi-yearly",
+   "protocol": "R25"
+  },
+  {
+   "id": "rockaway-usdc",
+   "name": "RockawayX USDC (Morpho Vault V2)",
+   "protocol": "Morpho Vault V2"
+  },
+  {
+   "id": "morpho-syzusd-usdc",
+   "name": "Morpho Blue syzUSD/USDC market (supply)",
+   "protocol": "Morpho Blue"
+  }
+ ],
+ "protocols": [
+  "R25",
+  "Morpho Vault V2",
+  "Morpho Blue"
+ ],
+ "rates": {
+  "rows": [
+   {
+    "id": "r25-weekly",
+    "name": "R25 VRPC Weekly",
+    "protocol": "R25",
+    "status": "ok",
+    "apy": 0.04712312230479587,
+    "apyText": "4.71%",
+    "tvlText": "2,190,650.15 USDC",
+    "liquidityText": "redeemable on request",
+    "basis": "share price over 2.1 days"
+   },
+   {
+    "id": "r25-quarterly",
+    "name": "R25 VRPC Quarterly",
+    "protocol": "R25",
+    "status": "ok",
+    "apy": 0.12212946586058804,
+    "apyText": "12.2%",
+    "tvlText": "83,263,729.49 USDC",
+    "liquidityText": "redeemable on request",
+    "basis": "share price over 2.1 days"
+   },
+   {
+    "id": "r25-semi-yearly",
+    "name": "R25 VRPC Semi-yearly",
+    "protocol": "R25",
+    "status": "ok",
+    "apy": 0.11285983870121874,
+    "apyText": "11.3%",
+    "tvlText": "10,581,354.2 USDC",
+    "liquidityText": "redeemable on request",
+    "basis": "share price over 2.1 days"
+   },
+   {
+    "id": "rockaway-usdc",
+    "name": "RockawayX USDC (Morpho Vault V2)",
+    "protocol": "Morpho Vault V2",
+    "status": "ok",
+    "apy": 0.05458268901457153,
+    "apyText": "5.46%",
+    "tvlText": "11,158,525.13 USDC",
+    "liquidityText": "redeemable on request",
+    "basis": "share price over 2.1 days"
+   },
+   {
+    "id": "morpho-syzusd-usdc",
+    "name": "Morpho Blue syzUSD/USDC market (supply)",
+    "protocol": "Morpho Blue",
+    "status": "ok",
+    "apy": 0.05385924639635187,
+    "apyText": "5.39%",
+    "tvlText": "4,054,797.76 USDC",
+    "liquidityText": "404,973.32 USDC",
+    "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)"
+   }
+  ],
+  "held": [],
+  "totalRaw": "0",
+  "totalText": "0 USDC",
+  "best": {
+   "id": "r25-quarterly",
+   "name": "R25 VRPC Quarterly",
+   "protocol": "R25",
+   "status": "ok",
+   "apy": 0.12212946586058804,
+   "apyText": "12.2%",
+   "tvlText": "83,263,729.49 USDC",
+   "liquidityText": "redeemable on request",
+   "basis": "share price over 2.1 days"
+  },
+  "text": "Holds nothing in the venues that could be read."
+ },
+ "queries": [
+  {
+   "id": "rockaway-holder",
+   "address": "0xbe2174ff12a71b6deeca5b9aaf4c2931e8c62ae5",
+   "title": "A holder of the RockawayX vault",
+   "summary": {
+    "rows": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.04712312230479587,
+      "apyText": "4.71%",
+      "tvlText": "2,190,650.15 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.12212946586058804,
+      "apyText": "12.2%",
+      "tvlText": "83,263,729.49 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.11285983870121874,
+      "apyText": "11.3%",
+      "tvlText": "10,581,354.2 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "status": "ok",
+      "apy": 0.05458268901457153,
+      "apyText": "5.46%",
+      "tvlText": "11,158,525.13 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "30207395759",
+      "positionText": "30,207.39 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "status": "ok",
+      "apy": 0.05385924639635187,
+      "apyText": "5.39%",
+      "tvlText": "4,054,797.76 USDC",
+      "liquidityText": "404,973.32 USDC",
+      "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     }
+    ],
+    "held": [
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "status": "ok",
+      "apy": 0.05458268901457153,
+      "apyText": "5.46%",
+      "tvlText": "11,158,525.13 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "30207395759",
+      "positionText": "30,207.39 USDC",
+      "withdrawableText": "0 USDC"
+     }
+    ],
+    "totalRaw": "30207395759",
+    "totalText": "30,207.39 USDC",
+    "best": {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    "text": "Holds 30,207.39 USDC across 1 venue: 30,207.39 USDC in RockawayX USDC (Morpho Vault V2)."
+   }
+  },
+  {
+   "id": "r25-holder",
+   "address": "0x40836f8f1bd7e13d99a4cc9de5c0b80a83109819",
+   "title": "A holder of R25 VRPC Quarterly",
+   "summary": {
+    "rows": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.04712312230479587,
+      "apyText": "4.71%",
+      "tvlText": "2,190,650.15 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.12212946586058804,
+      "apyText": "12.2%",
+      "tvlText": "83,263,729.49 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "2302409400713",
+      "positionText": "2,302,409.4 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.11285983870121874,
+      "apyText": "11.3%",
+      "tvlText": "10,581,354.2 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "status": "ok",
+      "apy": 0.05458268901457153,
+      "apyText": "5.46%",
+      "tvlText": "11,158,525.13 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "status": "ok",
+      "apy": 0.05385924639635187,
+      "apyText": "5.39%",
+      "tvlText": "4,054,797.76 USDC",
+      "liquidityText": "404,973.32 USDC",
+      "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     }
+    ],
+    "held": [
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.12212946586058804,
+      "apyText": "12.2%",
+      "tvlText": "83,263,729.49 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "2302409400713",
+      "positionText": "2,302,409.4 USDC",
+      "withdrawableText": "0 USDC"
+     }
+    ],
+    "totalRaw": "2302409400713",
+    "totalText": "2,302,409.4 USDC",
+    "best": {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "2302409400713",
+     "positionText": "2,302,409.4 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    "text": "Holds 2,302,409.4 USDC across 1 venue: 2,302,409.4 USDC in R25 VRPC Quarterly."
+   }
+  },
+  {
+   "id": "morpho-supplier",
+   "address": "0xba3b260596d8412318ee6ef5476291f6c8e3b68a",
+   "title": "A supplier to the Morpho Blue market",
+   "summary": {
+    "rows": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.11357229799301938,
+      "apyText": "11.4%",
+      "tvlText": "2,190,650.15 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.12212946586058804,
+      "apyText": "12.2%",
+      "tvlText": "83,263,729.49 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "status": "ok",
+      "apy": 0.11285983870121874,
+      "apyText": "11.3%",
+      "tvlText": "10,581,354.2 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "status": "ok",
+      "apy": 0.05458268901457153,
+      "apyText": "5.46%",
+      "tvlText": "11,158,525.13 USDC",
+      "liquidityText": "redeemable on request",
+      "basis": "share price over 2.1 days",
+      "positionRaw": "0",
+      "positionText": "0 USDC",
+      "withdrawableText": "0 USDC"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "status": "ok",
+      "apy": 0.05385924639635187,
+      "apyText": "5.39%",
+      "tvlText": "4,054,797.76 USDC",
+      "liquidityText": "404,973.32 USDC",
+      "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+      "positionRaw": "4054796850966",
+      "positionText": "4,054,796.85 USDC",
+      "withdrawableText": "404,973.32 USDC"
+     }
+    ],
+    "held": [
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "status": "ok",
+      "apy": 0.05385924639635187,
+      "apyText": "5.39%",
+      "tvlText": "4,054,797.76 USDC",
+      "liquidityText": "404,973.32 USDC",
+      "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+      "positionRaw": "4054796850966",
+      "positionText": "4,054,796.85 USDC",
+      "withdrawableText": "404,973.32 USDC"
+     }
+    ],
+    "totalRaw": "4054796850966",
+    "totalText": "4,054,796.85 USDC",
+    "best": {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    "text": "Holds 4,054,796.85 USDC across 1 venue: 4,054,796.85 USDC in Morpho Blue syzUSD/USDC market (supply)."
+   }
+  }
+ ],
+ "queryWithR25Down": {
+  "rows": [
+   {
+    "id": "r25-weekly",
+    "name": "R25 VRPC Weekly",
+    "protocol": "R25",
+    "status": "unavailable",
+    "error": "batch failed after 1 try: fetch failed"
+   },
+   {
+    "id": "r25-quarterly",
+    "name": "R25 VRPC Quarterly",
+    "protocol": "R25",
+    "status": "unavailable",
+    "error": "batch failed after 1 try: fetch failed"
+   },
+   {
+    "id": "r25-semi-yearly",
+    "name": "R25 VRPC Semi-yearly",
+    "protocol": "R25",
+    "status": "unavailable",
+    "error": "batch failed after 1 try: fetch failed"
+   },
+   {
+    "id": "rockaway-usdc",
+    "name": "RockawayX USDC (Morpho Vault V2)",
+    "protocol": "Morpho Vault V2",
+    "status": "ok",
+    "apy": 0.05458268901457153,
+    "apyText": "5.46%",
+    "tvlText": "11,158,525.13 USDC",
+    "liquidityText": "redeemable on request",
+    "basis": "share price over 2.1 days",
+    "positionRaw": "30207395759",
+    "positionText": "30,207.39 USDC",
+    "withdrawableText": "0 USDC"
+   },
+   {
+    "id": "morpho-syzusd-usdc",
+    "name": "Morpho Blue syzUSD/USDC market (supply)",
+    "protocol": "Morpho Blue",
+    "status": "ok",
+    "apy": 0.05385924639635187,
+    "apyText": "5.39%",
+    "tvlText": "4,054,797.76 USDC",
+    "liquidityText": "404,973.32 USDC",
+    "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+    "positionRaw": "0",
+    "positionText": "0 USDC",
+    "withdrawableText": "0 USDC"
+   }
+  ],
+  "held": [
+   {
+    "id": "rockaway-usdc",
+    "name": "RockawayX USDC (Morpho Vault V2)",
+    "protocol": "Morpho Vault V2",
+    "status": "ok",
+    "apy": 0.05458268901457153,
+    "apyText": "5.46%",
+    "tvlText": "11,158,525.13 USDC",
+    "liquidityText": "redeemable on request",
+    "basis": "share price over 2.1 days",
+    "positionRaw": "30207395759",
+    "positionText": "30,207.39 USDC",
+    "withdrawableText": "0 USDC"
+   }
+  ],
+  "totalRaw": "30207395759",
+  "totalText": "30,207.39 USDC",
+  "best": {
+   "id": "rockaway-usdc",
+   "name": "RockawayX USDC (Morpho Vault V2)",
+   "protocol": "Morpho Vault V2",
+   "status": "ok",
+   "apy": 0.05458268901457153,
+   "apyText": "5.46%",
+   "tvlText": "11,158,525.13 USDC",
+   "liquidityText": "redeemable on request",
+   "basis": "share price over 2.1 days",
+   "positionRaw": "30207395759",
+   "positionText": "30,207.39 USDC",
+   "withdrawableText": "0 USDC"
+  },
+  "text": "Holds 30,207.39 USDC across 1 venue: 30,207.39 USDC in RockawayX USDC (Morpho Vault V2). Could not read R25, R25, R25, so those positions are not included."
+ },
+ "scenarios": [
+  {
+   "id": "deposit-small",
+   "title": "A small deposit from a wallet nobody has special access for",
+   "wallet": "0x1159105d91825b0615c9fbe23c2055676676f96d",
+   "action": "deposit",
+   "amount": "500",
+   "down": [],
+   "available": 5,
+   "unavailable": [],
+   "routed": {
+    "action": "deposit",
+    "amountRaw": "500000000",
+    "amountText": "500 USDC",
+    "legs": [
+     {
+      "id": "rockaway-usdc",
+      "amountRaw": "500000000"
+     }
+    ],
+    "why": "Deposit 500 USDC in RockawayX USDC (Morpho Vault V2): the best measured return (5.46%) among the 3 venues that can take it; the next best is Morpho Blue syzUSD/USDC market (supply) at 5.39%.",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "apy": 0.04712312230479587,
+      "eligible": true,
+      "reason": "4.71% measured (share price over 2.1 days)"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "apy": 0.12212946586058804,
+      "eligible": false,
+      "reason": "the venue refuses a deposit of 500 USDC from this wallet (execution reverted: )"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "apy": 0.11285983870121874,
+      "eligible": false,
+      "reason": "the venue refuses a deposit of 500 USDC from this wallet (execution reverted: )"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "apy": 0.05458268901457153,
+      "eligible": true,
+      "reason": "5.46% measured (share price over 2.1 days)"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "apy": 0.05385924639635187,
+      "eligible": true,
+      "reason": "5.39% measured (the interest-rate model’s current borrow rate × utilisation × (1 − fee))"
+     }
+    ],
+    "unavailableNote": null
+   },
+   "prepared": {
+    "signing": "Nothing was signed or sent: sign these in your wallet, in order.",
+    "legs": [
+     {
+      "venue": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "amountRaw": "500000000",
+      "transactions": [
+       {
+        "label": "Approve RockawayX USDC (Morpho Vault V2) to take the USDC",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0x095ea7b3000000000000000000000000047cd0a91e9b92ed979189a6c8a120bf280f02e5000000000000000000000000000000000000000000000000000000001dcd6500",
+        "value": "0x0",
+        "chainId": 1672
+       },
+       {
+        "label": "Deposit into RockawayX USDC (Morpho Vault V2)",
+        "to": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "data": "0x6e553f65000000000000000000000000000000000000000000000000000000001dcd65000000000000000000000000001159105d91825b0615c9fbe23c2055676676f96d",
+        "value": "0x0",
+        "chainId": 1672
+       }
+      ],
+      "simulation": {
+       "ok": true,
+       "note": "the venue accepts this deposit (simulated as if the wallet held and had approved the USDC)"
+      }
+     }
+    ]
+   },
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.04712312230479587,
+     "apyText": "4.71%",
+     "tvlText": "2,190,650.15 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.11285983870121874,
+     "apyText": "11.3%",
+     "tvlText": "10,581,354.2 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "ok",
+     "apy": 0.05458268901457153,
+     "apyText": "5.46%",
+     "tvlText": "11,158,525.13 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "ok",
+     "apy": 0.05385924639635187,
+     "apyText": "5.39%",
+     "tvlText": "4,054,797.76 USDC",
+     "liquidityText": "404,973.32 USDC",
+     "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    }
+   ]
+  },
+  {
+   "id": "deposit-rockaway-wallet",
+   "title": "The same deposit from a wallet the permissioned vaults know",
+   "wallet": "0xbe2174ff12a71b6deeca5b9aaf4c2931e8c62ae5",
+   "action": "deposit",
+   "amount": "2500",
+   "down": [],
+   "available": 5,
+   "unavailable": [],
+   "routed": {
+    "action": "deposit",
+    "amountRaw": "2500000000",
+    "amountText": "2,500 USDC",
+    "legs": [
+     {
+      "id": "rockaway-usdc",
+      "amountRaw": "2500000000"
+     }
+    ],
+    "why": "Deposit 2,500 USDC in RockawayX USDC (Morpho Vault V2): the best measured return (5.46%) among the 3 venues that can take it; the next best is Morpho Blue syzUSD/USDC market (supply) at 5.39%.",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "apy": 0.04712312230479587,
+      "eligible": true,
+      "reason": "4.71% measured (share price over 2.1 days)"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "apy": 0.12212946586058804,
+      "eligible": false,
+      "reason": "the venue refuses a deposit of 2,500 USDC from this wallet (execution reverted: )"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "apy": 0.11285983870121874,
+      "eligible": false,
+      "reason": "the venue refuses a deposit of 2,500 USDC from this wallet (execution reverted: )"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "apy": 0.05458268901457153,
+      "eligible": true,
+      "reason": "5.46% measured (share price over 2.1 days)"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "apy": 0.05385924639635187,
+      "eligible": true,
+      "reason": "5.39% measured (the interest-rate model’s current borrow rate × utilisation × (1 − fee))"
+     }
+    ],
+    "unavailableNote": null
+   },
+   "prepared": {
+    "signing": "Nothing was signed or sent: sign these in your wallet, in order.",
+    "legs": [
+     {
+      "venue": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "amountRaw": "2500000000",
+      "transactions": [
+       {
+        "label": "Approve RockawayX USDC (Morpho Vault V2) to take the USDC",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0x095ea7b3000000000000000000000000047cd0a91e9b92ed979189a6c8a120bf280f02e5000000000000000000000000000000000000000000000000000000009502f900",
+        "value": "0x0",
+        "chainId": 1672
+       },
+       {
+        "label": "Deposit into RockawayX USDC (Morpho Vault V2)",
+        "to": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "data": "0x6e553f65000000000000000000000000000000000000000000000000000000009502f900000000000000000000000000be2174ff12a71b6deeca5b9aaf4c2931e8c62ae5",
+        "value": "0x0",
+        "chainId": 1672
+       }
+      ],
+      "simulation": {
+       "ok": true,
+       "note": "the venue accepts this deposit (simulated as if the wallet held and had approved the USDC)"
+      }
+     }
+    ]
+   },
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.04712312230479587,
+     "apyText": "4.71%",
+     "tvlText": "2,190,650.15 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.11285983870121874,
+     "apyText": "11.3%",
+     "tvlText": "10,581,354.2 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "ok",
+     "apy": 0.05458268901457153,
+     "apyText": "5.46%",
+     "tvlText": "11,158,525.13 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "30207395759",
+     "positionText": "30,207.39 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "ok",
+     "apy": 0.05385924639635187,
+     "apyText": "5.39%",
+     "tvlText": "4,054,797.76 USDC",
+     "liquidityText": "404,973.32 USDC",
+     "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    }
+   ]
+  },
+  {
+   "id": "withdraw",
+   "title": "A withdrawal: from the venue that earns the least and can pay",
+   "wallet": "0xbe2174ff12a71b6deeca5b9aaf4c2931e8c62ae5",
+   "action": "withdraw",
+   "amount": "1000",
+   "down": [],
+   "available": 5,
+   "unavailable": [],
+   "routed": {
+    "action": "withdraw",
+    "amountRaw": "1000000000",
+    "amountText": "1,000 USDC",
+    "legs": [
+     {
+      "id": "rockaway-usdc",
+      "amountRaw": "1000000000"
+     }
+    ],
+    "why": "Withdraw 1,000 USDC from RockawayX USDC (Morpho Vault V2): it is the only venue where this wallet has money that can be paid out now (it earns 5.46%).",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "apy": 0.04712312230479587,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "apy": 0.12212946586058804,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "apy": 0.11285983870121874,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "apy": 0.05458268901457153,
+      "heldRaw": "30207395759",
+      "withdrawableRaw": "1000000000",
+      "eligible": true,
+      "reason": "holds 30,207.39 USDC; the venue lets it withdraw 1,000 USDC now, earning 5.46%"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "apy": 0.05385924639635187,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     }
+    ],
+    "unavailableNote": null
+   },
+   "prepared": {
+    "signing": "Nothing was signed or sent: sign these in your wallet, in order.",
+    "legs": [
+     {
+      "venue": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "amountRaw": "1000000000",
+      "transactions": [
+       {
+        "label": "Withdraw from RockawayX USDC (Morpho Vault V2)",
+        "to": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "data": "0xb460af94000000000000000000000000000000000000000000000000000000003b9aca00000000000000000000000000be2174ff12a71b6deeca5b9aaf4c2931e8c62ae5000000000000000000000000be2174ff12a71b6deeca5b9aaf4c2931e8c62ae5",
+        "value": "0x0",
+        "chainId": 1672
+       }
+      ],
+      "simulation": {
+       "ok": true,
+       "note": "the withdrawal would succeed now"
+      }
+     }
+    ]
+   },
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.04712312230479587,
+     "apyText": "4.71%",
+     "tvlText": "2,190,650.15 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.11285983870121874,
+     "apyText": "11.3%",
+     "tvlText": "10,581,354.2 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "ok",
+     "apy": 0.05458268901457153,
+     "apyText": "5.46%",
+     "tvlText": "11,158,525.13 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "30207395759",
+     "positionText": "30,207.39 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "ok",
+     "apy": 0.05385924639635187,
+     "apyText": "5.39%",
+     "tvlText": "4,054,797.76 USDC",
+     "liquidityText": "404,973.32 USDC",
+     "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    }
+   ]
+  },
+  {
+   "id": "withdraw-too-much",
+   "title": "A withdrawal larger than the wallet holds",
+   "wallet": "0xbe2174ff12a71b6deeca5b9aaf4c2931e8c62ae5",
+   "action": "withdraw",
+   "amount": "100000",
+   "down": [],
+   "available": 5,
+   "unavailable": [],
+   "routed": {
+    "action": "withdraw",
+    "amountRaw": "100000000000",
+    "amountText": "100,000 USDC",
+    "legs": [],
+    "why": "Cannot withdraw 100,000 USDC: the wallet holds 30,207.39 USDC in total in the venues that were read.",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "apy": 0.04712312230479587,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "apy": 0.12212946586058804,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "apy": 0.11285983870121874,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "apy": 0.05458268901457153,
+      "heldRaw": "30207395759",
+      "withdrawableRaw": "0",
+      "eligible": false,
+      "reason": "holds 30,207.39 USDC but nothing can be withdrawn now (the venue refuses: execution reverted: arithmetic underflow or overflow)"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "apy": 0.05385924639635187,
+      "eligible": false,
+      "reason": "the wallet has nothing here"
+     }
+    ],
+    "unavailableNote": null
+   },
+   "prepared": null,
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.04712312230479587,
+     "apyText": "4.71%",
+     "tvlText": "2,190,650.15 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.11285983870121874,
+     "apyText": "11.3%",
+     "tvlText": "10,581,354.2 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "ok",
+     "apy": 0.05458268901457153,
+     "apyText": "5.46%",
+     "tvlText": "11,158,525.13 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "30207395759",
+     "positionText": "30,207.39 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "ok",
+     "apy": 0.05385924639635187,
+     "apyText": "5.39%",
+     "tvlText": "4,054,797.76 USDC",
+     "liquidityText": "404,973.32 USDC",
+     "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    }
+   ]
+  },
+  {
+   "id": "outage-best-venue",
+   "title": "The best venue’s protocol is down: the others carry on",
+   "wallet": "0xbe2174ff12a71b6deeca5b9aaf4c2931e8c62ae5",
+   "action": "deposit",
+   "amount": "2500",
+   "down": [
+    "Morpho Vault V2"
+   ],
+   "available": 4,
+   "unavailable": [
+    {
+     "id": "rockaway-usdc",
+     "protocol": "Morpho Vault V2",
+     "error": "batch failed after 1 try: fetch failed"
+    }
+   ],
+   "routed": {
+    "action": "deposit",
+    "amountRaw": "2500000000",
+    "amountText": "2,500 USDC",
+    "legs": [
+     {
+      "id": "morpho-syzusd-usdc",
+      "amountRaw": "2500000000"
+     }
+    ],
+    "why": "Deposit 2,500 USDC in Morpho Blue syzUSD/USDC market (supply): the best measured return (5.39%) among the 2 venues that can take it; the next best is R25 VRPC Weekly at 4.71%.",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "apy": 0.04712312230479587,
+      "eligible": true,
+      "reason": "4.71% measured (share price over 2.1 days)"
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "apy": 0.12212946586058804,
+      "eligible": false,
+      "reason": "the venue refuses a deposit of 2,500 USDC from this wallet (execution reverted: )"
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "apy": 0.11285983870121874,
+      "eligible": false,
+      "reason": "the venue refuses a deposit of 2,500 USDC from this wallet (execution reverted: )"
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "apy": 0.05385924639635187,
+      "eligible": true,
+      "reason": "5.39% measured (the interest-rate model’s current borrow rate × utilisation × (1 − fee))"
+     }
+    ],
+    "unavailableNote": "RockawayX USDC (Morpho Vault V2) could not be read, so it was not considered; the choice is among the venues that answered."
+   },
+   "prepared": {
+    "signing": "Nothing was signed or sent: sign these in your wallet, in order.",
+    "legs": [
+     {
+      "venue": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "amountRaw": "2500000000",
+      "transactions": [
+       {
+        "label": "Approve Morpho Blue to take the USDC",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0x095ea7b300000000000000000000000018573fa18fd17ddfd790b4a5b5b2977aad3b4efb000000000000000000000000000000000000000000000000000000009502f900",
+        "value": "0x0",
+        "chainId": 1672
+       },
+       {
+        "label": "Supply to the Morpho Blue syzUSD/USDC market (supply)",
+        "to": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+        "data": "0xa99aad89000000000000000000000000c879c018db60520f4355c26ed1a6d572cdac181500000000000000000000000054df79d8edf36d15cd83fbedbdd90807fc8289340000000000000000000000004eefc4c6e7216aedd5e809e4fc74fb8859b3fa46000000000000000000000000d5e02889c13230458506cc842347c4e62f8cdf3a0000000000000000000000000000000000000000000000000cb2bba6f17b8000000000000000000000000000000000000000000000000000000000009502f9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000be2174ff12a71b6deeca5b9aaf4c2931e8c62ae500000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000",
+        "value": "0x0",
+        "chainId": 1672
+       }
+      ],
+      "simulation": {
+       "ok": true,
+       "note": "the venue accepts this deposit (simulated as if the wallet held and had approved the USDC)"
+      }
+     }
+    ]
+   },
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.04712312230479587,
+     "apyText": "4.71%",
+     "tvlText": "2,190,650.15 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.12212946586058804,
+     "apyText": "12.2%",
+     "tvlText": "83,263,729.49 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "ok",
+     "apy": 0.11285983870121874,
+     "apyText": "11.3%",
+     "tvlText": "10,581,354.2 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "ok",
+     "apy": 0.05385924639635187,
+     "apyText": "5.39%",
+     "tvlText": "4,054,797.76 USDC",
+     "liquidityText": "404,973.32 USDC",
+     "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    }
+   ]
+  },
+  {
+   "id": "outage-r25",
+   "title": "R25 is down: the deposit is routed among the rest",
+   "wallet": "0x1159105d91825b0615c9fbe23c2055676676f96d",
+   "action": "deposit",
+   "amount": "500",
+   "down": [
+    "R25"
+   ],
+   "available": 2,
+   "unavailable": [
+    {
+     "id": "r25-weekly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-quarterly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    }
+   ],
+   "routed": {
+    "action": "deposit",
+    "amountRaw": "500000000",
+    "amountText": "500 USDC",
+    "legs": [
+     {
+      "id": "rockaway-usdc",
+      "amountRaw": "500000000"
+     }
+    ],
+    "why": "Deposit 500 USDC in RockawayX USDC (Morpho Vault V2): the best measured return (5.46%) among the 2 venues that can take it; the next best is Morpho Blue syzUSD/USDC market (supply) at 5.39%.",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "apy": 0.05458268901457153,
+      "eligible": true,
+      "reason": "5.46% measured (share price over 2.1 days)"
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "apy": 0.05385924639635187,
+      "eligible": true,
+      "reason": "5.39% measured (the interest-rate model’s current borrow rate × utilisation × (1 − fee))"
+     }
+    ],
+    "unavailableNote": "R25 VRPC Weekly, R25 VRPC Quarterly, R25 VRPC Semi-yearly could not be read, so they were not considered; the choice is among the venues that answered."
+   },
+   "prepared": {
+    "signing": "Nothing was signed or sent: sign these in your wallet, in order.",
+    "legs": [
+     {
+      "venue": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "amountRaw": "500000000",
+      "transactions": [
+       {
+        "label": "Approve RockawayX USDC (Morpho Vault V2) to take the USDC",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0x095ea7b3000000000000000000000000047cd0a91e9b92ed979189a6c8a120bf280f02e5000000000000000000000000000000000000000000000000000000001dcd6500",
+        "value": "0x0",
+        "chainId": 1672
+       },
+       {
+        "label": "Deposit into RockawayX USDC (Morpho Vault V2)",
+        "to": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+        "data": "0x6e553f65000000000000000000000000000000000000000000000000000000001dcd65000000000000000000000000001159105d91825b0615c9fbe23c2055676676f96d",
+        "value": "0x0",
+        "chainId": 1672
+       }
+      ],
+      "simulation": {
+       "ok": true,
+       "note": "the venue accepts this deposit (simulated as if the wallet held and had approved the USDC)"
+      }
+     }
+    ]
+   },
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "ok",
+     "apy": 0.05458268901457153,
+     "apyText": "5.46%",
+     "tvlText": "11,158,525.13 USDC",
+     "liquidityText": "redeemable on request",
+     "basis": "share price over 2.1 days",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "ok",
+     "apy": 0.05385924639635187,
+     "apyText": "5.39%",
+     "tvlText": "4,054,797.76 USDC",
+     "liquidityText": "404,973.32 USDC",
+     "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    }
+   ]
+  },
+  {
+   "id": "outage-all-but-one",
+   "title": "Everything but Morpho Blue is down",
+   "wallet": "0x1159105d91825b0615c9fbe23c2055676676f96d",
+   "action": "deposit",
+   "amount": "500",
+   "down": [
+    "R25",
+    "Morpho Vault V2"
+   ],
+   "available": 1,
+   "unavailable": [
+    {
+     "id": "r25-weekly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-quarterly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "rockaway-usdc",
+     "protocol": "Morpho Vault V2",
+     "error": "batch failed after 1 try: fetch failed"
+    }
+   ],
+   "routed": {
+    "action": "deposit",
+    "amountRaw": "500000000",
+    "amountText": "500 USDC",
+    "legs": [
+     {
+      "id": "morpho-syzusd-usdc",
+      "amountRaw": "500000000"
+     }
+    ],
+    "why": "Deposit 500 USDC in Morpho Blue syzUSD/USDC market (supply): the best measured return (5.39%) among the 1 venue that can take it.",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "apy": 0.05385924639635187,
+      "eligible": true,
+      "reason": "5.39% measured (the interest-rate model’s current borrow rate × utilisation × (1 − fee))"
+     }
+    ],
+    "unavailableNote": "R25 VRPC Weekly, R25 VRPC Quarterly, R25 VRPC Semi-yearly, RockawayX USDC (Morpho Vault V2) could not be read, so they were not considered; the choice is among the venues that answered."
+   },
+   "prepared": {
+    "signing": "Nothing was signed or sent: sign these in your wallet, in order.",
+    "legs": [
+     {
+      "venue": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "amountRaw": "500000000",
+      "transactions": [
+       {
+        "label": "Approve Morpho Blue to take the USDC",
+        "to": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "data": "0x095ea7b300000000000000000000000018573fa18fd17ddfd790b4a5b5b2977aad3b4efb000000000000000000000000000000000000000000000000000000001dcd6500",
+        "value": "0x0",
+        "chainId": 1672
+       },
+       {
+        "label": "Supply to the Morpho Blue syzUSD/USDC market (supply)",
+        "to": "0x18573fa18fd17ddfd790b4a5b5b2977aad3b4efb",
+        "data": "0xa99aad89000000000000000000000000c879c018db60520f4355c26ed1a6d572cdac181500000000000000000000000054df79d8edf36d15cd83fbedbdd90807fc8289340000000000000000000000004eefc4c6e7216aedd5e809e4fc74fb8859b3fa46000000000000000000000000d5e02889c13230458506cc842347c4e62f8cdf3a0000000000000000000000000000000000000000000000000cb2bba6f17b8000000000000000000000000000000000000000000000000000000000001dcd650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001159105d91825b0615c9fbe23c2055676676f96d00000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000",
+        "value": "0x0",
+        "chainId": 1672
+       }
+      ],
+      "simulation": {
+       "ok": true,
+       "note": "the venue accepts this deposit (simulated as if the wallet held and had approved the USDC)"
+      }
+     }
+    ]
+   },
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "ok",
+     "apy": 0.05385924639635187,
+     "apyText": "5.39%",
+     "tvlText": "4,054,797.76 USDC",
+     "liquidityText": "404,973.32 USDC",
+     "basis": "the interest-rate model’s current borrow rate × utilisation × (1 − fee)",
+     "positionRaw": "0",
+     "positionText": "0 USDC",
+     "withdrawableText": "0 USDC"
+    }
+   ]
+  },
+  {
+   "id": "outage-all",
+   "title": "Everything is down: a clear answer, no crash",
+   "wallet": "0x1159105d91825b0615c9fbe23c2055676676f96d",
+   "action": "deposit",
+   "amount": "500",
+   "down": [
+    "R25",
+    "Morpho Vault V2",
+    "Morpho Blue"
+   ],
+   "available": 0,
+   "unavailable": [
+    {
+     "id": "r25-weekly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-quarterly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "protocol": "R25",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "rockaway-usdc",
+     "protocol": "Morpho Vault V2",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "protocol": "Morpho Blue",
+     "error": "batch failed after 1 try: fetch failed"
+    }
+   ],
+   "routed": {
+    "action": "deposit",
+    "amountRaw": "500000000",
+    "amountText": "500 USDC",
+    "legs": [],
+    "why": "No venue can take 500 USDC right now.",
+    "considered": [
+     {
+      "id": "r25-weekly",
+      "name": "R25 VRPC Weekly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "r25-quarterly",
+      "name": "R25 VRPC Quarterly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "r25-semi-yearly",
+      "name": "R25 VRPC Semi-yearly",
+      "protocol": "R25",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "rockaway-usdc",
+      "name": "RockawayX USDC (Morpho Vault V2)",
+      "protocol": "Morpho Vault V2",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     },
+     {
+      "id": "morpho-syzusd-usdc",
+      "name": "Morpho Blue syzUSD/USDC market (supply)",
+      "protocol": "Morpho Blue",
+      "eligible": false,
+      "reason": "unavailable right now (batch failed after 1 try: fetch failed)",
+      "unavailable": true
+     }
+    ],
+    "unavailableNote": "R25 VRPC Weekly, R25 VRPC Quarterly, R25 VRPC Semi-yearly, RockawayX USDC (Morpho Vault V2), Morpho Blue syzUSD/USDC market (supply) could not be read, so they were not considered; the choice is among the venues that answered."
+   },
+   "prepared": null,
+   "venues": [
+    {
+     "id": "r25-weekly",
+     "name": "R25 VRPC Weekly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-quarterly",
+     "name": "R25 VRPC Quarterly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "r25-semi-yearly",
+     "name": "R25 VRPC Semi-yearly",
+     "protocol": "R25",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "rockaway-usdc",
+     "name": "RockawayX USDC (Morpho Vault V2)",
+     "protocol": "Morpho Vault V2",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    },
+    {
+     "id": "morpho-syzusd-usdc",
+     "name": "Morpho Blue syzUSD/USDC market (supply)",
+     "protocol": "Morpho Blue",
+     "status": "unavailable",
+     "error": "batch failed after 1 try: fetch failed"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "venues": 5,
+  "protocols": 3,
+  "queriedWallets": 3,
+  "scenarios": 8,
+  "outageScenarios": 4
+ }
+}

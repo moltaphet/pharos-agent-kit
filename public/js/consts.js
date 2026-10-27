@@ -35,6 +35,7 @@ export const TASK_FOLDERS = {
   'dapp-support-agent': 'agents/dapp-support-agent',
   'weekly-digest-agent': 'agents/weekly-digest-agent',
   'doc-grounded-builder-agent': 'agents/doc-grounded-builder-agent',
+  'multi-protocol-aggregator': 'agents/multi-protocol-aggregator',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

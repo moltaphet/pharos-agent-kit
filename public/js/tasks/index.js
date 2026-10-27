@@ -29,6 +29,7 @@ import * as auditLogAgent from './audit-log-agent.js';
 import * as dappSupportAgent from './dapp-support-agent.js';
 import * as weeklyDigestAgent from './weekly-digest-agent.js';
 import * as docGroundedBuilderAgent from './doc-grounded-builder-agent.js';
+import * as multiProtocolAggregator from './multi-protocol-aggregator.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -57,4 +58,5 @@ export const TASK_MODULES = {
   'dapp-support-agent': dappSupportAgent,
   'weekly-digest-agent': weeklyDigestAgent,
   'doc-grounded-builder-agent': docGroundedBuilderAgent,
+  'multi-protocol-aggregator': multiProtocolAggregator,
 };

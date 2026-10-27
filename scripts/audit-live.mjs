@@ -871,6 +871,80 @@ await guard(async () => {
 });
 
 await guard(async () => {
+  sec('26 Audit-Log Agent');
+  const rec = (await run('audit-log-agent', { recorded: 1 })).body?.data;
+  check('recorded: the notable transactions of the three reports re-read from mainnet just now', rec?.verification?.verifiedCount === rec?.verification?.total && rec.verification.total >= 8, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  const cats = new Set(rec.run.wallets.flatMap((w) => w.report.events.map((e) => e.category + (e.direction ? `:${e.direction}` : ''))));
+  check('all four categories occur across the recorded reports (transfers in and out, swaps, approvals, contract interactions)', ['transfer:in', 'transfer:out', 'swap', 'approval', 'contract interaction'].every((c) => cats.has(c)), [...cats].join(','));
+  const pdf = (await run('audit-log-agent', { export: 'pdf', id: 'wallet-a' })).body?.data;
+  check('the PDF export is a PDF; the CSV has the header and rows; the Markdown has its sections', Buffer.from(pdf?.base64 ?? '', 'base64').subarray(0, 8).toString() === '%PDF-1.4'
+    && (await run('audit-log-agent', { export: 'csv', id: 'wallet-a' })).body?.data?.text?.startsWith('time_utc,block,category')
+    && /## Summary/.test((await run('audit-log-agent', { export: 'md', id: 'wallet-a' })).body?.data?.text ?? ''));
+  const day = new Date(Date.now() - 20 * 3600e3).toISOString().slice(0, 10);
+  const live = (await run('audit-log-agent', { report: 1, wallet: '0x1159105d91825b0615c9fbe23c2055676676f96d', from: `${day}T06:00`, to: `${day}T10:00` })).body?.data;
+  check('live report for a 4-hour range answers with totals per category and three exports', live?.report?.totals?.transfer && live.exports?.pdf && live.exports?.csv && live.exports?.md);
+  check('bad input is a 400', is400(await run('audit-log-agent', { report: 1, wallet: '0x12', from: day, to: day })) && is400(await run('audit-log-agent', { report: 1, wallet: '0x1159105d91825b0615c9fbe23c2055676676f96d', from: '2026-13-01', to: day })) && is400(await run('audit-log-agent', { report: 1, wallet: '0x1159105d91825b0615c9fbe23c2055676676f96d', from: '2020-01-01', to: '2026-01-01' })) && is400(await run('audit-log-agent', { export: 'exe', id: 'wallet-a' })) && is400(await run('audit-log-agent', {})));
+});
+
+await guard(async () => {
+  sec('27 dApp Support Agent');
+  const rec = (await run('dapp-support-agent', { recorded: 1 })).body?.data;
+  check('recorded: all 13 transactions are failed on-chain just now', rec?.verification?.failedCount === 13, `${rec?.verification?.failedCount}/${rec?.verification?.total}`);
+  check('13 real failures of at least 10 kinds, each explained with a fix', rec.run.cases.length === 13 && rec.run.summary.categories.length >= 10 && rec.run.cases.every((c) => c.diagnosis.fix.length >= 1 && c.diagnosis.plain.length > 60));
+  const by = Object.fromEntries(rec.run.cases.map((c) => [c.id, c]));
+  const live = (await run('dapp-support-agent', { diagnose: 1, chain: 'atlantic', hash: by['out-of-gas'].hash })).body?.data?.diagnosis;
+  check('live (Atlantic RPC): the out-of-gas failure is diagnosed as out of gas with the numbers', live?.category === 'out-of-gas' && live.evidence.gas.percent === 100);
+  const main = (await run('dapp-support-agent', { diagnose: 1, chain: 'mainnet', hash: by['mainnet-allowance'].hash })).body?.data?.diagnosis;
+  check('live (Chain MCP): a real mainnet failure is diagnosed as a missing approval, with the amounts', main?.category === 'insufficient-allowance' && /approved for/.test(main.plain) && main.steps[0].tool === 'Chain MCP');
+  const nf = (await run('dapp-support-agent', { diagnose: 1, chain: 'mainnet', hash: '0x' + '12'.repeat(32) })).body?.data?.diagnosis;
+  check('an unknown hash is “not found”, not an error', nf?.status === 'not-found');
+  check('bad input is a 400', is400(await run('dapp-support-agent', { diagnose: 1, hash: '0x12' })) && is400(await run('dapp-support-agent', { diagnose: 1, chain: 'x', hash: '0x' + '12'.repeat(32) })) && is400(await run('dapp-support-agent', {})));
+});
+
+await guard(async () => {
+  sec('28 Weekly Digest Agent');
+  const rec = (await run('weekly-digest-agent', { recorded: 1 })).body?.data;
+  check('recorded: the end-of-period figures and notable transaction re-read from mainnet just now', rec?.verification?.verifiedCount === rec?.verification?.total && rec.verification.total >= 3, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  check('the digest has at least 10 metrics with a previous-period figure, and exactly three notable items', rec.run.digest.metrics.length >= 10 && rec.run.digest.metrics.every((m) => m.beforeText) && rec.run.digest.notable.length === 3);
+  check('delivery was recorded once to three channels and not repeated', rec.run.summary.deliveredFirst === 3 && rec.run.summary.deliveredSecond === 0);
+  const page = await fetch(`${BASE}/digests/latest.html`);
+  check('the digest is published as a page of the site', page.status === 200 && /digest/i.test(await page.text()));
+  const live = (await run('weekly-digest-agent', { digest: 1, days: 2 })).body?.data;
+  check('a live 2-day digest compares with the 2 days before and names three notable items', live?.digest?.metrics?.length >= 9 && live.digest.notable.length === 3);
+  const cron = await get('/api/run' + q({ slug: 'weekly-digest-agent', cron: 1 }));
+  check('the scheduled run refuses a request without the cron secret', is400(cron));
+  check('bad input is a 400', is400(await run('weekly-digest-agent', { digest: 1, days: 0 })) && is400(await run('weekly-digest-agent', { digest: 1, days: 99 })) && is400(await run('weekly-digest-agent', {})));
+});
+
+await guard(async () => {
+  sec('29 Doc-Grounded Builder Agent');
+  const rec = (await run('doc-grounded-builder-agent', { recorded: 1 })).body?.data;
+  check('recorded: the Atlantic deployment still has code and the transfer’s recipient holds the amount', rec?.verification?.verifiedCount === rec?.verification?.total, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  const by = Object.fromEntries(rec.run.cases.map((c) => [c.id, c.run.verdict.status]));
+  check('recorded outcomes: reads verified, transfers/deployment prepared, uncovered requests refused, a docs-only question explained', ['balance', 'price-pros', 'price-btc'].every((i) => by[i] === 'success') && by['send-mainnet'] === 'prepared' && by['not-covered-1'] === 'not-covered' && by['not-covered-2'] === 'not-covered' && by['explained-only'] === 'explained-only');
+  const live = (await run('doc-grounded-builder-agent', { ask: 1, question: 'How do I read the BTC/USD price on Pharos?' })).body?.data?.result;
+  check('live: a price question is planned from the docs (with cited sources), done through Chain MCP and verified', live?.verdict?.status === 'success' && live.docs.sources.some((s) => s.cited) && live.verification.every((v) => v.ok) && live.steps.some((s) => s.actor === 'chain-mcp'));
+  const nc = (await run('doc-grounded-builder-agent', { ask: 1, question: 'How do I bake sourdough bread with Pharos?' })).body?.data?.result;
+  check('live: a request the docs do not cover is refused and nothing is done on the chain', nc?.verdict?.status === 'not-covered' && !nc.steps.some((s) => /chain/.test(s.actor)));
+  check('bad input is a 400', is400(await run('doc-grounded-builder-agent', { ask: 1, question: 'hi' })) && is400(await run('doc-grounded-builder-agent', { ask: 1 })) && is400(await run('doc-grounded-builder-agent', {})));
+});
+
+await guard(async () => {
+  sec('30 Multi-Protocol Aggregator');
+  const rec = (await run('multi-protocol-aggregator', { recorded: 1 })).body?.data;
+  check('recorded run replayed on its block: every figure comes out the same', rec?.verification?.verifiedCount === rec?.verification?.total, `${rec?.verification?.verifiedCount}/${rec?.verification?.total}`);
+  check('five venues of three protocols; eight routed requests, four with an outage', rec.run.venues.length === 5 && rec.run.protocols.length === 3 && rec.run.scenarios.length === 8 && rec.run.scenarios.filter((s) => s.down.length).length === 4);
+  const w = '0xbe2174ff12a71b6deeca5b9aaf4c2931e8c62ae5';
+  const dep = (await run('multi-protocol-aggregator', { route: 1, wallet: w, action: 'deposit', amount: '2500' })).body?.data;
+  check('live deposit: routed to one venue with a reason, all five venues accounted for, unsigned transactions with a simulation', dep?.routed?.legs?.length === 1 && dep.routed.considered.length === 5 && dep.prepared.legs[0].transactions.length === 2 && dep.prepared.legs[0].simulation.ok === true && /Nothing was signed/.test(dep.prepared.signing));
+  const out = (await run('multi-protocol-aggregator', { route: 1, wallet: w, action: 'deposit', amount: '2500', down: 'Morpho Vault V2' })).body?.data;
+  check('live deposit with a protocol down: reported unavailable, the rest carry on', out?.routed?.legs?.length === 1 && out.routed.considered.some((c) => c.unavailable) && /could not be read/.test(out.routed.unavailableNote));
+  const q1 = (await run('multi-protocol-aggregator', { query: 1, wallet: w })).body?.data;
+  check('live query: the wallet’s position is found and the rates of all five venues are listed', q1?.summary?.rows?.length === 5 && /30,\d{3}/.test(q1.summary.text));
+  check('bad input is a 400', is400(await run('multi-protocol-aggregator', { route: 1, wallet: w, action: 'swap', amount: '5' })) && is400(await run('multi-protocol-aggregator', { route: 1, wallet: w, action: 'deposit', amount: '-1' })) && is400(await run('multi-protocol-aggregator', { route: 1, wallet: '0x12', action: 'deposit', amount: '5' })) && is400(await run('multi-protocol-aggregator', { query: 1, wallet: w, down: 'Nope' })) && is400(await run('multi-protocol-aggregator', {})));
+});
+
+await guard(async () => {
   sec('Cross-cutting');
   check('unknown task slug rejected with 400', is400(await run('nope')));
   check('prototype-pollution slug rejected with 400', is400(await run('__proto__')) && is400(await run('constructor')));
