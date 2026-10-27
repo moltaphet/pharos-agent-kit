@@ -356,6 +356,20 @@ Requirements it was built against (the Arena's own list):
 3. Reports the actual gas paid compared with the price at request time.
 4. Never misses the deadline. It submits at the deadline even if gas is high.
 
+## 25. Wallet Risk Checker
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/wallet-risk-checker/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/wallet-risk-checker
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/wallet-risk-checker
+- **What the proof shows:** A pre-transaction check that reads the chain and returns low, medium or high with every flag in plain language: contract age (binary search over history), proxy/upgradeability, owner and administrator powers read from the bytecode, dangerous instructions, wallet age and activity, outstanding unlimited approvals (judging the spender too), and contact with a flag list. Five recorded examples: WPROS and an established wallet are low, USDC (an upgradeable proxy) is medium, and a deliberately risky token and a brand-new wallet with an unlimited approval to it, both created on Atlantic testnet for the demo, are high.
+
+Requirements it was built against (the Arena's own list):
+
+1. Checks at least 4 signals, e.g. contract age, verified code, interaction with flagged addresses, unusual approval patterns, freshly funded wallet.
+2. Outputs a risk level (low, medium or high) with the specific reasons.
+3. Explains each flag in plain language.
+4. Demonstrated on at least 1 clean and 1 risky example.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

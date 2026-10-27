@@ -24,6 +24,7 @@ import * as x402AgentBuyer from './x402-agent-buyer.js';
 import * as onChainAlertBot from './on-chain-alert-bot.js';
 import * as whaleWatchingAgent from './whale-watching-agent.js';
 import * as gasFeeOptimizer from './gas-fee-optimizer.js';
+import * as walletRiskChecker from './wallet-risk-checker.js';
 
 export const TASK_MODULES = {
   'docs-mcp-onboarding': docsMcpOnboarding,
@@ -47,4 +48,5 @@ export const TASK_MODULES = {
   'on-chain-alert-bot': onChainAlertBot,
   'whale-watching-agent': whaleWatchingAgent,
   'gas-fee-optimizer': gasFeeOptimizer,
+  'wallet-risk-checker': walletRiskChecker,
 };

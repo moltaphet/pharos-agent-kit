@@ -67,6 +67,8 @@ export const TASK_MAP = [
     tests: ['whales.test.js'] },
   { n: 24, slug: 'gas-fee-optimizer', folder: TASK_FOLDERS['gas-fee-optimizer'], entries: ['lib/gas.js', 'lib/tasks/gas-fee-optimizer.js', 'scripts/gas-run.mjs'], data: ['reports/gas-run.json'], page: ['public/js/tasks/gas-fee-optimizer.js'],
     tests: ['gas.test.js'] },
+  { n: 25, slug: 'wallet-risk-checker', folder: TASK_FOLDERS['wallet-risk-checker'], entries: ['lib/risk.js', 'lib/tasks/wallet-risk-checker.js', 'scripts/risk-run.mjs'], data: ['contracts/RiskyToken.sol', 'config/risk-demo.json', 'reports/risk-run.json'], page: ['public/js/tasks/wallet-risk-checker.js'],
+    tests: ['risk.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

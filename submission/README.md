@@ -30,6 +30,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 22 | On-Chain Alert Bot | [demo](https://pharos-agent-kit.vercel.app/#/on-chain-alert-bot/try) | [agents/on-chain-alert-bot](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/on-chain-alert-bot) | [22-on-chain-alert-bot.md](22-on-chain-alert-bot.md) |
 | 23 | Whale-Watching Agent | [demo](https://pharos-agent-kit.vercel.app/#/whale-watching-agent/try) | [agents/whale-watching-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/whale-watching-agent) | [23-whale-watching-agent.md](23-whale-watching-agent.md) |
 | 24 | Gas Fee Optimizer | [demo](https://pharos-agent-kit.vercel.app/#/gas-fee-optimizer/try) | [agents/gas-fee-optimizer](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/gas-fee-optimizer) | [24-gas-fee-optimizer.md](24-gas-fee-optimizer.md) |
+| 25 | Wallet Risk Checker | [demo](https://pharos-agent-kit.vercel.app/#/wallet-risk-checker/try) | [agents/wallet-risk-checker](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/wallet-risk-checker) | [25-wallet-risk-checker.md](25-wallet-risk-checker.md) |
 
 ## Tests of the shared platform
 

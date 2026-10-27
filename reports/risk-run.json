@@ -1,0 +1,445 @@
+{
+ "recordedAt": "2026-10-27T07:56:53.942Z",
+ "network": "Mainnet examples are read-only (Pharos 1672). Risky examples are contracts and a wallet created on Pharos Atlantic testnet (688689) for this demo; every check reads the chain alone.",
+ "demo": {
+  "network": "Pharos Atlantic testnet (688689)",
+  "riskyToken": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+  "deployTx": "0x14d89f6ce6e69750cfae0de39951edd4074b49a5607c02778daf287857cbb12f",
+  "deployer": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+  "freshWallet": "0x7e3a54FcCb211F9e1D7B393bDe14Ea0E93474158",
+  "fundTx": "0xc376a16d73b7a213bea3e3e6638a7384275d886e5c3714397e5a078ef3770c2e",
+  "approveTx": "0xf6158be26b89747109dc8251103c281e4d93f3073428a30fdb43937a446dbebf",
+  "approvedToken": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+  "note": "Created by scripts/risk-run.mjs for the Wallet Risk Checker. The token is deliberately risky (contracts/RiskyToken.sol); the wallet is brand new and holds a few thousandths of test PHRS."
+ },
+ "examples": [
+  {
+   "id": "wpros",
+   "chain": "mainnet",
+   "address": "0x52c48d4213107b20bc583832b0d951fb9ca8f0b0",
+   "title": "WPROS, the wrapped PROS contract",
+   "expect": "clean",
+   "result": {
+    "address": "0x52c48d4213107b20bc583832b0d951fb9ca8f0b0",
+    "label": "WPROS (Wrapped PROS)",
+    "chain": "mainnet",
+    "chainName": "Pharos mainnet (1672)",
+    "kind": "contract",
+    "level": "low",
+    "score": 0,
+    "flags": [],
+    "signals": [
+     {
+      "id": "age",
+      "title": "Contract age",
+      "status": "ok",
+      "detail": "Code first appears at block 1,617,294, 283 days ago.",
+      "block": 1617294,
+      "ageSeconds": 24457735
+     },
+     {
+      "id": "proxy",
+      "title": "Upgradeability",
+      "status": "ok",
+      "detail": "Not a proxy: the code at this address is the code that runs, and it cannot be replaced."
+     },
+     {
+      "id": "admin",
+      "title": "Admin powers",
+      "status": "ok",
+      "detail": "No owner and none of the known administrator functions (mint, freeze, fee change, pause, upgrade, drain)."
+     },
+     {
+      "id": "opcodes",
+      "title": "Dangerous instructions",
+      "status": "ok",
+      "detail": "No SELFDESTRUCT, and no DELEGATECALL outside a proxy."
+     }
+    ],
+    "facts": {
+     "size": 3249,
+     "owner": null,
+     "ownerKind": null,
+     "powers": [],
+     "proxyImplementation": null,
+     "createdBlock": 1617294,
+     "ageSeconds": 24457735
+    },
+    "checkedBlock": 21385634,
+    "checkedAt": "2026-10-27T07:54:53.125Z",
+    "summary": "LOW risk: none of the 4 signals checked raised a flag.",
+    "explorer": "https://www.pharosscan.xyz/address/0x52c48d4213107b20bc583832b0d951fb9ca8f0b0"
+   }
+  },
+  {
+   "id": "old-wallet",
+   "chain": "mainnet",
+   "address": "0x1f3546a29eec2102c8d52e21a45114124014c85c",
+   "title": "A long-established, busy wallet",
+   "expect": "clean",
+   "result": {
+    "address": "0x1f3546a29eec2102c8d52e21a45114124014c85c",
+    "label": null,
+    "chain": "mainnet",
+    "chainName": "Pharos mainnet (1672)",
+    "kind": "wallet",
+    "level": "low",
+    "score": 0,
+    "flags": [],
+    "signals": [
+     {
+      "id": "age",
+      "title": "Wallet age",
+      "status": "ok",
+      "detail": "First outgoing transaction at block 17,159,978, 48 days ago; 62,309 transactions sent in all.",
+      "firstBlock": 17159978,
+      "ageSeconds": 4109902,
+      "nonce": 62309
+     },
+     {
+      "id": "activity",
+      "title": "Activity",
+      "status": "ok",
+      "detail": "62,309 outgoing transactions: an established pattern of use."
+     },
+     {
+      "id": "approvals",
+      "title": "Token approvals",
+      "status": "ok",
+      "detail": "No unlimited approvals from the last 20,000 blocks.",
+      "approvals": [],
+      "windowBlocks": 20000
+     }
+    ],
+    "facts": {
+     "nonce": 62309,
+     "balance": "58354396390000000000",
+     "firstBlock": 17159978,
+     "ageSeconds": 4109902,
+     "unlimitedApprovals": []
+    },
+    "checkedBlock": 21385647,
+    "checkedAt": "2026-10-27T07:55:21.723Z",
+    "summary": "LOW risk: none of the 3 signals checked raised a flag.",
+    "explorer": "https://www.pharosscan.xyz/address/0x1f3546a29eec2102c8d52e21a45114124014c85c"
+   }
+  },
+  {
+   "id": "usdc",
+   "chain": "mainnet",
+   "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+   "title": "USDC: an upgradeable proxy with an administrator",
+   "expect": "middle",
+   "result": {
+    "address": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+    "label": "USDC (Circle)",
+    "chain": "mainnet",
+    "chainName": "Pharos mainnet (1672)",
+    "kind": "contract",
+    "level": "medium",
+    "score": 3,
+    "flags": [
+     {
+      "id": "proxy",
+      "severity": "medium",
+      "title": "Upgradeable proxy",
+      "plain": "The address you would interact with is a shell that forwards to other code, and 0x46f9…3f1b can swap that code at any time. What the contract does today is not a promise of what it will do tomorrow.",
+      "evidence": {
+       "implementation": "0xc35becb283fec66626220467265f6d3b3f8ceae8",
+       "admin": "0x46f958bdeffd33495e058873cdd114c79ec13f1b"
+      }
+     }
+    ],
+    "signals": [
+     {
+      "id": "age",
+      "title": "Contract age",
+      "status": "ok",
+      "detail": "Code first appears at block 4,035,507, 228 days ago.",
+      "block": 4035507,
+      "ageSeconds": 19729509
+     },
+     {
+      "id": "proxy",
+      "title": "Upgradeability",
+      "status": "warn",
+      "detail": "A proxy: the code that runs is at 0xc35b…eae8, and 0x46f9…3f1b can change it.",
+      "implementation": "0xc35becb283fec66626220467265f6d3b3f8ceae8",
+      "admin": "0x46f958bdeffd33495e058873cdd114c79ec13f1b"
+     },
+     {
+      "id": "admin",
+      "title": "Admin powers",
+      "status": "ok",
+      "detail": "Owner: 0x9f8e…4d92, a single ordinary wallet. No special administrator functions found among the known ones.",
+      "owner": "0x9f8ea09770dc38fc61f5a62031b3be0526d54d92",
+      "ownerKind": "wallet",
+      "powers": []
+     },
+     {
+      "id": "opcodes",
+      "title": "Dangerous instructions",
+      "status": "ok",
+      "detail": "No SELFDESTRUCT, and no DELEGATECALL outside a proxy."
+     }
+    ],
+    "facts": {
+     "size": 1798,
+     "owner": "0x9f8ea09770dc38fc61f5a62031b3be0526d54d92",
+     "ownerKind": "wallet",
+     "powers": [],
+     "proxyImplementation": "0xc35becb283fec66626220467265f6d3b3f8ceae8",
+     "createdBlock": 4035507,
+     "ageSeconds": 19729509
+    },
+    "checkedBlock": 21385682,
+    "checkedAt": "2026-10-27T07:55:49.133Z",
+    "summary": "MEDIUM risk: Upgradeable proxy.",
+    "explorer": "https://www.pharosscan.xyz/address/0xc879c018db60520f4355c26ed1a6d572cdac1815"
+   }
+  },
+  {
+   "id": "risky-token",
+   "chain": "atlantic",
+   "address": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+   "title": "The deliberately risky token (deployed for this demo)",
+   "expect": "risky",
+   "result": {
+    "address": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+    "label": null,
+    "chain": "atlantic",
+    "chainName": "Pharos Atlantic testnet (688689)",
+    "kind": "contract",
+    "level": "high",
+    "score": 15,
+    "flags": [
+     {
+      "id": "age",
+      "severity": "high",
+      "title": "Deployed 6 minutes ago",
+      "plain": "This contract was deployed very recently. Most scams and mistakes are caught within days; this one has not had that time, so there is no track record to lean on.",
+      "evidence": {
+       "createdBlock": 31937232
+      }
+     },
+     {
+      "id": "admin",
+      "severity": "medium",
+      "title": "One key controls the contract",
+      "plain": "A single wallet can create new tokens out of thin air (dilute every holder); freeze or block specific addresses so they cannot move their tokens; change the fee or tax taken on transfers; pause all transfers. If that key is lost, stolen or misused, holders have no protection.",
+      "evidence": {
+       "owner": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+       "powers": [
+        "mint",
+        "blacklist",
+        "fee",
+        "pause"
+       ]
+      }
+     },
+     {
+      "id": "selfdestruct",
+      "severity": "medium",
+      "title": "The contract can destroy itself",
+      "plain": "The code contains the instruction that deletes a contract. Where the chain still honours it, whoever can call that path can remove the contract and take what it holds.",
+      "evidence": null
+     },
+     {
+      "id": "delegatecall",
+      "severity": "medium",
+      "title": "Runs outside code as its own",
+      "plain": "The code can execute code from another address as if it were its own. If an administrator can choose that address, they can do anything the contract can do.",
+      "evidence": null
+     }
+    ],
+    "signals": [
+     {
+      "id": "age",
+      "title": "Contract age",
+      "status": "bad",
+      "detail": "Code first appears at block 31,937,232, 6 minutes ago.",
+      "block": 31937232,
+      "ageSeconds": 351
+     },
+     {
+      "id": "proxy",
+      "title": "Upgradeability",
+      "status": "ok",
+      "detail": "Not a proxy: the code at this address is the code that runs, and it cannot be replaced."
+     },
+     {
+      "id": "admin",
+      "title": "Admin powers",
+      "status": "bad",
+      "detail": "Owner: 0x0ec1…0850, a single ordinary wallet. Functions to mint, blacklist, fee, pause are present.",
+      "owner": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "ownerKind": "wallet",
+      "powers": [
+       "mint",
+       "blacklist",
+       "fee",
+       "pause"
+      ]
+     },
+     {
+      "id": "opcodes",
+      "title": "Dangerous instructions",
+      "status": "warn",
+      "detail": "The code contains SELFDESTRUCT and DELEGATECALL."
+     }
+    ],
+    "facts": {
+     "size": 2920,
+     "owner": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+     "ownerKind": "wallet",
+     "powers": [
+      "mint",
+      "blacklist",
+      "fee",
+      "pause"
+     ],
+     "proxyImplementation": null,
+     "createdBlock": 31937232,
+     "ageSeconds": 351
+    },
+    "checkedBlock": 31937429,
+    "checkedAt": "2026-10-27T07:56:02.754Z",
+    "summary": "HIGH risk: Deployed 6 minutes ago; One key controls the contract; The contract can destroy itself; Runs outside code as its own.",
+    "explorer": "https://atlantic.pharosscan.xyz/address/0x7d7abe8bf2de1191ce659f997869434510a18d32"
+   }
+  },
+  {
+   "id": "fresh-wallet",
+   "chain": "atlantic",
+   "address": "0x7e3a54FcCb211F9e1D7B393bDe14Ea0E93474158",
+   "title": "A brand-new wallet with an unlimited approval to the risky token",
+   "expect": "risky",
+   "result": {
+    "address": "0x7e3a54fccb211f9e1d7b393bde14ea0e93474158",
+    "label": null,
+    "chain": "atlantic",
+    "chainName": "Pharos Atlantic testnet (688689)",
+    "kind": "wallet",
+    "level": "high",
+    "score": 9,
+    "flags": [
+     {
+      "id": "approval",
+      "severity": "high",
+      "title": "Unlimited USDC (demo) approval to 0x7d7a…8d32",
+      "plain": "The wallet gave 0x7d7a…8d32 permission to move any amount of its USDC (demo), and the permission is still active. If that contract is malicious or hacked it can empty the wallet's USDC (demo) at any time. That contract itself checks out as high risk: deployed 6 minutes ago; one key controls the contract.",
+      "evidence": {
+       "spender": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+       "token": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "block": 31937246
+      }
+     },
+     {
+      "id": "age",
+      "severity": "medium",
+      "title": "New wallet: first activity 6 minutes ago",
+      "plain": "A wallet with almost no history cannot be judged by its past. New wallets are normal, but they are also what an attacker uses, because abandoning one costs nothing.",
+      "evidence": {
+       "firstBlock": 31937246
+      }
+     }
+    ],
+    "signals": [
+     {
+      "id": "age",
+      "title": "Wallet age",
+      "status": "bad",
+      "detail": "First outgoing transaction at block 31,937,246, 6 minutes ago; 1 transaction sent in all.",
+      "firstBlock": 31937246,
+      "ageSeconds": 347,
+      "nonce": 1
+     },
+     {
+      "id": "activity",
+      "title": "Activity",
+      "status": "warn",
+      "detail": "Only 1 outgoing transaction."
+     },
+     {
+      "id": "approvals",
+      "title": "Token approvals",
+      "status": "bad",
+      "detail": "1 unlimited approval still in force from the last 20,000 blocks, 1 to unlabelled contracts.",
+      "approvals": [
+       {
+        "token": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+        "symbol": "USDC (demo)",
+        "spender": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+        "label": null,
+        "block": 31937246
+       }
+      ],
+      "windowBlocks": 20000
+     }
+    ],
+    "facts": {
+     "nonce": 1,
+     "balance": "2953509999953510",
+     "firstBlock": 31937246,
+     "ageSeconds": 347,
+     "unlimitedApprovals": [
+      {
+       "token": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+       "symbol": "USDC (demo)",
+       "spender": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+       "label": null,
+       "block": 31937246
+      }
+     ]
+    },
+    "checkedBlock": 31937432,
+    "checkedAt": "2026-10-27T07:56:41.384Z",
+    "summary": "HIGH risk: Unlimited USDC (demo) approval to 0x7d7a…8d32; New wallet: first activity 6 minutes ago.",
+    "explorer": "https://atlantic.pharosscan.xyz/address/0x7e3a54fccb211f9e1d7b393bde14ea0e93474158"
+   }
+  }
+ ],
+ "flagListExample": {
+  "flagged": [
+   "0x0ec197b8a30543c93e521a6c3f2db5d110e60850"
+  ],
+  "note": "the same risky token, with its deployer on a flag list supplied by the user",
+  "level": "high",
+  "flags": [
+   "Deployed 7 minutes ago",
+   "Linked to a flagged address",
+   "One key controls the contract",
+   "The contract can destroy itself",
+   "Runs outside code as its own"
+  ]
+ },
+ "summary": {
+  "clean": [
+   [
+    "wpros",
+    "low"
+   ],
+   [
+    "old-wallet",
+    "low"
+   ]
+  ],
+  "middle": [
+   [
+    "usdc",
+    "medium"
+   ]
+  ],
+  "risky": [
+   [
+    "risky-token",
+    "high"
+   ],
+   [
+    "fresh-wallet",
+    "high"
+   ]
+  ],
+  "signalsChecked": 4
+ }
+}

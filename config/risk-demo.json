@@ -1,0 +1,11 @@
+{
+ "network": "Pharos Atlantic testnet (688689)",
+ "riskyToken": "0x7d7abe8bf2de1191ce659f997869434510a18d32",
+ "deployTx": "0x14d89f6ce6e69750cfae0de39951edd4074b49a5607c02778daf287857cbb12f",
+ "deployer": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+ "freshWallet": "0x7e3a54FcCb211F9e1D7B393bDe14Ea0E93474158",
+ "fundTx": "0xc376a16d73b7a213bea3e3e6638a7384275d886e5c3714397e5a078ef3770c2e",
+ "approveTx": "0xf6158be26b89747109dc8251103c281e4d93f3073428a30fdb43937a446dbebf",
+ "approvedToken": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+ "note": "Created by scripts/risk-run.mjs for the Wallet Risk Checker. The token is deliberately risky (contracts/RiskyToken.sol); the wallet is brand new and holds a few thousandths of test PHRS."
+}
