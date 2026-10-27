@@ -28,6 +28,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 20 | x402 Paywalled API | [demo](https://pharos-agent-kit.vercel.app/#/x402-paywalled-api/try) | [agents/x402-paywalled-api](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-paywalled-api) | [20-x402-paywalled-api.md](20-x402-paywalled-api.md) |
 | 21 | x402 Agent Buyer | [demo](https://pharos-agent-kit.vercel.app/#/x402-agent-buyer/try) | [agents/x402-agent-buyer](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-agent-buyer) | [21-x402-agent-buyer.md](21-x402-agent-buyer.md) |
 | 22 | On-Chain Alert Bot | [demo](https://pharos-agent-kit.vercel.app/#/on-chain-alert-bot/try) | [agents/on-chain-alert-bot](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/on-chain-alert-bot) | [22-on-chain-alert-bot.md](22-on-chain-alert-bot.md) |
+| 23 | Whale-Watching Agent | [demo](https://pharos-agent-kit.vercel.app/#/whale-watching-agent/try) | [agents/whale-watching-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/whale-watching-agent) | [23-whale-watching-agent.md](23-whale-watching-agent.md) |
 
 ## Tests of the shared platform
 

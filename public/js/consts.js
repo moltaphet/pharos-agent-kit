@@ -28,6 +28,7 @@ export const TASK_FOLDERS = {
   'x402-paywalled-api': 'agents/x402-paywalled-api',
   'x402-agent-buyer': 'agents/x402-agent-buyer',
   'on-chain-alert-bot': 'agents/on-chain-alert-bot',
+  'whale-watching-agent': 'agents/whale-watching-agent',
 };
 export const folderOf = (slug) => TASK_FOLDERS[slug] ?? null;
 export const folderUrl = (slug) => (TASK_FOLDERS[slug] ? `${REPO}/tree/main/${TASK_FOLDERS[slug]}` : null);

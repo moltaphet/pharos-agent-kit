@@ -1,0 +1,43 @@
+{
+  "watch": [
+    {
+      "address": "0x912c9ade24d44d8922f0866d8dcb079f1363f647",
+      "label": "Contract A (busiest, USDC + WPROS)"
+    },
+    {
+      "address": "0x1f3546a29eec2102c8d52e21a45114124014c85c",
+      "label": "Wallet B (busiest ordinary wallet)"
+    },
+    {
+      "address": "0x14f06fe99a1264825c99fb1c8e05a90036e89d0a",
+      "label": "Contract C (WPROS)"
+    },
+    {
+      "address": "0x3fa4fbe561f6d5996ca69b4fb82e61a01d3ae558",
+      "label": "Contract D"
+    },
+    {
+      "address": "0x768b959191ce5876cabbbc014a08d72615bdde54",
+      "label": "Contract E (USDC)"
+    },
+    {
+      "address": "0x936564245b69f5a293b42cbd752e0ee3bb68b470",
+      "label": "Contract F (USDC + WPROS)"
+    },
+    {
+      "address": "0x422615e302eb064a440f5be03400e03b6655abb6",
+      "label": "Contract G"
+    },
+    {
+      "address": "0x475a6042d59c49ccf30a43d0713c3a99898a8b46",
+      "label": "Contract H (largest USDC volume)"
+    }
+  ],
+  "thresholds": {
+    "USDC": "100",
+    "WPROS": "100",
+    "PROS": "100"
+  },
+  "usdThreshold": "100",
+  "labels": {}
+}

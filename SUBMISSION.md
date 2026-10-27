@@ -328,6 +328,20 @@ Requirements it was built against (the Arena's own list):
 3. Each alert includes what happened, the value, and a tx or explorer link.
 4. No repeat spam for the same event.
 
+## 23. Whale-Watching Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/whale-watching-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/whale-watching-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/whale-watching-agent
+- **What the proof shows:** An agent that follows a watchlist on Pharos mainnet and reports every token move above a per-token or dollar threshold, explained (what, how much, to whom, why it matters), plus new positions, exits and balance changes, and a summary across all addresses. The recorded run watches eight addresses over 2,000 real blocks: 205 significant moves at default thresholds, 3 at stricter ones, the biggest re-read from the chain.
+
+Requirements it was built against (the Arena's own list):
+
+1. Tracks at least 5 configurable addresses.
+2. A configurable "significant" threshold per token or in value terms.
+3. Each report explains the move: what moved, how much, and where to (labelled where known).
+4. Produces a summary view of recent activity across all watched addresses.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.
