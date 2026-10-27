@@ -69,6 +69,21 @@ test('a price alert fires on the crossing, not on every sample, and again after 
   assert.deepEqual(events.map((e) => e.key), ['price:p:200', 'price:p:400']);
 });
 
+test('a reading counts only when two reads agree on the round: a lagging node cannot change an alert’s identity', async () => {
+  const price = validateConditions([{ id: 'p', type: 'price', feed: 'PROS/USD', op: 'above', threshold: '0.60' }]);
+  let n = 0;
+  // one read in three comes from a node that is a round behind
+  const feed = () => (n++ % 3 === 0 ? { answer: 7n * 10n ** 17n, updatedAt: 150 } : { answer: 7n * 10n ** 17n, updatedAt: 200 });
+  const a = await scanRange({ rpc: chainWith({ feed }), conditions: price, from: 0, to: 300, priceStep: 100 });
+  n = 1;
+  const b = await scanRange({ rpc: chainWith({ feed }), conditions: price, from: 0, to: 300, priceStep: 100 });
+  assert.deepEqual(a.map((e) => e.key), ['price:p:200']);
+  assert.deepEqual(a.map((e) => e.key), b.map((e) => e.key), 'the same window gives the same alert whichever node answers first');
+  let m = 0;
+  const never = await scanRange({ rpc: chainWith({ feed: () => ({ answer: 7n * 10n ** 17n, updatedAt: 1000 + m++ }) }), conditions: price, from: 0, to: 300, priceStep: 100 });
+  assert.deepEqual(never, [], 'when no two reads ever agree the sample is skipped, not guessed');
+});
+
 test('a stale reading from a node with old state does not create an alert', async () => {
   const price = validateConditions([{ id: 'p', type: 'price', feed: 'PROS/USD', op: 'above', threshold: '0.60' }]);
   let bad = 0;
