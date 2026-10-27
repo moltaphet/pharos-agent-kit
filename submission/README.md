@@ -33,6 +33,7 @@ Each task has its own folder in the repository, with a README that maps every Ar
 | 25 | Wallet Risk Checker | [demo](https://pharos-agent-kit.vercel.app/#/wallet-risk-checker/try) | [agents/wallet-risk-checker](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/wallet-risk-checker) | [25-wallet-risk-checker.md](25-wallet-risk-checker.md) |
 | 26 | Audit-Log Agent | [demo](https://pharos-agent-kit.vercel.app/#/audit-log-agent/try) | [agents/audit-log-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/audit-log-agent) | [26-audit-log-agent.md](26-audit-log-agent.md) |
 | 27 | dApp Support Agent | [demo](https://pharos-agent-kit.vercel.app/#/dapp-support-agent/try) | [agents/dapp-support-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/dapp-support-agent) | [27-dapp-support-agent.md](27-dapp-support-agent.md) |
+| 28 | Weekly Digest Agent | [demo](https://pharos-agent-kit.vercel.app/#/weekly-digest-agent/try) | [agents/weekly-digest-agent](https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/weekly-digest-agent) | [28-weekly-digest-agent.md](28-weekly-digest-agent.md) |
 
 ## Tests of the shared platform
 

@@ -73,6 +73,8 @@ export const TASK_MAP = [
     tests: ['auditlog.test.js'] },
   { n: 27, slug: 'dapp-support-agent', folder: TASK_FOLDERS['dapp-support-agent'], entries: ['lib/support.js', 'lib/tasks/dapp-support-agent.js', 'scripts/support-run.mjs'], data: ['contracts/FailLab.sol', 'config/support-demo.json', 'reports/support-run.json'], page: ['public/js/tasks/dapp-support-agent.js'],
     tests: ['support.test.js'] },
+  { n: 28, slug: 'weekly-digest-agent', folder: TASK_FOLDERS['weekly-digest-agent'], entries: ['lib/digest.js', 'lib/digest-delivery.js', 'lib/tasks/weekly-digest-agent.js', 'scripts/digest-run.mjs'], data: ['reports/digest-run.json', 'public/digests/latest.html', 'public/digests/latest.md'], page: ['public/js/tasks/weekly-digest-agent.js'],
+    tests: ['digest.test.js'] },
 ];
 
 // Tests of the platform every task stands on, not of one task.

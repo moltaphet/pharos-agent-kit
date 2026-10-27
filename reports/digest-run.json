@@ -1,0 +1,338 @@
+{
+ "recordedAt": "2026-10-27T10:51:56.608Z",
+ "network": "Pharos mainnet (1672), read-only; delivery over real HTTP to receivers on 127.0.0.1 started by this script",
+ "digest": {
+  "subject": "Pharos DeFi",
+  "depth": "full",
+  "generatedAt": "2026-10-27T10:51:56.581Z",
+  "days": 7,
+  "periods": {
+   "days": 7,
+   "previous": {
+    "fromBlock": 20132562,
+    "toBlock": 20740445,
+    "fromTime": 1791888660,
+    "toTime": 1792493460
+   },
+   "current": {
+    "fromBlock": 20740446,
+    "toBlock": 21396761,
+    "fromTime": 1792493460,
+    "toTime": 1793098260
+   }
+  },
+  "chain": "Pharos mainnet (1672)",
+  "samples": {
+   "current": 29,
+   "previous": 8
+  },
+  "metrics": [
+   {
+    "id": "price",
+    "label": "PROS price (USD)",
+    "now": 0.60168836,
+    "before": 0.6216596024613661,
+    "text": "$0.6017",
+    "beforeText": "$0.6217",
+    "change": -0.0321256880490432,
+    "note": "range this period $0.5906 to $0.6810",
+    "flow": false
+   },
+   {
+    "id": "usdc",
+    "label": "USDC supply",
+    "now": 13110029.998468,
+    "before": 43838798.980565,
+    "text": "$13,110,030",
+    "beforeText": "$43,838,799",
+    "change": -0.70094915227308,
+    "note": null,
+    "flow": false
+   },
+   {
+    "id": "market-supply",
+    "label": "Morpho syzUSD/USDC: supplied",
+    "now": 4054797.761267,
+    "before": 3421624.993947,
+    "text": "$4,054,798",
+    "beforeText": "$3,421,625",
+    "change": 0.18505031043440168,
+    "note": null,
+    "flow": false
+   },
+   {
+    "id": "market-borrow",
+    "label": "Morpho syzUSD/USDC: borrowed",
+    "now": 3649824.438814,
+    "before": 3087670.926996,
+    "text": "$3,649,824",
+    "beforeText": "$3,087,671",
+    "change": 0.18206393268887633,
+    "note": null,
+    "flow": false
+   },
+   {
+    "id": "utilization",
+    "label": "Morpho syzUSD/USDC: utilisation",
+    "now": 0.9001249023264583,
+    "before": 0.9023989865804175,
+    "text": "90.0%",
+    "beforeText": "90.2%",
+    "change": -0.002520043005119883,
+    "note": "borrowed as a share of supplied",
+    "flow": false
+   },
+   {
+    "id": "vault-tvl",
+    "label": "Value locked in the four USDC vaults",
+    "now": 107194228.495347,
+    "before": 78363531.597854,
+    "text": "$107,194,228",
+    "beforeText": "$78,363,532",
+    "change": 0.36790961700713504,
+    "note": null,
+    "flow": false
+   },
+   {
+    "id": "best-vault",
+    "label": "Best vault return this period (R25 VRPC Semi-yearly)",
+    "now": 0.004356715321400362,
+    "before": 0.002175510134346359,
+    "text": "0.436%",
+    "beforeText": "0.218%",
+    "change": 1.0026178010470885,
+    "note": "about 22.7% a year if it continued",
+    "flow": false
+   },
+   {
+    "id": "blocks",
+    "label": "Blocks produced",
+    "now": 656316,
+    "before": 607884,
+    "text": "656,316",
+    "beforeText": "607,884",
+    "change": 0.07967309552480407,
+    "note": null,
+    "flow": true
+   },
+   {
+    "id": "txs",
+    "label": "Transactions in a typical block (median of sampled blocks)",
+    "now": 0,
+    "before": 0,
+    "text": "0",
+    "beforeText": "0",
+    "change": null,
+    "note": "median of 29 sampled blocks; the busiest held 3",
+    "flow": false
+   },
+   {
+    "id": "ev-supply",
+    "label": "Morpho syzUSD/USDC: supply volume",
+    "now": 739886.0566739999,
+    "before": 4945.872246,
+    "text": "$739,886",
+    "beforeText": "$4,946",
+    "change": 148.596677769505,
+    "note": "8 supply events (4 the period before)",
+    "flow": true
+   },
+   {
+    "id": "ev-borrow",
+    "label": "Morpho syzUSD/USDC: borrow volume",
+    "now": 634808.4246929999,
+    "before": 1600,
+    "text": "$634,808",
+    "beforeText": "$1,600",
+    "change": 395.755265433125,
+    "note": "8 borrow events (1 the period before)",
+    "flow": true
+   },
+   {
+    "id": "ev-repay",
+    "label": "Morpho syzUSD/USDC: repay volume",
+    "now": 76976.48000000001,
+    "before": 0,
+    "text": "$76,976",
+    "beforeText": "$0",
+    "change": null,
+    "note": "2 repay events (0 the period before)",
+    "flow": true
+   },
+   {
+    "id": "ev-withdraw",
+    "label": "Morpho syzUSD/USDC: withdraw volume",
+    "now": 111034.85647900002,
+    "before": 1.057928,
+    "text": "$111,035",
+    "beforeText": "$1.06",
+    "change": 104954.02196652327,
+    "note": "5 withdraw events (2 the period before)",
+    "flow": true
+   },
+   {
+    "id": "ev-liq",
+    "label": "Morpho syzUSD/USDC: liquidations",
+    "now": 0,
+    "before": 0,
+    "text": "0",
+    "beforeText": "0",
+    "change": null,
+    "note": null,
+    "flow": true
+   }
+  ],
+  "notable": [
+   {
+    "score": 27.153164406363743,
+    "kind": "vault flows",
+    "text": "R25 VRPC Weekly gained $1,040,766 of deposits (+90.5%), to $2,190,650.",
+    "block": 21396761
+   },
+   {
+    "score": 21.0284745681924,
+    "kind": "USDC supply",
+    "text": "The USDC on Pharos shrank +70.1% to $13,110,030.",
+    "block": 21396761
+   },
+   {
+    "score": 6.254689257812776,
+    "event": true,
+    "kind": "largest supply",
+    "text": "The largest supply in the Morpho syzUSD/USDC market was $253,615.",
+    "link": "https://www.pharosscan.xyz/tx/0xdad1b066adf46bdd08333b7511f6dcff7060fa5e5a085b7cb40692bbb21edd6c",
+    "block": 20936875
+   }
+  ],
+  "vaults": [
+   {
+    "name": "R25 VRPC Weekly",
+    "address": "0x1c2bc8b553d9a7e61f7531a3a4bf2162f4569268",
+    "tvl": 2190650.156592,
+    "tvlBefore": 1149883.919471,
+    "ret": 0.0009358502952128145,
+    "retBefore": 0.0009367269313882431,
+    "apr": 0.04879790825038247
+   },
+   {
+    "name": "R25 VRPC Quarterly",
+    "address": "0x94f7ebc6ae0819a4b4e231ae6ddaaf9bfd2a1a86",
+    "tvl": 83263729.492311,
+    "tvlBefore": 55538747.315975,
+    "ret": 0.0023467068977194305,
+    "retBefore": 0.0023465569532659103,
+    "apr": 0.12236400252394174
+   },
+   {
+    "name": "R25 VRPC Semi-yearly",
+    "address": "0xee26bb0989691735c997dfdc49a4a607f75e190b",
+    "tvl": 10581354.204629,
+    "tvlBefore": 10558381.379298,
+    "ret": 0.004356715321400362,
+    "retBefore": 0.002175510134346359,
+    "apr": 0.22717158461587603
+   },
+   {
+    "name": "RockawayX USDC (Morpho Vault V2)",
+    "address": "0x047cd0a91e9b92ed979189a6c8a120bf280f02e5",
+    "tvl": 11158494.641815,
+    "tvlBefore": 11116518.98311,
+    "ret": 0.000896934035120589,
+    "retBefore": 0.0007813299906458404,
+    "apr": 0.04676870325985929
+   }
+  ],
+  "events": {
+   "current": 23,
+   "previous": 7
+  },
+  "headline": "Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC",
+  "text": "📰 Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC\n\nTop 3 this period:\n1. R25 VRPC Weekly gained $1,040,766 of deposits (+90.5%), to $2,190,650.\n2. The USDC on Pharos shrank +70.1% to $13,110,030.\n3. The largest supply in the Morpho syzUSD/USDC market was $253,615. https://www.pharosscan.xyz/tx/0xdad1b066adf46bdd08333b7511f6dcff7060fa5e5a085b7cb40692bbb21edd6c\n\nKey numbers (against the period before):\n• PROS price (USD): $0.6017 (-3.2%; was $0.6217)\n• USDC supply: $13,110,030 (-70.1%; was $43,838,799)\n• Morpho syzUSD/USDC: supplied: $4,054,798 (+18.5%; was $3,421,625)\n• Morpho syzUSD/USDC: utilisation: 90.0% (-0.25%; was 90.2%)\n• Value locked in the four USDC vaults: $107,194,228 (+36.8%; was $78,363,532)\n• Best vault return this period (R25 VRPC Semi-yearly): 0.436% (+100.3%; was 0.218%)\n• Morpho syzUSD/USDC: liquidations: 0 (was 0)",
+  "markdown": "# Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC\n\n**Network:** Pharos mainnet (1672)  \n**This period:** 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC (blocks 20,740,446–21,396,761)  \n**Compared with:** 2026-10-13 10:51 UTC to 2026-10-20 10:51 UTC  \n**Generated:** 2026-10-27T10:51:56.581Z\n\n## The three things that stood out\n\n1. R25 VRPC Weekly gained $1,040,766 of deposits (+90.5%), to $2,190,650.\n2. The USDC on Pharos shrank +70.1% to $13,110,030.\n3. The largest supply in the Morpho syzUSD/USDC market was $253,615. [Transaction](https://www.pharosscan.xyz/tx/0xdad1b066adf46bdd08333b7511f6dcff7060fa5e5a085b7cb40692bbb21edd6c)\n\n## Key numbers\n\n| Metric | This period | Previous period | Change |\n|---|---:|---:|---:|\n| PROS price (USD) <br><small>range this period $0.5906 to $0.6810</small> | $0.6017 | $0.6217 | -3.2% |\n| USDC supply | $13,110,030 | $43,838,799 | -70.1% |\n| Morpho syzUSD/USDC: supplied | $4,054,798 | $3,421,625 | +18.5% |\n| Morpho syzUSD/USDC: borrowed | $3,649,824 | $3,087,671 | +18.2% |\n| Morpho syzUSD/USDC: utilisation <br><small>borrowed as a share of supplied</small> | 90.0% | 90.2% | -0.25% |\n| Value locked in the four USDC vaults | $107,194,228 | $78,363,532 | +36.8% |\n| Best vault return this period (R25 VRPC Semi-yearly) <br><small>about 22.7% a year if it continued</small> | 0.436% | 0.218% | +100.3% |\n| Blocks produced | 656,316 | 607,884 | +8.0% |\n| Transactions in a typical block (median of sampled blocks) <br><small>median of 29 sampled blocks; the busiest held 3</small> | 0 | 0 | — |\n| Morpho syzUSD/USDC: supply volume <br><small>8 supply events (4 the period before)</small> | $739,886 | $4,946 | ×150 |\n| Morpho syzUSD/USDC: borrow volume <br><small>8 borrow events (1 the period before)</small> | $634,808 | $1,600 | ×397 |\n| Morpho syzUSD/USDC: repay volume <br><small>2 repay events (0 the period before)</small> | $76,976 | $0 | — |\n| Morpho syzUSD/USDC: withdraw volume <br><small>5 withdraw events (2 the period before)</small> | $111,035 | $1.06 | ×104,955 |\n| Morpho syzUSD/USDC: liquidations | 0 | 0 | — |\n\n## The USDC vaults\n\n| Vault | Value locked | Return this period | Return previous period |\n|---|---:|---:|---:|\n| R25 VRPC Weekly | $2,190,650 | 0.094% | 0.094% |\n| R25 VRPC Quarterly | $83,263,729 | 0.235% | 0.235% |\n| R25 VRPC Semi-yearly | $10,581,354 | 0.436% | 0.218% |\n| RockawayX USDC (Morpho Vault V2) | $11,158,495 | 0.090% | 0.078% |\n\n_Levels (price, supply, value locked) are read at the end of each period; flows (blocks, transactions, volumes) are totals over it. Read from the chain at 37 sampled blocks and from every Morpho Blue event log of both periods._\n"
+ },
+ "delivery": {
+  "first": {
+   "key": "digest:21396761",
+   "delivered": [
+    {
+     "channel": "discord",
+     "status": 204
+    },
+    {
+     "channel": "ntfy",
+     "status": 200
+    },
+    {
+     "channel": "webhook",
+     "status": 200
+    }
+   ],
+   "skipped": [],
+   "failed": []
+  },
+  "second": {
+   "key": "digest:21396761",
+   "delivered": [],
+   "skipped": [
+    {
+     "channel": "discord",
+     "sentAt": "2026-10-27T10:51:56.603Z"
+    },
+    {
+     "channel": "ntfy",
+     "sentAt": "2026-10-27T10:51:56.606Z"
+    },
+    {
+     "channel": "webhook",
+     "sentAt": "2026-10-27T10:51:56.607Z"
+    }
+   ],
+   "failed": []
+  },
+  "received": [
+   {
+    "channel": "discord",
+    "method": "POST",
+    "path": "/discord/webhook",
+    "contentType": "application/json",
+    "title": null,
+    "bytes": 994,
+    "body": "{\"content\":\"📰 Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC\\n\\nTop 3 this period:\\n1. R25 VRPC Weekly gained $1,040,766 of deposits (+90.5%), to $2,190,650.\\n2. The USDC on Pharos shrank +70.1% to $13,110,030.\\n3. The largest supply in the Morpho syzUSD/USDC market was $253,615. https://www.pharosscan.xyz/tx/0xdad1b066adf46bdd08333b7511f6dcff7060fa5e5a085b7cb40692bbb21edd6c\\n\\nKey numbers (against the period before):\\n• PROS price (USD): $0.6017 (-3.2%; was $0.6217)\\n• USDC supply: $13,110,030 (-70.1%; was $43,838,799)\\n• Morpho syzUSD/USDC: supplied: $4,054,798 (+18.5%; was $3,421,625)\\n• Morpho syzUSD/USDC: utilisation: 90.0% (-0.25%; was 90.2%)\\n• Value locked in the four USDC vaults: $107,194,228 (+36.8%; was $78,363,532)\\n• Best vault return this period (R25 VRPC Semi-yearly): 0.436% (+100.3%; was 0.218%)\\n• Morpho syzUSD/USDC: liquidations: 0 (was 0)\\n\\nFull report: https://pharos-agent-kit.vercel.app/digests/latest.html\",\"allowed_mentions\":{\"parse\":[]}}"
+   },
+   {
+    "channel": "ntfy",
+    "method": "POST",
+    "path": "/ntfy/pharos-digest",
+    "contentType": "text/plain;charset=UTF-8",
+    "title": "Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC",
+    "bytes": 932,
+    "body": "📰 Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC\n\nTop 3 this period:\n1. R25 VRPC Weekly gained $1,040,766 of deposits (+90.5%), to $2,190,650.\n2. The USDC on Pharos shrank +70.1% to $13,110,030.\n3. The largest supply in the Morpho syzUSD/USDC market was $253,615. https://www.pharosscan.xyz/tx/0xdad1b066adf46bdd08333b7511f6dcff7060fa5e5a085b7cb40692bbb21edd6c\n\nKey numbers (against the period before):\n• PROS price (USD): $0.6017 (-3.2%; was $0.6217)\n• USDC supply: $13,110,030 (-70.1%; was $43,838,799)\n• Morpho syzUSD/USDC: supplied: $4,054,798 (+18.5%; was $3,421,625)\n• Morpho syzUSD/USDC: utilisation: 90.0% (-0.25%; was 90.2%)\n• Value locked in the four USDC vaults: $107,194,228 (+36.8%; was $78,363,532)\n• Best vault return this period (R25 VRPC Semi-yearly): 0.436% (+100.3%; was 0.218%)\n• Morpho syzUSD/USDC: liquidations: 0 (was 0)\n\nFull report: https://pharos-agent-kit.vercel.app/digests/latest.html"
+   },
+   {
+    "channel": "webhook",
+    "method": "POST",
+    "path": "/webhook",
+    "contentType": "application/json",
+    "title": null,
+    "bytes": 1442,
+    "body": "{\"title\":\"Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC\",\"what\":\"Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC\",\"value\":\"R25 VRPC Weekly gained $1,040,766 of deposits (+90.5%), to $2,190,650. | The USDC on Pharos shrank +70.1% to $13,110,030. | The largest supply in the Morpho syzUSD/USDC market was $253,615.\",\"block\":21396761,\"link\":\"https://pharos-agent-kit.vercel.app/digests/latest.html\",\"key\":\"digest:21396761\",\"condition\":\"weekly-digest\",\"text\":\"📰 Pharos DeFi digest, 2026-10-20 10:51 UTC to 2026-10-27 10:51 UTC\\n\\nTop 3 this period:\\n1. R25 VRPC Weekly gained $1,040,766 of deposits (+90.5%), to $2,190,650.\\n2. The USDC on Pharos shrank +70.1% to $13,110,030.\\n3. The largest supply in the Morpho syzUSD/USDC market was $253,615. https://www.pharosscan.xyz/tx/0xdad1b066adf46bdd08333b7511f6dcff7060fa5e5a085b7cb40692bbb21edd6c\\n\\nKey numbers (against the period before):\\n• PROS price (USD): $0.6017 (-3.2%; was $0.6217)\\n• USDC supply: $13,110,030 (-70.1%; was $43,838,799)\\n• Morpho syzUSD/USDC: supplied: $4,054,798 (+18.5%; was $3,421,625)\\n• Morpho syzUSD/USDC: utilisation: 90.0% (-0.25%; was 90.2%)\\n• Value locked in the four USDC vaults: $107,194,228 (+36.8%; was $78,363,532)\\n• Best vault return this period (R25 VRPC Semi-yearly): 0.436% (+100.3%; was 0.218%)\\n• Morpho syzUSD/USDC: liquidations: 0 (was 0)\\n\\nFull report: https://pharos-agent-kit.vercel.app/digests/latest.html\"}"
+   }
+  ]
+ },
+ "published": {
+  "page": "/digests/latest.html",
+  "markdown": "/digests/latest.md"
+ },
+ "schedule": {
+  "cron": "0 8 * * 1",
+  "path": "/api/run?slug=weekly-digest-agent&cron=1",
+  "cli": "node agents/weekly-digest-agent/pharos-digest.js --every 7 --state digest-state.json"
+ },
+ "summary": {
+  "metrics": 14,
+  "notable": 3,
+  "deliveredFirst": 3,
+  "deliveredSecond": 0,
+  "skippedSecond": 3
+ }
+}

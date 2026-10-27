@@ -398,6 +398,20 @@ Requirements it was built against (the Arena's own list):
 3. Explains it without jargon and suggests a fix.
 4. Demonstrated on at least 3 different failure types.
 
+## 28. Weekly Digest Agent
+
+- **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/weekly-digest-agent/try
+- **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/weekly-digest-agent
+- **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/weekly-digest-agent
+- **What the proof shows:** An agent that builds a digest of the last N days (7 by default) of Pharos mainnet against the N before: PROS price, USDC supply, the Morpho syzUSD/USDC market, four USDC vaults, network activity and every Morpho event log, picks the three notable things, and delivers it to Discord, Telegram, ntfy or a webhook once per digest and channel, and as a published page. It runs on a schedule (a Vercel cron on Mondays, or --every on the CLI). Recorded for the real last week with delivery over real HTTP to local receivers; sending to Discord or Telegram needs the owner’s webhook or token.
+
+Requirements it was built against (the Arena's own list):
+
+1. Runs on a schedule (weekly by default, configurable).
+2. Covers key metrics with a comparison to the previous period.
+3. Highlights the top 3 notable events of the period.
+4. Delivers to a real channel (email, Telegram, Discord) or as a published page.
+
 ---
 
 Not included: the optional walkthrough video. Record one per task if you want it.

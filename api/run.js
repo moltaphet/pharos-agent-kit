@@ -15,6 +15,6 @@ export default function route(req, res) {
       return skill;
     }
     need(slug && Object.hasOwn(TASKS, slug), `unknown task "${slug ?? ''}"`);
-    return TASKS[slug]({ q, body: req.body ?? null, chain: chainClient(), docs: docsClient(), ip });
+    return TASKS[slug]({ q, body: req.body ?? null, chain: chainClient(), docs: docsClient(), ip, headers: req.headers ?? {} });
   })(req, res);
 }

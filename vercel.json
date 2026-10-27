@@ -16,5 +16,11 @@
       "source": "/x402-facilitator/:path*",
       "destination": "/api/x402?scope=facilitator&path=:path*"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/run?slug=weekly-digest-agent&cron=1",
+      "schedule": "0 8 * * 1"
+    }
   ]
 }
