@@ -1,6 +1,6 @@
 # pharos-agent-kit
 
-Twenty-one working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
+Thirty working builds for the [Pharos Agent Arena](https://pharos-agent-arena.vercel.app/#tasks)
 **Season of AI** tasks, plus a site where each one can be tested and inspected:
 **https://pharos-agent-kit.vercel.app**
 
@@ -30,7 +30,16 @@ Per-task proof links, repo links and the requirements each task was built agains
 | 18 | Recurring Payment Agent | `agents/recurring-payment-agent/` | Pharos mainnet; the whole lifecycle on a mainnet fork | prepares each due payment unsigned; paid, pending and failed come from the chain; never twice |
 | 19 | Invoice-to-Payment Agent | `agents/invoice-to-payment-agent/` | Pharos mainnet through Chain MCP | flags instead of guessing; prepares an unsigned payment carrying the invoice reference |
 | 20 | x402 Paywalled API | `agents/x402-paywalled-api/` | Pharos Atlantic testnet (eip155:688689), real HTTP and real settlements | two paid routes and one free, its own facilitator and client; the settlements are real Atlantic transactions |
-| 21 | x402 Agent Buyer | `agents/x402-agent-buyer/` | Pharos Atlantic testnet (eip155:688689), HTTP x402 offers | evaluates two endpoints against value, per-call cap and total budget; retries the exact same authorization and stops on uncertain settlement |
+| 21 | x402 Agent Buyer | `agents/x402-agent-buyer/` | Pharos Atlantic testnet (eip155:688689), real HTTP and real settlements against task 20's server | buys from a plan under a per-call cap and a total budget; three recorded jobs (completed, stopped by the budget, skipped as not worth it) with four real settlements, each read back from the chain; the same authorization is retried, never a new one |
+| 22 | On-Chain Alert Bot | `agents/on-chain-alert-bot/` | Pharos mainnet (price feed, USDC/WPROS transfers, contract events and calls) | read-only; delivers to Discord, Telegram, ntfy or a webhook, once per event and channel, and loses nothing when a channel is down; delivery recorded over real HTTP to local receivers |
+| 23 | Whale-Watching Agent | `agents/whale-watching-agent/` | Pharos mainnet | read-only: a watchlist, per-token and dollar thresholds, each move explained, position changes and a summary across all addresses |
+| 24 | Gas Fee Optimizer | `agents/gas-fee-optimizer/` | Pharos mainnet and Atlantic testnet gas history; four real transactions on Atlantic | holds a transaction until gas is favourable or its deadline and always submits by it; prices it with EIP-1559 fields (1 gwei paid where the quoted price would have cost 10); mainnet is only read and prepared |
+| 25 | Wallet Risk Checker | `agents/wallet-risk-checker/` | Pharos mainnet; a deliberately risky token and a fresh wallet created on Atlantic testnet | read-only: eight signals, low, medium or high with every flag in plain language; recorded for two clean, one in-between and two risky examples |
+| 26 | Audit-Log Agent | `agents/audit-log-agent/` | Pharos mainnet, three real wallets over one day | read-only: transfers in and out, swaps, approvals and contract interactions with totals and notable transactions; exported as Markdown, CSV and PDF |
+| 27 | dApp Support Agent | `agents/dapp-support-agent/` | Chain MCP on mainnet; 13 real failed transactions (4 mainnet, 9 made to fail on purpose on Atlantic) | read-only: replays the failed call, names the cause (11 kinds) in plain words with the numbers, and says what to do |
+| 28 | Weekly Digest Agent | `agents/weekly-digest-agent/` | Pharos mainnet, a week against the week before | read-only: 14 key numbers with the comparison, three notable events, delivered once per channel and published as a page; a Vercel cron runs it on Mondays |
+| 29 | Doc-Grounded Builder Agent | `agents/doc-grounded-builder-agent/` | Developer Docs MCP + Chain MCP (mainnet); a transfer and a deployment signed on Atlantic testnet | plans from the docs with cited sources, acts through Chain MCP, verifies on chain; funds are only prepared for signature; refuses what the docs do not cover |
+| 30 | Multi-Protocol Aggregator | `agents/multi-protocol-aggregator/` | Pharos mainnet: R25, Morpho Vault V2 and Morpho Blue | read-only: one interface over five venues of three protocols, each request routed with the reasons, unsigned transactions with a simulation, and an outage of one protocol leaves the others working; architecture write-up in `docs/` |
 
 **Safety.** The skills in `skills/` never take a key: they read, simulate, or prepare unsigned transactions. Nothing in
 this repository sends a transaction to Pharos **mainnet**. Real execution happens on throwaway forks and Atlantic testnet; neither involves real money:
@@ -38,10 +47,10 @@ this repository sends a transaction to Pharos **mainnet**. Real execution happen
 1. **Throwaway forks of mainnet** (tasks 6 and 7): anvil forks Pharos, the contracts are the live ones, the funds are fake,
    and the transactions exist only on that fork. On the site every click runs one inside a throwaway Vercel Sandbox (see
    below); the CLIs run it on your own machine (needs Foundry). There is no simulator.
-2. **Pharos Atlantic testnet** (tasks 5, 8, 10, 11 and 21): `scripts/testnet-run.mjs`, `scripts/testnet-guardian.mjs` and `scripts/testnet-gatekeeper.mjs` send real transactions from a throwaway wallet that
+2. **Pharos Atlantic testnet** (tasks 5, 8, 10, 11, 20, 21, 24, 25, 27 and 29): `scripts/testnet-run.mjs`, `scripts/testnet-guardian.mjs` and `scripts/testnet-gatekeeper.mjs` send real transactions from a throwaway wallet that
    only ever holds test tokens. Its key lives in a git-ignored file, is never printed or committed, and the script refuses to
    send unless the chain id is 688689 (so it cannot reach mainnet) and stops past a small gas budget. The key is not used by
-   any skill. Task 21 is an opt-in CLI buyer: it loads a payer key from your environment or an ignored local file, checks a per-call cap and total test-token budget before signing, and never runs as part of the website. The website holds no key at all: it only re-reads recorded transactions from the chain.
+   any skill. Task 21 is an opt-in CLI buyer: it loads a payer key from your environment or an ignored local file and checks a per-call cap and total test-token budget before signing. Tasks 29 and 30 and the wallet and gas agents only read or prepare unsigned transactions. The website holds no key at all: it only re-reads recorded transactions from the chain.
 
 The command-line tools have no dependencies, no API keys and no build step; they need **Node.js 20+**. The web
 hub has one dependency, `@vercel/sandbox`, used only by the Saga Executor's live demo.
@@ -379,13 +388,14 @@ $ echo $?
 ## Layout
 
 ```text
-agents/<task>/        tasks 1-4: one folder each (read-contract-state, event-log-monitor, docs-mcp-onboarding, doc-search-cli) with its CLI
-skills/pharos-<task>/ tasks 5-11: one Skill folder each (SKILL.md, references/, scripts/, examples/, assets/)
+agents/<task>/        tasks 1-4 and 13, 16-30: one folder each with its CLI, examples and README
+skills/pharos-<task>/ tasks 5-12, 14 and 15: one Skill folder each (SKILL.md, references/, scripts/, examples/, assets/)
 submission/           the index and one page per task with the Arena form's fields
 api/read.js  logs.js  docs.js  run.js  health.js         web API routes (Vercel functions)
 public/               the web hub: index.html, css/, js/ (views, panels, run log, content), registry.json
 lib/tasks/            the server-side handler of each task
-scripts/              real-run scripts (testnet, fork), audits, make-submission.mjs, task-map.mjs
+scripts/              real-run scripts (mainnet, testnet, fork), audits, make-submission.mjs, task-map.mjs
+docs/                 the architecture write-up of task 30
 reports/  contracts/  config/    recorded runs, the lab contracts, the sandbox snapshot description
 lib/mcp.js            MCP Streamable-HTTP client (retries, sessions, timeouts)
 lib/chain.js          Chain MCP helpers: pinned eth_call, token reads
@@ -394,6 +404,7 @@ lib/abi.js            selectors, event topics, decoding, unit formatting
 lib/watch.js          log decoding, dedupe, block-range paging, bounded scans
 lib/trace.js          per-request record of every MCP/RPC call (the run log's data)
 lib/rpc.js            direct JSON-RPC to the public RPC, used for cross-checks
+lib/rpc-batch.js      JSON-RPC batches (tasks 26, 28, 30)
 lib/crosscheck.js     replays eth_calls against the RPC and compares the raw bytes
 lib/docs.js           docs answer parsing and the "no good answer" decision
 lib/labels.js         address labels from the Pharos registries
