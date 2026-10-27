@@ -59,7 +59,7 @@ export const TASK_MAP = [
     tests: ['invoice.test.js', 'invoice-task.test.js'] },
   { n: 20, slug: 'x402-paywalled-api', folder: TASK_FOLDERS['x402-paywalled-api'], entries: ['lib/x402.js', 'lib/tasks/x402-paywalled-api.js', 'api/x402.js', 'agents/x402-paywalled-api/server.js', 'agents/x402-paywalled-api/facilitator.js', 'agents/x402-paywalled-api/client.js', 'scripts/x402-setup.mjs', 'scripts/x402-run.mjs'], data: ['reports/x402-run.json', 'reports/x402-token-check.json', 'config/x402.json', 'contracts/TestUSDC.sol'], page: ['public/js/tasks/x402-paywalled-api.js'],
     tests: ['x402.test.js', 'x402-task.test.js', 'x402-audit.test.js'] },
-  { n: 21, slug: 'x402-agent-buyer', folder: TASK_FOLDERS['x402-agent-buyer'], entries: ['lib/x402-buyer.js', 'scripts/x402-buyer-demo.mjs'], data: ['agents/x402-agent-buyer/plan.example.json', 'reports/x402-buyer-demo.json'], page: ['public/js/tasks/x402-agent-buyer.js'],
+  { n: 21, slug: 'x402-agent-buyer', folder: TASK_FOLDERS['x402-agent-buyer'], entries: ['lib/x402-buyer.js', 'lib/tasks/x402-agent-buyer.js', 'scripts/x402-buyer-run.mjs'], data: ['agents/x402-agent-buyer/plan.example.json', 'reports/x402-buyer-run.json'], page: ['public/js/tasks/x402-agent-buyer.js'],
     tests: ['x402-buyer.test.js'] },
 ];
 

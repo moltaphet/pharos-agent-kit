@@ -304,7 +304,7 @@ Requirements it was built against (the Arena's own list):
 - **Proof link (deployed demo):** https://pharos-agent-kit.vercel.app/#/x402-agent-buyer/try
 - **Task page (story, decisions, how to verify):** https://pharos-agent-kit.vercel.app/#/x402-agent-buyer
 - **Repo link (this task’s folder):** https://github.com/moltaphet/pharos-agent-kit/tree/main/agents/x402-agent-buyer
-- **What the proof shows:** A plan-driven x402 buyer evaluates two endpoint prices against explicit value estimates, a per-call cap and a cumulative budget. The offline fixture demonstrates both a completed job and a budget stop; live purchases require the user’s funded Atlantic testnet key and endpoints.
+- **What the proof shows:** A plan-driven x402 buyer reads each endpoint’s price, compares it with an explicit value estimate, a per-call cap and a cumulative budget, and signs only offers that pass. Run for real on Pharos Atlantic against the task-20 server: 4 real settlements across three jobs (completed, stopped by the budget, skipped as not worth it), each read back from the chain, and the payer’s balance moved by exactly the ledger total.
 
 Requirements it was built against (the Arena's own list):
 

@@ -174,11 +174,11 @@ test('invalid budget, cap, task URLs, and duplicate task IDs are rejected', asyn
   ]) await assert.rejects(runBuyerJob({ ...options, privateKey: 'mock', fetchImpl: async () => assert.fail('invalid plan must not call the network'), signPayment: signer }));
 });
 
-test('task page covers the five Arena requirements and labels its fixtures as offline simulations', () => {
+test('task page covers the five Arena requirements and shows a real recorded run', () => {
   assert.equal(content.evidence.length, 5);
   assert.match(content.evidence[0], /two distinct routes/);
   assert.match(content.evidence[3], /byte-identical/);
-  assert.match(content.run.sample, /OFFLINE BUYER DEMO/);
-  assert.match(content.run.sample, /not explorer transactions/);
+  assert.match(content.run.sample, /real settlement/);
+  assert.doesNotMatch(JSON.stringify(content), /offline|simulated|fixture/i);
   assert.ok(content.files.includes('agents/x402-agent-buyer/pharos-buy.js'));
 });

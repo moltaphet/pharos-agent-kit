@@ -1,0 +1,319 @@
+{
+ "recordedAt": "2026-10-27T06:57:20.281Z",
+ "network": "Pharos Atlantic testnet (688689): real HTTP to the task-20 facilitator and server, real settlement transactions on a test USDC deployed for this demo",
+ "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+ "payer": "0x581A4ffEd2ca1C7A1211dF2273DFf5e2AbA73fb7",
+ "payTo": "0x262927e3f2e3AD7824aa708CdF39106084988B13",
+ "balancesBefore": {
+  "payer": "1960000",
+  "payTo": "40000"
+ },
+ "scenarios": [
+  {
+   "id": "complete",
+   "title": "Job completed within budget",
+   "plan": [
+    {
+     "id": "protocol-summary",
+     "name": "Protocol summary",
+     "value": "5000"
+    },
+    {
+     "id": "market-data",
+     "name": "Market data",
+     "value": "10000"
+    }
+   ],
+   "budget": "15000",
+   "result": {
+    "status": "complete",
+    "mode": "live",
+    "stopReason": null,
+    "network": "eip155:688689",
+    "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+    "budget": "15000",
+    "maxPerCall": "10000",
+    "spent": "15000",
+    "reserved": "0",
+    "remaining": "0",
+    "decisions": [
+     {
+      "id": "protocol-summary",
+      "item": "Protocol summary",
+      "decision": "bought",
+      "detail": "Settlement confirmed in 0xd8464edaeabe080e68117842087a686388a95ce64506d0eeea22c9df06850e55.",
+      "price": "5000"
+     },
+     {
+      "id": "market-data",
+      "item": "Market data",
+      "decision": "bought",
+      "detail": "Settlement confirmed in 0x353b17c16ecd584c1426006526465e53ceb556106de811873aab3484a41265e5.",
+      "price": "10000"
+     }
+    ],
+    "payments": [
+     {
+      "id": "protocol-summary",
+      "item": "Protocol summary",
+      "price": "5000",
+      "transaction": "0xd8464edaeabe080e68117842087a686388a95ce64506d0eeea22c9df06850e55",
+      "explorer": "https://atlantic.pharosscan.xyz/tx/0xd8464edaeabe080e68117842087a686388a95ce64506d0eeea22c9df06850e55",
+      "runningTotal": "5000",
+      "attempts": 1,
+      "status": 200
+     },
+     {
+      "id": "market-data",
+      "item": "Market data",
+      "price": "10000",
+      "transaction": "0x353b17c16ecd584c1426006526465e53ceb556106de811873aab3484a41265e5",
+      "explorer": "https://atlantic.pharosscan.xyz/tx/0x353b17c16ecd584c1426006526465e53ceb556106de811873aab3484a41265e5",
+      "runningTotal": "15000",
+      "attempts": 1,
+      "status": 200
+     }
+    ],
+    "unresolved": [],
+    "results": [
+     {
+      "id": "protocol-summary",
+      "name": "Protocol summary",
+      "status": 200,
+      "paid": true,
+      "body": {
+       "name": "Pharos x402 demo",
+       "network": "Pharos Atlantic Testnet",
+       "chainId": 688689,
+       "timestamp": 1793084210542
+      },
+      "transaction": "0xd8464edaeabe080e68117842087a686388a95ce64506d0eeea22c9df06850e55"
+     },
+     {
+      "id": "market-data",
+      "name": "Market data",
+      "status": 200,
+      "paid": true,
+      "body": {
+       "message": "Hello, paid user!",
+       "timestamp": 1793084215381
+      },
+      "transaction": "0x353b17c16ecd584c1426006526465e53ceb556106de811873aab3484a41265e5"
+     }
+    ]
+   },
+   "chain": [
+    {
+     "item": "Protocol summary",
+     "transaction": "0xd8464edaeabe080e68117842087a686388a95ce64506d0eeea22c9df06850e55",
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0xd8464edaeabe080e68117842087a686388a95ce64506d0eeea22c9df06850e55",
+     "block": 31935413,
+     "status": "success",
+     "from": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+     "to": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+     "value": "5000",
+     "matches": true
+    },
+    {
+     "item": "Market data",
+     "transaction": "0x353b17c16ecd584c1426006526465e53ceb556106de811873aab3484a41265e5",
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x353b17c16ecd584c1426006526465e53ceb556106de811873aab3484a41265e5",
+     "block": 31935419,
+     "status": "success",
+     "from": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+     "to": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+     "value": "10000",
+     "matches": true
+    }
+   ],
+   "tokenMoved": "15000",
+   "ledgerAgreesWithChain": true
+  },
+  {
+   "id": "budget-stop",
+   "title": "Stopped at the budget before buying the second endpoint",
+   "plan": [
+    {
+     "id": "protocol-summary",
+     "name": "Protocol summary",
+     "value": "5000"
+    },
+    {
+     "id": "market-data",
+     "name": "Market data",
+     "value": "10000"
+    }
+   ],
+   "budget": "7000",
+   "result": {
+    "status": "stopped",
+    "mode": "live",
+    "stopReason": "budget",
+    "network": "eip155:688689",
+    "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+    "budget": "7000",
+    "maxPerCall": "10000",
+    "spent": "5000",
+    "reserved": "0",
+    "remaining": "2000",
+    "decisions": [
+     {
+      "id": "protocol-summary",
+      "item": "Protocol summary",
+      "decision": "bought",
+      "detail": "Settlement confirmed in 0x5940da6ea061446718b0f65d77d926a4b30c7e90984e730af39a8d8062ec0e56.",
+      "price": "5000"
+     },
+     {
+      "id": "market-data",
+      "item": "Market data",
+      "decision": "budget",
+      "detail": "Offer is 10000 base units; only 2000 remain.",
+      "price": "10000"
+     }
+    ],
+    "payments": [
+     {
+      "id": "protocol-summary",
+      "item": "Protocol summary",
+      "price": "5000",
+      "transaction": "0x5940da6ea061446718b0f65d77d926a4b30c7e90984e730af39a8d8062ec0e56",
+      "explorer": "https://atlantic.pharosscan.xyz/tx/0x5940da6ea061446718b0f65d77d926a4b30c7e90984e730af39a8d8062ec0e56",
+      "runningTotal": "5000",
+      "attempts": 1,
+      "status": 200
+     }
+    ],
+    "unresolved": [],
+    "results": [
+     {
+      "id": "protocol-summary",
+      "name": "Protocol summary",
+      "status": 200,
+      "paid": true,
+      "body": {
+       "name": "Pharos x402 demo",
+       "network": "Pharos Atlantic Testnet",
+       "chainId": 688689,
+       "timestamp": 1793084226623
+      },
+      "transaction": "0x5940da6ea061446718b0f65d77d926a4b30c7e90984e730af39a8d8062ec0e56"
+     }
+    ]
+   },
+   "chain": [
+    {
+     "item": "Protocol summary",
+     "transaction": "0x5940da6ea061446718b0f65d77d926a4b30c7e90984e730af39a8d8062ec0e56",
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0x5940da6ea061446718b0f65d77d926a4b30c7e90984e730af39a8d8062ec0e56",
+     "block": 31935430,
+     "status": "success",
+     "from": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+     "to": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+     "value": "5000",
+     "matches": true
+    }
+   ],
+   "tokenMoved": "5000",
+   "ledgerAgreesWithChain": true
+  },
+  {
+   "id": "not-worth-it",
+   "title": "Skipped an endpoint whose price is above its estimated value",
+   "plan": [
+    {
+     "id": "protocol-summary",
+     "name": "Protocol summary",
+     "value": "5000"
+    },
+    {
+     "id": "market-data",
+     "name": "Market data",
+     "value": "9000"
+    }
+   ],
+   "budget": "15000",
+   "result": {
+    "status": "complete",
+    "mode": "live",
+    "stopReason": null,
+    "network": "eip155:688689",
+    "asset": "0xa952d7f3dc17da87a71d1e33958139bcd5565eef",
+    "budget": "15000",
+    "maxPerCall": "10000",
+    "spent": "5000",
+    "reserved": "0",
+    "remaining": "10000",
+    "decisions": [
+     {
+      "id": "protocol-summary",
+      "item": "Protocol summary",
+      "decision": "bought",
+      "detail": "Settlement confirmed in 0xaa55ec308e863efb9918138d87f6be705383d622237627ac072b5cd6ead55980.",
+      "price": "5000"
+     },
+     {
+      "id": "market-data",
+      "item": "Market data",
+      "decision": "not-worth-it",
+      "detail": "Estimated value 9000 base units is below the 10000 base-unit price.",
+      "price": "10000"
+     }
+    ],
+    "payments": [
+     {
+      "id": "protocol-summary",
+      "item": "Protocol summary",
+      "price": "5000",
+      "transaction": "0xaa55ec308e863efb9918138d87f6be705383d622237627ac072b5cd6ead55980",
+      "explorer": "https://atlantic.pharosscan.xyz/tx/0xaa55ec308e863efb9918138d87f6be705383d622237627ac072b5cd6ead55980",
+      "runningTotal": "5000",
+      "attempts": 1,
+      "status": 200
+     }
+    ],
+    "unresolved": [],
+    "results": [
+     {
+      "id": "protocol-summary",
+      "name": "Protocol summary",
+      "status": 200,
+      "paid": true,
+      "body": {
+       "name": "Pharos x402 demo",
+       "network": "Pharos Atlantic Testnet",
+       "chainId": 688689,
+       "timestamp": 1793084236980
+      },
+      "transaction": "0xaa55ec308e863efb9918138d87f6be705383d622237627ac072b5cd6ead55980"
+     }
+    ]
+   },
+   "chain": [
+    {
+     "item": "Protocol summary",
+     "transaction": "0xaa55ec308e863efb9918138d87f6be705383d622237627ac072b5cd6ead55980",
+     "explorer": "https://atlantic.pharosscan.xyz/tx/0xaa55ec308e863efb9918138d87f6be705383d622237627ac072b5cd6ead55980",
+     "block": 31935441,
+     "status": "success",
+     "from": "0x581a4ffed2ca1c7a1211df2273dff5e2aba73fb7",
+     "to": "0x262927e3f2e3ad7824aa708cdf39106084988b13",
+     "value": "5000",
+     "matches": true
+    }
+   ],
+   "tokenMoved": "5000",
+   "ledgerAgreesWithChain": true
+  }
+ ],
+ "noKey": {
+  "status": "stopped",
+  "stopReason": "signing-unavailable",
+  "spent": "0"
+ },
+ "summary": {
+  "scenarios": 3,
+  "allAgree": true,
+  "transactions": 4
+ }
+}
