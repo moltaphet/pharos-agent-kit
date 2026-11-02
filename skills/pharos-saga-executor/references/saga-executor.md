@@ -177,11 +177,63 @@ A saga is a list of steps. Each has a transaction, an optional state check (`ver
 
 ---
 
+## Run the vault saga on Atlantic
+
+### Overview
+
+This is the on-chain proof, and it is different from the fork run in exactly one way that matters: its transaction hashes exist on a public explorer. The runner deploys TestUSDC and TestVault on Pharos Atlantic Testnet (chain 688689), mints 1,000 test USDC to the throwaway wallet, then runs the same vault saga twice with the same engine, step order, state checks and compensations as the fork run: a full success (approve → deposit → transfer to a treasury) and a forced failure (approve → deposit → transfer to the zero address, which reverts on chain, then redeem → revoke approval). There are no injected faults in this run. The report is the evidence: `reports/testnet-vault-saga.json`, with the token and vault addresses, both scenarios' state logs, their final checks, and every transaction hash, each openable at `https://atlantic.pharosscan.xyz/tx/<hash>`.
+
+Why test contracts, and why this does not weaken the proof: the mainnet vault the fork uses (RockawayX USDC) does not exist on Atlantic, so there is no mainnet address to reuse. TestVault is a 1:1 deposit/redeem vault with ERC-20 shares, so the amounts a reviewer checks are exact (100 USDC in, 100 shares out, 100 USDC back on redeem), with no share price to dispute. What is being proved is the saga — dependent steps, receipt plus state verification, no retry of a revert, compensation in reverse order — not the vault's yield.
+
+### Command Template
+
+```bash
+node scripts/testnet-vault-saga.mjs [--scenario both|success|failure] [--out reports/testnet-vault-saga.json]
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `--scenario` | string | No (default `both`) | `both` (success then failure), `success` or `failure` alone. |
+| `--out` | path | No (default `reports/testnet-vault-saga.json`) | Where the full run report is written. |
+
+### Prerequisites
+
+- A throwaway Atlantic wallet at `.wallet/atlantic-testnet.json` (git-ignored, test tokens only), funded with a little PHRS from the testnet faucet. The signer refuses any chain but 688689 and stops over a 0.05 PHRS budget.
+- Foundry: `cast` for sending, `forge` for building TestUSDC and TestVault on demand.
+- Never use a real key, and never point this runner at mainnet: the signer and the test contracts both exist to make that impossible by construction, not by care.
+
+### Output Parsing
+
+| Field | Description |
+|-------|-------------|
+| `scenarios[].status` | `completed` (success) or `compensated` (failure, then fully undone). Anything else means the run did not prove what it claims. |
+| `scenarios[].finalCheck.clean` | `true` only if the end state matches the outcome: success leaves the shares with the treasury and the USDC spent; failure leaves shares 0, allowance 0, treasury shares 0, USDC spent 0. |
+| `scenarios[].transactions[].tag` | The step each hash belongs to, in order. Failure must read `approve > deposit > transfer to zero address (forced failure) > redeem > revoke approval`. |
+| `transactions[]` | Every transaction the run sent, including the two deploys and the mint, with the wallet as `from`. |
+
+### Error Handling
+
+| Error Signature | Cause | Suggested Action |
+|----------------|-------|----|
+| `cannot read the Atlantic testnet wallet` | `.wallet/atlantic-testnet.json` is missing | Create a throwaway wallet there and fund it from the faucet; do not reuse a real wallet. |
+| `refusing to send: this is not Pharos Atlantic testnet` | The RPC is not chain 688689 | Stop. Do not override the guard; fix the RPC URL. |
+| `stopping: spent …, over the … budget` | Gas cost exceeded the budget guard | Stop and check the gas price; do not raise the budget without saying why. |
+| `estimate failed … using the … fallback` | A transaction cannot be estimated — expected for the forced failure, which is meant to revert | Nothing to fix, as long as the transaction then reverts on chain and the compensation runs. |
+
+> **Agent Guidelines**:
+> 1. Rehearse on the fork first, then run Atlantic.
+> 2. Never present a fork hash as on-chain proof, and never present the earlier Ledger run (`reports/testnet-saga.json`, credit/debit only) as the vault saga: it proves the engine's retry and undo rules, not approve → deposit → transfer.
+> 3. Check every hash in the report on the explorer before resubmitting.
+
+---
+
 ## Going live
 
 ### Overview
 
-Not shipped in this version, deliberately. Live execution needs a funded wallet that only the user controls, and the hosted Chain MCP server is read-only. The engine takes an `exec` object (`send`, `receipt`), so a live signer can be plugged in by the user.
+Mainnet live execution is not shipped in this version, deliberately. Live execution needs a funded wallet that only the user controls, and the hosted Chain MCP server is read-only. The engine takes an `exec` object (`send`, `receipt`), so a live signer can be plugged in by the user. The Atlantic runner above is the testnet exception to this rule, not a mainnet path: it only ever uses a throwaway testnet wallet, only on chain 688689.
 
 ### Command Template
 
