@@ -1,0 +1,53 @@
+{
+  "chainId": 688689,
+  "rpc": "https://atlantic.dplabs-internal.com",
+  "explorer": "https://atlantic.pharosscan.xyz",
+  "router": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+  "token": {
+    "address": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+    "symbol": "tUSDC",
+    "decimals": 6
+  },
+  "deployment": {
+    "status": "deployed",
+    "note": "Deploy with node scripts/treasury-deploy.mjs --live. The demo token has no monetary value. No contract addresses or proof are fabricated.",
+    "token": {
+      "label": "deploy TreasuryDemoToken",
+      "hash": "0x7c2a7810eca106be5058f430dd4b2bb88f0d85ac4d9e753952ace7a87241d1a0",
+      "blockNumber": 32685521,
+      "status": "success",
+      "gasUsed": 418470,
+      "gasLimit": 666657,
+      "gasPriceGwei": 10,
+      "costWei": "4184700000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": null,
+      "valueWei": "0",
+      "contractAddress": "0x83f0e9a24160e91b670029f6c65f3734bb434503"
+    },
+    "router": {
+      "label": "deploy InvoicePaymentRouter",
+      "hash": "0x10b40cc8fd7d10199eeb569047f04230e0f8ab73a15df92095b917875891dba4",
+      "blockNumber": 32685527,
+      "status": "success",
+      "gasUsed": 317327,
+      "gasLimit": 506409,
+      "gasPriceGwei": 10,
+      "costWei": "3173270000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": null,
+      "valueWei": "0",
+      "contractAddress": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e"
+    },
+    "compiler": "0.8.24",
+    "evmVersion": "paris",
+    "createdAt": "2026-11-12T17:44:54.530Z"
+  },
+  "demo": {
+    "payer": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "recipient": "0x668a4ed309d79ae7a477664a3eb67e4c257aa039",
+    "reference": "DEMO-20261112174455",
+    "amount": "25",
+    "hash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be"
+  }
+}

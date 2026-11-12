@@ -84,6 +84,9 @@ export const TASK_MAP = [
 // Tests of the platform every task stands on, not of one task.
 export const SHARED_TESTS = ['abi.test.js', 'limit.test.js', 'mcp-timeout.test.js', 'md.test.js', 'rpc-chain.test.js', 'server.test.js', 'submission.test.js', 'testnet-report.test.js', 'trace.test.js', 'ui-css.test.js', 'ui-forms.test.js', 'crypto.test.js', 'infra-audit.test.js', 'pages.test.js'];
 
+// Standalone product pages share the deployment but do not use the generated task-page scaffold.
+export const STANDALONE_BUILDS = [{ slug: 'agent-native-dapp', page: 'public/treasury.html', entry: 'api/treasury.js', tests: ['treasury.test.js'] }];
+
 // ---- import closure ----------------------------------------------------------------------------------------------------------
 const IMPORT = /(?:\bfrom\s+|\bimport\s*\(\s*|\bimport\s+)['"](\.{1,2}\/[^'"]+)['"]/g;
 const rel = (p) => normalize(p).replace(/^\.\//, '');

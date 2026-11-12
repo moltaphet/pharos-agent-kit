@@ -7,7 +7,18 @@
       "includeFiles": "{skills,reports,lib,config,contracts,scripts}/**"
     }
   },
+  "redirects": [
+    {
+      "source": "/treasury/",
+      "destination": "/treasury",
+      "permanent": true
+    }
+  ],
   "rewrites": [
+    {
+      "source": "/treasury",
+      "destination": "/treasury.html"
+    },
     {
       "source": "/x402/:path*",
       "destination": "/api/x402?scope=resource&path=:path*"

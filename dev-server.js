@@ -19,6 +19,11 @@ export function createDevServer() {
     };
     try {
       const url = new URL(req.url, 'http://localhost');
+      if (url.pathname === '/treasury/') {
+        res.statusCode = 302;
+        res.setHeader('Location', '/treasury' + url.search);
+        return res.end();
+      }
       // The same two rewrites as vercel.json.
       const x402 = url.pathname.match(/^\/x402(-facilitator)?(\/.*)?$/);
       if (x402) {
@@ -69,7 +74,8 @@ export function createDevServer() {
       try { pathname = decodeURIComponent(url.pathname); }
       catch { return fail(400, 'Invalid URL encoding'); }
       if (pathname.includes('\0')) return fail(400, 'Invalid URL path');
-      const filePath = resolve(publicRoot, '.' + (pathname === '/' ? '/index.html' : pathname));
+      const page = /^\/treasury\/?$/.test(pathname) ? '/treasury.html' : pathname === '/' ? '/index.html' : pathname;
+      const filePath = resolve(publicRoot, '.' + page);
       if (!filePath.startsWith(publicRoot + sep)) return fail(403, 'Forbidden');
       const file = await readFile(filePath);
       res.setHeader('Content-Type', types[extname(filePath)] ?? 'application/octet-stream');
