@@ -9,6 +9,14 @@ const root = fileURLToPath(new URL('.', import.meta.url));
 const publicRoot = join(root, 'public');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml' };
 const MAX_BODY_BYTES = 1024 * 1024;
+// The same headers vercel.json sets on the Treasury page, so a local run shows what production enforces.
+const TREASURY_HEADERS = {
+  "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "no-referrer",
+  "X-Frame-Options": "DENY",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+};
 
 export function createDevServer() {
   return createServer(async (req, res) => {
@@ -78,6 +86,7 @@ export function createDevServer() {
       const filePath = resolve(publicRoot, '.' + page);
       if (!filePath.startsWith(publicRoot + sep)) return fail(403, 'Forbidden');
       const file = await readFile(filePath);
+      if (page === '/treasury.html') for (const [name, value] of Object.entries(TREASURY_HEADERS)) res.setHeader(name, value);
       res.setHeader('Content-Type', types[extname(filePath)] ?? 'application/octet-stream');
       res.end(req.method === 'HEAD' ? undefined : file);
     } catch (err) {

@@ -3,6 +3,7 @@ import { handle } from '../lib/server.js';
 import { UserError } from '../lib/snapshot.js';
 import { selectorOf } from '../lib/keccak.js';
 import { readConfig, planInvoice, verifyInvoice } from '../lib/treasury/agent.js';
+import { readInvoiceText } from '../lib/treasury/intake.js';
 
 export default function route(req, res) {
   return handle(async () => {
@@ -19,6 +20,7 @@ export default function route(req, res) {
       return { demo: config.demo, verification, report };
     }
     if (req.method !== 'POST') throw Object.assign(new UserError('Use POST for invoice planning or verification.'), { httpStatus: 405 });
+    if (action === 'parse') return readInvoiceText(req.body?.text);
     if (action === 'plan') return planInvoice(req.body);
     if (action === 'verify') return verifyInvoice(req.body);
     throw new UserError('Unknown Treasury action.');

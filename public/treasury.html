@@ -6,6 +6,11 @@
   <title>Treasury Copilot · Pharos Agent Kit</title>
   <meta name="description" content="An agent-guided payment desk on Pharos: review an invoice, check its policy, sign in your wallet, and verify its on-chain receipt.">
   <meta name="color-scheme" content="light dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Treasury Copilot · Agent-native invoice payments on Pharos">
+  <meta property="og:description" content="An AI agent reads Pharos docs and chain state, checks policy, and prepares each payment for your wallet to sign. Live on Atlantic Testnet.">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#2f5fe0">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f5fe0'/%3E%3Cpath d='M10 9h12M16 9v15M11 24h10' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/treasury.css">
@@ -30,6 +35,7 @@
         <a class="treasury-side-link" href="#workspace" aria-current="page"><span aria-hidden="true">01</span>Payment workspace</a>
         <a class="treasury-side-link" href="#ledger"><span aria-hidden="true">02</span>Receipt ledger</a>
         <a class="treasury-side-link" href="#how-it-works"><span aria-hidden="true">03</span>How it works</a>
+        <a class="treasury-side-link" href="#safety"><span aria-hidden="true">04</span>Safety model</a>
       </nav>
       <div class="treasury-sidebar-note">
         <span class="treasury-label">YOUR WALLET, YOUR SIGNATURE</span>
@@ -43,7 +49,8 @@
         <div>
           <p class="treasury-label">PHAROS / PAYMENT DESK</p>
           <h1>Every invoice.<br><span>Accounted for.</span></h1>
-          <p class="treasury-intro-copy">Turn an invoice into a checked payment, then an on-chain receipt. Let the copilot do the checking.</p>
+          <p class="treasury-intro-copy">Turn an invoice into a checked payment, then an on-chain receipt. An AI agent reads Pharos documentation and live chain state before it prepares anything for your wallet to sign.</p>
+          <p class="treasury-audience"><strong>Built for</strong> small teams, DAOs and freelancers who pay contributors and vendors on Pharos and want every payment checked, limited and provable.</p>
         </div>
         <div class="treasury-wallet-box">
           <span class="treasury-network" id="network-label">Loading network…</span>
@@ -53,6 +60,16 @@
         </div>
       </div>
 
+      <section class="treasury-evidence" id="live-proof" aria-labelledby="evidence-heading">
+        <h2 class="treasury-label" id="evidence-heading">LIVE ON PHAROS ATLANTIC TESTNET</h2>
+        <dl class="treasury-evidence-grid" id="evidence-grid"><div><dt>Network</dt><dd>Atlantic Testnet · 688689</dd></div></dl>
+        <ul class="treasury-tools" aria-label="Pharos AI tools used by the agent">
+          <li><strong>Developer Docs MCP</strong><span>cited network and signing procedure</span></li>
+          <li><strong>Pharos SkillEngine</strong><span>balance, allowance and invoice reads</span></li>
+          <li><strong>Atlantic RPC</strong><span>simulation and receipt verification</span></li>
+        </ul>
+      </section>
+
       <div id="page-message" class="treasury-message" role="status" aria-live="polite" hidden></div>
       <div id="page-error" class="treasury-message treasury-message-error" role="alert" hidden></div>
 
@@ -61,9 +78,23 @@
           <h2 id="workspace-heading"><span class="treasury-index">01</span>Payment workspace</h2>
           <button class="treasury-text-button" id="inspect-example" type="button" disabled>Inspect recorded invoice <span aria-hidden="true">↗</span></button>
         </div>
+        <ol class="treasury-journey" id="journey" aria-label="Your progress">
+          <li data-step="connect"><span>1</span>Connect wallet</li>
+          <li data-step="network"><span>2</span>Atlantic network</li>
+          <li data-step="tokens"><span>3</span>Test tokens</li>
+          <li data-step="review"><span>4</span>Agent review</li>
+          <li data-step="pay"><span>5</span>Signed and verified</li>
+        </ol>
         <div class="treasury-workspace-grid">
           <div class="treasury-invoice-panel">
             <div class="treasury-panel-heading"><span class="treasury-label">THE REQUEST</span><span id="mode-label" class="treasury-small">Read-only until connected</span></div>
+            <details class="treasury-intake" id="intake">
+              <summary>Paste an invoice instead <span class="treasury-small">The agent reads it for you</span></summary>
+              <label class="sr-only" for="intake-text">Invoice or payment request text</label>
+              <textarea id="intake-text" rows="4" maxlength="4000" placeholder="Invoice INV-2026-014 from Acme Design. Please pay 25 tUSDC to 0x…" spellcheck="false"></textarea>
+              <div class="treasury-intake-actions"><button class="treasury-button treasury-button-secondary" id="intake-read" type="button">Read invoice</button><button class="treasury-text-button" id="intake-sample" type="button">Use a sample</button></div>
+              <div id="intake-result" class="treasury-intake-result" role="status" aria-live="polite" hidden></div>
+            </details>
             <form id="invoice-form">
               <fieldset class="treasury-fields" id="invoice-fields">
                 <legend class="sr-only">Invoice and payment limits</legend>
@@ -136,6 +167,19 @@
           <dl><div><dt>One reference, one payment</dt><dd>Duplicate prevention is enforced by the contract, separately for each payer.</dd></div><div><dt>Evidence with every decision</dt><dd>Inspect the tool sources, policy checks and simulation before signing.</dd></div><div><dt>Confirmation from the chain</dt><dd>A successful receipt is matched to the expected payer, invoice, recipient and amount.</dd></div></dl>
         </div>
         <div class="treasury-contracts" id="contract-links"><span class="treasury-small">Contract addresses will appear when the configuration loads.</span></div>
+      </section>
+
+      <section class="treasury-safety" id="safety" aria-labelledby="safety-heading">
+        <div class="treasury-section-bar"><h2 id="safety-heading"><span class="treasury-index">04</span>Safety model</h2></div>
+        <div class="treasury-safety-grid">
+          <article><h3>No keys, anywhere</h3><p>The agent, the API and this page never hold or ask for a private key. The only signer is your own wallet.</p></article>
+          <article><h3>You sign every move</h3><p>Funds move only through a transaction you approve in your wallet. Approvals are for the exact invoice amount, never unlimited.</p></article>
+          <article><h3>Limits before approval</h3><p>A per-invoice cap and an optional recipient allowlist are checked first. A failed check prepares nothing to sign.</p></article>
+          <article><h3>Stopped, not guessed</h3><p>If documentation, chain reads or simulation fail, the agent stops with a clear reason. Unknown outcomes are saved and never retried automatically.</p></article>
+          <article><h3>One reference, one payment</h3><p>The router refuses a repeated invoice reference for the same payer, and holds no balance of its own.</p></article>
+          <article><h3>Verified from the chain</h3><p>A payment counts only when the receipt matches payer, router, calldata, amount and the exact on-chain event.</p></article>
+        </div>
+        <p class="treasury-small treasury-safety-note">tUSDC is a demonstration token with no monetary value. This is a testnet product and not financial advice. <a href="https://github.com/moltaphet/pharos-agent-kit/blob/main/docs/architecture-treasury-copilot.md" target="_blank" rel="noopener">Read the architecture ↗</a></p>
       </section>
 
       <footer class="treasury-footer"><span>Treasury Copilot / Pharos Agent Kit</span><span>Atlantic Testnet · Demonstration tokens</span></footer>

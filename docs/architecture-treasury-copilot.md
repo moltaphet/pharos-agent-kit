@@ -1,72 +1,72 @@
-# Treasury Copilot
+# Treasury Copilot: architecture
 
-A separate payment workspace at `/treasury` for teams and freelancers who need to turn an invoice into a checked payment and a verifiable receipt. It shares the existing site's deployment and visual tokens; the 30 agent demonstrations keep their current URLs.
+An invoice payment desk with an AI agent at its core, live at https://pharos-agent-kit.vercel.app/treasury on Pharos Atlantic Testnet (chain 688689). It is a standalone page in the same deployment as the 30 agent demonstrations; their URLs are unchanged.
 
-## Current status
+**Audience and problem.** Small teams, DAOs and freelancers who pay contributors and vendors on Pharos. Turning an invoice into a correct payment means checking the recipient, amount, token, balance, allowance and payment history across separate tools. The copilot does those checks, shows its evidence and prepares one exact transaction for the user's wallet.
 
-The page, API, contracts and deployment script are implemented. The contracts are deployed on Atlantic (token `0x83f0e9a24160e91b670029f6c65f3734bb434503`, router `0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`) and one exact demo payment was verified on-chain (`reports/treasury-run.json`, 9 checks). The planning endpoint was exercised live against Docs MCP and SkillEngine reads: valid invoice, duplicate invoice and over-limit invoice. The public release and the capstone video remain outstanding.
+## System
 
-## User flow
+```
+ Browser (static page, no keys)                     Server (Vercel function)                     Pharos
+ ┌──────────────────────────────┐   plan / parse   ┌──────────────────────────┐    ┌──────────────────────────────┐
+ │ invoice form + policy        │ ───────────────► │ api/treasury.js          │    │ Developer Docs MCP           │
+ │ wallet (EIP-1193)            │                  │  intake.js   read text   │ ──►│  askQuestion: network facts  │
+ │ receipt ledger (localStorage)│ ◄─────────────── │  validation  exact math  │    │  and signing procedure       │
+ │                              │   plan + proof   │  agent.js    decision    │    ├──────────────────────────────┤
+ │                              │                  │  tools.js    SkillEngine │ ──►│ SkillEngine (cast, pinned    │
+ │                              │                  │  chain.js    simulate    │    │  block): balance, allowance, │
+ │                              │                  │              verify      │    │  invoice registry            │
+ └──────────────┬───────────────┘                  └────────────┬─────────────┘    ├──────────────────────────────┤
+                │ eth_sendTransaction (user signs)              │ eth_call / receipts│ Atlantic RPC                 │
+                └───────────────────────────────────────────────┴──────────────────►│ InvoicePaymentRouter, tUSDC  │
+                                                                                    └──────────────────────────────┘
+```
 
-Connect an Ethereum-compatible wallet, switch to Atlantic, obtain testnet PHRS for gas, and mint free demonstration tUSDC. Enter an invoice reference, recipient and amount; optionally set a per-invoice limit and recipient allowlist. The agent checks the invoice and policy, consults Pharos documentation, reads live wallet/router state, and prepares either an exact-amount token approval or the invoice payment. The user's wallet signs each step. After approval the invoice is reviewed again; after payment the receipt must match the exact invoice event.
+## The agent
 
-`tUSDC` is a custom demonstration currency with no monetary value. It is not Circle USDC. Only this token is supported by this first-release router.
+The agent is a bounded workflow, not an open-ended chatbot. Every decision rests on a tool result, and every result that gates a signature is deterministic to check.
 
-## Components
+| Step | Component | What it decides |
+|---|---|---|
+| Intake | `lib/treasury/intake.js` | Reads pasted text into reference, recipient and amount. Missing or ambiguous fields become questions; nothing is guessed. |
+| Validation | `lib/treasury/validation.js` | Exact decimal amounts, address checksum, reference shape, per-invoice cap, recipient allowlist. A failed check prepares nothing. |
+| Documentation | Developer Docs MCP via `lib/treasury/agent.js` | Asks for the Atlantic chain ID, gas token and the approve/transferFrom procedure. Preparation stops unless the answer is cited and states chain 688689 and PHRS. |
+| Chain state | Pharos SkillEngine via `lib/treasury/tools.js` | Runs the official Foundry read templates (`cast balance`, `cast call`) at a pinned block: native balance, tUSDC balance, allowance, `paid(payer, invoiceId)`, router token, deployed code. These reads decide between *needs approval*, *ready*, *already paid* and *blocked*. |
+| Simulation | Atlantic RPC (`lib/treasury/chain.js`) | `eth_call` and gas estimate of the exact approval or payment, plus a fee check against the wallet's PHRS. |
+| Verification | `lib/treasury/chain.js` | After signing: payer, router address, calldata, native value, receipt status and the exact `InvoicePaid` event fields must match before a payment is called confirmed. |
 
-| Component | Responsibility |
-|---|---|
-| `public/treasury.html`, `public/css/treasury.css` | Accessible standalone payment workspace using existing site tokens. |
-| `public/js/treasury/main.js` | Invoice review, policy controls, clear errors, signing and recovery. |
-| `public/js/treasury/wallet.js` | EIP-1193 wallet access; verifies account/network before signature. |
-| `public/js/treasury/storage.js` | Saves intent before signature, then hash/outcome; unresolved and mismatched requests block another signature. |
-| `api/treasury.js` | Public configuration, unsigned planning, receipt verification and recorded proof. |
-| `lib/treasury/validation.js` | Exact decimal conversion, checksum/reference validation, deterministic policy checks and calldata encoding. |
-| `lib/treasury/agent.js` | Composes documentation and SkillEngine reads into a decision; prepares but never sends. |
-| `lib/treasury/tools.js` | Executes the pinned official SkillEngine's public Foundry query templates. |
-| `lib/treasury/chain.js` | Simulation, gas estimation and exact receipt/event verification on Atlantic RPC. |
-| `contracts/InvoicePaymentRouter.sol` | Transfers the fixed token directly from payer to recipient and prevents duplicate references per payer. |
-| `contracts/TreasuryDemoToken.sol` | Six-decimal demo token with a public 100-token faucet. |
+The final simulation and receipt verification use Atlantic JSON-RPC directly and are labelled **Atlantic RPC** in the UI, never Chain MCP (the hosted Chain MCP does not serve Atlantic).
 
-## Pharos AI tools
+**Pharos AI tools used:** Developer Docs MCP (`https://docs.pharos.xyz/~gitbook/mcp`) and the Pharos SkillEngine (official repository, pinned to commit `a873387c9e34e9ae8e71360d43dc33329a335a24`; unmodified reference files in `skills/pharos-treasury-engine/`). The docs question is generic, so no invoice data or key is sent. Locally the SkillEngine reads run through installed `cast`; on Vercel they run in a short-lived Sandbox with a restricted network allowlist, a timeout and concurrency limits, and are stopped after the reads.
 
-**Developer Docs MCP** (`https://docs.pharos.xyz/~gitbook/mcp`) receives a generic network/payment-procedure question through `askQuestion`. No invoice or private key is sent. The agent requires cited Atlantic facts, including chain 688689 and PHRS gas, before offering a signature. Missing or unsupported documentation stops preparation.
+## Contracts
 
-**Pharos SkillEngine** is a skill/Foundry toolkit, not an MCP server or a hosted inference endpoint. The runtime executes its actual `cast balance` and `cast call` templates on Atlantic, with a pinned block, and uses their balances, allowance and invoice state to decide whether the payment is possible. Official source is pinned to commit `a873387c9e34e9ae8e71360d43dc33329a335a24`; unmodified skill/query/network references are in `skills/pharos-treasury-engine/`. Additional native Foundry reads check code and chain identity. Local runs require installed `cast`; Vercel runs use a short-lived Foundry-equipped Sandbox based on the existing project snapshot. Sandboxes have a restricted Atlantic network allowlist, timeout and concurrency/hourly checks and are stopped after the reads.
+- `InvoicePaymentRouter`: immutable token, no balance, no owner. `payInvoice(bytes32 invoiceId, address recipient, uint256 amount)` pulls the token from the caller straight to the recipient with `transferFrom`, so it needs the payer's allowance. The invoice ID is the Keccak-256 of `pharos-treasury:v1:` plus the reference, and a reference can be paid once per payer. State is marked before the external call and rolled back if the transfer fails; a reentrancy guard and strict handling of token return data protect the transfer. Emits `InvoicePaid(payer, invoiceId, recipient, token, amount)`.
+- `TreasuryDemoToken`: six-decimal **tUSDC** with a public 100-token faucet. It has no monetary value and is not Circle USDC.
 
-The final simulation and receipt verifier use Atlantic JSON-RPC directly and are labelled **Atlantic RPC**, not Chain MCP. Live execution of these two official tools still needs verification before submission.
+Addresses and the verified proof payment are in `config/treasury.json` and `reports/treasury-run.json`. Deployment and the proof run use `scripts/treasury-deploy.mjs`, which refuses any network other than Atlantic, caps gas spend at 0.025 PHRS and checks nine conditions (receipt, sender, exact calldata, event, balances, router holding nothing, duplicate rejection).
 
-The agent is a bounded workflow: it uses AI-backed documentation with deterministic invoice/policy checks and on-chain state. It does not claim unrestricted chat understanding, autonomous spending or production compliance.
+## Safety
 
-## Contracts and safety
+- **No keys.** The agent, API and frontend never hold or request a private key. The only signer is the user's wallet. Deployment is a separate script with an ignored throwaway testnet wallet that neither the API nor the page imports.
+- **User signs, exactly.** Approvals are for the exact invoice amount, never unlimited. The wallet account and chain are re-checked immediately before every signature, and any change to account, chain, invoice or policy discards the prepared plan.
+- **Policy before approval.** A per-invoice cap and an optional recipient allowlist are applied before a transaction is prepared.
+- **Fail closed.** Documentation, chain-read or simulation failures stop with a reason and prepare nothing.
+- **Recoverable.** The request is saved before the wallet opens. An unknown outcome is kept as unresolved and blocks another signature until it is checked; a mismatched pasted hash cannot clear it.
+- **Hardened page.** `/treasury` is served with a strict Content-Security-Policy (`default-src 'self'`, no inline script or style), `frame-ancestors 'none'`, `nosniff` and `no-referrer` (see `vercel.json`).
 
-Network: Atlantic Testnet, chain ID 688689. RPC: `https://atlantic.dplabs-internal.com`. Contracts are listed in `config/treasury.json` after deployment.
-
-The router has an immutable token and no treasury balance or delegated signer. `payInvoice(bytes32,address,uint256)` requires caller allowance; the token moves directly to the recipient. Invoice IDs are Keccak-256 of `pharos-treasury:v1:` plus the exact reference, scoped by payer. The router marks the reference before transfer and relies on transaction rollback if transfer fails; a reentrancy guard and safe token-return handling protect the transfer.
-
-Policy caps and allowlists are checks for the user's current plan, not autonomous on-chain authority. Every funding action still requires a wallet signature. Plans are invalidated after account, chain, invoice or policy changes. Pending requests are saved before opening the wallet; unknown submission outcomes are never retried automatically. A mismatched attached hash cannot clear the pending lock. The verifier checks payer, router, calldata, native value, receipt status and exact event fields before calling a payment confirmed.
-
-## Setup and verification
+## Setup and tests
 
 ```sh
 npm ci
-npm run web
-# http://localhost:3000/treasury
-node --test test/treasury.test.js
+npm run web                      # http://localhost:3000/treasury
+npm test                         # full suite, includes test/treasury.test.js
 forge test --offline --root contracts --match-contract TreasuryTest -vv
+node scripts/treasury-deploy.mjs --check     # read-only readiness check
 ```
 
-Local planning needs Foundry `cast` and network access to Atlantic and Docs MCP. Production planning needs Vercel Sandbox access and the existing Foundry snapshot in `config/saga-snapshot.json`; Vercel supplies its OIDC credentials to the Sandbox SDK. Snapshot availability and the production path must be smoke-tested after deployment. Upstream unavailability is shown as an error with no prepared transaction.
+Local planning needs Foundry `cast` and network access to Atlantic and the Docs MCP. Production planning needs the Vercel Sandbox and the Foundry snapshot in `config/saga-snapshot.json`.
 
-Deployment uses a **separate** CLI script and the existing ignored throwaway Atlantic wallet; neither the API nor frontend imports a signer:
+## Limits
 
-```sh
-node scripts/treasury-deploy.mjs --check
-node scripts/treasury-deploy.mjs --live
-```
-
-The script verifies chain identity, demands at least 0.025 test PHRS, bounds estimated gas against that budget and saves public deployment checkpoints. It deploys contracts, mints demo tokens, approves exactly 25 tUSDC, pays one invoice and verifies event/balance changes and duplicate rejection. Public output is written to `config/treasury.json` and `reports/treasury-run.json` only after the corresponding actions have actually occurred.
-
-## Submission evidence still required
-
-A verified public deployment; live tool traces; contract addresses; an actual user payment/receipt; setup and architecture documentation; and a required short video showing the complete real flow. Do not submit a deployment-pending page as a completed capstone.
+This is a testnet product with a demonstration token, a single supported token and no custody. The agent does not claim unrestricted language understanding, autonomous spending or production compliance. Policy limits are checks on the user's current plan, not on-chain authority.

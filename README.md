@@ -6,11 +6,46 @@ Thirty working builds for the [Pharos Agent Arena](https://pharos-agent-arena.ve
 
 Per-task proof links, repo links and the requirements each task was built against: [SUBMISSION.md](SUBMISSION.md).
 
-## Treasury Copilot
+## Treasury Copilot: the Agent-Native dApp
 
-The separate `/treasury` page adds an invoice-to-payment workspace: policy checks, official Pharos tool evidence, unsigned wallet approval/payment and exact on-chain receipt verification. It uses custom, valueless tUSDC on Atlantic Testnet. Deployed on Pharos Atlantic Testnet (chain 688689): token `0x83f0e9a24160e91b670029f6c65f3734bb434503`, router `0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`, one verified demo payment `0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be` ([explorer](https://atlantic.pharosscan.xyz/tx/0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be)). The agent uses the Developer Docs MCP and the official SkillEngine read templates, and every plan ends in a wallet signature. The public release and the capstone video are still pending.
+**Live: https://pharos-agent-kit.vercel.app/treasury** · Pharos Atlantic Testnet (chain 688689)
 
-Run `npm ci` and `npm run web`, then open `http://localhost:3000/treasury`. Foundry `cast` is required for local SkillEngine reads. See [architecture and deployment instructions](docs/architecture-treasury-copilot.md) and [submission checklist](submission/31-agent-native-dapp.md).
+Treasury Copilot is an invoice payment desk with an AI agent at its core. It is for small teams, DAOs and freelancers who pay contributors and vendors on Pharos and need every payment to be checked, limited and provable. Paying an invoice by hand means checking the recipient, the amount, the token, the balance, the allowance and whether it was already paid, across several tools. The copilot does that work, shows its evidence, and hands one exact transaction to the user's wallet.
+
+**What the agent does**
+
+1. Reads pasted invoice text and fills in reference, recipient and amount. When something is missing or ambiguous it asks instead of guessing.
+2. Asks the **Pharos Developer Docs MCP** for the Atlantic network facts and the approve/transferFrom signing procedure. It stops if the answer is not cited and consistent with chain 688689.
+3. Reads wallet balance, token allowance and the invoice registry at a pinned block with the official **Pharos SkillEngine** Foundry read templates.
+4. Applies the user's policy (per-invoice cap, optional recipient allowlist), simulates the call on Atlantic RPC and prepares either an exact-amount approval or the invoice payment. The tool results decide what is offered.
+5. After the user signs, matches the receipt to the expected payer, router, calldata, amount and `InvoicePaid` event before calling a payment confirmed.
+
+**On-chain (Atlantic Testnet)**
+
+| | Address |
+|---|---|
+| `InvoicePaymentRouter` | [`0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`](https://atlantic.pharosscan.xyz/address/0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e) |
+| `TreasuryDemoToken` (tUSDC, valueless) | [`0x83f0e9a24160e91b670029f6c65f3734bb434503`](https://atlantic.pharosscan.xyz/address/0x83f0e9a24160e91b670029f6c65f3734bb434503) |
+| Verified demo payment | [`0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be`](https://atlantic.pharosscan.xyz/tx/0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be) (9 checks, see `reports/treasury-run.json`) |
+
+**Safety**
+
+- No private key exists in the agent, the API or the frontend. The only signer is the user's wallet; deployment uses a separate script and an ignored throwaway testnet wallet.
+- Fund-moving steps are prepared unsigned. Approvals are for the exact invoice amount. Policy limits are checked before anything is offered.
+- The router holds no balance, has an immutable token and rejects a repeated reference for the same payer.
+- Failures stop the flow with a reason. Unknown submission outcomes are saved and never retried automatically.
+- The page ships with a strict Content-Security-Policy and related headers (`vercel.json`).
+
+**Run it**
+
+```sh
+npm ci
+npm run web                      # http://localhost:3000/treasury
+node --test test/treasury.test.js
+forge test --offline --root contracts --match-contract TreasuryTest
+```
+
+Local planning needs Foundry `cast` and network access to Atlantic and the Docs MCP. Production runs the SkillEngine reads in a short-lived Vercel Sandbox. To try the flow you need an EVM wallet on Atlantic with a little testnet PHRS for gas; the page mints free tUSDC. Full design: [docs/architecture-treasury-copilot.md](docs/architecture-treasury-copilot.md). Submission notes: [submission/31-agent-native-dapp.md](submission/31-agent-native-dapp.md).
 
 **Every task has its own folder** (the third column), and each folder has a README that maps the Arena's requirements to where they are met, lists the shared code it imports and the tests that cover it. Shared code stays in `lib/`, so every task runs from a plain clone. The links to paste into the Arena's form are in [submission/](submission/README.md).
 

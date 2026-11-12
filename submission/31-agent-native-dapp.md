@@ -1,21 +1,33 @@
 # Agent-Native dApp: Treasury Copilot
 
-Status: contracts deployed and proven on Atlantic; **not ready for submission** until the public page is released and the required real-flow video is recorded.
-
 Task: https://pharos-agent-arena.vercel.app/tasks/agent-native-dapp
 
-Planned public page: https://pharos-agent-kit.vercel.app/treasury (not yet verified as deployed).
+**Live dApp:** https://pharos-agent-kit.vercel.app/treasury
 
-Repository: https://github.com/moltaphet/pharos-agent-kit (local changes are not yet published).
+**Repository:** https://github.com/moltaphet/pharos-agent-kit
 
-Description: An invoice payment desk for teams and freelancers. The agent checks recipient, amount and policy; uses Pharos Docs MCP and the official SkillEngine's Foundry read templates; prepares exact-amount approval/payment for the user's wallet; and verifies the mined invoice receipt. A noncustodial router prevents duplicate references per payer.
+**Demo video:** to be added (script: `docs/treasury-demo-script.md`).
 
-Network: Pharos Atlantic Testnet, chain 688689. Token: custom, freely minted demonstration tUSDC with no monetary value.
+## Notes for the form
 
-Contract addresses (Atlantic, chain 688689): token tUSDC `0x83f0e9a24160e91b670029f6c65f3734bb434503`; InvoicePaymentRouter `0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`. Proof payment: `0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be`.
+Treasury Copilot is an invoice payment desk with an AI agent at its core, for small teams, DAOs and freelancers who pay contributors and vendors on Pharos. The agent reads pasted invoice text (and asks when something is missing or ambiguous), consults the Pharos Developer Docs MCP for the network and signing procedure, reads balance, allowance and the invoice registry through the official Pharos SkillEngine, applies the user's policy limits, simulates the call, and prepares one exact approval or payment for the user's wallet to sign. It then verifies the mined receipt against the expected payer, router, calldata, amount and event. A non-custodial router prevents paying the same invoice reference twice.
 
-Demo video: not recorded. A real-flow video is required by this capstone.
+Network: Pharos Atlantic Testnet, chain 688689.
 
-Architecture and setup: `docs/architecture-treasury-copilot.md`.
+Contract addresses:
+- InvoicePaymentRouter: `0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`
+- tUSDC demo token (valueless): `0x83f0e9a24160e91b670029f6c65f3734bb434503`
+- Verified proof payment: `0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be`
 
-Deadline: 15 November 2026, 00:00 UTC / 03:30 Tehran.
+## Requirements checklist
+
+| # | Requirement | Where it is met |
+|---|---|---|
+| 01 | Deployed on Pharos with a working UI and contract addresses | Live page above; addresses above and in `config/treasury.json`; explorer links on the page |
+| 02 | Agent is central; at least 2 Pharos AI tools | Developer Docs MCP and Pharos SkillEngine both gate the decision (`lib/treasury/agent.js`, `lib/treasury/tools.js`); Atlantic RPC is labelled separately |
+| 03 | Clear user problem; README says who and why | README section "Treasury Copilot" and the page header |
+| 04 | Safe: no keys, user signs or policy limits, error handling | No signer in agent, API or frontend; exact-amount approvals; cap and allowlist; fail-closed errors; strict CSP; see architecture doc "Safety" |
+| 05 | Open-source repo, setup instructions, architecture write-up | MIT repository; README "Run it"; `docs/architecture-treasury-copilot.md` |
+| 06 | Demo video of a real flow | Recorded separately; link added to the form and to `config/treasury.json` |
+
+Test evidence: `reports/treasury-tests.md` and `reports/treasury-run.json`.

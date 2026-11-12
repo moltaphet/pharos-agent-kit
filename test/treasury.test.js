@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { validateInvoice, paymentData, PAYMENT_TOPIC, addressWord, word } from '../lib/treasury/validation.js';
 import { planInvoice, verifyInvoice } from '../lib/treasury/agent.js';
 import { createTreasuryTools } from '../lib/treasury/tools.js';
+import { readInvoiceText } from '../lib/treasury/intake.js';
 import { createWallet } from '../public/js/treasury/wallet.js';
 import { createLedger } from '../public/js/treasury/storage.js';
 
@@ -150,4 +151,28 @@ test('standalone Treasury page has a canonical route, working relative assets an
   assert.equal(redirect.status, 302);
   assert.equal(redirect.headers.Location, '/treasury');
   assert.ok((await request('/')).body.includes('href="/treasury"'));
+});
+
+test('Invoice intake reads clear text and asks instead of guessing', () => {
+  const ok = readInvoiceText(`Invoice INV-2026-014 from Acme. Please pay 1,250.50 tUSDC to ${recipient.replace(/2/g, 'a')} by Friday.`);
+  assert.equal(ok.status, 'complete');
+  assert.deepEqual(ok.fields, { reference: 'INV-2026-014', recipient: recipient.replace(/2/g, 'a'), amount: '1250.50' });
+  const two = readInvoiceText(`INV-7 10 tUSDC to ${payer} or ${recipient}`);
+  assert.equal(two.status, 'needs-clarification');
+  assert.equal(two.fields.recipient, undefined);
+  assert.match(two.questions[0], /2 possible recipient addresses/);
+  const amounts = readInvoiceText(`INV-9: 10 tUSDC then 20 tUSDC to ${recipient}`);
+  assert.equal(amounts.fields.amount, undefined);
+  assert.equal(amounts.readings.find((r) => r.field === 'amount').status, 'ambiguous');
+  const none = readInvoiceText('hello there');
+  assert.equal(none.questions.length, 3);
+  assert.throws(() => readInvoiceText(''), /Paste the invoice/);
+  assert.throws(() => readInvoiceText('x'.repeat(4001)), /under 4000/);
+});
+
+test('Invoice intake never reads address digits as money and fields still pass validation', () => {
+  const text = `Pay INV-55 25 tUSDC to ${recipient}`;
+  const { fields } = readInvoiceText(text);
+  assert.equal(fields.amount, '25');
+  assert.equal(validateInvoice({ payer, invoice: fields, policy: {} }, config).invoice.amountRaw, '25000000');
 });

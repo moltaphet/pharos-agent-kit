@@ -65,6 +65,7 @@ function syncControls() {
   $('#invoice-fields').disabled = busy;
   $('#inspect-example').disabled = busy || !config?.demo?.payer;
   $('#show-proof').disabled = busy || !config?.demo?.hash;
+  if (config) updateJourney();
   $('#mode-label').textContent = inspecting ? 'Recorded payer · read-only' : connected ? 'Your connected wallet' : 'Read-only until connected';
   $('#wallet-detail').textContent = inspecting ? 'Inspecting the recorded payer. Connect your wallet to make your own payment.' : connected ? correctNetwork ? 'Your signatures stay in your wallet.' : 'Switch networks before requesting a signature.' : 'Or inspect the recorded example without a wallet.';
   $('#funding-area').hidden = !connected || inspecting || !config?.faucetTransaction;
@@ -76,6 +77,38 @@ function syncControls() {
     $('#sign-transaction').textContent = plan.status === 'needs-approval' ? 'Approve exact amount in wallet ↗' : 'Pay invoice in wallet ↗';
     $('#signing-hint').textContent = inspecting ? 'This is an inspection of the recorded payer. Connect your own wallet to sign.' : !connected ? 'Connect your wallet to sign this payment.' : !correctNetwork ? 'Switch your wallet to Atlantic Testnet before signing.' : unresolved ? 'An earlier transaction is unresolved. Check it in the receipt ledger first.' : !ledger.available(config) ? 'Enable browser storage before signing so pending transactions can be recovered.' : plan.status === 'needs-approval' ? 'First allow the router to use this exact amount of tUSDC. The invoice is reviewed again after approval.' : 'Check the recipient and amount in your wallet. Your signature submits this testnet payment.';
   }
+}
+
+function updateJourney() {
+  const mine = account ? ledger.read(config ?? {}).filter((row) => String(row.payer).toLowerCase() === account.toLowerCase()) : [];
+  const connected = Boolean(account);
+  const done = {
+    connect: connected && !inspecting,
+    network: connected && !inspecting && walletChain === Number(config?.chainId),
+    tokens: mine.some((row) => row.kind === 'faucet' && row.status === 'confirmed') || (plan?.balances && Number(plan.balances.token) > 0 && !inspecting),
+    review: Boolean(plan && !inspecting && ['ready', 'needs-approval'].includes(plan.status)) || mine.some((row) => row.kind === 'payment' && row.status === 'confirmed'),
+    pay: mine.some((row) => row.kind === 'payment' && row.status === 'confirmed'),
+  };
+  let current = null;
+  document.querySelectorAll('#journey li').forEach((item) => {
+    const isDone = Boolean(done[item.dataset.step]);
+    if (!isDone && !current) current = item;
+    item.classList.toggle('done', isDone);
+    item.classList.toggle('current', item === current);
+    if (item === current) item.setAttribute('aria-current', 'step'); else item.removeAttribute('aria-current');
+  });
+}
+
+function renderEvidence() {
+  const link = (url, label) => externalLink(url, label);
+  const items = [
+    ['Network', 'Atlantic Testnet · chain 688689'],
+    ['Invoice router', link(`${config.explorer}/address/${config.router}`, short(config.router))],
+    [`${config.token.symbol} demo token`, link(`${config.explorer}/address/${config.token.address}`, short(config.token.address))],
+  ];
+  if (config.demo?.hash) items.push(['Verified payment', link(`${config.explorer}/tx/${config.demo.hash}`, short(config.demo.hash)) + ' · 9 checks']);
+  if (config.video && safeUrl(config.video)) items.push(['Demo video', link(config.video, 'Watch the walkthrough ↗')]);
+  $('#evidence-grid').innerHTML = items.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${name === 'Network' ? esc(value) : value}</dd></div>`).join('');
 }
 
 function setBusy(value) {
@@ -106,8 +139,9 @@ function renderPlan(result) {
   const checks = (result.checks ?? []).map((check) => `<li><span class="treasury-check-mark${check.ok ? '' : ' failed'}" aria-hidden="true">${check.ok ? '✓' : '×'}</span><span><span class="sr-only">${check.ok ? 'Passed: ' : 'Stopped: '}</span>${esc(check.message ?? check.title ?? check.id)}</span></li>`).join('');
   const steps = (result.steps ?? []).map((step) => `<li><span class="treasury-tool-source">${esc(step.source ?? step.tool)} · ${esc(step.status ?? 'completed')}</span><strong>${esc(step.title ?? step.tool)}</strong><p>${esc(typeof step.detail === 'object' ? JSON.stringify(step.detail) : step.detail ?? '')}</p></li>`).join('');
   const docs = result.docs;
+  const badges = result.steps?.length ? `<div class="treasury-badges" aria-label="Tools the agent used">${result.steps.map((step) => `<span class="treasury-badge ${step.status === 'passed' ? 'passed' : ''}">${esc(step.tool)}</span>`).join('')}</div>` : '';
   const sources = (docs?.sources ?? []).map((source) => `<li>${externalLink(source.url ?? source.href, source.title ?? source.url ?? 'Documentation source')}</li>`).join('');
-  $('#agent-output').innerHTML = `<div class="treasury-decision"><h4>${esc(heading)}</h4><p>${esc(text)}</p></div><div class="treasury-decision-amount">${esc(inv.amount ?? '—')}<span>${esc(config.token.symbol)}</span></div><p class="treasury-hint">To ${esc(inv.recipient ?? '—')}<br>Reference ${esc(inv.reference ?? '—')}</p>${checks ? `<ul class="treasury-checks">${checks}</ul>` : ''}${steps ? `<details class="treasury-details" open><summary>Agent evidence · ${result.steps.length} steps</summary><ol class="treasury-tool-list">${steps}</ol></details>` : ''}${docs ? `<details class="treasury-details"><summary>Documentation behind the plan</summary><p class="treasury-doc-answer">${esc(docs.answer ?? 'No documentation answer was returned.')}</p>${sources ? `<ul class="treasury-doc-sources">${sources}</ul>` : ''}</details>` : ''}`;
+  $('#agent-output').innerHTML = `<div class="treasury-decision"><h4>${esc(heading)}</h4><p>${esc(text)}</p></div><div class="treasury-decision-amount">${esc(inv.amount ?? '—')}<span>${esc(config.token.symbol)}</span></div><p class="treasury-hint">To ${esc(inv.recipient ?? '—')}<br>Reference ${esc(inv.reference ?? '—')}</p>${badges}${checks ? `<ul class="treasury-checks">${checks}</ul>` : ''}${steps ? `<details class="treasury-details" open><summary>Agent evidence · ${result.steps.length} steps</summary><ol class="treasury-tool-list">${steps}</ol></details>` : ''}${docs ? `<details class="treasury-details"><summary>Documentation behind the plan</summary><p class="treasury-doc-answer">${esc(docs.answer ?? 'No documentation answer was returned.')}</p>${sources ? `<ul class="treasury-doc-sources">${sources}</ul>` : ''}</details>` : ''}`;
   $('#agent-state').textContent = { ready: 'Checks passed', blocked: 'Blocked', 'needs-approval': 'Needs approval', 'already-paid': 'Already recorded' }[result.status] ?? 'Review incomplete';
   syncControls();
 }
@@ -119,6 +153,7 @@ async function review() {
   message();
   setBusy(true);
   $('#agent-state').textContent = 'Reading tools…';
+  $('#agent-output').innerHTML = '<div class="treasury-agent-empty"><h4>The copilot is working.</h4><p>It is asking the Developer Docs MCP about the Atlantic network and signing procedure, and reading balances, allowance and the invoice registry through the SkillEngine. This usually takes 10 to 30 seconds.</p></div>';
   $('#review-invoice').textContent = 'Checking invoice…';
   $('#signing-area').hidden = true;
   try {
@@ -288,6 +323,27 @@ async function boot() {
   });
   $('#mint-tokens').addEventListener('click', () => send('faucet', config.faucetTransaction).catch((err) => message(err.message, true)));
   $('#show-proof').addEventListener('click', showProof);
+  $('#intake-read').addEventListener('click', async () => {
+    const box = $('#intake-result');
+    box.hidden = false;
+    box.textContent = 'Reading the invoice…';
+    try {
+      const result = await api('parse', { text: $('#intake-text').value });
+      if (result.fields.reference) $('#invoice-reference').value = result.fields.reference;
+      if (result.fields.recipient) $('#invoice-recipient').value = result.fields.recipient;
+      if (result.fields.amount) $('#invoice-amount').value = result.fields.amount;
+      invalidate();
+      const label = { reference: 'Reference', recipient: 'Recipient', amount: 'Amount' };
+      const read = result.readings.filter((r) => r.status === 'read').map((r) => `<li>${esc(label[r.field])}: <code>${esc(r.value)}</code></li>`).join('');
+      const asks = result.questions.map((q) => `<li>${esc(q)}</li>`).join('');
+      box.innerHTML = `${read ? `<p class="ok">Filled in the form:</p><ul>${read}</ul>` : ''}${asks ? `<p class="ask">I need your help with:</p><ul>${asks}</ul>` : '<p class="ok">Everything was found. Review the invoice when you are ready.</p>'}`;
+    } catch (err) { box.textContent = err.message; }
+  });
+  $('#intake-sample').addEventListener('click', () => {
+    const stamp = new Date().toISOString().replace(/\D/g, '').slice(2, 14);
+    $('#intake-text').value = `Invoice INV-${stamp} from Acme Design Studio.\nDesign retainer, November.\nPlease pay 25 tUSDC to ${config?.demo?.recipient ?? '0x…'} within 14 days.`;
+    $('#intake-read').click();
+  });
   $('#payment-history').addEventListener('click', (event) => {
     const button = event.target.closest('[data-check-id]');
     if (!button) return;
@@ -313,6 +369,7 @@ async function boot() {
     $('#invoice-reference').value = `INV-${new Date().toISOString().slice(0, 10).replaceAll('-', '')}-001`;
     $('#invoice-amount').value = '25';
     $('#contract-links').innerHTML = `${externalLink(`${config.explorer}/address/${config.router}`, `Invoice router ${short(config.router)} ↗`)}${externalLink(`${config.explorer}/address/${config.token.address}`, `${config.token.symbol} contract ${short(config.token.address)} ↗`)}${externalLink('https://docs.pharos.xyz/getting-started/network/atlantic-testnet', 'Network & testnet funding ↗')}`;
+    renderEvidence();
     await refreshWallet({ invalidatePlan: false });
     wallet.subscribe(() => refreshWallet().catch(() => {}));
     renderHistory();
