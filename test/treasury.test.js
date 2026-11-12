@@ -4,6 +4,7 @@ import { validateInvoice, paymentData, PAYMENT_TOPIC, addressWord, word } from '
 import { planInvoice, verifyInvoice } from '../lib/treasury/agent.js';
 import { createTreasuryTools } from '../lib/treasury/tools.js';
 import { readInvoiceText } from '../lib/treasury/intake.js';
+import { readHistory, decodePayment } from '../lib/treasury/history.js';
 import { createWallet } from '../public/js/treasury/wallet.js';
 import { createLedger } from '../public/js/treasury/storage.js';
 
@@ -175,4 +176,40 @@ test('Invoice intake never reads address digits as money and fields still pass v
   const { fields } = readInvoiceText(text);
   assert.equal(fields.amount, '25');
   assert.equal(validateInvoice({ payer, invoice: fields, policy: {} }, config).invoice.amountRaw, '25000000');
+});
+
+test('On-chain history decodes InvoicePaid logs in bounded chunks and reports what it covered', async () => {
+  const hist = { ...config, deployment: { router: { blockNumber: 5000 } } };
+  const log = (block, who, ref) => ({ address: config.router, blockNumber: '0x' + block.toString(16), logIndex: '0x0', transactionHash: '0x' + String(block).padStart(64, '0'), topics: [PAYMENT_TOPIC, '0x' + addressWord(who), '0x' + ref.repeat(64), '0x' + addressWord(recipient)], data: '0x' + addressWord(config.token.address) + (25_000_000).toString(16).padStart(64, '0') });
+  const ranges = [];
+  const rpc = async (method, params) => {
+    if (method === 'eth_blockNumber') return '0x' + (7500).toString(16);
+    if (method === 'eth_getBlockByNumber') return { timestamp: '0x64' };
+    assert.equal(method, 'eth_getLogs');
+    const [{ fromBlock, toBlock, topics }] = params;
+    const from = Number(BigInt(fromBlock)); const to = Number(BigInt(toBlock));
+    assert.ok(to - from + 1 <= 1000, 'a range above the RPC limit');
+    ranges.push([from, to]);
+    if (topics[1]) assert.equal(topics[1], '0x' + addressWord(payer));
+    return [log(6000, payer, 'a'), log(7100, payer, 'b')].filter((l) => Number(BigInt(l.blockNumber)) >= from && Number(BigInt(l.blockNumber)) <= to);
+  };
+  const result = await readHistory(hist, { rpc, payer });
+  assert.equal(result.total, 2);
+  assert.equal(result.complete, true);
+  assert.equal(result.fromBlock, 5000);
+  assert.deepEqual(result.events.map((e) => e.blockNumber), [7100, 6000]);
+  assert.equal(result.events[0].amountRaw, '25000000');
+  assert.equal(result.events[0].payer, payer);
+  assert.equal(result.events[0].timestamp, 100);
+  assert.equal(ranges.length, 3);
+  assert.equal((await readHistory(hist, { rpc, limit: 1 })).events.length, 1);
+  await assert.rejects(() => readHistory(hist, { rpc, payer: 'not-an-address' }), /Payer/);
+});
+
+test('A log for another token, or a malformed log, is not counted as a payment', () => {
+  const good = { blockNumber: '0x1', logIndex: '0x0', transactionHash: hash, topics: [PAYMENT_TOPIC, '0x' + addressWord(payer), '0x' + 'c'.repeat(64), '0x' + addressWord(recipient)], data: '0x' + addressWord(config.token.address) + word(1) };
+  assert.ok(decodePayment(good, config.token.address));
+  assert.equal(decodePayment({ ...good, data: '0x' + addressWord(payer) + word(1) }, config.token.address), null);
+  assert.equal(decodePayment({ ...good, topics: good.topics.slice(0, 3) }, config.token.address), null);
+  assert.equal(decodePayment({ ...good, data: '0x1234' }, config.token.address), null);
 });

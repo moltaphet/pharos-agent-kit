@@ -65,6 +65,7 @@ function syncControls() {
   $('#invoice-fields').disabled = busy;
   $('#inspect-example').disabled = busy || !config?.demo?.payer;
   $('#show-proof').disabled = busy || !config?.demo?.hash;
+  $('#chain-mine').disabled = !connected;
   if (config) updateJourney();
   $('#mode-label').textContent = inspecting ? 'Recorded payer · read-only' : connected ? 'Your connected wallet' : 'Read-only until connected';
   $('#wallet-detail').textContent = inspecting ? 'Inspecting the recorded payer. Connect your wallet to make your own payment.' : connected ? correctNetwork ? 'Your signatures stay in your wallet.' : 'Switch networks before requesting a signature.' : 'Or inspect the recorded example without a wallet.';
@@ -103,12 +104,48 @@ function renderEvidence() {
   const link = (url, label) => externalLink(url, label);
   const items = [
     ['Network', 'Atlantic Testnet · chain 688689'],
-    ['Invoice router', link(`${config.explorer}/address/${config.router}`, short(config.router))],
-    [`${config.token.symbol} demo token`, link(`${config.explorer}/address/${config.token.address}`, short(config.token.address))],
+    ['Invoice router', link(`${config.explorer}/address/${config.router}`, short(config.router)) + (config.verification?.router ? ` · ${link(config.verification.router, 'source verified ↗')}` : '')],
+    [`${config.token.symbol} demo token`, link(`${config.explorer}/address/${config.token.address}`, short(config.token.address)) + (config.verification?.token ? ` · ${link(config.verification.token, 'source verified ↗')}` : '')],
   ];
   if (config.demo?.hash) items.push(['Verified payment', link(`${config.explorer}/tx/${config.demo.hash}`, short(config.demo.hash)) + ' · 9 checks']);
   if (config.video && safeUrl(config.video)) items.push(['Demo video', link(config.video, 'Watch the walkthrough ↗')]);
   $('#evidence-grid').innerHTML = items.map(([name, value]) => `<div><dt>${esc(name)}</dt><dd>${name === 'Network' ? esc(value) : value}</dd></div>`).join('');
+}
+
+let chainToken = 0;
+function amountText(raw, decimals) {
+  const value = BigInt(raw);
+  const base = 10n ** BigInt(decimals);
+  const fraction = (value % base).toString().padStart(decimals, '0').replace(/0+$/, '');
+  return `${value / base}${fraction ? '.' + fraction : ''}`;
+}
+
+async function loadChain() {
+  if (!config) return;
+  const token = ++chainToken;
+  const mine = Boolean(account) && $('#chain-mine').checked;
+  $('#chain-note').textContent = 'Reading InvoicePaid events from Atlantic…';
+  try {
+    const response = await fetch(`/api/treasury?action=history${mine ? `&payer=${encodeURIComponent(account)}` : ''}`);
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result?.ok) throw new Error(result?.error ?? `HTTP ${response.status}`);
+    if (token !== chainToken) return;
+    const data = result.data;
+    const known = new Map(ledger.read(config).filter((row) => row.invoice?.invoiceId).map((row) => [row.invoice.invoiceId, row.invoice.reference]));
+    const rows = data.events.map((event) => {
+      const yours = account && event.payer === account.toLowerCase();
+      const reference = known.get(event.invoiceId);
+      const when = event.timestamp ? new Date(event.timestamp * 1000).toLocaleString() : `block ${event.blockNumber.toLocaleString()}`;
+      return `<li class="treasury-history-item"><div class="treasury-history-row"><strong>${esc(amountText(event.amountRaw, config.token.decimals))} ${esc(config.token.symbol)}${yours ? '<span class="treasury-you">YOUR PAYMENT</span>' : ''}</strong><span class="treasury-status treasury-status-confirmed">On-chain</span></div><div class="treasury-history-meta"><span>From ${esc(short(event.payer))}</span><span>To ${esc(short(event.recipient))}</span><span>${reference ? `Reference ${esc(reference)}` : `Reference hash ${esc(short(event.invoiceId))}`}</span><time>${esc(when)}</time></div><div class="treasury-history-actions">${externalLink(`${config.explorer}/tx/${event.hash}`, `${short(event.hash)} ↗`, 'treasury-text-button')}</div></li>`;
+    });
+    $('#chain-history').innerHTML = rows.length ? `<ul class="treasury-history-list">${rows.join('')}</ul>` : '';
+    const range = `blocks ${data.fromBlock?.toLocaleString() ?? '?'} to ${data.toBlock.toLocaleString()}`;
+    $('#chain-note').textContent = rows.length
+      ? `Showing ${rows.length} of ${data.total} payments found in ${range}${data.complete ? '' : ' (the scan stopped early; newer blocks were read first)'}. Read directly from the router's events.`
+      : `No ${mine ? 'payments from your wallet' : 'payments'} found in ${range}. A payment appears here once it is mined.`;
+  } catch (err) {
+    if (token === chainToken) $('#chain-note').textContent = `Could not read on-chain receipts right now: ${err.message}`;
+  }
 }
 
 function setBusy(value) {
@@ -213,6 +250,7 @@ async function checkRecord(record, { continuous = false } = {}) {
       await pause(2500);
     } while (Date.now() < deadline);
     if (result.status === 'confirmed') {
+      if (record.kind === 'payment') loadChain();
       message(record.kind === 'payment' ? `Payment verified on chain for ${record.invoice.reference}. Its receipt is in the ledger.` : record.kind === 'approval' ? 'Token approval confirmed. Review the invoice again to prepare its payment.' : 'Test-token mint confirmed. You can now review an invoice from your wallet.');
       if (record.kind !== 'payment') invalidate();
     } else if (result.status === 'pending') message('The transaction is still pending. Its hash is saved; check its status before submitting anything else.');
@@ -323,6 +361,7 @@ async function boot() {
   });
   $('#mint-tokens').addEventListener('click', () => send('faucet', config.faucetTransaction).catch((err) => message(err.message, true)));
   $('#show-proof').addEventListener('click', showProof);
+  $('#chain-mine').addEventListener('change', loadChain);
   $('#intake-read').addEventListener('click', async () => {
     const box = $('#intake-result');
     box.hidden = false;
@@ -370,6 +409,7 @@ async function boot() {
     $('#invoice-amount').value = '25';
     $('#contract-links').innerHTML = `${externalLink(`${config.explorer}/address/${config.router}`, `Invoice router ${short(config.router)} ↗`)}${externalLink(`${config.explorer}/address/${config.token.address}`, `${config.token.symbol} contract ${short(config.token.address)} ↗`)}${externalLink('https://docs.pharos.xyz/getting-started/network/atlantic-testnet', 'Network & testnet funding ↗')}`;
     renderEvidence();
+    loadChain();
     await refreshWallet({ invalidatePlan: false });
     wallet.subscribe(() => refreshWallet().catch(() => {}));
     renderHistory();

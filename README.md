@@ -19,13 +19,14 @@ Treasury Copilot is an invoice payment desk with an AI agent at its core. It is 
 3. Reads wallet balance, token allowance and the invoice registry at a pinned block with the official **Pharos SkillEngine** Foundry read templates.
 4. Applies the user's policy (per-invoice cap, optional recipient allowlist), simulates the call on Atlantic RPC and prepares either an exact-amount approval or the invoice payment. The tool results decide what is offered.
 5. After the user signs, matches the receipt to the expected payer, router, calldata, amount and `InvoicePaid` event before calling a payment confirmed.
+6. The receipt ledger is read from the router's on-chain `InvoicePaid` events, so every visitor sees the same record, not just the browser that paid.
 
 **On-chain (Atlantic Testnet)**
 
 | | Address |
 |---|---|
-| `InvoicePaymentRouter` | [`0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`](https://atlantic.pharosscan.xyz/address/0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e) |
-| `TreasuryDemoToken` (tUSDC, valueless) | [`0x83f0e9a24160e91b670029f6c65f3734bb434503`](https://atlantic.pharosscan.xyz/address/0x83f0e9a24160e91b670029f6c65f3734bb434503) |
+| `InvoicePaymentRouter` | [`0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`](https://atlantic.pharosscan.xyz/address/0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e) · [source verified on Sourcify](https://repo.sourcify.dev/688689/0x5b95C09b2a2bF9e7Ee3662DbF76d9dB442844D4e) (exact match) |
+| `TreasuryDemoToken` (tUSDC, valueless) | [`0x83f0e9a24160e91b670029f6c65f3734bb434503`](https://atlantic.pharosscan.xyz/address/0x83f0e9a24160e91b670029f6c65f3734bb434503) · [source verified on Sourcify](https://repo.sourcify.dev/688689/0x83F0E9a24160E91b670029F6c65F3734bB434503) (exact match) |
 | Verified demo payment | [`0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be`](https://atlantic.pharosscan.xyz/tx/0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be) (9 checks, see `reports/treasury-run.json`) |
 
 **Safety**

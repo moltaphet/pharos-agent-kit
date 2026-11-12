@@ -155,7 +155,13 @@
 
       <section class="treasury-ledger" id="ledger" aria-labelledby="ledger-heading">
         <div class="treasury-section-bar"><h2 id="ledger-heading"><span class="treasury-index">02</span>Receipt ledger</h2><button class="treasury-text-button" id="show-proof" type="button" disabled>Verify recorded payment <span aria-hidden="true">↗</span></button></div>
-        <p class="treasury-section-description">This browser's payment history. Pending transactions stay here until their outcome is checked.</p>
+        <p class="treasury-section-description">Receipts are read straight from the router's on-chain <code>InvoicePaid</code> events, so anyone sees the same record. This browser also keeps pending transactions until their outcome is checked.</p>
+        <div class="treasury-chain-ledger" id="chain-ledger">
+          <div class="treasury-chain-bar"><h3>Recorded on Atlantic</h3><label class="treasury-toggle"><input type="checkbox" id="chain-mine" disabled> Only my wallet</label></div>
+          <p class="treasury-small" id="chain-note" role="status" aria-live="polite">Reading InvoicePaid events from Atlantic…</p>
+          <div id="chain-history"></div>
+        </div>
+        <h3 class="treasury-subheading">In this browser</h3>
         <div id="payment-history"><div class="treasury-ledger-empty"><span aria-hidden="true">—</span><p>No transactions from this browser yet.<br><span class="treasury-small">A verified payment becomes a receipt here.</span></p></div></div>
         <div id="proof-output" class="treasury-proof" hidden aria-live="polite"></div>
       </section>

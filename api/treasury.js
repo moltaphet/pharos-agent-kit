@@ -4,6 +4,8 @@ import { UserError } from '../lib/snapshot.js';
 import { selectorOf } from '../lib/keccak.js';
 import { readConfig, planInvoice, verifyInvoice } from '../lib/treasury/agent.js';
 import { readInvoiceText } from '../lib/treasury/intake.js';
+import { readHistory } from '../lib/treasury/history.js';
+import { treasuryRpc } from '../lib/treasury/chain.js';
 
 export default function route(req, res) {
   return handle(async () => {
@@ -18,6 +20,12 @@ export default function route(req, res) {
       const verification = await verifyInvoice({ payer: config.demo.payer, invoice: config.demo, hash: config.demo.hash }, { config });
       const report = await readFile(new URL('../reports/treasury-run.json', import.meta.url), 'utf8').then(JSON.parse).catch(() => null);
       return { demo: config.demo, verification, report };
+    }
+    if (action === 'history') {
+      const config = await readConfig();
+      if (!config.router) throw new UserError('The Treasury contracts are not configured yet.');
+      res.setHeader('Cache-Control', 'public, s-maxage=15, stale-while-revalidate=60');
+      return readHistory(config, { rpc: treasuryRpc(config), payer: req.query?.payer || null });
     }
     if (req.method !== 'POST') throw Object.assign(new UserError('Use POST for invoice planning or verification.'), { httpStatus: 405 });
     if (action === 'parse') return readInvoiceText(req.body?.text);

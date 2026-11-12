@@ -33,6 +33,7 @@ The agent is a bounded workflow, not an open-ended chatbot. Every decision rests
 | Documentation | Developer Docs MCP via `lib/treasury/agent.js` | Asks for the Atlantic chain ID, gas token and the approve/transferFrom procedure. Preparation stops unless the answer is cited and states chain 688689 and PHRS. |
 | Chain state | Pharos SkillEngine via `lib/treasury/tools.js` | Runs the official Foundry read templates (`cast balance`, `cast call`) at a pinned block: native balance, tUSDC balance, allowance, `paid(payer, invoiceId)`, router token, deployed code. These reads decide between *needs approval*, *ready*, *already paid* and *blocked*. |
 | Simulation | Atlantic RPC (`lib/treasury/chain.js`) | `eth_call` and gas estimate of the exact approval or payment, plus a fee check against the wallet's PHRS. |
+| Ledger | `lib/treasury/history.js` | Reads the router's `InvoicePaid` events (Atlantic's RPC allows 1,000 blocks per `eth_getLogs`, so the newest ~28 hours are scanned in parallel chunks and the response states the covered block range). Events from another token or a malformed log are ignored. |
 | Verification | `lib/treasury/chain.js` | After signing: payer, router address, calldata, native value, receipt status and the exact `InvoicePaid` event fields must match before a payment is called confirmed. |
 
 The final simulation and receipt verification use Atlantic JSON-RPC directly and are labelled **Atlantic RPC** in the UI, never Chain MCP (the hosted Chain MCP does not serve Atlantic).
@@ -44,7 +45,7 @@ The final simulation and receipt verification use Atlantic JSON-RPC directly and
 - `InvoicePaymentRouter`: immutable token, no balance, no owner. `payInvoice(bytes32 invoiceId, address recipient, uint256 amount)` pulls the token from the caller straight to the recipient with `transferFrom`, so it needs the payer's allowance. The invoice ID is the Keccak-256 of `pharos-treasury:v1:` plus the reference, and a reference can be paid once per payer. State is marked before the external call and rolled back if the transfer fails; a reentrancy guard and strict handling of token return data protect the transfer. Emits `InvoicePaid(payer, invoiceId, recipient, token, amount)`.
 - `TreasuryDemoToken`: six-decimal **tUSDC** with a public 100-token faucet. It has no monetary value and is not Circle USDC.
 
-Addresses and the verified proof payment are in `config/treasury.json` and `reports/treasury-run.json`. Deployment and the proof run use `scripts/treasury-deploy.mjs`, which refuses any network other than Atlantic, caps gas spend at 0.025 PHRS and checks nine conditions (receipt, sender, exact calldata, event, balances, router holding nothing, duplicate rejection).
+Both contracts' source is verified on Sourcify (exact match for creation and runtime code; links in `config/treasury.json`). Addresses and the verified proof payment are in `config/treasury.json` and `reports/treasury-run.json`. Deployment and the proof run use `scripts/treasury-deploy.mjs`, which refuses any network other than Atlantic, caps gas spend at 0.025 PHRS and checks nine conditions (receipt, sender, exact calldata, event, balances, router holding nothing, duplicate rejection).
 
 ## Safety
 

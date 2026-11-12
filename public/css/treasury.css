@@ -193,6 +193,15 @@
 .treasury-safety-grid h3 { font-size: var(--tr-body); margin-bottom: var(--tr-space-2); }
 .treasury-safety-grid p { font-size: var(--tr-small); color: var(--muted); line-height: 1.6; }
 .treasury-safety-note { margin-top: var(--tr-space-5); }
+.treasury-chain-ledger { margin-bottom: var(--tr-space-8); }
+.treasury-chain-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--tr-space-4); margin-bottom: var(--tr-space-2); }
+.treasury-chain-bar h3, .treasury-subheading { font-size: var(--tr-subtitle); font-weight: 650; }
+.treasury-subheading { margin: 0 0 var(--tr-space-3); }
+.treasury-toggle { display: inline-flex; align-items: center; gap: var(--tr-space-2); font-size: var(--tr-small); color: var(--muted); min-height: var(--tr-touch); }
+.treasury-toggle input { width: 1rem; height: 1rem; }
+.treasury-chain-ledger .treasury-history-list { margin-top: var(--tr-space-3); }
+.treasury-chain-ledger .treasury-small { margin-bottom: 0; }
+.treasury-you { font-family: var(--mono); font-size: var(--tr-xs); border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 0 var(--tr-space-2); margin-left: var(--tr-space-2); }
 @media (max-width: 1080px) { .treasury-journey { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 720px) {
   .treasury-journey { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
