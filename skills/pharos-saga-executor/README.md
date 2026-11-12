@@ -84,10 +84,10 @@ Found by following the imports from this folder and the files above, so the list
 
 ## Tests
 
-6 test files cover this task (run all of them with `npm test`):
+7 test files cover this task (run all of them with `npm test`):
 
 ```bash
-node --test test/saga.test.js test/saga-fidelity.test.js test/saga-fork.test.js test/saga-sandbox.test.js test/start-fork.test.js test/saga-testnet.test.js
+node --test test/saga.test.js test/saga-fidelity.test.js test/saga-fork.test.js test/saga-sandbox.test.js test/start-fork.test.js test/saga-testnet.test.js test/saga-vault-atlantic.test.js
 ```
 
 ## Verify it yourself

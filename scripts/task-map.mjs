@@ -30,7 +30,7 @@ export const TASK_MAP = [
   { n: 5, slug: 'threshold-guardian', folder: TASK_FOLDERS['threshold-guardian'], entries: ['lib/tasks/threshold-guardian.js', 'scripts/testnet-guardian.mjs'], data: ['reports/testnet-guardian.json', 'reports/testnet-runs.json'], page: ['public/js/tasks/threshold-guardian.js'],
     tests: ['guardian.test.js'] },
   { n: 6, slug: 'saga-executor', folder: TASK_FOLDERS['saga-executor'], entries: ['lib/tasks/saga-executor.js', 'lib/saga-sandbox.js', 'scripts/testnet-saga.mjs'], data: ['reports/saga-runs.json', 'reports/testnet-saga.json', 'contracts/Ledger.sol', 'config/saga-snapshot.json', 'scripts/build-saga-snapshot.mjs'], page: ['public/js/tasks/saga-executor.js'],
-    tests: ['saga.test.js', 'saga-fidelity.test.js', 'saga-fork.test.js', 'saga-sandbox.test.js', 'start-fork.test.js', 'saga-testnet.test.js'] },
+    tests: ['saga.test.js', 'saga-fidelity.test.js', 'saga-fork.test.js', 'saga-sandbox.test.js', 'start-fork.test.js', 'saga-testnet.test.js', 'saga-vault-atlantic.test.js'] },
   { n: 7, slug: 'arbitrage-scanner', folder: TASK_FOLDERS['arbitrage-scanner'], entries: ['lib/tasks/arbitrage-scanner.js', 'lib/arb-sandbox.js', 'scripts/arb-fork-run.mjs'], data: ['reports/arbitrage-runs.json', 'contracts/ArbLab.sol', 'contracts/ArbLab.bytecode.json'], page: ['public/js/tasks/arbitrage-scanner.js'],
     tests: ['arbitrage.test.js', 'amm.test.js', 'arb-fork.test.js', 'arb-sandbox.test.js'] },
   { n: 8, slug: 'dry-run-executor', folder: TASK_FOLDERS['dry-run-executor'], entries: ['lib/tasks/dry-run-executor.js', 'scripts/testnet-run.mjs'], data: ['reports/testnet-runs.json', 'contracts/Counter.sol'], page: ['public/js/tasks/dry-run-executor.js'],
