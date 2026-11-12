@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
-import { ROOT, SHARED_TESTS, TASK_MAP, allTestFiles, closure, dependencies, scriptsOf } from '../scripts/task-map.mjs';
+import { ROOT, SHARED_TESTS, STANDALONE_BUILDS, TASK_MAP, allTestFiles, closure, dependencies, scriptsOf } from '../scripts/task-map.mjs';
 import { REPO, buildAll } from '../scripts/make-submission.mjs';
 
 const files = buildAll();
@@ -24,7 +24,11 @@ test('every file the map names exists', () => {
 });
 
 test('every test file is claimed by exactly one task or by the shared platform', () => {
-  const claimed = [...TASK_MAP.flatMap((t) => t.tests), ...SHARED_TESTS];
+  const claimed = [...TASK_MAP.flatMap((t) => t.tests), ...SHARED_TESTS, ...STANDALONE_BUILDS.flatMap((build) => build.tests)];
+  for (const build of STANDALONE_BUILDS) {
+    assert.ok(existsSync(ROOT + build.page), build.page);
+    assert.ok(existsSync(ROOT + build.entry), build.entry);
+  }
   assert.deepEqual(claimed.filter((f, i) => claimed.indexOf(f) !== i), [], 'claimed twice');
   assert.deepEqual(allTestFiles().filter((f) => !claimed.includes(f)), [], 'a test file that no task claims: add it to scripts/task-map.mjs');
   assert.deepEqual(claimed.filter((f) => !allTestFiles().includes(f)), [], 'claimed but missing');

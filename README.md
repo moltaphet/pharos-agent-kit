@@ -6,6 +6,12 @@ Thirty working builds for the [Pharos Agent Arena](https://pharos-agent-arena.ve
 
 Per-task proof links, repo links and the requirements each task was built against: [SUBMISSION.md](SUBMISSION.md).
 
+## Treasury Copilot
+
+The separate `/treasury` page adds an invoice-to-payment workspace: policy checks, official Pharos tool evidence, unsigned wallet approval/payment and exact on-chain receipt verification. It uses custom, valueless tUSDC on Atlantic Testnet. Deployed on Pharos Atlantic Testnet (chain 688689): token `0x83f0e9a24160e91b670029f6c65f3734bb434503`, router `0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e`, one verified demo payment `0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be` ([explorer](https://atlantic.pharosscan.xyz/tx/0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be)). The agent uses the Developer Docs MCP and the official SkillEngine read templates, and every plan ends in a wallet signature. The public release and the capstone video are still pending.
+
+Run `npm ci` and `npm run web`, then open `http://localhost:3000/treasury`. Foundry `cast` is required for local SkillEngine reads. See [architecture and deployment instructions](docs/architecture-treasury-copilot.md) and [submission checklist](submission/31-agent-native-dapp.md).
+
 **Every task has its own folder** (the third column), and each folder has a README that maps the Arena's requirements to where they are met, lists the shared code it imports and the tests that cover it. Shared code stays in `lib/`, so every task runs from a plain clone. The links to paste into the Arena's form are in [submission/](submission/README.md).
 
 | # | Task | Run it | Real data? | Execution |

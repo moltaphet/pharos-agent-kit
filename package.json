@@ -14,7 +14,7 @@
     "pharos-x402-buy": "agents/x402-agent-buyer/pharos-buy.js"
   },
   "scripts": {
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "web": "node dev-server.js",
     "registry": "node scripts/scrape-tasks.mjs"
   },

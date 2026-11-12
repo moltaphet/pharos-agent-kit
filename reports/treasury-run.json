@@ -1,0 +1,232 @@
+{
+  "network": "Pharos Atlantic Testnet",
+  "chainId": 688689,
+  "createdAt": "2026-11-12T17:45:18.650Z",
+  "note": "tUSDC is a freely minted demonstration token with no monetary value; keys are absent from the app and this public report.",
+  "router": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+  "token": {
+    "address": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+    "symbol": "tUSDC",
+    "decimals": 6
+  },
+  "demo": {
+    "payer": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "recipient": "0x668a4ed309d79ae7a477664a3eb67e4c257aa039",
+    "reference": "DEMO-20261112174455",
+    "amount": "25",
+    "hash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be",
+    "invoiceId": "0x6eb2e71dd33365b40f71bdaf4b41ccf85b3117691514998ec4137afda61d5d06",
+    "amountRaw": "25000000"
+  },
+  "transactions": [
+    {
+      "label": "deploy TreasuryDemoToken",
+      "hash": "0x7c2a7810eca106be5058f430dd4b2bb88f0d85ac4d9e753952ace7a87241d1a0",
+      "blockNumber": 32685521,
+      "status": "success",
+      "gasUsed": 418470,
+      "gasLimit": 666657,
+      "gasPriceGwei": 10,
+      "costWei": "4184700000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": null,
+      "valueWei": "0",
+      "contractAddress": "0x83f0e9a24160e91b670029f6c65f3734bb434503"
+    },
+    {
+      "label": "deploy InvoicePaymentRouter",
+      "hash": "0x10b40cc8fd7d10199eeb569047f04230e0f8ab73a15df92095b917875891dba4",
+      "blockNumber": 32685527,
+      "status": "success",
+      "gasUsed": 317327,
+      "gasLimit": 506409,
+      "gasPriceGwei": 10,
+      "costWei": "3173270000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": null,
+      "valueWei": "0",
+      "contractAddress": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e"
+    },
+    {
+      "label": "mint 100 freely available tUSDC",
+      "hash": "0x5a9681ab2ee87d6f87a3627f24e859f5477ffae0f50eaf416def60197feea43a",
+      "blockNumber": 32685536,
+      "status": "success",
+      "gasUsed": 67607,
+      "gasLimit": 110759,
+      "gasPriceGwei": 10,
+      "costWei": "676070000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+      "valueWei": "0"
+    },
+    {
+      "label": "approve exactly 25 tUSDC",
+      "hash": "0xd52053141b3c5f168ca91caa6e389590195e0bb3013a67f3b8d85179deea165f",
+      "blockNumber": 32685542,
+      "status": "success",
+      "gasUsed": 46151,
+      "gasLimit": 76764,
+      "gasPriceGwei": 10,
+      "costWei": "461510000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+      "valueWei": "0"
+    },
+    {
+      "label": "pay Treasury demo invoice",
+      "hash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be",
+      "blockNumber": 32685547,
+      "status": "success",
+      "gasUsed": 88949,
+      "gasLimit": 186576,
+      "gasPriceGwei": 10,
+      "costWei": "889490000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+      "valueWei": "0"
+    }
+  ],
+  "simulation": {
+    "result": "0x"
+  },
+  "receipt": {
+    "blockHash": "0x0f86f545d4ddebdec74367e6f5cea827224b1d52c411ea49cf1a4c06c5f0ea24",
+    "blockNumber": "0x1f2bdeb",
+    "contractAddress": null,
+    "cumulativeGasUsed": "0x15b75",
+    "effectiveGasPrice": "0x2540be400",
+    "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "gasUsed": "0x15b75",
+    "logs": [
+      {
+        "address": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+        "blockHash": "0x0f86f545d4ddebdec74367e6f5cea827224b1d52c411ea49cf1a4c06c5f0ea24",
+        "blockNumber": "0x1f2bdeb",
+        "blockTimestamp": "0x6af5fb28",
+        "data": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "logIndex": "0x0",
+        "removed": false,
+        "topics": [
+          "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+          "0x0000000000000000000000000ec197b8a30543c93e521a6c3f2db5d110e60850",
+          "0x0000000000000000000000005b95c09b2a2bf9e7ee3662dbf76d9db442844d4e"
+        ],
+        "transactionHash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be",
+        "transactionIndex": "0x0"
+      },
+      {
+        "address": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+        "blockHash": "0x0f86f545d4ddebdec74367e6f5cea827224b1d52c411ea49cf1a4c06c5f0ea24",
+        "blockNumber": "0x1f2bdeb",
+        "blockTimestamp": "0x6af5fb28",
+        "data": "0x00000000000000000000000000000000000000000000000000000000017d7840",
+        "logIndex": "0x1",
+        "removed": false,
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x0000000000000000000000000ec197b8a30543c93e521a6c3f2db5d110e60850",
+          "0x000000000000000000000000668a4ed309d79ae7a477664a3eb67e4c257aa039"
+        ],
+        "transactionHash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be",
+        "transactionIndex": "0x0"
+      },
+      {
+        "address": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+        "blockHash": "0x0f86f545d4ddebdec74367e6f5cea827224b1d52c411ea49cf1a4c06c5f0ea24",
+        "blockNumber": "0x1f2bdeb",
+        "blockTimestamp": "0x6af5fb28",
+        "data": "0x00000000000000000000000083f0e9a24160e91b670029f6c65f3734bb43450300000000000000000000000000000000000000000000000000000000017d7840",
+        "logIndex": "0x2",
+        "removed": false,
+        "topics": [
+          "0x113d2b2392692b60560e5700477763d9b6aa328a1b07d47d9f38f0e4637e7d7b",
+          "0x0000000000000000000000000ec197b8a30543c93e521a6c3f2db5d110e60850",
+          "0x6eb2e71dd33365b40f71bdaf4b41ccf85b3117691514998ec4137afda61d5d06",
+          "0x000000000000000000000000668a4ed309d79ae7a477664a3eb67e4c257aa039"
+        ],
+        "transactionHash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be",
+        "transactionIndex": "0x0"
+      }
+    ],
+    "logsBloom": "0x00000000000000020000000000000000100000000000000000000000000000000000020000000000000000000000000000000000000000000040000000200000000000000000000000000008000000000000000000000080000000200000200000000000200000000000000000000000000000000000010000000010000000000000000002000000000000000000000000010000000000002000010000000000020000001000000010000800000000000000000000000000000000000000002000000002000000000000000000020000000000000000000010000000000000000010000000100000000000200000000000000000000000000000000000000000",
+    "status": "0x1",
+    "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+    "transactionHash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be",
+    "transactionIndex": "0x0",
+    "type": "0x0"
+  },
+  "event": {
+    "address": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+    "blockHash": "0x0f86f545d4ddebdec74367e6f5cea827224b1d52c411ea49cf1a4c06c5f0ea24",
+    "blockNumber": "0x1f2bdeb",
+    "blockTimestamp": "0x6af5fb28",
+    "data": "0x00000000000000000000000083f0e9a24160e91b670029f6c65f3734bb43450300000000000000000000000000000000000000000000000000000000017d7840",
+    "logIndex": "0x2",
+    "removed": false,
+    "topics": [
+      "0x113d2b2392692b60560e5700477763d9b6aa328a1b07d47d9f38f0e4637e7d7b",
+      "0x0000000000000000000000000ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "0x6eb2e71dd33365b40f71bdaf4b41ccf85b3117691514998ec4137afda61d5d06",
+      "0x000000000000000000000000668a4ed309d79ae7a477664a3eb67e4c257aa039"
+    ],
+    "transactionHash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be",
+    "transactionIndex": "0x0"
+  },
+  "balances": {
+    "before": {
+      "payer": "0",
+      "recipient": "0"
+    },
+    "after": {
+      "payer": "75000000",
+      "recipient": "25000000"
+    }
+  },
+  "duplicate": {
+    "blocked": true,
+    "revertData": "0xd70a0e30"
+  },
+  "checks": [
+    {
+      "id": "network",
+      "ok": true
+    },
+    {
+      "id": "receipt",
+      "ok": true
+    },
+    {
+      "id": "sender-and-router",
+      "ok": true
+    },
+    {
+      "id": "exact-call",
+      "ok": true
+    },
+    {
+      "id": "event",
+      "ok": true
+    },
+    {
+      "id": "recipient-gained-exact-amount",
+      "ok": true
+    },
+    {
+      "id": "payer-mint-minus-payment",
+      "ok": true
+    },
+    {
+      "id": "router-held-no-tokens",
+      "ok": true
+    },
+    {
+      "id": "duplicate-blocked",
+      "ok": true
+    }
+  ],
+  "budget": {
+    "limitWei": "25000000000000000",
+    "spentThisRunWei": "9385040000000000"
+  }
+}

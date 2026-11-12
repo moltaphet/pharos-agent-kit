@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Treasury Copilot · Pharos Agent Kit</title>
+  <meta name="description" content="An agent-guided payment desk on Pharos: review an invoice, check its policy, sign in your wallet, and verify its on-chain receipt.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f5fe0'/%3E%3Cpath d='M10 9h12M16 9v15M11 24h10' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/treasury.css">
+</head>
+<body class="treasury-page">
+  <a class="skip" href="#treasury-main">Skip to payment workspace</a>
+  <header class="treasury-header">
+    <a class="brand" href="/"><span class="logo" aria-hidden="true"></span>Pharos Agent Kit</a>
+    <nav class="treasury-header-nav" aria-label="Site">
+      <a href="/">Agent library</a>
+      <a href="https://github.com/moltaphet/pharos-agent-kit" target="_blank" rel="noopener">Source ↗</a>
+      <button class="treasury-icon-button" id="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.2A8.6 8.6 0 0 1 9.8 4a8.6 8.6 0 1 0 10.2 10.2Z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <div class="treasury-layout">
+    <aside class="treasury-sidebar" aria-label="Treasury navigation">
+      <a class="treasury-product" href="/treasury"><span class="treasury-product-mark" aria-hidden="true">T</span><span>Treasury<br><strong>Copilot</strong></span></a>
+      <nav aria-label="Treasury sections">
+        <a class="treasury-side-link" href="#workspace" aria-current="page"><span aria-hidden="true">01</span>Payment workspace</a>
+        <a class="treasury-side-link" href="#ledger"><span aria-hidden="true">02</span>Receipt ledger</a>
+        <a class="treasury-side-link" href="#how-it-works"><span aria-hidden="true">03</span>How it works</a>
+      </nav>
+      <div class="treasury-sidebar-note">
+        <span class="treasury-label">YOUR WALLET, YOUR SIGNATURE</span>
+        <p>The agent checks and prepares. You approve each transaction in your wallet.</p>
+      </div>
+      <a class="treasury-task-link" href="https://pharos-agent-arena.vercel.app/tasks/agent-native-dapp" target="_blank" rel="noopener">Agent-Native dApp brief ↗</a>
+    </aside>
+
+    <main class="treasury-main" id="treasury-main" tabindex="-1">
+      <div class="treasury-intro">
+        <div>
+          <p class="treasury-label">PHAROS / PAYMENT DESK</p>
+          <h1>Every invoice.<br><span>Accounted for.</span></h1>
+          <p class="treasury-intro-copy">Turn an invoice into a checked payment, then an on-chain receipt. Let the copilot do the checking.</p>
+        </div>
+        <div class="treasury-wallet-box">
+          <span class="treasury-network" id="network-label">Loading network…</span>
+          <button class="treasury-button treasury-button-primary" id="connect-wallet" type="button" disabled>Connect wallet <span aria-hidden="true">↗</span></button>
+          <p id="wallet-detail" class="treasury-small">Or inspect the recorded example without a wallet.</p>
+          <button class="treasury-text-button" id="switch-network" type="button" hidden>Switch to Atlantic</button>
+        </div>
+      </div>
+
+      <div id="page-message" class="treasury-message" role="status" aria-live="polite" hidden></div>
+      <div id="page-error" class="treasury-message treasury-message-error" role="alert" hidden></div>
+
+      <section class="treasury-workspace" id="workspace" aria-labelledby="workspace-heading">
+        <div class="treasury-section-bar">
+          <h2 id="workspace-heading"><span class="treasury-index">01</span>Payment workspace</h2>
+          <button class="treasury-text-button" id="inspect-example" type="button" disabled>Inspect recorded invoice <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="treasury-workspace-grid">
+          <div class="treasury-invoice-panel">
+            <div class="treasury-panel-heading"><span class="treasury-label">THE REQUEST</span><span id="mode-label" class="treasury-small">Read-only until connected</span></div>
+            <form id="invoice-form">
+              <fieldset class="treasury-fields" id="invoice-fields">
+                <legend class="sr-only">Invoice and payment limits</legend>
+                <div class="treasury-field">
+                  <label for="invoice-reference">Invoice reference</label>
+                  <input id="invoice-reference" name="reference" type="text" maxlength="40" placeholder="INV-2026-001" autocomplete="off" required aria-describedby="reference-hint">
+                  <p class="treasury-hint" id="reference-hint">A unique reference for this payer. Recorded on chain once.</p>
+                </div>
+                <div class="treasury-field">
+                  <label for="invoice-recipient">Recipient wallet</label>
+                  <input id="invoice-recipient" name="recipient" type="text" placeholder="0x…" spellcheck="false" autocomplete="off" required aria-describedby="recipient-hint">
+                  <p class="treasury-hint" id="recipient-hint">Confirm the full address with the recipient.</p>
+                </div>
+                <div class="treasury-field">
+                  <label for="invoice-amount">Amount</label>
+                  <div class="treasury-amount-input"><input id="invoice-amount" name="amount" type="text" inputmode="decimal" pattern="[0-9]+(\.[0-9]{1,6})?" placeholder="25.00" autocomplete="off" required aria-describedby="amount-hint"><span id="amount-token">tUSDC</span></div>
+                  <p class="treasury-hint" id="amount-hint">Demonstration tokens on Atlantic Testnet, with no monetary value.</p>
+                </div>
+                <details class="treasury-policy" open>
+                  <summary>Payment limits <span class="treasury-small">Checked before approval</span></summary>
+                  <div class="treasury-field">
+                    <label for="policy-max">Maximum per invoice <span class="treasury-token-label">tUSDC</span></label>
+                    <input id="policy-max" name="maxAmount" type="text" inputmode="decimal" pattern="[0-9]+(\.[0-9]{1,6})?" value="100" autocomplete="off" required>
+                  </div>
+                  <div class="treasury-field">
+                    <label for="policy-allowlist">Allowed recipients <span class="treasury-small">Optional</span></label>
+                    <textarea id="policy-allowlist" name="allowlist" rows="2" placeholder="One 0x address per line" spellcheck="false" autocomplete="off" aria-describedby="allowlist-hint"></textarea>
+                    <p class="treasury-hint" id="allowlist-hint">Leave empty to allow any valid recipient. These are checks for this payment plan.</p>
+                  </div>
+                </details>
+              </fieldset>
+              <button class="treasury-button treasury-button-primary treasury-button-wide" id="review-invoice" type="submit" disabled>Review invoice <span aria-hidden="true">→</span></button>
+              <p class="treasury-hint treasury-form-note">Reviewing an invoice does not send a transaction.</p>
+            </form>
+          </div>
+
+          <section class="treasury-agent-panel" aria-labelledby="agent-heading">
+            <div class="treasury-panel-heading"><h3 id="agent-heading">Copilot review</h3><span class="treasury-agent-state" id="agent-state">Ready to inspect</span></div>
+            <div id="agent-output" aria-live="polite" aria-atomic="false">
+              <div class="treasury-agent-empty">
+                <svg class="treasury-review-mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 10h24v44H20zM26 22h12M26 29h12M26 36h6M13 17h7M44 47h7"/><path d="m36 42 3 3 7-8"/></svg>
+                <h4>A second pair of eyes.</h4>
+                <p>The copilot checks the invoice, payment limits, wallet balance and contract state before preparing anything to sign.</p>
+                <ol class="treasury-empty-steps"><li><span>01</span>Read the invoice</li><li><span>02</span>Check the chain and limits</li><li><span>03</span>Prepare for your signature</li></ol>
+              </div>
+            </div>
+            <div id="signing-area" class="treasury-signing-area" hidden>
+              <button class="treasury-button treasury-button-primary treasury-button-wide" id="sign-transaction" type="button" disabled>Review in wallet</button>
+              <p class="treasury-hint" id="signing-hint">Your wallet shows the transaction before you sign.</p>
+            </div>
+            <div class="treasury-funding" id="funding-area" hidden>
+              <div><span class="treasury-label">TRY WITH TEST TOKENS</span><p>Mint demonstration tUSDC to your connected wallet. You need a little testnet PHRS for gas.</p></div>
+              <button class="treasury-button treasury-button-secondary" id="mint-tokens" type="button">Mint test tokens</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="treasury-ledger" id="ledger" aria-labelledby="ledger-heading">
+        <div class="treasury-section-bar"><h2 id="ledger-heading"><span class="treasury-index">02</span>Receipt ledger</h2><button class="treasury-text-button" id="show-proof" type="button" disabled>Verify recorded payment <span aria-hidden="true">↗</span></button></div>
+        <p class="treasury-section-description">This browser's payment history. Pending transactions stay here until their outcome is checked.</p>
+        <div id="payment-history"><div class="treasury-ledger-empty"><span aria-hidden="true">—</span><p>No transactions from this browser yet.<br><span class="treasury-small">A verified payment becomes a receipt here.</span></p></div></div>
+        <div id="proof-output" class="treasury-proof" hidden aria-live="polite"></div>
+      </section>
+
+      <section class="treasury-explanation" id="how-it-works" aria-labelledby="how-heading">
+        <div class="treasury-section-bar"><h2 id="how-heading"><span class="treasury-index">03</span>A payment you can trace</h2></div>
+        <div class="treasury-explanation-grid">
+          <p>The agent prepares a payment from your invoice and live tool results. The router moves the demonstration token directly from your wallet to the recipient and records the reference. Your wallet keeps the signing authority.</p>
+          <dl><div><dt>One reference, one payment</dt><dd>Duplicate prevention is enforced by the contract, separately for each payer.</dd></div><div><dt>Evidence with every decision</dt><dd>Inspect the tool sources, policy checks and simulation before signing.</dd></div><div><dt>Confirmation from the chain</dt><dd>A successful receipt is matched to the expected payer, invoice, recipient and amount.</dd></div></dl>
+        </div>
+        <div class="treasury-contracts" id="contract-links"><span class="treasury-small">Contract addresses will appear when the configuration loads.</span></div>
+      </section>
+
+      <footer class="treasury-footer"><span>Treasury Copilot / Pharos Agent Kit</span><span>Atlantic Testnet · Demonstration tokens</span></footer>
+    </main>
+  </div>
+  <script type="module" src="js/treasury/main.js"></script>
+</body>
+</html>
