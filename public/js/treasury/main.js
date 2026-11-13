@@ -67,6 +67,7 @@ function syncControls() {
   $('#review-invoice').disabled = busy || !ready || !(payer());
   $('#invoice-fields').disabled = busy;
   $('#inspect-example').disabled = busy || !config?.demo?.payer;
+  $('#hero-inspect').disabled = busy || !config?.demo?.payer;
   $('#show-proof').disabled = busy || !config?.demo?.hash;
   $('#chain-mine').disabled = !connected;
   if (config) updateJourney();
@@ -151,6 +152,34 @@ async function loadChain() {
       : `No ${mine ? 'payments from your wallet' : 'payments'} found in ${range}. A payment appears here once it is mined.`;
   } catch (err) {
     if (token === chainToken) $('#chain-note').textContent = `Could not read on-chain receipts right now: ${err.message}`;
+  }
+}
+
+async function renderReceipt() {
+  if (!config?.demo?.hash) return;
+  const demo = config.demo;
+  $('#receipt-amount').textContent = demo.amount;
+  $('#receipt-from').textContent = demo.payer;
+  $('#receipt-to').textContent = demo.recipient;
+  $('#receipt-ref').textContent = demo.reference;
+  const link = safeUrl(`${config.explorer}/tx/${demo.hash}`);
+  if (link) $('#receipt-link').href = link;
+  try {
+    const proof = await api('proof');
+    const verified = proof.verification;
+    const lines = (verified.checks ?? []).filter((c) => c.ok).map((c) => c.message);
+    const done = new Map((proof.report?.checks ?? []).map((c) => [c.id, c.ok]));
+    if (done.get('recipient-gained-exact-amount')) lines.push('The recipient gained exactly this amount.');
+    if (done.get('router-held-no-tokens')) lines.push('The router kept no tokens.');
+    if (done.get('duplicate-blocked')) lines.push('Paying the same reference again was refused by the contract.');
+    $('#receipt-block').textContent = verified.blockNumber ? `block ${Number(verified.blockNumber).toLocaleString('en-US')}` : 'on Atlantic';
+    const list = $('#receipt-checks');
+    list.replaceChildren();
+    if (verified.status !== 'confirmed') { const li = document.createElement('li'); li.className = 'pending'; li.textContent = verified.message ?? 'The payment could not be confirmed right now.'; list.append(li); return; }
+    lines.forEach((text, index) => { const li = document.createElement('li'); li.textContent = text; li.style.setProperty('--i', String(index)); list.append(li); });
+  } catch (err) {
+    $('#receipt-block').textContent = 'unavailable';
+    $('#receipt-checks').innerHTML = `<li class="pending">${esc(err.message)}</li>`;
   }
 }
 
@@ -242,7 +271,7 @@ function renderHistory() {
   if (!config) return;
   const rows = ledger.read(config);
   if (!rows.length) {
-    $('#payment-history').innerHTML = '<div class="treasury-ledger-empty"><span aria-hidden="true">—</span><p>No transactions from this browser yet.<br><span class="treasury-small">A verified payment becomes a receipt here.</span></p></div>';
+    $('#payment-history').innerHTML = '<div class="treasury-ledger-empty"><p>No transactions from this browser yet.<br><span class="treasury-small">A verified payment becomes a receipt here.</span></p></div>';
     return;
   }
   $('#payment-history').innerHTML = `<ul class="treasury-history-list">${rows.map((row) => {
@@ -381,6 +410,12 @@ async function boot() {
   $('#mint-tokens').addEventListener('click', () => send('faucet', config.faucetTransaction).catch((err) => message(err.message, true)));
   $('#show-proof').addEventListener('click', showProof);
   $('#chain-mine').addEventListener('change', loadChain);
+  $('#hero-sample').addEventListener('click', () => {
+    $('#workspace').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    $('#intake').open = true;
+    $('#intake-sample').click();
+  });
+  $('#hero-inspect').addEventListener('click', () => { $('#workspace').scrollIntoView(); $('#inspect-example').click(); });
   $('#agent-output').addEventListener('change', (event) => { if (event.target.id === 'ack') syncControls(); });
   $('#chain-export').addEventListener('click', () => {
     const cell = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
@@ -439,6 +474,7 @@ async function boot() {
     $('#invoice-amount').value = '25';
     $('#contract-links').innerHTML = `${externalLink(`${config.explorer}/address/${config.router}`, `Invoice router ${short(config.router)} ↗`)}${externalLink(`${config.explorer}/address/${config.token.address}`, `${config.token.symbol} contract ${short(config.token.address)} ↗`)}${externalLink('https://docs.pharos.xyz/getting-started/network/atlantic-testnet', 'Network & testnet funding ↗')}`;
     renderEvidence();
+    renderReceipt();
     loadChain();
     await refreshWallet({ invalidatePlan: false });
     wallet.subscribe(() => refreshWallet().catch(() => {}));
