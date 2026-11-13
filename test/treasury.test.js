@@ -280,3 +280,10 @@ test('Ledger activity lists payments, user approvals and mints, and ignores allo
   assert.deepEqual(receipts.events.map((e) => e.kind), ['payment']);
   assert.equal(receipts.total, 1);
 });
+
+test('Invoice intake keeps a reference that merely starts with "No" and still reads "Invoice No. 42"', () => {
+  assert.equal(readInvoiceText(`Invoice NORTHWIND-2026-11 from Acme. Pay 25 tUSDC to ${recipient}`).fields.reference, 'NORTHWIND-2026-11');
+  assert.equal(readInvoiceText(`Invoice Number NOVEMBER-7. Pay 25 tUSDC to ${recipient}`).fields.reference, 'NOVEMBER-7');
+  assert.equal(readInvoiceText(`Invoice No. 42, total due 300 USDC, send to ${recipient}`).fields.reference, '42');
+  assert.equal(readInvoiceText(`Invoice number 42 total due 300 USDC to ${recipient}`).fields.reference, '42');
+});
