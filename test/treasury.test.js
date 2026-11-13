@@ -5,6 +5,7 @@ import { planInvoice, verifyInvoice } from '../lib/treasury/agent.js';
 import { createTreasuryTools } from '../lib/treasury/tools.js';
 import { readInvoiceText } from '../lib/treasury/intake.js';
 import { readHistory, decodePayment } from '../lib/treasury/history.js';
+import { inspectRecipient } from '../lib/treasury/recipient.js';
 import { createWallet } from '../public/js/treasury/wallet.js';
 import { createLedger } from '../public/js/treasury/storage.js';
 
@@ -212,4 +213,40 @@ test('A log for another token, or a malformed log, is not counted as a payment',
   assert.equal(decodePayment({ ...good, data: '0x' + addressWord(payer) + word(1) }, config.token.address), null);
   assert.equal(decodePayment({ ...good, topics: good.topics.slice(0, 3) }, config.token.address), null);
   assert.equal(decodePayment({ ...good, data: '0x1234' }, config.token.address), null);
+});
+
+const recipientRpc = ({ code = '0x', nonce = '0x0', balance = '0x0', logs = [] } = {}) => async (method) => ({
+  eth_getCode: code, eth_getTransactionCount: nonce, eth_getBalance: balance, eth_blockNumber: '0x2710', eth_getLogs: logs, eth_getBlockByNumber: { timestamp: '0x64' },
+})[method];
+
+test('Recipient inspection warns for contracts and unused addresses, and stays quiet for known ones', async () => {
+  const unused = await inspectRecipient(config, { recipient, payer, rpc: recipientRpc() });
+  assert.equal(unused.acknowledgement.required, true);
+  assert.deepEqual(unused.acknowledgement.reasons, ['unused-recipient']);
+  const contract = await inspectRecipient(config, { recipient, payer, rpc: recipientRpc({ code: '0x6001' }) });
+  assert.deepEqual(contract.acknowledgement.reasons, ['contract-recipient']);
+  const active = await inspectRecipient(config, { recipient, payer, rpc: recipientRpc({ nonce: '0x5', balance: '0xde0b6b3a7640000' }) });
+  assert.equal(active.acknowledgement.required, false);
+  assert.equal(active.paidBefore, 0);
+  assert.ok(active.advisories.some((entry) => entry.id === 'first-payment'));
+  await assert.rejects(() => inspectRecipient(config, { recipient, payer, rpc: async () => undefined }), /could not be read/);
+});
+
+test('A recipient this wallet has paid before is recognised and needs no confirmation', async () => {
+  const log = { address: config.router, blockNumber: '0x100', logIndex: '0x0', transactionHash: hash, topics: [PAYMENT_TOPIC, '0x' + addressWord(payer), '0x' + 'd'.repeat(64), '0x' + addressWord(recipient)], data: '0x' + addressWord(config.token.address) + word(5_000_000) };
+  const known = await inspectRecipient(config, { recipient, payer, rpc: recipientRpc({ logs: [log] }) });
+  assert.equal(known.paidBefore > 0, true);
+  assert.equal(known.acknowledgement.required, false);
+  assert.ok(known.advisories.some((entry) => entry.id === 'paid-before'));
+});
+
+test('The plan carries the recipient advisories and asks for confirmation when needed', async () => {
+  const rpc = async (method, params) => (['eth_getCode', 'eth_getTransactionCount', 'eth_getBalance', 'eth_blockNumber', 'eth_getLogs', 'eth_getBlockByNumber'].includes(method) ? recipientRpc()(method) : rpcPlan(method, params));
+  const plan = await planInvoice(input, { config, tools: tools(), docs, rpc });
+  assert.equal(plan.status, 'ready');
+  assert.equal(plan.acknowledgement.required, true);
+  assert.ok(plan.steps.some((step) => step.title === 'Inspect the recipient address'));
+  const unreadable = await planInvoice(input, { config, tools: tools(), docs, rpc: rpcPlan });
+  assert.equal(unreadable.status, 'ready');
+  assert.deepEqual(unreadable.acknowledgement.reasons, ['recipient-unreadable']);
 });

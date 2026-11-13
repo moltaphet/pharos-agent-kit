@@ -13,6 +13,8 @@ let walletChain = null;
 let inspecting = false;
 let plan = null;
 let revision = 0;
+let lastTrace = null;
+let chainEvents = [];
 let busy = false;
 const polls = new Set();
 const STATUS = { confirmed: 'Confirmed', reverted: 'Reverted', mismatch: 'Does not match', pending: 'Pending confirmation', 'awaiting-wallet': 'Wallet request unresolved', uncertain: 'Check wallet activity' };
@@ -22,6 +24,7 @@ async function api(action, body = null) {
   const response = await fetch(`/api/treasury?action=${encodeURIComponent(action)}`, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, ...body }) } : undefined);
   const result = await response.json().catch(() => null);
   if (!response.ok || !result?.ok) throw new Error(result?.error ?? `The server could not complete this request (HTTP ${response.status}).`);
+  lastTrace = result.trace ?? null;
   return result.data;
 }
 
@@ -71,12 +74,13 @@ function syncControls() {
   $('#wallet-detail').textContent = inspecting ? 'Inspecting the recorded payer. Connect your wallet to make your own payment.' : connected ? correctNetwork ? 'Your signatures stay in your wallet.' : 'Switch networks before requesting a signature.' : 'Or inspect the recorded example without a wallet.';
   $('#funding-area').hidden = !connected || inspecting || !config?.faucetTransaction;
   $('#mint-tokens').disabled = busy || !correctNetwork || unresolved || !ledger.available(config);
-  const canSign = plan && !inspecting && correctNetwork && !unresolved && ledger.available(config) && ['ready', 'needs-approval'].includes(plan.status);
+  const ackNeeded = Boolean(plan?.acknowledgement?.required) && !$('#ack')?.checked;
+  const canSign = plan && !inspecting && correctNetwork && !unresolved && !ackNeeded && ledger.available(config) && ['ready', 'needs-approval'].includes(plan.status);
   $('#sign-transaction').disabled = busy || !canSign;
   if (plan && ['ready', 'needs-approval'].includes(plan.status)) {
     $('#signing-area').hidden = false;
     $('#sign-transaction').textContent = plan.status === 'needs-approval' ? 'Approve exact amount in wallet ↗' : 'Pay invoice in wallet ↗';
-    $('#signing-hint').textContent = inspecting ? 'This is an inspection of the recorded payer. Connect your own wallet to sign.' : !connected ? 'Connect your wallet to sign this payment.' : !correctNetwork ? 'Switch your wallet to Atlantic Testnet before signing.' : unresolved ? 'An earlier transaction is unresolved. Check it in the receipt ledger first.' : !ledger.available(config) ? 'Enable browser storage before signing so pending transactions can be recovered.' : plan.status === 'needs-approval' ? 'First allow the router to use this exact amount of tUSDC. The invoice is reviewed again after approval.' : 'Check the recipient and amount in your wallet. Your signature submits this testnet payment.';
+    $('#signing-hint').textContent = ackNeeded && !inspecting && connected && correctNetwork ? 'Confirm the recipient above first. The agent asks because of what it found about this address.' : inspecting ? 'This is an inspection of the recorded payer. Connect your own wallet to sign.' : !connected ? 'Connect your wallet to sign this payment.' : !correctNetwork ? 'Switch your wallet to Atlantic Testnet before signing.' : unresolved ? 'An earlier transaction is unresolved. Check it in the receipt ledger first.' : !ledger.available(config) ? 'Enable browser storage before signing so pending transactions can be recovered.' : plan.status === 'needs-approval' ? 'First allow the router to use this exact amount of tUSDC. The invoice is reviewed again after approval.' : 'Check the recipient and amount in your wallet. Your signature submits this testnet payment.';
   }
 }
 
@@ -131,6 +135,8 @@ async function loadChain() {
     if (!response.ok || !result?.ok) throw new Error(result?.error ?? `HTTP ${response.status}`);
     if (token !== chainToken) return;
     const data = result.data;
+    chainEvents = data.events;
+    $('#chain-export').disabled = !data.events.length;
     const known = new Map(ledger.read(config).filter((row) => row.invoice?.invoiceId).map((row) => [row.invoice.invoiceId, row.invoice.reference]));
     const rows = data.events.map((event) => {
       const yours = account && event.payer === account.toLowerCase();
@@ -177,8 +183,21 @@ function renderPlan(result) {
   const steps = (result.steps ?? []).map((step) => `<li><span class="treasury-tool-source">${esc(step.source ?? step.tool)} · ${esc(step.status ?? 'completed')}</span><strong>${esc(step.title ?? step.tool)}</strong><p>${esc(typeof step.detail === 'object' ? JSON.stringify(step.detail) : step.detail ?? '')}</p></li>`).join('');
   const docs = result.docs;
   const badges = result.steps?.length ? `<div class="treasury-badges" aria-label="Tools the agent used">${result.steps.map((step) => `<span class="treasury-badge ${step.status === 'passed' ? 'passed' : ''}">${esc(step.tool)}</span>`).join('')}</div>` : '';
+  const advisoryList = (result.advisories ?? []).map((item) => `<li class="${item.level === 'warn' ? 'warn' : 'note'}"><span class="treasury-advice-mark" aria-hidden="true">${item.level === 'warn' ? '!' : 'i'}</span><span><span class="sr-only">${item.level === 'warn' ? 'Warning: ' : 'Note: '}</span>${esc(item.message)}</span></li>`).join('');
+  const ack = result.acknowledgement?.required && ['ready', 'needs-approval'].includes(result.status) ? '<label class="treasury-ack"><input type="checkbox" id="ack"> I confirmed this recipient address with them.</label>' : '';
+  const grouped = new Map();
+  for (const call of (lastTrace?.calls ?? []).filter((entry) => ['mcp', 'rpc', 'skill'].includes(entry.kind))) {
+    const label = call.kind === 'mcp' ? call.server : call.kind === 'skill' ? 'SkillEngine' : 'Atlantic RPC';
+    const key = `${label}|${call.tool ?? call.title ?? ''}`;
+    const entry = grouped.get(key) ?? { label, tool: call.tool ?? call.title ?? '', count: 0, ms: 0 };
+    entry.count += 1;
+    entry.ms += Number(call.ms) || 0;
+    grouped.set(key, entry);
+  }
+  const calls = [...grouped.values()];
+  const traceHtml = calls.length ? `<details class="treasury-details"><summary>Tool calls · ${(lastTrace?.calls ?? []).filter((entry) => ['mcp', 'rpc', 'skill'].includes(entry.kind)).length} · ${esc(lastTrace.ms)} ms</summary><table class="treasury-trace"><thead><tr><th>Tool</th><th>Call</th><th>ms</th></tr></thead><tbody>${calls.map((call) => `<tr><td>${esc(call.label)}</td><td>${esc(call.tool)}${call.count > 1 ? ` ×${call.count}` : ''}</td><td>${esc(call.ms)}</td></tr>`).join('')}</tbody></table></details>` : '';
   const sources = (docs?.sources ?? []).map((source) => `<li>${externalLink(source.url ?? source.href, source.title ?? source.url ?? 'Documentation source')}</li>`).join('');
-  $('#agent-output').innerHTML = `<div class="treasury-decision"><h4>${esc(heading)}</h4><p>${esc(text)}</p></div><div class="treasury-decision-amount">${esc(inv.amount ?? '—')}<span>${esc(config.token.symbol)}</span></div><p class="treasury-hint">To ${esc(inv.recipient ?? '—')}<br>Reference ${esc(inv.reference ?? '—')}</p>${badges}${checks ? `<ul class="treasury-checks">${checks}</ul>` : ''}${steps ? `<details class="treasury-details" open><summary>Agent evidence · ${result.steps.length} steps</summary><ol class="treasury-tool-list">${steps}</ol></details>` : ''}${docs ? `<details class="treasury-details"><summary>Documentation behind the plan</summary><p class="treasury-doc-answer">${esc(docs.answer ?? 'No documentation answer was returned.')}</p>${sources ? `<ul class="treasury-doc-sources">${sources}</ul>` : ''}</details>` : ''}`;
+  $('#agent-output').innerHTML = `<div class="treasury-decision"><h4>${esc(heading)}</h4><p>${esc(text)}</p></div><div class="treasury-decision-amount">${esc(inv.amount ?? '—')}<span>${esc(config.token.symbol)}</span></div><p class="treasury-hint">To ${esc(inv.recipient ?? '—')}<br>Reference ${esc(inv.reference ?? '—')}</p>${badges}${checks ? `<ul class="treasury-checks">${checks}</ul>` : ''}${advisoryList ? `<ul class="treasury-advice">${advisoryList}</ul>${ack}` : ''}${steps ? `<details class="treasury-details" open><summary>Agent evidence · ${result.steps.length} steps</summary><ol class="treasury-tool-list">${steps}</ol></details>` : ''}${traceHtml}${docs ? `<details class="treasury-details"><summary>Documentation behind the plan</summary><p class="treasury-doc-answer">${esc(docs.answer ?? 'No documentation answer was returned.')}</p>${sources ? `<ul class="treasury-doc-sources">${sources}</ul>` : ''}</details>` : ''}`;
   $('#agent-state').textContent = { ready: 'Checks passed', blocked: 'Blocked', 'needs-approval': 'Needs approval', 'already-paid': 'Already recorded' }[result.status] ?? 'Review incomplete';
   syncControls();
 }
@@ -362,6 +381,17 @@ async function boot() {
   $('#mint-tokens').addEventListener('click', () => send('faucet', config.faucetTransaction).catch((err) => message(err.message, true)));
   $('#show-proof').addEventListener('click', showProof);
   $('#chain-mine').addEventListener('change', loadChain);
+  $('#agent-output').addEventListener('change', (event) => { if (event.target.id === 'ack') syncControls(); });
+  $('#chain-export').addEventListener('click', () => {
+    const cell = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
+    const rows = [['time_utc', 'block', 'transaction', 'payer', 'recipient', 'amount', 'token', 'invoice_id_hash']].concat(chainEvents.map((e) => [e.timestamp ? new Date(e.timestamp * 1000).toISOString() : '', e.blockNumber, e.hash, e.payer, e.recipient, amountText(e.amountRaw, config.token.decimals), config.token.symbol, e.invoiceId]));
+    const blob = new Blob([rows.map((row) => row.map(cell).join(',')).join('\n') + '\n'], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `treasury-receipts-atlantic-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  });
   $('#intake-read').addEventListener('click', async () => {
     const box = $('#intake-result');
     box.hidden = false;

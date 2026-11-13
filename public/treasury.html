@@ -157,7 +157,7 @@
         <div class="treasury-section-bar"><h2 id="ledger-heading"><span class="treasury-index">02</span>Receipt ledger</h2><button class="treasury-text-button" id="show-proof" type="button" disabled>Verify recorded payment <span aria-hidden="true">↗</span></button></div>
         <p class="treasury-section-description">Receipts are read straight from the router's on-chain <code>InvoicePaid</code> events, so anyone sees the same record. This browser also keeps pending transactions until their outcome is checked.</p>
         <div class="treasury-chain-ledger" id="chain-ledger">
-          <div class="treasury-chain-bar"><h3>Recorded on Atlantic</h3><label class="treasury-toggle"><input type="checkbox" id="chain-mine" disabled> Only my wallet</label></div>
+          <div class="treasury-chain-bar"><h3>Recorded on Atlantic</h3><div class="treasury-chain-tools"><button class="treasury-text-button" id="chain-export" type="button" disabled>Export CSV</button><label class="treasury-toggle"><input type="checkbox" id="chain-mine" disabled> Only my wallet</label></div></div>
           <p class="treasury-small" id="chain-note" role="status" aria-live="polite">Reading InvoicePaid events from Atlantic…</p>
           <div id="chain-history"></div>
         </div>
@@ -181,6 +181,7 @@
           <article><h3>No keys, anywhere</h3><p>The agent, the API and this page never hold or ask for a private key. The only signer is your own wallet.</p></article>
           <article><h3>You sign every move</h3><p>Funds move only through a transaction you approve in your wallet. Approvals are for the exact invoice amount, never unlimited.</p></article>
           <article><h3>Limits before approval</h3><p>A per-invoice cap and an optional recipient allowlist are checked first. A failed check prepares nothing to sign.</p></article>
+          <article><h3>It checks who gets paid</h3><p>The agent inspects the recipient on chain. A smart contract or a never-used address makes it ask you to confirm before signing unlocks.</p></article>
           <article><h3>Stopped, not guessed</h3><p>If documentation, chain reads or simulation fail, the agent stops with a clear reason. Unknown outcomes are saved and never retried automatically.</p></article>
           <article><h3>One reference, one payment</h3><p>The router refuses a repeated invoice reference for the same payer, and holds no balance of its own.</p></article>
           <article><h3>Verified from the chain</h3><p>A payment counts only when the receipt matches payer, router, calldata, amount and the exact on-chain event.</p></article>
