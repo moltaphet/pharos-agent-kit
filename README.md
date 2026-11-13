@@ -20,7 +20,7 @@ Treasury Copilot is an invoice payment desk with an AI agent at its core. It is 
 4. Inspects the recipient on chain: smart contract or plain wallet, whether the address has ever been used, and whether this wallet paid it before. A contract or a never-used address makes the agent ask for confirmation before signing unlocks.
 5. Applies the user's policy (per-invoice cap, optional recipient allowlist), simulates the call on Atlantic RPC and prepares either an exact-amount approval or the invoice payment. The tool results decide what is offered, and the page lists every tool call with its timing.
 6. After the user signs, matches the receipt to the expected payer, router, calldata, amount and `InvoicePaid` event before calling a payment confirmed.
-7. The receipt ledger is read from the router's on-chain `InvoicePaid` events, so every visitor sees the same record, not just the browser that paid, and it can be exported as CSV.
+7. The receipt ledger shows the latest 10 transactions (invoice payments, approvals and test-token mints), read straight from the chain, so every visitor sees the same record, not just the browser that paid. It can be exported as CSV. `scripts/treasury-seed.mjs` made 9 real transactions (8 invoice payments and one exact-amount approval) so the ledger has history; the report is in `reports/treasury-seed.json`.
 
 **On-chain (Atlantic Testnet)**
 

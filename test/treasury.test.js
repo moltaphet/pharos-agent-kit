@@ -4,7 +4,7 @@ import { validateInvoice, paymentData, PAYMENT_TOPIC, addressWord, word } from '
 import { planInvoice, verifyInvoice } from '../lib/treasury/agent.js';
 import { createTreasuryTools } from '../lib/treasury/tools.js';
 import { readInvoiceText } from '../lib/treasury/intake.js';
-import { readHistory, decodePayment } from '../lib/treasury/history.js';
+import { readHistory, decodePayment, APPROVAL_TOPIC, TRANSFER_TOPIC } from '../lib/treasury/history.js';
 import { inspectRecipient } from '../lib/treasury/recipient.js';
 import { createWallet } from '../public/js/treasury/wallet.js';
 import { createLedger } from '../public/js/treasury/storage.js';
@@ -249,4 +249,31 @@ test('The plan carries the recipient advisories and asks for confirmation when n
   const unreadable = await planInvoice(input, { config, tools: tools(), docs, rpc: rpcPlan });
   assert.equal(unreadable.status, 'ready');
   assert.deepEqual(unreadable.acknowledgement.reasons, ['recipient-unreadable']);
+});
+
+test('Ledger activity lists payments, user approvals and mints, and ignores allowance bookkeeping', async () => {
+  const hist = { ...config, deployment: { router: { blockNumber: 7000 } } };
+  const pad = (a) => '0x' + addressWord(a);
+  const tokenLog = (block, hashSuffix, topics, amount) => ({ address: config.token.address, blockNumber: '0x' + block.toString(16), logIndex: '0x0', transactionHash: '0x' + hashSuffix.repeat(64), topics, data: '0x' + word(amount) });
+  const paymentLog = { address: config.router, blockNumber: '0x1bbc', logIndex: '0x2', transactionHash: '0x' + 'b'.repeat(64), topics: [PAYMENT_TOPIC, pad(payer), '0x' + 'e'.repeat(64), pad(recipient)], data: '0x' + addressWord(config.token.address) + word(5_000_000) };
+  const logs = [
+    tokenLog(7000, 'a', [TRANSFER_TOPIC, '0x' + '0'.repeat(64), pad(payer)], 100_000_000), // mint
+    tokenLog(7100, 'c', [APPROVAL_TOPIC, pad(payer), pad(config.router)], 5_000_000), // user approval
+    tokenLog(7100, 'b', [TRANSFER_TOPIC, pad(payer), pad(recipient)], 5_000_000), // part of the payment
+    tokenLog(7100, 'b', [APPROVAL_TOPIC, pad(payer), pad(config.router)], 0), // allowance used up inside the payment
+    paymentLog,
+    tokenLog(7150, 'd', [APPROVAL_TOPIC, pad(payer), pad(recipient)], 1), // approval for someone else
+  ];
+  const rpc = async (method, params) => {
+    if (method === 'eth_blockNumber') return '0x1c20'; // 7200
+    if (method === 'eth_getBlockByNumber') return { timestamp: '0x64' };
+    assert.deepEqual(params[0].address, [config.router, config.token.address]);
+    return logs.filter((l) => Number(BigInt(l.blockNumber)) >= Number(BigInt(params[0].fromBlock)) && Number(BigInt(l.blockNumber)) <= Number(BigInt(params[0].toBlock)));
+  };
+  const result = await readHistory(hist, { rpc, activity: true, window: 5000 });
+  assert.deepEqual(result.events.map((e) => e.kind).sort(), ['approval', 'mint', 'payment']);
+  assert.equal(result.events.find((e) => e.kind === 'mint').payer, payer);
+  assert.equal(result.events.find((e) => e.kind === 'approval').amountRaw, '5000000');
+  const mine = await readHistory(hist, { rpc, activity: true, window: 5000, payer: recipient });
+  assert.equal(mine.total, 0);
 });

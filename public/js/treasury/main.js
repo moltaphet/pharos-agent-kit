@@ -139,17 +139,24 @@ async function loadChain() {
     chainEvents = data.events;
     $('#chain-export').disabled = !data.events.length;
     const known = new Map(ledger.read(config).filter((row) => row.invoice?.invoiceId).map((row) => [row.invoice.invoiceId, row.invoice.reference]));
+    const KIND_LABEL = { payment: 'Invoice payment', approval: 'Approval', mint: 'Test-token mint' };
     const rows = data.events.map((event) => {
       const yours = account && event.payer === account.toLowerCase();
-      const reference = known.get(event.invoiceId);
       const when = event.timestamp ? new Date(event.timestamp * 1000).toLocaleString() : `block ${event.blockNumber.toLocaleString()}`;
-      return `<li class="treasury-history-item"><div class="treasury-history-row"><strong>${esc(amountText(event.amountRaw, config.token.decimals))} ${esc(config.token.symbol)}${yours ? '<span class="treasury-you">YOUR PAYMENT</span>' : ''}</strong><span class="treasury-status treasury-status-confirmed">On-chain</span></div><div class="treasury-history-meta"><span>From ${esc(short(event.payer))}</span><span>To ${esc(short(event.recipient))}</span><span>${reference ? `Reference ${esc(reference)}` : `Reference hash ${esc(short(event.invoiceId))}`}</span><time>${esc(when)}</time></div><div class="treasury-history-actions">${externalLink(`${config.explorer}/tx/${event.hash}`, `${short(event.hash)} ↗`, 'treasury-text-button')}</div></li>`;
+      const amount = `${amountText(event.amountRaw, config.token.decimals)} ${config.token.symbol}`;
+      const head = event.kind === 'mint' ? `+${amount}` : amount;
+      const reference = config.references?.[event.invoiceId] ?? known.get(event.invoiceId);
+      const meta = event.kind === 'payment'
+        ? `<span>From ${esc(short(event.payer))}</span><span>To ${esc(short(event.recipient))}</span><span>${reference ? `Reference ${esc(reference)}` : `Reference hash ${esc(short(event.invoiceId))}`}</span>`
+        : event.kind === 'approval' ? `<span>Wallet ${esc(short(event.payer))}</span><span>Router may spend up to this amount</span>`
+        : `<span>To ${esc(short(event.payer))}</span><span>Free demonstration tokens</span>`;
+      return `<li class="treasury-history-item"><div class="treasury-history-row"><strong>${esc(head)}${yours ? '<span class="treasury-you">YOUR WALLET</span>' : ''}</strong><span class="treasury-kind treasury-kind-${esc(event.kind)}">${esc(KIND_LABEL[event.kind] ?? event.kind)}</span></div><div class="treasury-history-meta">${meta}<time>${esc(when)}</time></div><div class="treasury-history-actions">${externalLink(`${config.explorer}/tx/${event.hash}`, `${short(event.hash)} ↗`, 'treasury-text-button')}</div></li>`;
     });
     $('#chain-history').innerHTML = rows.length ? `<ul class="treasury-history-list">${rows.join('')}</ul>` : '';
     const range = `blocks ${data.fromBlock?.toLocaleString() ?? '?'} to ${data.toBlock.toLocaleString()}`;
     $('#chain-note').textContent = rows.length
-      ? `Showing ${rows.length} of ${data.total} payments found in ${range}${data.complete ? '' : ' (the scan stopped early; newer blocks were read first)'}. Read directly from the router's events.`
-      : `No ${mine ? 'payments from your wallet' : 'payments'} found in ${range}. A payment appears here once it is mined.`;
+      ? `Latest ${rows.length} of ${data.total} transactions found in ${range}${data.complete ? '' : ' (the scan stopped early; newer blocks were read first)'}. Payments, approvals and mints, read directly from the chain.`
+      : `No ${mine ? 'transactions from your wallet' : 'transactions'} found in ${range}. A payment appears here once it is mined.`;
   } catch (err) {
     if (token === chainToken) $('#chain-note').textContent = `Could not read on-chain receipts right now: ${err.message}`;
   }
@@ -419,7 +426,7 @@ async function boot() {
   $('#agent-output').addEventListener('change', (event) => { if (event.target.id === 'ack') syncControls(); });
   $('#chain-export').addEventListener('click', () => {
     const cell = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
-    const rows = [['time_utc', 'block', 'transaction', 'payer', 'recipient', 'amount', 'token', 'invoice_id_hash']].concat(chainEvents.map((e) => [e.timestamp ? new Date(e.timestamp * 1000).toISOString() : '', e.blockNumber, e.hash, e.payer, e.recipient, amountText(e.amountRaw, config.token.decimals), config.token.symbol, e.invoiceId]));
+    const rows = [['time_utc', 'kind', 'block', 'transaction', 'wallet', 'recipient', 'amount', 'token', 'reference', 'invoice_id_hash']].concat(chainEvents.map((e) => [e.timestamp ? new Date(e.timestamp * 1000).toISOString() : '', e.kind, e.blockNumber, e.hash, e.payer, e.recipient ?? '', amountText(e.amountRaw, config.token.decimals), config.token.symbol, config.references?.[e.invoiceId] ?? '', e.invoiceId ?? '']));
     const blob = new Blob([rows.map((row) => row.map(cell).join(',')).join('\n') + '\n'], { type: 'text/csv' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);

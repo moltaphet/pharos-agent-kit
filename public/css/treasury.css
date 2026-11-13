@@ -255,6 +255,10 @@
 .treasury-status { font-family: var(--data); font-size: .7rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .treasury-status-confirmed { color: var(--ok); }
 .treasury-status-reverted, .treasury-status-mismatch { color: var(--bad); }
+.treasury-kind { font-family: var(--data); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; border-radius: 999px; padding: .12rem .6rem; border: 1px solid var(--line-strong); color: var(--ink-soft); }
+.treasury-kind-payment { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
+.treasury-kind-approval { color: var(--blue); border-color: color-mix(in srgb, var(--blue) 40%, var(--line)); }
+.treasury-kind-mint { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); }
 .treasury-you { font-family: var(--data); font-size: .62rem; letter-spacing: .08em; background: var(--beam); color: var(--beam-ink); border-radius: 999px; padding: .1rem .5rem; margin-left: var(--s3); vertical-align: middle; }
 .treasury-ledger-empty { padding: var(--s5); background: var(--paper); border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); color: var(--ink-soft); font-size: .875rem; }
 .treasury-hash-form { display: flex; gap: var(--s3); margin-top: var(--s3); flex-wrap: wrap; align-items: end; }

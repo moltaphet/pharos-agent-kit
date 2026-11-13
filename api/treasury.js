@@ -25,7 +25,7 @@ export default function route(req, res) {
       const config = await readConfig();
       if (!config.router) throw new UserError('The Treasury contracts are not configured yet.');
       res.setHeader('Cache-Control', 'public, s-maxage=15, stale-while-revalidate=60');
-      return readHistory(config, { rpc: treasuryRpc(config), payer: req.query?.payer || null });
+      return readHistory(config, { rpc: treasuryRpc(config), payer: req.query?.payer || null, activity: true, limit: 10 });
     }
     if (req.method !== 'POST') throw Object.assign(new UserError('Use POST for invoice planning or verification.'), { httpStatus: 405 });
     if (action === 'parse') return readInvoiceText(req.body?.text);
