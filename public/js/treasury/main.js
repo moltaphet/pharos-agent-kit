@@ -131,7 +131,8 @@ async function loadChain() {
   const mine = Boolean(account) && $('#chain-mine').checked;
   $('#chain-note').textContent = 'Reading InvoicePaid events from Atlantic…';
   try {
-    const response = await fetch(`/api/treasury?action=history${mine ? `&payer=${encodeURIComponent(account)}` : ''}`);
+    const everything = $('#chain-all').checked;
+    const response = await fetch(`/api/treasury?action=history${everything ? '&all=1' : ''}${mine ? `&payer=${encodeURIComponent(account)}` : ''}`);
     const result = await response.json().catch(() => null);
     if (!response.ok || !result?.ok) throw new Error(result?.error ?? `HTTP ${response.status}`);
     if (token !== chainToken) return;
@@ -155,8 +156,8 @@ async function loadChain() {
     $('#chain-history').innerHTML = rows.length ? `<ul class="treasury-history-list">${rows.join('')}</ul>` : '';
     const range = `blocks ${data.fromBlock?.toLocaleString() ?? '?'} to ${data.toBlock.toLocaleString()}`;
     $('#chain-note').textContent = rows.length
-      ? `Latest ${rows.length} of ${data.total} transactions found in ${range}${data.complete ? '' : ' (the scan stopped early; newer blocks were read first)'}. Payments, approvals and mints, read directly from the chain.`
-      : `No ${mine ? 'transactions from your wallet' : 'transactions'} found in ${range}. A payment appears here once it is mined.`;
+      ? `Latest ${rows.length} of ${data.total} ${everything ? 'transactions (payments, approvals and mints)' : 'receipts'} found in ${range}${data.complete ? '' : ' (the scan stopped early; newer blocks were read first)'}. Read directly from the chain.`
+      : `No ${mine ? 'receipts from your wallet' : 'receipts'} found in ${range}. A payment appears here once it is mined.`;
   } catch (err) {
     if (token === chainToken) $('#chain-note').textContent = `Could not read on-chain receipts right now: ${err.message}`;
   }
@@ -417,6 +418,7 @@ async function boot() {
   $('#mint-tokens').addEventListener('click', () => send('faucet', config.faucetTransaction).catch((err) => message(err.message, true)));
   $('#show-proof').addEventListener('click', showProof);
   $('#chain-mine').addEventListener('change', loadChain);
+  $('#chain-all').addEventListener('change', loadChain);
   $('#hero-sample').addEventListener('click', () => {
     $('#workspace').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     $('#intake').open = true;

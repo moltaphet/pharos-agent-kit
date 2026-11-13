@@ -276,4 +276,7 @@ test('Ledger activity lists payments, user approvals and mints, and ignores allo
   assert.equal(result.events.find((e) => e.kind === 'approval').amountRaw, '5000000');
   const mine = await readHistory(hist, { rpc, activity: true, window: 5000, payer: recipient });
   assert.equal(mine.total, 0);
+  const receipts = await readHistory(hist, { rpc, activity: true, window: 5000, kinds: ['payment'] });
+  assert.deepEqual(receipts.events.map((e) => e.kind), ['payment']);
+  assert.equal(receipts.total, 1);
 });
