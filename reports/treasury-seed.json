@@ -1,7 +1,7 @@
 {
   "network": "Pharos Atlantic Testnet",
   "chainId": 688689,
-  "createdAt": "2026-11-13T07:35:08.811Z",
+  "createdAt": "2026-11-13T08:22:47.051Z",
   "note": "tUSDC is a freely minted demonstration token with no monetary value. Every payment was checked against its InvoicePaid event and the recipient balance.",
   "payer": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
   "router": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
@@ -78,6 +78,60 @@
       "amountRaw": "4750000",
       "hash": "0x19f480d47c38d5eb6398ab83aea3490e676b40e5c92ed117a99dfbd03e3c705f",
       "blockNumber": 32711984
+    },
+    {
+      "reference": "LEGAL-REVIEW-0318",
+      "invoiceId": "0xbd3a124fec78ee017f9f60d70919a6409bf8c6834272161a1d81ea62336163d0",
+      "recipient": "0x24c2b6da823edbe4d1e2a27cdb0969e15049a194",
+      "amount": "7.5",
+      "amountRaw": "7500000",
+      "hash": "0x3fc0dd6bb900ca8a477a94adef6638446951be66f2714b8cb1e4990c51110a97",
+      "blockNumber": 32713640
+    },
+    {
+      "reference": "CLOUD-CREDITS-NOV",
+      "invoiceId": "0xb529f40ee46ef040f03d8f56d8360ffeaadb2bf94708706e7e27720da554cf76",
+      "recipient": "0x2df63fc75424bca9539ebe1cfc50e22b680d1d7b",
+      "amount": "11",
+      "amountRaw": "11000000",
+      "hash": "0x1b463aa69d9ed624b490b53f12e1ccba160ae290749f6a315e1feb8087a77bc7",
+      "blockNumber": 32713649
+    },
+    {
+      "reference": "COMMUNITY-AMA-02",
+      "invoiceId": "0x4fea2dc489140a6c7b7321863a8e086bf5652529a99bef5b70e3c5223cb270fc",
+      "recipient": "0xb77a405ba2230adf02a27aaeb85c035eb11bedc5",
+      "amount": "2.25",
+      "amountRaw": "2250000",
+      "hash": "0xce9c0509786cd59824184bbfa18c96a921529e8fcf50bd75bcfe4385d42ca589",
+      "blockNumber": 32713658
+    },
+    {
+      "reference": "DOCS-BOUNTY-0931",
+      "invoiceId": "0x7d8b04ca06a1a290141fe3de3ec37daea30930f5e5eb296b05e5e5c86882f098",
+      "recipient": "0xa67fc4242992ac81f920cb55d185c5ef7bb84259",
+      "amount": "5",
+      "amountRaw": "5000000",
+      "hash": "0xe71dd431155e7d2ca65d827cbab141853e2fa3661537b236b51542b66da02b00",
+      "blockNumber": 32713667
+    },
+    {
+      "reference": "DESIGN-ASSETS-V2",
+      "invoiceId": "0x3a7c343e3c35d6542421161243b630c369e22df738eaac6ac3b76b05e4c9a256",
+      "recipient": "0x6ca8165e35f119a1a2e44bf5e9b1653b3065aa6e",
+      "amount": "9.25",
+      "amountRaw": "9250000",
+      "hash": "0x0c404f19b643c94778deebecd61956b50b6bccd9d97102a9e47c6d851ee35ea4",
+      "blockNumber": 32713676
+    },
+    {
+      "reference": "QA-SPRINT-14",
+      "invoiceId": "0xf1015fe25fb75ebc1f65d3ed5ac7619c2e955f95523a8ef219ce968ea086fb0e",
+      "recipient": "0xf404b8b1a0950968499019103c6c28341b764ff3",
+      "amount": "6",
+      "amountRaw": "6000000",
+      "hash": "0xd934b0ff868ff4f78282b8f391fb5b4cc70ad8583037644957fc24171620ed0b",
+      "blockNumber": 32713685
     }
   ],
   "transactions": [
@@ -197,10 +251,114 @@
       "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
       "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
       "valueWei": "0"
+    },
+    {
+      "label": "mint 100 test tUSDC",
+      "hash": "0x82d302c3ece565262a4df0c465b89073fb123e21dd304e7a97862f7f69970082",
+      "blockNumber": 32713625,
+      "status": "success",
+      "gasUsed": 33407,
+      "gasLimit": 56573,
+      "gasPriceGwei": 10,
+      "costWei": "334070000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+      "valueWei": "0"
+    },
+    {
+      "label": "approve exactly 41 tUSDC",
+      "hash": "0xa6993b5d10aa628a2061be90dd0b40d97d900fb3859cdf7b5a2062e4bc0e4c5a",
+      "blockNumber": 32713633,
+      "status": "success",
+      "gasUsed": 46151,
+      "gasLimit": 76764,
+      "gasPriceGwei": 10,
+      "costWei": "461510000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+      "valueWei": "0"
+    },
+    {
+      "label": "pay LEGAL-REVIEW-0318 (7.5 tUSDC)",
+      "hash": "0x3fc0dd6bb900ca8a477a94adef6638446951be66f2714b8cb1e4990c51110a97",
+      "blockNumber": 32713640,
+      "status": "success",
+      "gasUsed": 91274,
+      "gasLimit": 182595,
+      "gasPriceGwei": 10,
+      "costWei": "912740000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+      "valueWei": "0"
+    },
+    {
+      "label": "pay CLOUD-CREDITS-NOV (11 tUSDC)",
+      "hash": "0x1b463aa69d9ed624b490b53f12e1ccba160ae290749f6a315e1feb8087a77bc7",
+      "blockNumber": 32713649,
+      "status": "success",
+      "gasUsed": 91274,
+      "gasLimit": 182595,
+      "gasPriceGwei": 10,
+      "costWei": "912740000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+      "valueWei": "0"
+    },
+    {
+      "label": "pay COMMUNITY-AMA-02 (2.25 tUSDC)",
+      "hash": "0xce9c0509786cd59824184bbfa18c96a921529e8fcf50bd75bcfe4385d42ca589",
+      "blockNumber": 32713658,
+      "status": "success",
+      "gasUsed": 91274,
+      "gasLimit": 182595,
+      "gasPriceGwei": 10,
+      "costWei": "912740000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+      "valueWei": "0"
+    },
+    {
+      "label": "pay DOCS-BOUNTY-0931 (5 tUSDC)",
+      "hash": "0xe71dd431155e7d2ca65d827cbab141853e2fa3661537b236b51542b66da02b00",
+      "blockNumber": 32713667,
+      "status": "success",
+      "gasUsed": 91274,
+      "gasLimit": 182595,
+      "gasPriceGwei": 10,
+      "costWei": "912740000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+      "valueWei": "0"
+    },
+    {
+      "label": "pay DESIGN-ASSETS-V2 (9.25 tUSDC)",
+      "hash": "0x0c404f19b643c94778deebecd61956b50b6bccd9d97102a9e47c6d851ee35ea4",
+      "blockNumber": 32713676,
+      "status": "success",
+      "gasUsed": 91274,
+      "gasLimit": 182595,
+      "gasPriceGwei": 10,
+      "costWei": "912740000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+      "valueWei": "0"
+    },
+    {
+      "label": "pay QA-SPRINT-14 (6 tUSDC)",
+      "hash": "0xd934b0ff868ff4f78282b8f391fb5b4cc70ad8583037644957fc24171620ed0b",
+      "blockNumber": 32713685,
+      "status": "success",
+      "gasUsed": 88940,
+      "gasLimit": 186562,
+      "gasPriceGwei": 10,
+      "costWei": "889400000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+      "valueWei": "0"
     }
   ],
   "budget": {
     "limitWei": "20000000000000000",
-    "spentThisRunWei": "7739870000000000"
+    "spentThisRunWei": "6248680000000000"
   }
 }

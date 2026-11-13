@@ -24,6 +24,7 @@ if (!live && !process.argv.includes('--check')) {
 const INVOICES = [
   ['ACME-2026-114', '12.5'], ['DESIGN-RETAINER-NOV', '8'], ['AUDIT-0042', '15'], ['HOSTING-NOV-2026', '6.25'],
   ['GRANT-MILESTONE-2', '10'], ['TRANSLATION-0911', '4.5'], ['BOUNTY-1187', '9'], ['SUPPORT-OCT', '4.75'],
+  ['LEGAL-REVIEW-0318', '7.5'], ['CLOUD-CREDITS-NOV', '11'], ['COMMUNITY-AMA-02', '2.25'], ['DOCS-BOUNTY-0931', '5'], ['DESIGN-ASSETS-V2', '9.25'], ['QA-SPRINT-14', '6'],
 ];
 const raw = (amount) => { const [whole, fraction = ''] = amount.split('.'); return BigInt(whole) * 10n ** 6n + BigInt(fraction.padEnd(6, '0')); };
 const TOTAL = INVOICES.reduce((sum, [, amount]) => sum + raw(amount), 0n);
