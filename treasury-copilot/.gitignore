@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+.vercel
+contracts/out/
+contracts/cache/
+.env
+.env.*
+.env*.local
+.wallet/

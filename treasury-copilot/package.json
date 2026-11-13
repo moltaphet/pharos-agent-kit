@@ -1,0 +1,27 @@
+{
+  "name": "treasury-copilot",
+  "version": "1.0.0",
+  "description": "Treasury Copilot: an AI agent that checks every invoice before your wallet signs, live on Pharos Atlantic Testnet.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node dev-server.js",
+    "test": "node --test test/*.test.js",
+    "test:contracts": "forge test --root contracts --match-contract TreasuryTest -vv",
+    "deploy:check": "node scripts/treasury-deploy.mjs --check",
+    "deploy:atlantic": "node scripts/treasury-deploy.mjs --live",
+    "seed:check": "node scripts/treasury-seed.mjs --check",
+    "seed:atlantic": "node scripts/treasury-seed.mjs --live"
+  },
+  "dependencies": {
+    "@vercel/sandbox": "^3.9.0"
+  },
+  "overrides": {
+    "@vercel/cli-config": {
+      "zod": "4.6.7"
+    }
+  }
+}

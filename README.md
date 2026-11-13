@@ -38,6 +38,8 @@ Treasury Copilot is an invoice payment desk with an AI agent at its core. It is 
 - Failures stop the flow with a reason. Unknown submission outcomes are saved and never retried automatically.
 - The page ships with a strict Content-Security-Policy and related headers (`vercel.json`). Threat model: [SECURITY.md](SECURITY.md). CI runs the JavaScript suite and the contract tests on every push.
 
+**Standalone copy:** everything above, with its own `package.json`, tests, contracts and README, is also in [`treasury-copilot/`](treasury-copilot/). Open that folder to run and test just this product (`npm install && npm start`).
+
 **Run it**
 
 ```sh

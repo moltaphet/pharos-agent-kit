@@ -1,0 +1,80 @@
+{
+  "chainId": 688689,
+  "rpc": "https://atlantic.dplabs-internal.com",
+  "explorer": "https://atlantic.pharosscan.xyz",
+  "router": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e",
+  "token": {
+    "address": "0x83f0e9a24160e91b670029f6c65f3734bb434503",
+    "symbol": "tUSDC",
+    "decimals": 6
+  },
+  "deployment": {
+    "status": "deployed",
+    "note": "Deploy with node scripts/treasury-deploy.mjs --live. The demo token has no monetary value. No contract addresses or proof are fabricated.",
+    "token": {
+      "label": "deploy TreasuryDemoToken",
+      "hash": "0x7c2a7810eca106be5058f430dd4b2bb88f0d85ac4d9e753952ace7a87241d1a0",
+      "blockNumber": 32685521,
+      "status": "success",
+      "gasUsed": 418470,
+      "gasLimit": 666657,
+      "gasPriceGwei": 10,
+      "costWei": "4184700000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": null,
+      "valueWei": "0",
+      "contractAddress": "0x83f0e9a24160e91b670029f6c65f3734bb434503"
+    },
+    "router": {
+      "label": "deploy InvoicePaymentRouter",
+      "hash": "0x10b40cc8fd7d10199eeb569047f04230e0f8ab73a15df92095b917875891dba4",
+      "blockNumber": 32685527,
+      "status": "success",
+      "gasUsed": 317327,
+      "gasLimit": 506409,
+      "gasPriceGwei": 10,
+      "costWei": "3173270000000000",
+      "from": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+      "to": null,
+      "valueWei": "0",
+      "contractAddress": "0x5b95c09b2a2bf9e7ee3662dbf76d9db442844d4e"
+    },
+    "compiler": "0.8.24",
+    "evmVersion": "paris",
+    "createdAt": "2026-11-12T17:44:54.530Z"
+  },
+  "demo": {
+    "payer": "0x0ec197b8a30543c93e521a6c3f2db5d110e60850",
+    "recipient": "0x668a4ed309d79ae7a477664a3eb67e4c257aa039",
+    "reference": "DEMO-20261112174455",
+    "amount": "25",
+    "hash": "0x99e5b41aa03ebf7b7d42ab47265c01debffa38f0e409c62382fc7fc66451a4be"
+  },
+  "video": null,
+  "verification": {
+    "provider": "Sourcify",
+    "match": "exact_match",
+    "router": "https://repo.sourcify.dev/688689/0x5b95C09b2a2bF9e7Ee3662DbF76d9dB442844D4e",
+    "token": "https://repo.sourcify.dev/688689/0x83F0E9a24160E91b670029F6c65F3734bB434503"
+  },
+  "references": {
+    "0x6eb2e71dd33365b40f71bdaf4b41ccf85b3117691514998ec4137afda61d5d06": "DEMO-20261112174455",
+    "0xf8066721f6a344915d77f68c380a5b13189ee63c08bcf58a0704359b18b5c4f6": "ACME-2026-114",
+    "0x1a416e30aac6df909b09288ce78e14e07ad91edbf91460623e88efe3e7f3dcc4": "DESIGN-RETAINER-NOV",
+    "0x8255fee628f27ca9d8a492ce6ba12dbc9db238d8ab6d51825a978675bcc574bc": "AUDIT-0042",
+    "0x995ab0561c7ea509197539b71dda1f4b76f9b2ec89c9c17eac4e7c53cde72619": "HOSTING-NOV-2026",
+    "0xe18a775bf20773277fab8b8572200af35398a521fd5bc8a846af1aca7d91cb3f": "GRANT-MILESTONE-2",
+    "0xa67442a9f58594bf8170e6cb759194550907ff2f58ce443546baab3b70b82a1d": "TRANSLATION-0911",
+    "0x6240bdb327baa9bf95c392635a69ec4f5d5c2594387e1f71dda4733b3161ef07": "BOUNTY-1187",
+    "0xd4b9f28b714da74b8a940bbdcd3a63187af2dcba78aa3a4d4056545396c60044": "SUPPORT-OCT",
+    "0xbd3a124fec78ee017f9f60d70919a6409bf8c6834272161a1d81ea62336163d0": "LEGAL-REVIEW-0318",
+    "0xb529f40ee46ef040f03d8f56d8360ffeaadb2bf94708706e7e27720da554cf76": "CLOUD-CREDITS-NOV",
+    "0x4fea2dc489140a6c7b7321863a8e086bf5652529a99bef5b70e3c5223cb270fc": "COMMUNITY-AMA-02",
+    "0x7d8b04ca06a1a290141fe3de3ec37daea30930f5e5eb296b05e5e5c86882f098": "DOCS-BOUNTY-0931",
+    "0x3a7c343e3c35d6542421161243b630c369e22df738eaac6ac3b76b05e4c9a256": "DESIGN-ASSETS-V2",
+    "0xf1015fe25fb75ebc1f65d3ed5ac7619c2e955f95523a8ef219ce968ea086fb0e": "QA-SPRINT-14",
+    "0x451c1bec91445a5a085f5c6d01aaa26f8a58f869c5fffa6829a35bc125b673d5": "RTHWIND-20261113-NOV",
+    "0x9bb99e7255e27dfdda0343d701a2f03a16900fbf8faf9ebebb202edc7227b6a4": "RTHWIND-20261113-1201",
+    "0xa9639556293ec54a2df9521f989d4acde66ad330ae3f70d05ec08a7266b4ecc5": "RTHWIND-20261113-1212"
+  }
+}

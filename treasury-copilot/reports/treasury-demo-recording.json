@@ -1,0 +1,52 @@
+{
+  "note": "Real Atlantic Testnet transactions made through the live /treasury page while recording the demo video. The wallet was a local test wallet (a freshly created throwaway key) standing in for a browser wallet; the page, the agent and the contracts were the real ones. Earlier takes of the same flow also left on-chain payments, listed under earlierTakes. While recording, the invoice reader cut the leading \"NO\" off the reference \"NORTHWIND-...\" (a bug since fixed, with a regression test), so the references actually paid on-chain start with \"RTHWIND-\".",
+  "network": "Pharos Atlantic Testnet",
+  "chainId": 688689,
+  "wallet": "0x938B205A27b276F4766AfBd444B6b2cCAE672FE3",
+  "reference": "RTHWIND-20261113-1212",
+  "invoiceId": "0xa9639556293ec54a2df9521f989d4acde66ad330ae3f70d05ec08a7266b4ecc5",
+  "recipient": "0xd4da393088ef2b7f019033a192cf01e5f188d0c0",
+  "transactions": [
+    {
+      "label": "ui 0xde5f72fd",
+      "hash": "0xd46dfbfe4c1f0e49a3056181c4bf033ed70d724c32bdfd70a8309dff0380d60c",
+      "blockNumber": 32714417,
+      "gasUsed": 33407,
+      "status": "success"
+    },
+    {
+      "label": "ui 0x095ea7b3",
+      "hash": "0x7174806581699a459fd0b2c52c89ab2a388b823e2a5ac6b80dd54fd83e402cb0",
+      "blockNumber": 32714455,
+      "gasUsed": 46151,
+      "status": "success"
+    },
+    {
+      "label": "ui 0xe1a9ef45",
+      "hash": "0xed9e412eb40267b90ac82357e8983ee7845a99eacc762c66c238e4bc04c13aea",
+      "blockNumber": 32714481,
+      "gasUsed": 88949,
+      "status": "success"
+    }
+  ],
+  "earlierTakes": [
+    {
+      "wallet": "0x3A77086e838A41CA44a21dA3Adc6C88a56329De0",
+      "reference": "RTHWIND-20261113-NOV",
+      "transactions": [
+        "0x7bda1008b822adf0b6a17f0096269a753acee85ec9809f42261d1b6af9249114",
+        "0x4e67d0853f036d463efbc260c35c8eb458ad829fed55273879d4b4af85037933",
+        "0x289d4c45378767864b2f12c6bc358bf45c9b844f4164949385729e04378eb314"
+      ]
+    },
+    {
+      "wallet": "0x938B205A27b276F4766AfBd444B6b2cCAE672FE3",
+      "reference": "RTHWIND-20261113-1201",
+      "transactions": [
+        "0x7d69dabcf6b252ac25ffd94fa7de016a42b5576cce7131396f2ba6543ea2cf19",
+        "0x5b47e75afaee0a9ca0bf30b712008f21be1a640e3016224e78379d9220a8417c",
+        "0x95a4d0e251cab87a359f63a2d05ce787146fc8b203c4b7862471c92741aafe05"
+      ]
+    }
+  ]
+}

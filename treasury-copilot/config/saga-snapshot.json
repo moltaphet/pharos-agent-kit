@@ -1,0 +1,9 @@
+{
+  "snapshotId": "snap_GkohTWAFM8nHS46OYFmOjaL3OTzp",
+  "builtAt": "2026-10-22T22:00:20.562Z",
+  "contents": [
+    "anvil Version: 1.4.0-v1.4.0",
+    "forge Version: 1.4.0-v1.4.0"
+  ],
+  "note": "Ubuntu + Node + Foundry. Rebuild with scripts/build-saga-snapshot.mjs."
+}
